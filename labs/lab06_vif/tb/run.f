@@ -6,7 +6,7 @@
 -incdir ../sv
 ../sv/yapp_pkg.sv
 ../sv/yapp_if.sv              // interfaces are COMPILED, never `included
-../../../router_rtl/yapp_router.sv
+-F ../../../yapp_project/rtl/yapp_router.f   // the DUT: one module per file
 clkgen.sv
 hw_top.sv
 tb_top.sv

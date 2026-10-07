@@ -7,32 +7,32 @@
 -incdir ../../../common
 
 // YAPP UVC (the monitor contains the covergroup)
--incdir ../../../yapp/sv
-../../../yapp/sv/yapp_pkg.sv
-../../../yapp/sv/yapp_if.sv
+-incdir ../../../yapp_project/uvc/yapp
+../../../yapp_project/uvc/yapp/yapp_pkg.sv
+../../../yapp_project/uvc/yapp/yapp_if.sv
 
 // Channel UVC
--incdir ../../../channel/sv
-../../../channel/sv/channel_pkg.sv
-../../../channel/sv/channel_if.sv
+-incdir ../../../yapp_project/uvc/channel
+../../../yapp_project/uvc/channel/channel_pkg.sv
+../../../yapp_project/uvc/channel/channel_if.sv
 
 // HBUS UVC
--incdir ../../../hbus/sv
-../../../hbus/sv/hbus_pkg.sv
-../../../hbus/sv/hbus_if.sv
+-incdir ../../../yapp_project/uvc/hbus
+../../../yapp_project/uvc/hbus/hbus_pkg.sv
+../../../yapp_project/uvc/hbus/hbus_if.sv
 
 // Clock & Reset UVC
--incdir ../../../clock_and_reset/sv
-../../../clock_and_reset/sv/clock_and_reset_pkg.sv
-../../../clock_and_reset/sv/clock_and_reset_if.sv
-../../../clock_and_reset/sv/clkgen.sv
+-incdir ../../../yapp_project/uvc/clock_and_reset
+../../../yapp_project/uvc/clock_and_reset/clock_and_reset_pkg.sv
+../../../yapp_project/uvc/clock_and_reset/clock_and_reset_if.sv
+../../../yapp_project/uvc/clock_and_reset/clkgen.sv
 
 // Router module UVC (final version)
--incdir ../../../router/sv
-../../../router/sv/router_module_pkg.sv
+-incdir ../../../yapp_project/uvc/router
+../../../yapp_project/uvc/router/router_module_pkg.sv
 
 // DUT and top levels
-../../../router_rtl/yapp_router.sv
+-F ../../../yapp_project/rtl/yapp_router.f   // the DUT: one module per file
 hw_top.sv
 tb_top.sv
 

@@ -1,5 +1,7 @@
-# Shared per-lab Makefile. Every labs/<lab>/tb/Makefile just does
+# Shared Makefile for every simulation directory. labs/<lab>/tb/Makefile does
 #     include ../../../common/lab.mk
+# and yapp_project/tb/Makefile does
+#     include ../../common/lab.mk
 #
 #   make run  [TEST=<test>] [XRUN_OPTS="+SVSEED=random"]   batch simulation
 #   make gui  [TEST=<test>]                                  SimVision, stop on constraint failure
@@ -8,7 +10,8 @@
 XRUN      ?= xrun
 TEST      ?= base_test
 XRUN_OPTS ?=
-LINT      := python3 ../../../scripts/lint.py
+ROOT      := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+LINT      := python3 $(ROOT)/scripts/lint.py
 
 .PHONY: run gui lint clean
 
