@@ -133,7 +133,7 @@ def scan_labs(ann):
             dirs = sorted({os.path.dirname(r) for r in refs})
             files = []
             for d in dirs:
-                files += sorted(glob.glob(os.path.join(d, "*.sv")))
+                files += sorted(glob.glob(os.path.join(d, "**", "*.sv"), recursive=True))
             _scan_files(files, meta["label"], found)
     return found
 
@@ -385,7 +385,14 @@ class ModelBuilder:
             m["dirs"].add("both" if bidir else ("fwd" if (src, dst) == key else "rev"))
         for key, m in merged.items():
             bidir = len(m["dirs"]) > 1 or "both" in m["dirs"]
-            self.add_edge("port", m["src"], m["dst"], label=", ".join(sorted(set(m["nets"]))), bidir=bidir)
+            nets = sorted(set(m["nets"]))
+            kind = "port"
+            # the clock / reset fan-out to every interface is noise in the picture: keep it for the
+            # panel only (kind "clock"); the DUT and the clock generator keep their edges
+            ifs = {x for x in (m["src"], m["dst"]) if self.nodes[x]["kind"] == "interface" and x != "hw_top.clk_rst_if"}
+            if set(nets) <= {"clock", "reset"} and ifs:
+                kind = "clock"
+            self.add_edge(kind, m["src"], m["dst"], label=", ".join(nets), bidir=bidir)
 
     def build_dut(self, dut_id, inst):
         for g in inst.get("generate", []):

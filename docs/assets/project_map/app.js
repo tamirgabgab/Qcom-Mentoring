@@ -361,7 +361,9 @@
         if (it.children && !it.container && !it.stub) {
           const more = svg("text", { class: "more", x: it.w - 8, y: it.h - 7, "text-anchor": "end" });
           more.textContent = "▸ open";
-          const tt = svg("title"); tt.textContent = "double-click to open"; more.append(tt);
+          const tt = svg("title"); tt.textContent = "open this component"; more.append(tt);
+          more.style.pointerEvents = "all";
+          more.addEventListener("click", ev => { ev.stopPropagation(); this.open(it.id, it); });
           grp.append(more);
         }
         if (it.stub) {
@@ -378,7 +380,7 @@
         pg.addEventListener("mouseleave", () => this.hover(p.id, false));
         grp.append(pg);
       });
-      grp.addEventListener("click", ev => { ev.stopPropagation(); this.select(it.id); });
+      grp.addEventListener("click", ev => { ev.stopPropagation(); if (it.stub) this.open(it.id, it); else this.select(it.id); });
       grp.addEventListener("dblclick", ev => { ev.stopPropagation(); this.open(it.id, it); });
       grp.addEventListener("mouseenter", () => this.hover(it.id, true));
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
@@ -630,6 +632,19 @@
       head.append(el("h2", {}, [n.name]));
       if (n.scope === "cls") head.append(el("div", { class: "path" }, [n.file ? `${n.file}:${n.line}` : ""]));
       else head.append(el("div", { class: "path" }, [n.scope === "tb" && n.id !== "uvm_test_top" ? `uvm_test_top.${n.id}` : n.id, n.type && n.type !== n.name ? `  :  ${n.type}` : ""]));
+      // quick navigation
+      const acts = el("div", { class: "pm-actions" });
+      if (this.scenes[`h:${n.id}`]) acts.append(el("button", { onclick: () => this.show(`h:${n.id}`) }, ["▸ Open"]));
+      const sc = this.scenes[this.state.scene];
+      if (sc && sc.parent) acts.append(el("button", { onclick: () => this.up() }, ["↑ Up"]));
+      if (n.scope !== "cls" && n.cls && this.N[n.cls]) acts.append(el("button", { onclick: () => this.gotoNode(n.cls, "classes") }, ["Class ⇄"]));
+      if (n.scope === "cls") {
+        const inst = Object.values(this.N).find(x => x.cls === n.id);
+        if (inst) acts.append(el("button", { onclick: () => this.gotoNode(inst.id, "hierarchy") }, ["Instance ⇄"]));
+      }
+      if ((this.where[n.id] || []).some(sid => this.scenes[sid].view === "tlm") && this.state.view !== "tlm") acts.append(el("button", { onclick: () => this.gotoNode(n.id, "tlm") }, ["TLM"]));
+      if ((n.code || (n.cls && this.N[n.cls] && this.N[n.cls].code)) && this.state.tab !== "code") acts.append(el("button", { onclick: () => { this.state.tab = "code"; this.renderPanel(); } }, ["</> Code"]));
+      if (acts.children.length) head.append(acts);
       p.append(head);
       const tabs = el("div", { class: "pm-tabs" });
       [["overview", "Overview"], ["code", "Code"], ["links", "Links"]].forEach(([t, l]) => {
@@ -739,6 +754,24 @@
       if (n.tasks && n.tasks.length) {
         add("<h3>Tasks / functions</h3>");
         add("<p>" + n.tasks.map(t => `<code>${esc(t.name)}(${esc((t.args || []).join(", "))})</code>`).join(" · ") + "</p>");
+      }
+      // source preview
+      const code = n.code || (n.cls && this.N[n.cls] ? this.N[n.cls].code : "");
+      const cfile = n.file || (n.cls && this.N[n.cls] ? this.N[n.cls].file : null);
+      if (code) {
+        add("<h3>Source</h3>");
+        const lines = code.split("\n");
+        const headLine = n.line || (n.cls && this.N[n.cls] ? this.N[n.cls].line : 1);
+        const prev = lines.slice(0, 14).join("\n");
+        body.append(el("div", { class: "pm-code-head" }, [el("span", {}, [`${cfile}:${headLine}  (${lines.length} lines)`]),
+          el("a", { class: "node", onclick: () => { this.state.tab = "code"; this.renderPanel(); } }, ["show the whole file →"])]));
+        const box = el("div", { class: "pm-code preview" });
+        const table = el("table");
+        highlightSV(prev.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")).split("\n").forEach((l, i) => {
+          const tr = el("tr"); tr.append(el("td", { class: "ln" }, [String(headLine + i)]), el("td", { html: l || " " })); table.append(tr);
+        });
+        if (lines.length > 14) { const tr = el("tr"); tr.append(el("td", { class: "ln" }, ["…"]), el("td", { html: `<span class="c">// ${lines.length - 14} more lines in the Code tab</span>` })); table.append(tr); }
+        box.append(table); body.append(box);
       }
       // instances of a class
       if (n.scope === "cls") {
@@ -856,6 +889,7 @@
         backdoor: "`set_hdl_path_root()`: backdoor peek/poke go straight to the RTL signals under this path.",
         vif: "A virtual interface handle delivered through `uvm_config_db` from `tb_top` (see the `*_vif_config::set` calls).",
         port: "Module port connections in `hw_top`: the DUT's pins are the interface's signals.",
+        clock: "Shared clock / reset nets (not drawn in the picture to keep it readable).",
         flow: "Data or control flow inside the RTL.",
         inherits: "`extends`.",
         runs_on: "The sequence's item type matches this sequencer's parameter (or `p_sequencer` is declared).",

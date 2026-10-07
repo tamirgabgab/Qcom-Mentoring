@@ -81,6 +81,7 @@ class Box:
              "children": len(self.node.get("children", [])) if self.node else 0,
              "ports": [{k: (round(v, 1) if isinstance(v, float) else v) for k, v in p.items()} for p in self.ports]}
         d.update(self.extra)
+        d["sub"] = self.extra.get("sub", self.sub)
         return d
 
 
@@ -129,7 +130,20 @@ class Layout:
         if expand > 0 and kids:
             b.container = True
             b.children = [self.make_box(k, depth + 1, expand - 1, show_ports) for k in kids]
-            self.arrange(b)
+            ports = self.port_children(nid) if show_ports else []
+            left = [p for p in ports if self.N[p]["kind"] in LEFT_KINDS]
+            right = [p for p in ports if self.N[p]["kind"] not in LEFT_KINDS]
+            lm = max([tw(self.N[p]["name"], 11) for p in left] + [0]) + 24 if left else 0
+            rm = max([tw(self.N[p]["name"], 11) for p in right] + [0]) + 24 if right else 0
+            self.arrange(b, left_margin=lm, right_margin=rm)
+            y0 = TITLE_H + 14 + PORT_R
+            for i, p in enumerate(left):
+                b.ports.append({"id": p, "x": 0.0, "y": y0 + i * PORT_STEP, "side": "left",
+                                "label": self.N[p]["name"], "kind": self.N[p]["kind"]})
+            for i, p in enumerate(right):
+                b.ports.append({"id": p, "x": b.w, "y": y0 + i * PORT_STEP, "side": "right",
+                                "label": self.N[p]["name"], "kind": self.N[p]["kind"]})
+            b.h = max(b.h, y0 + max(len(left), len(right)) * PORT_STEP + PAD)
         else:
             self.size_leaf(b, show_ports)
         return b
@@ -184,25 +198,26 @@ class Layout:
                 rows.append(rest[i:i + cols])
         return rows
 
-    def arrange(self, b):
+    def arrange(self, b, left_margin=0.0, right_margin=0.0):
         rows = self.rows_for(b)
         y = TITLE_H + PAD
         total_w = 0
         row_geo = []
         for r in rows:
-            x = PAD
+            x = PAD + left_margin
             row_h = max(c.h for c in r)
             for c in r:
                 c.move(x - c.x, y - c.y)
                 x += c.w + GAP_X
-            row_w = x - GAP_X + PAD
+            row_w = x - GAP_X + PAD + right_margin
             total_w = max(total_w, row_w)
             row_geo.append((r, row_h))
             y += row_h + GAP_Y
-        # centre each row
+        # centre each row inside the usable width
+        usable = total_w - 2 * PAD - left_margin - right_margin
         for r, row_h in row_geo:
             row_w = sum(c.w for c in r) + GAP_X * (len(r) - 1)
-            dx = (total_w - 2 * PAD - row_w) / 2
+            dx = (usable - row_w) / 2
             for c in r:
                 c.move(dx, 0)
         title_w = tw(b.label, 14) + tw(b.sub, 12) + 40
@@ -325,10 +340,11 @@ class HierarchyLayout(Layout):
         for b in boxes.values():
             for p in b.ports:
                 ports[p["id"]] = p
-        edges = self.scene_edges(boxes, ports, kinds=EDGE_KINDS_IN_SCENES, scene_root=nid)
-        stubs = self.add_stubs(box, boxes, ports, edges, nid)
-        w = box.w + 2 * PAD
-        h = box.h + 2 * PAD
+        edges = []
+        stubs = self.add_stubs(box, boxes, ports, edges, nid)       # may shift the boxes right
+        edges = self.scene_edges(boxes, ports, kinds=EDGE_KINDS_IN_SCENES, scene_root=nid) + edges
+        w = box.x + box.w + PAD
+        h = box.y + box.h + PAD
         if stubs:
             w = max(w, max(s["x"] + s["w"] for s in stubs) + PAD)
             h = max(h, max(s["y"] + s["h"] for s in stubs) + PAD)
@@ -349,8 +365,118 @@ class HierarchyLayout(Layout):
             p = self.N[p].get("parent")
         return self.ROOT_ID
 
-    def scene_edges(self, boxes, ports, kinds, scene_root=None, collapse_vif=False):
+    # ------------------------------------------------------------- edge planning
+    def _endpoint(self, nid, boxes, ports):
+        if nid in ports:
+            p = ports[nid]
+            return {"kind": "port", "pt": (p["x"], p["y"]), "side": p["side"], "id": nid}
+        cur = nid
+        while cur is not None and cur not in boxes:
+            cur = self.N[cur].get("parent") if cur in self.N else None
+        if cur is None:
+            return None
+        return {"kind": "box", "box": boxes[cur], "id": cur}
+
+    @staticmethod
+    def _center(end):
+        if end["kind"] == "port":
+            return end["pt"]
+        b = end["box"]
+        return (b.x + b.w / 2, b.y + b.h / 2)
+
+    @staticmethod
+    def _pick_side(box, other_pt, fixed=None):
+        if fixed:
+            return fixed
+        cx, cy = box.x + box.w / 2, box.y + box.h / 2
+        dx, dy = other_pt[0] - cx, other_pt[1] - cy
+        # normalised by the box size: wide boxes prefer their top / bottom edge
+        if abs(dy) / max(box.h, 1.0) >= abs(dx) / max(box.w, 1.0):
+            return "bottom" if dy > 0 else "top"
+        return "right" if dx > 0 else "left"
+
+    DIR = {"top": (0, -1), "bottom": (0, 1), "left": (-1, 0), "right": (1, 0)}
+
+    def plan_edges(self, specs, boxes, ports):
+        """Two passes over the edges of a scene: pick the side of every box endpoint, then
+        spread the endpoints that share a side along it, then draw smooth S-curves that leave
+        and enter perpendicular to the sides. specs: {edge, from, to, fixed, label, label_t,
+        reverse, stub}."""
+        ends = []
+        for sp in specs:
+            a = self._endpoint(sp["from"], boxes, ports)
+            b = self._endpoint(sp["to"], boxes, ports)
+            if a is None or b is None:
+                continue
+            if a["kind"] == "box" and b["kind"] == "box" and a["box"] is b["box"]:
+                continue
+            if a["kind"] == "port" and b["kind"] == "box" and b["box"].id == self.N[a["id"]].get("parent"):
+                continue
+            if b["kind"] == "port" and a["kind"] == "box" and a["box"].id == self.N[b["id"]].get("parent"):
+                continue
+            fixed = sp.get("fixed", {})
+            # an edge to a stub leaves the scene horizontally: the near box uses its facing side
+            near_side = sp.get("stub_side")
+            if a["kind"] == "box":
+                a["side"] = self._pick_side(a["box"], self._center(b), fixed.get(a["id"]) or
+                                            (near_side if near_side and not a["box"].extra.get("stub") else None))
+            if b["kind"] == "box":
+                b["side"] = self._pick_side(b["box"], self._center(a), fixed.get(b["id"]) or
+                                            (near_side if near_side and not b["box"].extra.get("stub") else None))
+            ends.append((sp, a, b))
+        groups = {}
+        for sp, a, b in ends:
+            for me, other in ((a, b), (b, a)):
+                if me["kind"] == "box":
+                    groups.setdefault((me["id"], me["side"]), []).append((me, self._center(other)))
+        for (bid, side), lst in groups.items():
+            horiz = side in ("top", "bottom")
+            lst.sort(key=lambda t: t[1][0] if horiz else t[1][1])
+            n = len(lst)
+            for k, (me, _) in enumerate(lst):
+                b = me["box"]
+                frac = (k + 1) / (n + 1)
+                if horiz:
+                    x = b.x + b.w * (0.12 + 0.76 * frac) if n > 1 else b.x + b.w / 2
+                    y = b.y if side == "top" else b.y + b.h
+                else:
+                    y = b.y + b.h * (0.15 + 0.7 * frac) if n > 1 else b.y + b.h / 2
+                    x = b.x if side == "left" else b.x + b.w
+                me["pt"] = (x, y)
         out = []
+        for sp, a, b in ends:
+            p0, p3 = a["pt"], b["pt"]
+            d0, d1 = self.DIR[a["side"]], self.DIR[b["side"]]
+            if a["kind"] == "port":
+                d0 = (1, 0) if p3[0] >= p0[0] else (-1, 0)
+            if b["kind"] == "port":
+                d1 = (1, 0) if p0[0] >= p3[0] else (-1, 0)
+            dist = math.hypot(p3[0] - p0[0], p3[1] - p0[1])
+            d = max(36.0, min(150.0, dist * 0.45))
+            pts = [list(p0), [p0[0] + d0[0] * d, p0[1] + d0[1] * d], [p3[0] + d1[0] * d, p3[1] + d1[1] * d], list(p3)]
+            if sp.get("reverse"):
+                pts = list(reversed(pts))
+            e = sp["edge"]
+            mid = self.bezier_mid(pts, sp.get("label_t", 0.5))
+            g = {"id": e["id"], "kind": e["kind"], "from": e["from"], "to": e["to"],
+                 "points": [[round(x, 1), round(y, 1)] for x, y in pts],
+                 "label": sp.get("label", e.get("label")), "lx": round(mid[0], 1), "ly": round(mid[1], 1),
+                 "bidir": bool(e.get("bidir")),
+                 "dashed": bool(e.get("dashed")) or e["kind"] in ("vif", "handle", "backdoor")}
+            if sp.get("stub"):
+                g["stub"] = True
+            out.append(g)
+        return out
+
+    def visible_owner(self, nid, boxes):
+        cur = nid
+        while cur is not None and cur not in boxes:
+            cur = self.N[cur].get("parent") if cur in self.N else None
+        return cur
+
+    def scene_edges(self, boxes, ports, kinds, scene_root=None, collapse_vif=False):
+        """Edges with both ends inside the scene."""
+        specs = []
         seen = set()
         for e in self.E:
             if e["kind"] not in kinds:
@@ -360,41 +486,24 @@ class HierarchyLayout(Layout):
                 continue
             a_in = self.visible_owner(e["from"], boxes)
             b_in = self.visible_owner(e["to"], boxes)
-            if a_in is None or b_in is None:
+            if a_in is None or b_in is None or a_in == b_in:
                 continue
-            if a_in == b_in:
-                continue
+            sp = {"edge": e, "from": e["from"], "to": e["to"]}
             if collapse_vif:
-                # the root overview: one vif edge per (UVC env, interface) pair, one port edge per pair
                 key = (e["kind"], a_in, b_in)
                 if key in seen:
                     continue
                 seen.add(key)
-            g = self.edge_geometry(e, boxes, ports)
-            if g:
-                if collapse_vif and e["kind"] == "vif":
-                    g["label"] = "vif"
-                out.append(g)
-        return out
-
-    def visible_owner(self, nid, boxes):
-        cur = nid
-        while cur is not None and cur not in boxes:
-            cur = self.N[cur].get("parent")
-        if cur is None:
-            return None
-        # an edge whose end is a container box with children displayed is attached to the container
-        return cur
+                if e["kind"] == "vif":
+                    sp["label"] = "vif"
+            specs.append(sp)
+        return self.plan_edges(specs, boxes, ports)
 
     def add_stubs(self, root_box, boxes, ports, edges, scene_root):
-        """Edges leaving the scene: draw a small stub box outside the container for the far end."""
-        stubs = []
-        stub_by_target = {}
-        right_x = root_box.x + root_box.w + GAP_X * 1.5
-        left_x = PAD
-        ry = root_box.y + TITLE_H
-        ly = root_box.y + TITLE_H
-        shift_left = 0.0
+        """Edges leaving the scene: a small stub box outside the container stands for the far end.
+        Producers feeding the scene sit on the left, everything the scene talks to on the right."""
+        specs = []
+        stubs = {}
         for e in self.E:
             if e["kind"] not in EDGE_KINDS_IN_SCENES or e.get("variant"):
                 continue
@@ -404,72 +513,52 @@ class HierarchyLayout(Layout):
                 continue
             far = ends[0] if inside[0] is None else ends[1]
             near = ends[1] if inside[0] is None else ends[0]
-            owner_far = far if not self.is_port(far) else self.N[far]["parent"]
-            key = far
-            if key not in stub_by_target:
+            incoming = e["from"] == far
+            if far not in stubs:
+                owner_far = far if not self.is_port(far) else self.N[far]["parent"]
                 label = self.N[far]["name"] if not self.is_port(far) else f"{self.N[owner_far]['name']}.{self.N[far]['name']}"
-                path = far if not far.startswith("hw_top") else far
-                w = max(tw(label, 12) + 24, tw(path, 11) + 24, 120)
-                side = "right" if e["from"] == near or self.N[far]["kind"] in LEFT_KINDS else "left"
-                if self.N[far].get("scope") == "hw":
-                    side = "right"
-                if side == "right":
-                    x, y = right_x, ry
-                    ry += 48
-                else:
-                    x, y = left_x, ly
-                    ly += 48
-                    shift_left = max(shift_left, w + GAP_X)
-                stub = {"id": far, "x": x, "y": y, "w": w, "h": 40, "label": label, "sub": path,
-                        "kind": self.N[far]["kind"], "stub": True, "side": side, "scene": self.scene_for(far)}
-                stub_by_target[key] = stub
-                stubs.append(stub)
-            stub = stub_by_target[key]
-            # geometry: from the near end (port or box) to the stub's facing side
-            if near in ports:
-                p = ports[near]
-                a_pt, a_side = (p["x"], p["y"]), p["side"]
-            else:
-                nb = boxes[self.visible_owner(near, boxes)]
-                a_pt, a_side = (nb.x + nb.w / 2, nb.y + nb.h / 2), None
-            b_pt = (stub["x"], stub["y"] + stub["h"] / 2) if stub["side"] == "right" else \
-                   (stub["x"] + stub["w"], stub["y"] + stub["h"] / 2)
-            if a_side is None:
-                a_pt = self.anchor(nb, b_pt)
-            pts = self.route(a_pt, b_pt, a_side, "left" if stub["side"] == "right" else "right")
-            if e["from"] != near:      # arrow points into the scene
-                pts = list(reversed(pts))
-            mid = self.bezier_mid(pts, 0.38 if e["from"] == near else 0.62)   # label near the scene side
-            edges.append({"id": e["id"], "kind": e["kind"], "from": e["from"], "to": e["to"],
-                          "points": [[round(x, 1), round(y, 1)] for x, y in pts], "label": e.get("label"),
-                          "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": bool(e.get("bidir")),
-                          "dashed": e["kind"] in ("vif", "handle", "backdoor"), "stub": True})
-        if shift_left:
-            # make room on the left: shift everything right
-            for b in boxes.values():
+                side = "left" if (incoming and self.N[far].get("scope") != "hw") else "right"
+                n = self.N[far]
+                sb = Box(far, n, label, far, n["kind"], 0)
+                sb.w, sb.h = max(tw(label, 12) + 24, tw(far, 11) + 24, 120), 40
+                sb.extra = {"stub": True, "side": side, "scene": self.scene_for(far), "sub": far}
+                stubs[far] = sb
+            specs.append({"edge": e, "from": e["from"], "to": e["to"], "stub": True,
+                          "fixed": {far: "right" if stubs[far].extra["side"] == "left" else "left"},
+                          "stub_side": stubs[far].extra["side"],
+                          "label_t": 0.62 if incoming else 0.38})
+        if not stubs:
+            return []
+        # place the stub columns
+        left = [b for b in stubs.values() if b.extra["side"] == "left"]
+        right = [b for b in stubs.values() if b.extra["side"] == "right"]
+        left_w = max([b.w for b in left] + [0])
+        shift = left_w + GAP_X * 1.5 if left else 0
+        if shift:
+            for b in list(boxes.values()):
                 if b.depth == 0:
-                    b.move(shift_left, 0)
-            for p in ports.values():
-                pass   # ports moved with their boxes
-            for s in stubs:
-                if s["side"] == "right":
-                    s["x"] += shift_left
-            for ed in edges:
-                for pt in ed["points"]:
-                    if not (ed.get("stub") and self.is_left_stub_point(pt, stubs)):
-                        pt[0] = round(pt[0] + shift_left, 1)
-                ed["lx"] = round(ed["lx"] + shift_left, 1)
-        for s in stubs:
-            for k in ("x", "y", "w", "h"):
-                s[k] = round(s[k], 1)
-        return stubs
-
-    @staticmethod
-    def is_left_stub_point(pt, stubs):
-        for s in stubs:
-            if s["side"] == "left" and abs(pt[0] - (s["x"] + s["w"])) < 0.01 and abs(pt[1] - (s["y"] + s["h"] / 2)) < 0.01:
-                return True
-        return False
+                    b.move(shift, 0)
+        y = root_box.y + TITLE_H
+        for b in left:
+            b.move(PAD - b.x, y - b.y)
+            y += b.h + 12
+        y = root_box.y + TITLE_H
+        for b in right:
+            b.move(root_box.x + root_box.w + GAP_X * 1.5 - b.x, y - b.y)
+            y += b.h + 12
+        all_boxes = dict(boxes)
+        all_boxes.update(stubs)
+        # the in-scene edges were planned before the shift: recompute everything together
+        edges.extend(self.plan_edges(specs, all_boxes, ports))
+        out = []
+        for b in stubs.values():
+            d = b.to_dict()
+            d["stub"] = True
+            d["side"] = b.extra["side"]
+            d["scene"] = b.extra["scene"]
+            d["sub"] = far_sub = b.id
+            out.append(d)
+        return out
 
     def scene_for(self, nid):
         """The hierarchy scene in which node `nid` is drawn as an item."""
