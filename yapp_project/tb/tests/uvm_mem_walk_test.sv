@@ -25,10 +25,12 @@ function uvm_mem_walk_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void uvm_mem_walk_test::configure_sequences();
   set_clock_and_channel_sequences();
 endfunction : configure_sequences
 
+//------------------------------------------------------------------------------
 task uvm_mem_walk_test::run_phase(uvm_phase phase);
   uvm_mem_walk_seq walk_seq;
   super.run_phase(phase);

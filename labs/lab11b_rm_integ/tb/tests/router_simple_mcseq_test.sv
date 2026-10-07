@@ -25,11 +25,13 @@ function router_simple_mcseq_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_simple_mcseq_test::build_phase(uvm_phase phase);
   set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
   super.build_phase(phase);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_simple_mcseq_test::configure_sequences();
   set_clock_and_channel_sequences();
   uvm_config_wrapper::set(this, "tb.mcseqr.run_phase",

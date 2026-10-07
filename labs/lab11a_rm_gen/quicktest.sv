@@ -37,6 +37,7 @@ function qt_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void qt_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   model = yapp_router_regs_t::type_id::create("model");
@@ -44,6 +45,7 @@ function void qt_test::build_phase(uvm_phase phase);
   model.lock_model();     // no more changes; computes the address map
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 task qt_test::run_phase(uvm_phase phase);
   phase.raise_objection(this);
   model.reset();          // mirrored values <- reset values

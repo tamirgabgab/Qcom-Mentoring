@@ -26,14 +26,15 @@ function yapp_5_packets::new(string name = "yapp_5_packets");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_5_packets::body();
   `uvm_info(get_type_name(), "Executing yapp_5_packets sequence", UVM_LOW)
-  repeat (5)
-    begin
-      req = yapp_packet::type_id::create("req");
-      start_item(req);
-      if (!req.randomize())
-        `uvm_error(get_type_name(), "req.randomize() failed")
-      finish_item(req);
+  repeat (5) begin
+    req = yapp_packet::type_id::create("req");
+    start_item(req);
+    if (!req.randomize()) begin
+      `uvm_error(get_type_name(), "req.randomize() failed")
     end
+    finish_item(req);
+  end
 endtask : body

@@ -26,6 +26,7 @@ function ctrl_reg_c::new(string name = "ctrl_reg_c");
   super.new(name, 8, UVM_NO_COVERAGE);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void ctrl_reg_c::build();
   plen   = uvm_reg_field::type_id::create("plen");
   unused = uvm_reg_field::type_id::create("unused");

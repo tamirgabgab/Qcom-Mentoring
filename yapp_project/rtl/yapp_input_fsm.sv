@@ -143,8 +143,9 @@ module yapp_input_fsm (
           if (in_data_vld && accept) begin
             parity_acc <= parity_acc ^ in_data;
             byte_cnt <= byte_cnt + 6'd1;
-            if (byte_cnt + 6'd1 == cur_len)
+            if (byte_cnt + 6'd1 == cur_len) begin
               state <= PARITY;
+            end
           end
         end
         //------------------------------------------------------------------
@@ -152,10 +153,11 @@ module yapp_input_fsm (
           if (accept) begin
             state <= IDLE;
             if (cur_enabled) begin
-              if (cur_drop)
+              if (cur_drop) begin
                 $display("%0t ROUTER DROPS PACKET addr=%0d length=%0d (%s)", $time,
                          cur_addr, cur_len,
                          (cur_addr == 2'd3) ? "illegal address" : "length > maxpktsize");
+              end
             end else begin
               $display("%0t ROUTER DROPS PACKET addr=%0d length=%0d (router disabled)",
                        $time, cur_addr, cur_len);

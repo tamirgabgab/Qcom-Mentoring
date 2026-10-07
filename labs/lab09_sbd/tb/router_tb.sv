@@ -30,6 +30,7 @@ function router_tb::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_tb::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the testbench", UVM_HIGH)
@@ -50,6 +51,7 @@ function void router_tb::build_phase(uvm_phase phase);
   fifo_sb = router_fifo_scoreboard::type_id::create("fifo_sb", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_tb::connect_phase(uvm_phase phase);
   mcseqr.hbus_seqr = hbus.masters[0].sequencer;
   mcseqr.yapp_seqr = yapp.agent.sequencer;

@@ -23,6 +23,7 @@ function ro_byte_reg_c::new(string name);
   super.new(name, 8, UVM_NO_COVERAGE);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void ro_byte_reg_c::build();
   value = uvm_reg_field::type_id::create("value");
   value.configure(this, 8, 0, "RO", 0, 8'h00, 1, 0, 0);

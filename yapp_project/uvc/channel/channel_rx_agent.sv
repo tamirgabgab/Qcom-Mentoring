@@ -28,15 +28,14 @@ function channel_rx_agent::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void channel_rx_agent::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_is_active;
+  uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_is_active;
-    uvm_bitstream_t cfg_channel_id;
-    if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
-    if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
   // Pass the channel id down to the children
   uvm_config_int::set(this, "*", "channel_id", channel_id);
   monitor = channel_rx_monitor::type_id::create("monitor", this);
@@ -46,11 +45,14 @@ function void channel_rx_agent::build_phase(uvm_phase phase);
   end
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void channel_rx_agent::connect_phase(uvm_phase phase);
-  if (is_active == UVM_ACTIVE)
+  if (is_active == UVM_ACTIVE) begin
     driver.seq_item_port.connect(sequencer.seq_item_export);
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 function void channel_rx_agent::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());

@@ -16,8 +16,7 @@ class base_test extends uvm_test;
   extern function void build_phase(uvm_phase phase);
 
   // Default sequences for the sequencers in the testbench
-  extern // Default sequences for the sequencers in the testbench
-  virtual function void configure_sequences();
+  extern virtual function void configure_sequences();
 
   extern function void end_of_elaboration_phase(uvm_phase phase);
 
@@ -36,6 +35,7 @@ function base_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
@@ -44,20 +44,24 @@ function void base_test::build_phase(uvm_phase phase);
   tb = router_tb::type_id::create("tb", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void base_test::configure_sequences();
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_5_packets::get_type());
 endfunction : configure_sequences
 
+//------------------------------------------------------------------------------
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
 endfunction : end_of_elaboration_phase
 
+//------------------------------------------------------------------------------
 task base_test::run_phase(uvm_phase phase);
   uvm_objection obj = phase.get_objection();
   obj.set_drain_time(this, 200ns);
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 function void base_test::check_phase(uvm_phase phase);
   check_config_usage();
 endfunction : check_phase

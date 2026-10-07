@@ -26,24 +26,26 @@ function clock_and_reset_agent::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void clock_and_reset_agent::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_is_active;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_is_active;
-    if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
   if (is_active == UVM_ACTIVE) begin
     driver    = clock_and_reset_driver::type_id::create("driver", this);
     sequencer = clock_and_reset_sequencer::type_id::create("sequencer", this);
   end
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void clock_and_reset_agent::connect_phase(uvm_phase phase);
-  if (is_active == UVM_ACTIVE)
+  if (is_active == UVM_ACTIVE) begin
     driver.seq_item_port.connect(sequencer.seq_item_export);
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 function void clock_and_reset_agent::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());

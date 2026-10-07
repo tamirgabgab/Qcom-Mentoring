@@ -21,11 +21,13 @@ function clk_rst_rand_seq::new(string name = "clk_rst_rand_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task clk_rst_rand_seq::body();
   `uvm_info(get_type_name(), "Executing clk_rst_rand_seq", UVM_LOW)
   req = clock_and_reset_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize())
+  if (!req.randomize()) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 endtask : body

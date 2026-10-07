@@ -25,6 +25,7 @@ function yapp_coverage_seq::new(string name = "yapp_coverage_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_coverage_seq::body();
   int lengths[5] = '{1, 5, 20, 50, 63};   // one value inside each bin
   `uvm_info(get_type_name(), "Executing yapp_coverage_seq sequence", UVM_LOW)
@@ -35,8 +36,9 @@ task yapp_coverage_seq::body();
         req.c_addr_legal.constraint_mode(0);
         if (!req.randomize() with { req.addr == a;
                                     req.length == lengths[i];
-                                    req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); })
+                                    req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); }) begin
           `uvm_error(get_type_name(), "Randomization failed")
+        end
         start_item(req);
         finish_item(req);
       end

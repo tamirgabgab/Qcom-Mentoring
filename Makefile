@@ -3,6 +3,8 @@
 #
 #   make lint                 lint every lab with slang (no simulator needed)
 #   make lint LAB=lab05_seq   lint one lab
+#   make style                reformat every .sv to the course style (scripts/sv_style.py)
+#   make style-check          verify the code style (CI)
 #   make run LAB=lab05_seq TEST=exhaustive_seq_test   run one lab test with xrun
 #   make run-project TEST=reg_function_test      run a test of the complete project (yapp_project/tb)
 #   make docs                 build the teaching site into site/
@@ -18,10 +20,10 @@ XRUN_OPTS ?=
 LAB       ?=
 TEST      ?= base_test
 
-.PHONY: help lint uvm-src run run-project docs serve map map-check map-export clean
+.PHONY: help lint style style-check uvm-src run run-project docs serve map map-check map-export clean
 
 help:
-	@sed -n '2,15p' $(MAKEFILE_LIST)
+	@sed -n '2,17p' $(MAKEFILE_LIST)
 
 uvm-src:
 	@bash scripts/get_uvm.sh
@@ -32,6 +34,12 @@ ifeq ($(LAB),)
 else
 	$(PYTHON) scripts/lint.py labs/$(LAB)/tb/run.f
 endif
+
+style:
+	$(PYTHON) scripts/sv_style.py --fix
+
+style-check:
+	$(PYTHON) scripts/sv_style.py --check
 
 run:
 ifeq ($(LAB),)

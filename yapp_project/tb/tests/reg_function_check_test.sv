@@ -17,8 +17,7 @@ class reg_function_check_test extends reg_function_test;
   extern task run_phase(uvm_phase phase);
 
   // Load the expected value, then let read() do the comparison
-  extern // Load the expected value, then let read() do the comparison
-  virtual task check_counter(uvm_reg rg, uvm_reg_data_t expected);
+  extern virtual task check_counter(uvm_reg rg, uvm_reg_data_t expected);
 
 endclass : reg_function_check_test
 
@@ -30,11 +29,13 @@ function reg_function_check_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task reg_function_check_test::run_phase(uvm_phase phase);
   tb.yapp_rm.default_map.set_check_on_read(1);
   super.run_phase(phase);
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task reg_function_check_test::check_counter(uvm_reg rg, uvm_reg_data_t expected);
   uvm_status_e   status;
   uvm_reg_data_t val;

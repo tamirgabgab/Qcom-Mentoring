@@ -23,12 +23,14 @@ function hbus_read_max_pkt_seq::new(string name = "hbus_read_max_pkt_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task hbus_read_max_pkt_seq::body();
   `uvm_info(get_type_name(), "Executing hbus_read_max_pkt_seq", UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == CTRL_REG_ADDR; req.hwr_rd == HBUS_READ; })
+  if (!req.randomize() with { req.haddr == CTRL_REG_ADDR; req.hwr_rd == HBUS_READ; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
   maxpktsize = req.hdata[5:0];
   `uvm_info(get_type_name(), $sformatf("MAXPKTSIZE register reads %0d", maxpktsize), UVM_LOW)

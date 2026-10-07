@@ -26,10 +26,11 @@ module yapp_error_timer (
   wire  [3:0] err_delay = (rnd_cnt % 4'd10) + 4'd1;
 
   always_ff @(posedge clock or posedge reset) begin
-    if (reset)
+    if (reset) begin
       rnd_cnt <= 4'd0;
-    else
+    end else begin
       rnd_cnt <= rnd_cnt + 4'd1;
+    end
   end
 
   always_ff @(posedge clock or posedge reset) begin
@@ -40,12 +41,14 @@ module yapp_error_timer (
       error <= 1'b0;
       if (err_timer != 4'd0) begin
         err_timer <= err_timer - 4'd1;
-        if (err_timer == 4'd1)
+        if (err_timer == 4'd1) begin
           error <= 1'b1;
+        end
       end
       // A new bad-parity packet (re)loads the timer; this overrides the decrement
-      if (start)
+      if (start) begin
         err_timer <= err_delay;
+      end
     end
   end
 

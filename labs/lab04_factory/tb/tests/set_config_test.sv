@@ -28,12 +28,14 @@ function set_config_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void set_config_test::build_phase(uvm_phase phase);
   // Must be set BEFORE the agent is built (i.e. before super.build_phase)
   uvm_config_int::set(this, "tb.yapp.agent", "is_active", UVM_PASSIVE);
   super.build_phase(phase);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void set_config_test::configure_sequences();
   // intentionally empty: there is no sequencer to configure
 endfunction : configure_sequences

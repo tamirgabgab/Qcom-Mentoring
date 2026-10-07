@@ -30,12 +30,14 @@ function router_module_env::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_module_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
   reference  = router_reference::type_id::create("reference", this);
   scoreboard = router_scoreboard::type_id::create("scoreboard", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_module_env::connect_phase(uvm_phase phase);
   // Only packets the router will route reach the scoreboard
   reference.yapp_valid_out.connect(scoreboard.yapp_in);

@@ -25,18 +25,21 @@ function yapp_repeat_addr_seq::new(string name = "yapp_repeat_addr_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_repeat_addr_seq::body();
   `uvm_info(get_type_name(),
             $sformatf("Executing yapp_repeat_addr_seq sequence (addr %0d)", seq_addr), UVM_LOW)
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == seq_addr; })
+  if (!req.randomize() with { req.addr == seq_addr; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == seq_addr; })
+  if (!req.randomize() with { req.addr == seq_addr; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 endtask : body

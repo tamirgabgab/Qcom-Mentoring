@@ -8,8 +8,9 @@
 
   // 2. Fetch it from the configuration database
   function void connect_phase(uvm_phase phase);
-    if (!yapp_vif_config::get(this, "", "vif", vif))
+    if (!yapp_vif_config::get(this, "", "vif", vif)) begin
       `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+    end
   endfunction : connect_phase
 
   // 3. Collect packets forever. A NEW packet object is created for every

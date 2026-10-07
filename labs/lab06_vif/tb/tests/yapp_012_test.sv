@@ -24,6 +24,7 @@ function yapp_012_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_012_test::configure_sequences();
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_012_seq::get_type());

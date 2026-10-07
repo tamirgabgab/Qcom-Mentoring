@@ -66,7 +66,9 @@ The code has been elaborated with slang against the UVM source but not yet
 simulated — see `docs/appendix/unverified.md` for what to confirm on a real run.
 
 Coding style: one class per file, `extern` prototypes in the class and the
-method bodies after `endclass`; no `uvm_do*` macros (sequences write
+method bodies after `endclass` (one `//-----` delimiter per body, locals at the
+top of a function, `begin … end` around every multi-line control body --
+`make style-check` enforces it); no `uvm_do*` macros (sequences write
 `start_item` / `randomize` / `finish_item` and `seq.start(...)` themselves)
 and no `uvm_field_*` automation (`do_print`, `do_copy`, `do_compare`, … are
 written by hand; components read their configuration with

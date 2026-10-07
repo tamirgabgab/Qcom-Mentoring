@@ -54,6 +54,7 @@ function router_reference::new(string name, uvm_component parent);
   yapp_valid_out = new("yapp_valid_out", this);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_reference::write_hbus(hbus_transaction tr);
   if (tr.hwr_rd != HBUS_WRITE) return;
   case (tr.haddr)
@@ -69,6 +70,7 @@ function void router_reference::write_hbus(hbus_transaction tr);
   endcase
 endfunction : write_hbus
 
+//------------------------------------------------------------------------------
 function void router_reference::write_yapp(yapp_packet pkt);
   if (!router_en) begin
     dropped_disabled++;
@@ -86,6 +88,7 @@ function void router_reference::write_yapp(yapp_packet pkt);
   end
 endfunction : write_yapp
 
+//------------------------------------------------------------------------------
 function void router_reference::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf({"\n--- Reference model report ---\n",
     "  forwarded to scoreboard   : %0d\n",

@@ -32,6 +32,7 @@ function en_reg_c::new(string name = "en_reg_c");
   super.new(name, 8, UVM_NO_COVERAGE);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void en_reg_c::build();
   router_en            = uvm_reg_field::type_id::create("router_en");
   parity_err_cnt_en    = uvm_reg_field::type_id::create("parity_err_cnt_en");

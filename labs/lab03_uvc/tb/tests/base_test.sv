@@ -31,6 +31,7 @@ function base_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
@@ -41,10 +42,12 @@ function void base_test::build_phase(uvm_phase phase);
   tb = new("tb", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
 endfunction : end_of_elaboration_phase
 
+//------------------------------------------------------------------------------
 function void base_test::start_of_simulation_phase(uvm_phase phase);
   `uvm_info(get_type_name(), {"start of simulation for ", get_full_name()}, UVM_HIGH)
 endfunction : start_of_simulation_phase

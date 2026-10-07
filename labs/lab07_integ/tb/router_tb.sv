@@ -30,6 +30,7 @@ function router_tb::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_tb::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the testbench", UVM_HIGH)

@@ -107,17 +107,20 @@ module yapp_hbus_regs (
       mem_size_reg          <= 8'd0;
     end else begin
       // bytes of the packet being received (header -> 0, payload -> 1..63)
-      if (pkt_mem_we)
+      if (pkt_mem_we) begin
         yapp_pkt_mem[pkt_mem_addr] <= pkt_mem_wdata;
+      end
 
       // end of packet: parity byte accepted
       if (pkt_done) begin
         mem_size_reg <= {2'b00, pkt_len};
         // counters
-        if (pkt_parity_err && parity_err_cnt_en)
+        if (pkt_parity_err && parity_err_cnt_en) begin
           parity_err_cnt_reg <= parity_err_cnt_reg + 8'd1;
-        if (pkt_oversized && oversized_pkt_cnt_en)
+        end
+        if (pkt_oversized && oversized_pkt_cnt_en) begin
           oversized_pkt_cnt_reg <= oversized_pkt_cnt_reg + 8'd1;
+        end
         case (pkt_addr)
           2'd0: if (addr0_cnt_en) addr0_cnt_reg <= addr0_cnt_reg + 8'd1;
           2'd1: if (addr1_cnt_en) addr1_cnt_reg <= addr1_cnt_reg + 8'd1;
@@ -172,14 +175,15 @@ module yapp_hbus_regs (
     end else begin
       // Read: capture on the first cycle, drive during the second
       hdata_oe <= hen && !hwr_rd;
-      if (hen && !hwr_rd)
+      if (hen && !hwr_rd) begin
         hdata_out <= rd_mux;
+      end
 
       // Write: single cycle, RW locations only
       if (hen && hwr_rd) begin
-        if (haddr >= ADDR_MEM_BASE && haddr <= ADDR_MEM_BASE + 16'h00ff)
+        if (haddr >= ADDR_MEM_BASE && haddr <= ADDR_MEM_BASE + 16'h00ff) begin
           yapp_mem[haddr[7:0]] <= hdata;
-        else case (haddr)
+        end else case (haddr)
           ADDR_CTRL_REG: ctrl_reg <= hdata;
           ADDR_EN_REG:   en_reg   <= hdata;
           default: ;   // read-only registers and memories ignore writes

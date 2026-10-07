@@ -26,11 +26,13 @@ function yapp_base_seq::new(string name = "yapp_base_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_base_seq::pre_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
   if (phase != null) phase.raise_objection(this, get_type_name());
 endtask : pre_body
 
+//------------------------------------------------------------------------------
 task yapp_base_seq::post_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
   if (phase != null) phase.drop_objection(this, get_type_name());

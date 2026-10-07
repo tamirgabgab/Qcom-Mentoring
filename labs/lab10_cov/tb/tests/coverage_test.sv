@@ -25,6 +25,7 @@ function coverage_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void coverage_test::configure_sequences();
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_coverage_seq::get_type());

@@ -25,6 +25,7 @@ function yapp_router_regs_t::new(string name = "yapp_router_regs_t");
   super.new(name, UVM_NO_COVERAGE);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_router_regs_t::build();
   default_map = create_map("default_map", 'h0, 1, UVM_LITTLE_ENDIAN, 0);
   router_yapp_regs = yapp_regs_c::type_id::create("router_yapp_regs");

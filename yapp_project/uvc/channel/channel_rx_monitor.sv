@@ -34,24 +34,26 @@ endclass : channel_rx_monitor
 //------------------------------------------------------------------------------
 
 function void channel_rx_monitor::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_channel_id;
-    if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function channel_rx_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
   item_collected_port = new("item_collected_port", this);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void channel_rx_monitor::connect_phase(uvm_phase phase);
-  if (!channel_vif_config::get(this, "", "vif", vif))
+  if (!channel_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task channel_rx_monitor::run_phase(uvm_phase phase);
   channel_packet pkt;
   @(posedge vif.clock);
@@ -66,20 +68,23 @@ task channel_rx_monitor::run_phase(uvm_phase phase);
     `uvm_info(get_type_name(),
               $sformatf("Channel %0d collected packet:\n%s", channel_id, pkt.sprint()),
               UVM_LOW)
-    if (pkt.addr != channel_id)
+    if (pkt.addr != channel_id) begin
       `uvm_error(get_type_name(),
                  $sformatf("Packet with address %0d received on channel %0d",
                            pkt.addr, channel_id))
+    end
     item_collected_port.write(pkt);
   end
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 function void channel_rx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
             $sformatf("Channel %0d report: %0d packets collected", channel_id, num_pkt_col),
             UVM_LOW)
 endfunction : report_phase
 
+//------------------------------------------------------------------------------
 function void channel_rx_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);

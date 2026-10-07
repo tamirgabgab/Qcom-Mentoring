@@ -21,13 +21,16 @@ function yapp_incr_payload_seq::new(string name = "yapp_incr_payload_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_incr_payload_seq::body();
   `uvm_info(get_type_name(), "Executing yapp_incr_payload_seq sequence", UVM_LOW)
   req = yapp_packet::type_id::create("req");   // build through the factory
-  if (!req.randomize())
+  if (!req.randomize()) begin
     `uvm_error(get_type_name(), "Randomization failed")
-  foreach (req.payload[i])
+  end
+  foreach (req.payload[i]) begin
     req.payload[i] = i;
+  end
   req.set_parity();                        // payload changed -> recompute parity
   start_item(req);   // hand it to the driver
   finish_item(req);

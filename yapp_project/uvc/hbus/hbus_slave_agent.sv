@@ -26,17 +26,17 @@ function hbus_slave_agent::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void hbus_slave_agent::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_is_active;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_is_active;
-    if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
   `uvm_warning(get_type_name(),
                "hbus_slave_agent has no behaviour in this course; set num_slaves = 0")
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void hbus_slave_agent::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());

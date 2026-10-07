@@ -43,12 +43,14 @@ function router_module_env::new(string name, uvm_component parent);
   chan2_export = new("chan2_export", this);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_module_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
   reference  = router_reference::type_id::create("reference", this);
   scoreboard = router_scoreboard::type_id::create("scoreboard", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_module_env::connect_phase(uvm_phase phase);
   // exports -> internal imps
   yapp_export.connect(reference.yapp_in);

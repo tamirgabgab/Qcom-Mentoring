@@ -24,12 +24,14 @@ function hbus_write_seq::new(string name = "hbus_write_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task hbus_write_seq::body();
   `uvm_info(get_type_name(), $sformatf("Executing hbus_write_seq addr=0x%04h data=0x%02h",
                                        addr, data), UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_WRITE; })
+  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 endtask : body

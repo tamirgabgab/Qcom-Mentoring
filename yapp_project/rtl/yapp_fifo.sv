@@ -40,8 +40,9 @@ module yapp_fifo #(
         mem[wr_ptr] <= din;
         wr_ptr      <= wr_ptr + 1'b1;
       end
-      if (pop && !empty)
+      if (pop && !empty) begin
         rd_ptr <= rd_ptr + 1'b1;
+      end
       case ({push && !full, pop && !empty})
         2'b10:   count <= count + 1'b1;
         2'b01:   count <= count - 1'b1;

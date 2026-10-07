@@ -27,12 +27,14 @@ function base_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
   tb = new("tb", this);          // the test OWNS the testbench
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();      // the whole component tree, once it is built
 endfunction : end_of_elaboration_phase

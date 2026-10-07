@@ -39,21 +39,26 @@ function yapp_tx_driver::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_tx_driver::connect_phase(uvm_phase phase);
-  if (!yapp_vif_config::get(this, "", "vif", vif))
+  if (!yapp_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::run_phase(uvm_phase phase);
   reset_signals();
   get_and_drive();
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::reset_signals();
   vif.yapp_reset();
   wait (vif.reset === 1'b0);
 endtask : reset_signals
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::get_and_drive();
   forever begin
     seq_item_port.get_next_item(req);     // blocks until a sequence sends one
@@ -62,6 +67,7 @@ task yapp_tx_driver::get_and_drive();
   end
 endtask : get_and_drive
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::send_to_dut(yapp_packet pkt);
   void'(begin_tr(pkt, "Driver_YAPP_Packet"));   // transaction recording
   `uvm_info(get_type_name(), $sformatf("Packet is \n%s", pkt.sprint()), UVM_LOW)
@@ -70,10 +76,12 @@ task yapp_tx_driver::send_to_dut(yapp_packet pkt);
   end_tr(pkt);
 endtask : send_to_dut
 
+//------------------------------------------------------------------------------
 function void yapp_tx_driver::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("YAPP driver report: %0d packets sent", num_sent), UVM_LOW)
 endfunction : report_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_driver::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("num_sent", num_sent, $bits(num_sent), UVM_DEC);

@@ -29,6 +29,7 @@ function hbus_reg_adapter::new(string name = "hbus_reg_adapter");
   provides_responses   = 0;
 endfunction : new
 
+//------------------------------------------------------------------------------
 function uvm_sequence_item hbus_reg_adapter::reg2bus(const ref uvm_reg_bus_op rw);
   hbus_transaction tr = hbus_transaction::type_id::create("tr");
   tr.haddr  = rw.addr[15:0];
@@ -37,6 +38,7 @@ function uvm_sequence_item hbus_reg_adapter::reg2bus(const ref uvm_reg_bus_op rw
   return tr;
 endfunction : reg2bus
 
+//------------------------------------------------------------------------------
 function void hbus_reg_adapter::bus2reg(uvm_sequence_item bus_item, ref uvm_reg_bus_op rw);
   hbus_transaction tr;
   if (!$cast(tr, bus_item)) begin

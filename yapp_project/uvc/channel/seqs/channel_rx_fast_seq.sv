@@ -21,13 +21,15 @@ function channel_rx_fast_seq::new(string name = "channel_rx_fast_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task channel_rx_fast_seq::body();
   `uvm_info(get_type_name(), "Executing channel_rx_fast_seq (forever)", UVM_LOW)
   forever begin
     req = channel_packet::type_id::create("req");
     start_item(req);
-    if (!req.randomize() with { req.delay == 0; })
+    if (!req.randomize() with { req.delay == 0; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
+    end
     finish_item(req);
   end
 endtask : body

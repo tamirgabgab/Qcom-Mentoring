@@ -23,10 +23,12 @@ function yapp_tx_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_tx_monitor::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), "Inside the monitor run_phase", UVM_LOW)
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_monitor::start_of_simulation_phase(uvm_phase phase);
   `uvm_info(get_type_name(), {"start of simulation for ", get_full_name()}, UVM_HIGH)
 endfunction : start_of_simulation_phase

@@ -28,10 +28,12 @@ function uvm_reset_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void uvm_reset_test::configure_sequences();
   set_clock_and_channel_sequences();
 endfunction : configure_sequences
 
+//------------------------------------------------------------------------------
 task uvm_reset_test::run_phase(uvm_phase phase);
   uvm_reg_hw_reset_seq reset_seq;
   super.run_phase(phase);                       // drain time

@@ -24,23 +24,25 @@ endclass : channel_rx_driver
 //------------------------------------------------------------------------------
 
 function void channel_rx_driver::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_channel_id;
-    if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function channel_rx_driver::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void channel_rx_driver::connect_phase(uvm_phase phase);
-  if (!channel_vif_config::get(this, "", "vif", vif))
+  if (!channel_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task channel_rx_driver::run_phase(uvm_phase phase);
   // Keep the channel suspended until reset is released
   vif.channel_reset();
@@ -52,6 +54,7 @@ task channel_rx_driver::run_phase(uvm_phase phase);
   end
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 function void channel_rx_driver::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);

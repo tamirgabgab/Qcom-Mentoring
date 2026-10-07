@@ -41,6 +41,7 @@ function router_tb::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_tb::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the testbench", UVM_HIGH)
@@ -70,6 +71,7 @@ function void router_tb::build_phase(uvm_phase phase);
   reg2hbus = hbus_reg_adapter::type_id::create("reg2hbus");
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_tb::connect_phase(uvm_phase phase);
   mcseqr.hbus_seqr = hbus.masters[0].sequencer;
   mcseqr.yapp_seqr = yapp.agent.sequencer;
@@ -84,6 +86,7 @@ function void router_tb::connect_phase(uvm_phase phase);
   yapp_rm.default_map.set_sequencer(hbus.masters[0].sequencer, reg2hbus);
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 function void router_tb::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_object("yapp_rm", yapp_rm);

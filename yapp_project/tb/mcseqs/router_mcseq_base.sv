@@ -26,11 +26,13 @@ function router_mcseq_base::new(string name = "router_mcseq_base");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task router_mcseq_base::pre_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
   if (phase != null) phase.raise_objection(this, get_type_name());
 endtask : pre_body
 
+//------------------------------------------------------------------------------
 task router_mcseq_base::post_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
   if (phase != null) phase.drop_objection(this, get_type_name());

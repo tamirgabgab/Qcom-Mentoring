@@ -28,6 +28,7 @@ function router_tb::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_tb::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the testbench", UVM_HIGH)
@@ -47,6 +48,7 @@ function void router_tb::build_phase(uvm_phase phase);
   mcseqr  = router_mcsequencer::type_id::create("mcseqr", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void router_tb::connect_phase(uvm_phase phase);
   // Hierarchical references, NOT configuration strings: no wildcards here
   mcseqr.hbus_seqr = hbus.masters[0].sequencer;

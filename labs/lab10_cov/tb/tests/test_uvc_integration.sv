@@ -24,6 +24,7 @@ function test_uvc_integration::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void test_uvc_integration::configure_sequences();
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_88_packets_seq::get_type());

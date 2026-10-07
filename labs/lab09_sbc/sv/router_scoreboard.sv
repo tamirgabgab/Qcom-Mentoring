@@ -72,6 +72,7 @@ function router_scoreboard::new(string name, uvm_component parent);
   chan2_in = new("chan2_in", this);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::write_yapp(yapp_packet packet);
   yapp_packet pkt;
   $cast(pkt, packet.clone());
@@ -88,18 +89,22 @@ function void router_scoreboard::write_yapp(yapp_packet packet);
             UVM_MEDIUM)
 endfunction : write_yapp
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::write_chan0(channel_packet packet);
   check_channel(0, packet);
 endfunction : write_chan0
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::write_chan1(channel_packet packet);
   check_channel(1, packet);
 endfunction : write_chan1
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::write_chan2(channel_packet packet);
   check_channel(2, packet);
 endfunction : write_chan2
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::check_channel(int ch, channel_packet cp);
   yapp_packet expected;
   if (pkt_q[ch].size() == 0) begin
@@ -120,6 +125,7 @@ function void router_scoreboard::check_channel(int ch, channel_packet cp);
   end
 endfunction : check_channel
 
+//------------------------------------------------------------------------------
 function void router_scoreboard::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf({"\n--- Scoreboard report ---\n",
     "  packets received  : %0d\n",

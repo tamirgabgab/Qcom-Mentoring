@@ -22,11 +22,14 @@ function clock_and_reset_driver::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void clock_and_reset_driver::connect_phase(uvm_phase phase);
-  if (!clock_and_reset_vif_config::get(this, "", "vif", vif))
+  if (!clock_and_reset_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task clock_and_reset_driver::run_phase(uvm_phase phase);
   forever begin
     seq_item_port.get_next_item(req);

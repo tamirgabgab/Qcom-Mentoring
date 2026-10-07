@@ -23,6 +23,7 @@ function short_packet_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void short_packet_test::build_phase(uvm_phase phase);
   set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
   super.build_phase(phase);

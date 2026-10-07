@@ -35,6 +35,7 @@ function yapp_regs_c::new(string name = "yapp_regs_c");
   super.new(name, UVM_NO_COVERAGE);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_regs_c::build();
   // one byte per address, little endian
   default_map = create_map("default_map", 'h0, 1, UVM_LITTLE_ENDIAN, 0);

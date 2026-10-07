@@ -37,11 +37,14 @@ function hbus_monitor::new(string name, uvm_component parent);
   item_collected_port = new("item_collected_port", this);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void hbus_monitor::connect_phase(uvm_phase phase);
-  if (!hbus_vif_config::get(this, "", "vif", vif))
+  if (!hbus_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task hbus_monitor::run_phase(uvm_phase phase);
   hbus_transaction tr;
   bit is_write;
@@ -57,11 +60,13 @@ task hbus_monitor::run_phase(uvm_phase phase);
   end
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 function void hbus_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
             $sformatf("HBUS report: %0d writes, %0d reads", num_writes, num_reads), UVM_LOW)
 endfunction : report_phase
 
+//------------------------------------------------------------------------------
 function void hbus_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("num_writes", num_writes, $bits(num_writes), UVM_DEC);

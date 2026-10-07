@@ -76,6 +76,7 @@ function router_fifo_scoreboard::new(string name, uvm_component parent);
   end
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void router_fifo_scoreboard::connect_phase(uvm_phase phase);
   // exports -> FIFO analysis exports (monitors write into the FIFOs)
   yapp_export.connect(yapp_fifo.analysis_export);
@@ -89,6 +90,7 @@ function void router_fifo_scoreboard::connect_phase(uvm_phase phase);
   end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task router_fifo_scoreboard::run_phase(uvm_phase phase);
   fork
     mirror_registers();
@@ -96,6 +98,7 @@ task router_fifo_scoreboard::run_phase(uvm_phase phase);
   join
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task router_fifo_scoreboard::mirror_registers();
   hbus_transaction tr;
   forever begin
@@ -110,6 +113,7 @@ task router_fifo_scoreboard::mirror_registers();
   end
 endtask : mirror_registers
 
+//------------------------------------------------------------------------------
 task router_fifo_scoreboard::check_packets();
   yapp_packet    yp;
   channel_packet cp;
@@ -140,14 +144,19 @@ task router_fifo_scoreboard::check_packets();
   end
 endtask : check_packets
 
+//------------------------------------------------------------------------------
 function void router_fifo_scoreboard::check_phase(uvm_phase phase);
-  if (yapp_fifo.used() != 0)
+  if (yapp_fifo.used() != 0) begin
     `uvm_error(get_type_name(), $sformatf("%0d YAPP packets still unchecked", yapp_fifo.used()))
-  foreach (chan_fifo[i])
-    if (chan_fifo[i].used() != 0)
+  end
+  foreach (chan_fifo[i]) begin
+    if (chan_fifo[i].used() != 0) begin
       `uvm_error(get_type_name(), $sformatf("%0d packets left in channel %0d FIFO", chan_fifo[i].used(), i))
+    end
+  end
 endfunction : check_phase
 
+//------------------------------------------------------------------------------
 function void router_fifo_scoreboard::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf({"\n--- FIFO scoreboard report ---\n",
     "  packets received  : %0d\n",

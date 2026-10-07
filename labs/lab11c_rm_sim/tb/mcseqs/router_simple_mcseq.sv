@@ -35,43 +35,49 @@ function router_simple_mcseq::new(string name = "router_simple_mcseq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task router_simple_mcseq::body();
   `uvm_info(get_type_name(), "Executing router_simple_mcseq sequence", UVM_LOW)
 
   // Small packets allowed, router enabled -- and check the register
   hbus_small_seq = hbus_small_packet_seq::type_id::create("hbus_small_seq");
-  if (!hbus_small_seq.randomize())
+  if (!hbus_small_seq.randomize()) begin
     `uvm_error(get_type_name(), "hbus_small_seq.randomize() failed")
+  end
   hbus_small_seq.start(p_sequencer.hbus_seqr, this);
 
   hbus_read_seq = hbus_read_max_pkt_seq::type_id::create("hbus_read_seq");
-  if (!hbus_read_seq.randomize())
+  if (!hbus_read_seq.randomize()) begin
     `uvm_error(get_type_name(), "hbus_read_seq.randomize() failed")
+  end
   hbus_read_seq.start(p_sequencer.hbus_seqr, this);
 
   // Six packets to channels 0, 1, 2
-  repeat (2)
-    begin
-      yapp_012 = yapp_012_seq::type_id::create("yapp_012");
-      if (!yapp_012.randomize())
-        `uvm_error(get_type_name(), "yapp_012.randomize() failed")
-      yapp_012.start(p_sequencer.yapp_seqr, this);
+  repeat (2) begin
+    yapp_012 = yapp_012_seq::type_id::create("yapp_012");
+    if (!yapp_012.randomize()) begin
+      `uvm_error(get_type_name(), "yapp_012.randomize() failed")
     end
+    yapp_012.start(p_sequencer.yapp_seqr, this);
+  end
 
   // Large packets allowed -- and check the register
   hbus_large_seq = hbus_large_packet_seq::type_id::create("hbus_large_seq");
-  if (!hbus_large_seq.randomize())
+  if (!hbus_large_seq.randomize()) begin
     `uvm_error(get_type_name(), "hbus_large_seq.randomize() failed")
+  end
   hbus_large_seq.start(p_sequencer.hbus_seqr, this);
 
   hbus_read_seq = hbus_read_max_pkt_seq::type_id::create("hbus_read_seq");
-  if (!hbus_read_seq.randomize())
+  if (!hbus_read_seq.randomize()) begin
     `uvm_error(get_type_name(), "hbus_read_seq.randomize() failed")
+  end
   hbus_read_seq.start(p_sequencer.hbus_seqr, this);
 
   // Six random packets
   yapp_rnd = yapp_rnd_seq::type_id::create("yapp_rnd");
-  if (!yapp_rnd.randomize() with { yapp_rnd.count == 6; })
+  if (!yapp_rnd.randomize() with { yapp_rnd.count == 6; }) begin
     `uvm_error(get_type_name(), "yapp_rnd.randomize() failed")
+  end
   yapp_rnd.start(p_sequencer.yapp_seqr, this);
 endtask : body

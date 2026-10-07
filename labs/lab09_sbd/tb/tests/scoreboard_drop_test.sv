@@ -29,6 +29,7 @@ function scoreboard_drop_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void scoreboard_drop_test::build_phase(uvm_phase phase);
   // Skip router_simple_mcseq_test::build_phase -> no type override
   base_test::build_phase(phase);

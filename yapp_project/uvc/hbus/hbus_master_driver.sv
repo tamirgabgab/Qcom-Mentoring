@@ -27,11 +27,14 @@ function hbus_master_driver::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void hbus_master_driver::connect_phase(uvm_phase phase);
-  if (!hbus_vif_config::get(this, "", "vif", vif))
+  if (!hbus_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task hbus_master_driver::run_phase(uvm_phase phase);
   vif.hbus_reset();
   wait (vif.reset === 1'b0);
@@ -42,12 +45,14 @@ task hbus_master_driver::run_phase(uvm_phase phase);
   end
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task hbus_master_driver::drive_transaction(hbus_transaction tr);
   void'(begin_tr(tr, "Driver_HBUS_Transaction"));
-  if (tr.hwr_rd == HBUS_WRITE)
+  if (tr.hwr_rd == HBUS_WRITE) begin
     vif.hbus_write(tr.haddr, tr.hdata);
-  else
+  end else begin
     vif.hbus_read(tr.haddr, tr.hdata);
+  end
   `uvm_info(get_type_name(), {"Executed ", tr.convert2string()}, UVM_MEDIUM)
   end_tr(tr);
 endtask : drive_transaction

@@ -23,13 +23,14 @@ function yapp_111_seq::new(string name = "yapp_111_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_111_seq::body();
   `uvm_info(get_type_name(), "Executing yapp_111_seq sequence", UVM_LOW)
-  repeat (3)
-    begin
-      seq_1 = yapp_1_seq::type_id::create("seq_1");
-      if (!seq_1.randomize())
-        `uvm_error(get_type_name(), "seq_1.randomize() failed")
-      seq_1.start(m_sequencer, this);
+  repeat (3) begin
+    seq_1 = yapp_1_seq::type_id::create("seq_1");
+    if (!seq_1.randomize()) begin
+      `uvm_error(get_type_name(), "seq_1.randomize() failed")
     end
+    seq_1.start(m_sequencer, this);
+  end
 endtask : body

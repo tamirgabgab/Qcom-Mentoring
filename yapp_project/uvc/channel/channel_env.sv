@@ -29,17 +29,17 @@ function channel_env::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void channel_env::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_channel_id;
-    if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
   uvm_config_int::set(this, "rx_agent", "channel_id", channel_id);
   rx_agent = channel_rx_agent::type_id::create("rx_agent", this);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void channel_env::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);

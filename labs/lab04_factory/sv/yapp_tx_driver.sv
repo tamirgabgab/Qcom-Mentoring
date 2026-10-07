@@ -21,6 +21,7 @@ function yapp_tx_driver::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::run_phase(uvm_phase phase);
   forever begin
     seq_item_port.get_next_item(req);     // blocks until a sequence sends one
@@ -29,6 +30,7 @@ task yapp_tx_driver::run_phase(uvm_phase phase);
   end
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task yapp_tx_driver::send_to_dut(yapp_packet pkt);
   `uvm_info(get_type_name(), $sformatf("Packet is \n%s", pkt.sprint()), UVM_LOW)
   #10ns;                                  // makes the log easier to follow

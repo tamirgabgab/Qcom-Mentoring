@@ -85,8 +85,12 @@ the packages include, but each of them only `include`s the class files of its su
 `yapp_packet.sv`. Inside a file the class body is a table of contents: fields, the `utils`
 macro, constraints and `extern` prototypes. The method bodies follow `endclass` under a
 `// <class> -- method implementations` banner, as `function yapp_packet::set_parity();` or
-`task yapp_012_seq::body();`. Read the prototypes to learn what a class does, scroll down to
-see how.
+`task yapp_012_seq::body();`, each body preceded by a `//-----` delimiter line. Read the
+prototypes to learn what a class does, scroll down to see how. Two more conventions hold
+everywhere: a function declares its locals at its top (never in a bare `begin … end` in the middle
+of the body), and the body of an `if` / `else` / `for` / `foreach` / `while` / `repeat` that sits
+on its own line is always wrapped in `begin … end`. `make style-check` (`scripts/sv_style.py`)
+enforces all of this in CI, and `make style` reformats a file you wrote.
 
 The classes also do without the shortcut macros of the course material: no `uvm_do*`
 (a sequence writes `create` → `start_item` → `randomize` → `finish_item` itself, and starts a

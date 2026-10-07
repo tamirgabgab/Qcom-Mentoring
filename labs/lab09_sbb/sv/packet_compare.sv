@@ -39,12 +39,15 @@
     ok &= comparer.compare_field_int("addr",   yp.addr,   cp.addr,   2);
     ok &= comparer.compare_field_int("length", yp.length, cp.length, 6);
     ok &= comparer.compare_field_int("parity", yp.parity, cp.parity, 8);
-    if (yp.payload.size() == cp.payload.size())
-      foreach (yp.payload[i])
+    if (yp.payload.size() == cp.payload.size()) begin
+      foreach (yp.payload[i]) begin
         ok &= comparer.compare_field_int($sformatf("payload[%0d]", i), yp.payload[i], cp.payload[i], 8);
-    else
+      end
+    end else begin
       ok = 0;
-    if (!ok)
+    end
+    if (!ok) begin
       `uvm_error("PKT_COMPARE", "uvm_comparer found differences between the YAPP and Channel packets")
+    end
     return ok;
   endfunction : comp_equal_uvm

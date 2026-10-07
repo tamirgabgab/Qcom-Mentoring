@@ -23,13 +23,15 @@ function channel_rx_resp_seq::new(string name = "channel_rx_resp_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task channel_rx_resp_seq::body();
   `uvm_info(get_type_name(), "Executing channel_rx_resp_seq (forever)", UVM_LOW)
   forever begin
     req = channel_packet::type_id::create("req");
     start_item(req);
-    if (!req.randomize())
+    if (!req.randomize()) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
+    end
     finish_item(req);
   end
 endtask : body

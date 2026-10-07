@@ -21,23 +21,27 @@ function yapp_012_seq::new(string name = "yapp_012_seq");
   super.new(name);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task yapp_012_seq::body();
   `uvm_info(get_type_name(), "Executing yapp_012_seq sequence", UVM_LOW)
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == 2'd0; })
+  if (!req.randomize() with { req.addr == 2'd0; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == 2'd1; })
+  if (!req.randomize() with { req.addr == 2'd1; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == 2'd2; })
+  if (!req.randomize() with { req.addr == 2'd2; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
+  end
   finish_item(req);
 endtask : body

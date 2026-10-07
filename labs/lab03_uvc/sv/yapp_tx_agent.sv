@@ -35,13 +35,12 @@ function yapp_tx_agent::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_tx_agent::build_phase(uvm_phase phase);
+  uvm_bitstream_t cfg_is_active;
   super.build_phase(phase);
-  // configuration formerly applied by the field automation
-  begin
-    uvm_bitstream_t cfg_is_active;
-    if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
-  end
+  // overrides set with uvm_config_int::set(...)
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
   monitor = new("monitor", this);
   if (is_active == UVM_ACTIVE) begin
     driver    = new("driver", this);
@@ -49,15 +48,19 @@ function void yapp_tx_agent::build_phase(uvm_phase phase);
   end
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_agent::connect_phase(uvm_phase phase);
-  if (is_active == UVM_ACTIVE)
+  if (is_active == UVM_ACTIVE) begin
     driver.seq_item_port.connect(sequencer.seq_item_export);
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_agent::start_of_simulation_phase(uvm_phase phase);
   `uvm_info(get_type_name(), {"start of simulation for ", get_full_name()}, UVM_HIGH)
 endfunction : start_of_simulation_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_agent::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());

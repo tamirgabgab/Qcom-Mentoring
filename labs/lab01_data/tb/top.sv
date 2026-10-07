@@ -14,8 +14,9 @@ module top;
   initial begin
     pkt = new("pkt");
     repeat (5) begin
-      if (!pkt.randomize())
+      if (!pkt.randomize()) begin
         `uvm_error("TOP", "Packet randomization failed")
+      end
       pkt.print();
     end
 

@@ -20,6 +20,9 @@ jobs:
       - name: Fetch the UVM library source (lint only)
         run: bash scripts/get_uvm.sh
 
+      - name: Check the SystemVerilog code style
+        run: python3 scripts/sv_style.py --check
+
       - name: Elaborate every lab with slang
         run: python3 scripts/lint.py --all --quiet
 

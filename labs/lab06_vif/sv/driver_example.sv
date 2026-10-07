@@ -10,8 +10,9 @@
   // 2. Fetch the handle from the configuration database. tb_top does the
   //    matching set() with a wildcard path so driver and monitor share it.
   function void connect_phase(uvm_phase phase);
-    if (!yapp_vif_config::get(this, "", "vif", vif))
+    if (!yapp_vif_config::get(this, "", "vif", vif)) begin
       `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+    end
   endfunction : connect_phase
 
   // 3. run_phase: drive idle values during reset, then the classic loop

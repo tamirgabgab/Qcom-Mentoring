@@ -23,8 +23,7 @@ class reg_function_test extends reg_access_test;
   extern virtual task access_checks();
 
   // Front-door read and compare
-  extern // Front-door read and compare
-  virtual task check_counter(uvm_reg rg, uvm_reg_data_t expected);
+  extern virtual task check_counter(uvm_reg rg, uvm_reg_data_t expected);
 
 endclass : reg_function_test
 
@@ -36,16 +35,19 @@ function reg_function_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void reg_function_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   seq = yapp_012_seq::type_id::create("seq");
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void reg_function_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   yapp_seqr = tb.yapp.agent.sequencer;      // hierarchical path, no config
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task reg_function_test::access_checks();
   uvm_status_e   status;
   uvm_reg_data_t val;
@@ -55,8 +57,9 @@ task reg_function_test::access_checks();
   regs.en_reg.write(status, 8'h01);
   regs.en_reg.read(status, val);
   `uvm_info("REG_FUNC", $sformatf("en_reg reads 0x%02h", val), UVM_NONE)
-  if (val != 8'h01)
+  if (val != 8'h01) begin
     `uvm_error("REG_FUNC", $sformatf("en_reg reads 0x%02h, expected 0x01", val))
+  end
 
   seq.start(yapp_seqr);                     // 3 packets, counters off
   check_counter(regs.addr0_cnt_reg, 0);
@@ -79,12 +82,14 @@ task reg_function_test::access_checks();
   check_counter(regs.oversized_pkt_cnt_reg, 0);   // maxpktsize is 63 (reset)
 endtask : access_checks
 
+//------------------------------------------------------------------------------
 task reg_function_test::check_counter(uvm_reg rg, uvm_reg_data_t expected);
   uvm_status_e   status;
   uvm_reg_data_t val;
   rg.read(status, val);
-  if (val != expected)
+  if (val != expected) begin
     `uvm_error("REG_FUNC", $sformatf("%s reads %0d, expected %0d", rg.get_name(), val, expected))
-  else
+  end else begin
     `uvm_info("REG_FUNC", $sformatf("%s reads %0d as expected", rg.get_name(), val), UVM_NONE)
+  end
 endtask : check_counter

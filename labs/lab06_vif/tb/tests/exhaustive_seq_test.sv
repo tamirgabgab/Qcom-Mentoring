@@ -25,11 +25,13 @@ function exhaustive_seq_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void exhaustive_seq_test::build_phase(uvm_phase phase);
   set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
   super.build_phase(phase);
 endfunction : build_phase
 
+//------------------------------------------------------------------------------
 function void exhaustive_seq_test::configure_sequences();
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_exhaustive_seq::get_type());

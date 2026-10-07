@@ -24,6 +24,7 @@ function reg_introspection_test::new(string name, uvm_component parent);
   super.new(name, parent);
 endfunction : new
 
+//------------------------------------------------------------------------------
 task reg_introspection_test::access_checks();
   uvm_reg all_q[$];
   uvm_reg rw_q[$];
@@ -33,10 +34,12 @@ task reg_introspection_test::access_checks();
   rw_q = all_q.find(r) with (r.get_rights() == "RW");
   ro_q = all_q.find(r) with (r.get_rights() == "RO");
 
-  foreach (rw_q[i])
+  foreach (rw_q[i]) begin
     `uvm_info("REG_INTRO", $sformatf("RW register: %s @ 0x%04h", rw_q[i].get_name(), rw_q[i].get_address()), UVM_NONE)
-  foreach (ro_q[i])
+  end
+  foreach (ro_q[i]) begin
     `uvm_info("REG_INTRO", $sformatf("RO register: %s @ 0x%04h", ro_q[i].get_name(), ro_q[i].get_address()), UVM_NONE)
+  end
 
   foreach (rw_q[i]) check_rw_register(rw_q[i], 8'h25, 8'h1a);
   foreach (ro_q[i]) check_ro_register(ro_q[i], 8'h5a, 8'h33);

@@ -71,16 +71,20 @@ function yapp_tx_monitor::new(string name, uvm_component parent);
   yapp_pkt_cg = new();   // a covergroup inside a class is created with new()
 endfunction : new
 
+//------------------------------------------------------------------------------
 function void yapp_tx_monitor::connect_phase(uvm_phase phase);
-  if (!yapp_vif_config::get(this, "", "vif", vif))
+  if (!yapp_vif_config::get(this, "", "vif", vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+  end
 endfunction : connect_phase
 
+//------------------------------------------------------------------------------
 task yapp_tx_monitor::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(), "YAPP monitor running", UVM_LOW)
   collect_packets();
 endtask : run_phase
 
+//------------------------------------------------------------------------------
 task yapp_tx_monitor::collect_packets();
   yapp_packet pkt;
   // Nothing to observe while reset is active
@@ -102,12 +106,14 @@ task yapp_tx_monitor::collect_packets();
   end
 endtask : collect_packets
 
+//------------------------------------------------------------------------------
 function void yapp_tx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
             $sformatf("YAPP monitor report: %0d packets collected, coverage %.1f%%",
                       num_pkt_col, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase
 
+//------------------------------------------------------------------------------
 function void yapp_tx_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("num_pkt_col", num_pkt_col, $bits(num_pkt_col), UVM_DEC);
