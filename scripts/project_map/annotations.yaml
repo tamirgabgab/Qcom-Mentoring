@@ -351,17 +351,32 @@ layout:
         - [yapp, hbus, chan0, chan1, chan2, clk_rst]
         - [mcseqr, router_module, yapp_rm, reg2hbus]
     hw_top:
-      rows:
-        - [in0, hbus0, ch0, ch1, ch2, clk_rst_if, clkgen]
+      # like the course figure: YAPP / clock / HBUS on the left, the DUT in the middle,
+      # the three output channels on the right
+      columns:
+        - [in0, clk_rst_if, clkgen, hbus0]
         - [dut]
+        - [ch0, ch1, ch2]
+    # the DUT as a block diagram: pins written inside, a registers block (regmap.yaml);
+    # every pin group names the hw_top instance whose arrow lands on it
+    hw_top.dut:
+      style: dut_spec
+      pin_groups:
+        - {side: left,  from: hw_top.in0,        pins: [in_data, in_data_vld, in_suspend]}
+        - {side: left,  from: hw_top.clkgen,     pins: [clock]}
+        - {side: left,  from: hw_top.clk_rst_if, pins: [reset]}
+        - {side: left,  from: hw_top.hbus0,      pins: [hdata, haddr, hen, hwr_rd]}
+        - {side: right, from: hw_top.ch0,        pins: [data_0, data_vld_0, suspend_0]}
+        - {side: right, from: hw_top.ch1,        pins: [data_1, data_vld_1, suspend_1]}
+        - {side: right, from: hw_top.ch2,        pins: [data_2, data_vld_2, suspend_2]}
+        - {side: right,                          pins: [error]}
+      rows:
+        - [u_input_fsm, u_error_timer]
+        - ["g_ch[0].u_ch", "g_ch[1].u_ch", "g_ch[2].u_ch"]
+        - [u_regs]
     tb.yapp.agent:
       rows: [[sequencer, driver], [monitor]]
     tb.hbus:
       rows: [["masters[0]", monitor]]
     tb.router_module:
       rows: [[reference, scoreboard]]
-    hw_top.dut:
-      rows:
-        - [u_input_fsm, u_error_timer]
-        - ["g_ch[0].u_ch", "g_ch[1].u_ch", "g_ch[2].u_ch"]
-        - [u_regs]

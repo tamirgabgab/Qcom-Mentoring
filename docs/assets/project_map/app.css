@@ -135,6 +135,22 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-node.stub text.label { font-weight: 500; font-size: 12px; }
 .pm-node.stub text.sub { font-size: 10px; }
 .pm-node.uvm_base rect.box { fill: var(--pm-bg); stroke-dasharray: 3 3; }
+/* the DUT drawn as a block diagram (pins inside, registers block) */
+.pm-node.dut-spec rect.box { fill: var(--pm-container); stroke: var(--k-module); stroke-width: 1.6; }
+.pm-node.dut-spec text.dut-title { font-size: 22px; font-weight: 700; letter-spacing: .04em; fill: var(--pm-fg); }
+.pm-node.dut-spec .pin line { stroke: var(--pm-fg); stroke-width: 1.4; }
+.pm-node.dut-spec .pin path.arrow { fill: var(--pm-fg); }
+.pm-node.dut-spec .pin text.pin { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: var(--pm-fg); }
+.pm-node.dut-spec .pin line.bus { stroke: var(--pm-muted); stroke-width: 1.2; }
+.pm-node.dut-spec .pin text.bus { font-size: 9px; fill: var(--pm-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.pm-regmap rect { fill: var(--pm-canvas); stroke: var(--k-reg); stroke-width: 1.3; cursor: pointer; }
+.pm-regmap:hover rect { stroke: var(--pm-accent); stroke-width: 2; }
+.pm-regmap text { pointer-events: none; }
+.pm-regmap text.rt { font-size: 11px; font-weight: 600; fill: var(--pm-fg); }
+.pm-regmap text.rr { font-size: 10.5px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: var(--pm-fg); }
+.pm-regmap text.rp { font-size: 10px; font-weight: 600; fill: var(--k-reg); }
+.pm-regmap line { stroke: var(--pm-border); }
+.pm-sim { margin-top: 4px; }
 .pm-port circle { fill: var(--pm-canvas); stroke: var(--kc, var(--pm-edge)); stroke-width: 2; }
 .pm-port.selected circle { stroke: var(--pm-sel); stroke-width: 3; }
 .pm-port text { font-size: 11px; fill: var(--pm-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }

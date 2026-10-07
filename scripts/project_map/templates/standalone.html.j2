@@ -8,10 +8,19 @@
 <style>
 {{ app_css }}
 </style>
+<style>
+{{ sim_css }}
+</style>
 </head>
 <body class="pm-standalone">
 <div id="project-map" data-repo="{{ repo_url }}" data-docs="{{ docs_base }}" data-page="{{ page_url }}"></div>
 <script id="pm-model" type="application/json">{{ model_json }}</script>
+<script>
+{{ regmap_js }}
+</script>
+<script>
+{{ sim_js }}
+</script>
 <script>
 {{ app_js }}
 </script>

@@ -1,0 +1,52 @@
+# regmap.yaml -- the HBUS register map of the YAPP router, as data.
+#
+# One source for: the registers block drawn inside the DUT on the project map, the
+# register simulator (docs/assets/project_map/sim.js via the generated regmap.js) and
+# the consistency check against the RTL localparams and the RAL offsets
+# (scripts/project_map/test_model.py).  Addresses are HBUS byte addresses: every
+# address holds one 8-bit value.
+data_bits: 8
+addr_bits: 16
+
+registers:
+  - addr: 0x1000
+    name: ctrl_reg
+    policy: RW
+    reset: 0x3f
+    desc: "Control: maximum payload length"
+    fields:
+      - {bits: "5:0", name: maxpktsize, desc: "maximum payload length (RAL name plen)"}
+      - {bits: "7:6", name: unused,     desc: "unused, RW"}
+  - addr: 0x1001
+    name: en_reg
+    policy: RW
+    reset: 0x01
+    desc: "Enables: router and the six counters"
+    fields:
+      - {bits: "0", name: router_en,            desc: "router enable: 0 drops every packet"}
+      - {bits: "1", name: parity_err_cnt_en,    desc: "count packets with bad parity"}
+      - {bits: "2", name: oversized_pkt_cnt_en, desc: "count packets longer than maxpktsize"}
+      - {bits: "3", name: reserved,             desc: "not implemented"}
+      - {bits: "4", name: addr0_cnt_en,         desc: "count packets to address 0"}
+      - {bits: "5", name: addr1_cnt_en,         desc: "count packets to address 1"}
+      - {bits: "6", name: addr2_cnt_en,         desc: "count packets to address 2"}
+      - {bits: "7", name: addr3_cnt_en,         desc: "count packets to the illegal address 3"}
+  - {addr: 0x1004, name: parity_err_cnt_reg,    policy: RO, reset: 0x00, desc: "packets received with bad parity",          counter: parity_err}
+  - {addr: 0x1005, name: oversized_pkt_cnt_reg, policy: RO, reset: 0x00, desc: "packets longer than maxpktsize",             counter: oversized}
+  - {addr: 0x1006, name: addr3_cnt_reg,         policy: RO, reset: 0x00, desc: "packets to the illegal address 3",           counter: addr3}
+  - {addr: 0x1009, name: addr0_cnt_reg,         policy: RO, reset: 0x00, desc: "packets to address 0",                       counter: addr0}
+  - {addr: 0x100a, name: addr1_cnt_reg,         policy: RO, reset: 0x00, desc: "packets to address 1",                       counter: addr1}
+  - {addr: 0x100b, name: addr2_cnt_reg,         policy: RO, reset: 0x00, desc: "packets to address 2",                       counter: addr2}
+  - {addr: 0x100d, name: mem_size_reg,          policy: RO, reset: 0x00, desc: "payload length of the last packet received"}
+
+memories:
+  - {base: 0x1010, name: yapp_pkt_mem, size: 64,  policy: RO, desc: "bytes of the last packet received: [0] header, [1..63] payload"}
+  - {base: 0x1100, name: yapp_mem,     size: 256, policy: RW, desc: "scratch memory"}
+
+# the rows of the registers block drawn inside the DUT (project map, root scene)
+figure_rows:
+  - ["0x1000",        "ctrl_reg  (maxpktsize)",           "RW"]
+  - ["0x1001",        "en_reg  (router_en, cnt enables)", "RW"]
+  - ["0x1004-0x100d", "counters, mem_size_reg",           "RO"]
+  - ["0x1010-0x104f", "yapp_pkt_mem [64]",                "RO"]
+  - ["0x1100-0x11ff", "yapp_mem [256]",                   "RW"]

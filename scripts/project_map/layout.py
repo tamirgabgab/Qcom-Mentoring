@@ -29,6 +29,8 @@ GAP_X = 36          # gap between sibling boxes
 GAP_Y = 34
 PORT_R = 5
 PORT_STEP = 20
+PIN_STEP = 18       # pins written inside a block diagram (the DUT)
+PIN_GAP = 10        # between pin groups
 PORT_SIDE = {       # which side of a box a port sits on
     "tlm_port": "right", "get_port": "right", "seq_item_port": "right",
     "tlm_imp": "left", "tlm_export": "left", "tlm_fifo": "left",
@@ -168,8 +170,8 @@ class Layout:
         if n.get("children") and not b.container:
             b.w = max(b.w, text_w + 48)    # room for the drill-down marker
             b.h = max(b.h, 56)
-        if b.id == "hw_top.dut":
-            b.w, b.h = max(b.w, 220), max(b.h, 110)
+        if (self.hints.get(b.id) or {}).get("style") == "dut_spec":
+            self.size_dut_spec(b)
         # ports
         y0 = header + 8 + PORT_R
         for i, p in enumerate(left):
@@ -178,6 +180,83 @@ class Layout:
         for i, p in enumerate(right):
             b.ports.append({"id": p, "x": b.w, "y": y0 + i * PORT_STEP, "side": "right",
                             "label": self.N[p]["name"], "kind": self.N[p]["kind"]})
+
+    def size_dut_spec(self, b):
+        """The DUT drawn like the course figure: pins (with bus widths) written inside the box,
+        a registers block with the address map (regmap.yaml) and an anchor per hw_top instance
+        so the arrows of the scene land on the matching pin group."""
+        hint = self.hints.get(b.id) or {}
+        ports = {p["name"]: p for p in b.node.get("ports", [])}
+
+        def width_of(t):
+            m = re.search(r"\[(\d+):(\d+)\]", t or "")
+            return abs(int(m.group(1)) - int(m.group(2))) + 1 if m else 1
+
+        groups = [g for g in hint.get("pin_groups", []) if any(p in ports for p in g["pins"])]
+        named = {p for g in groups for p in g["pins"]}
+        rest = [p for p in ports if p not in named]
+        if rest:
+            groups.append({"side": "left", "pins": rest})
+        title_h = 40
+        cols = {"left": [], "right": []}
+        for g in groups:
+            cols[g["side"]].append(g)
+        pin_h = {side: sum(len(g["pins"]) for g in gs) * PIN_STEP + max(0, len(gs) - 1) * PIN_GAP
+                 for side, gs in cols.items()}
+        label_w = {side: max([tw(p, 11) for g in gs for p in g["pins"]] + [0]) + 44 for side, gs in cols.items()}
+        regmap = (self.m.get("meta") or {}).get("regmap") or {}
+        rows = regmap.get("figure_rows", [])
+        col_w = [max([tw(r[i], 11) for r in rows] + [0]) for i in range(3)] if rows else [0, 0, 0]
+        reg_w = 12 + col_w[0] + 10 + col_w[1] + 10 + col_w[2] + 12 if rows else 0
+        reg_h = 22 + len(rows) * 17 + 8 if rows else 0
+        b.w = max(label_w["left"] + reg_w + label_w["right"] + 2 * 12, tw(b.label, 14) + 80, 420)
+        b.h = max(title_h + max(pin_h.values()) + PAD, title_h + 40 + reg_h + PAD, 160)
+        pins, anchors = [], {}
+        for side, gs in cols.items():
+            y = title_h + (b.h - title_h - PAD - pin_h[side]) / 2 + PIN_STEP / 2
+            for g in gs:
+                y_first = y
+                for name in g["pins"]:
+                    p = ports[name]
+                    pins.append({"name": name, "dir": p["dir"], "width": width_of(p.get("type")), "side": side, "y": round(y, 1)})
+                    y += PIN_STEP
+                if g.get("from"):
+                    anchors[g["from"]] = {"side": side, "y": round((y_first + y - PIN_STEP) / 2, 1)}
+                y += PIN_GAP
+        reg = None
+        if rows:
+            reg = {"x": round((b.w - reg_w) / 2, 1), "y": round(b.h - PAD - reg_h, 1), "w": round(reg_w, 1), "h": reg_h,
+                   "title": "registers (HBUS)", "rows": rows, "cols": [round(c, 1) for c in col_w], "node": "hw_top.dut.u_regs"}
+        b.extra.update({"style": "dut_spec", "pins": pins, "anchors": anchors, "regmap": reg,
+                        "title": "DUT", "title_y": round((title_h + (reg["y"] if reg else b.h)) / 2, 1)})
+
+    def arrange_columns(self, b, columns, left_margin=0.0, right_margin=0.0):
+        """Children stacked in the given columns (left to right), each column vertically centred."""
+        by_name = {c.label: c for c in b.children}
+        cols = []
+        used = set()
+        for col in columns:
+            cs = [by_name[x] for x in col if x in by_name]
+            used.update(c.id for c in cs)
+            if cs:
+                cols.append(cs)
+        rest = [c for c in b.children if c.id not in used]
+        if rest:
+            cols.append(rest)
+        gap_y = GAP_Y * 0.7
+        heights = [sum(c.h for c in cs) + gap_y * (len(cs) - 1) for cs in cols]
+        total_h = max(heights)
+        x = PAD + left_margin
+        for cs, h in zip(cols, heights):
+            w = max(c.w for c in cs)
+            y = TITLE_H + PAD + (total_h - h) / 2
+            for c in cs:
+                c.move(x + (w - c.w) / 2 - c.x, y - c.y)
+                y += c.h + gap_y
+            x += w + GAP_X
+        title_w = tw(b.label, 14) + tw(b.sub, 12) + 40
+        b.w = max(x - GAP_X + PAD + right_margin, title_w, 160)
+        b.h = TITLE_H + PAD + total_h + PAD
 
     def rows_for(self, b):
         """Children arranged in rows: from the YAML hint or a square-ish grid."""
@@ -199,6 +278,9 @@ class Layout:
         return rows
 
     def arrange(self, b, left_margin=0.0, right_margin=0.0):
+        hint = self.hints.get(b.id) or {}
+        if hint.get("columns"):
+            return self.arrange_columns(b, hint["columns"], left_margin, right_margin)
         rows = self.rows_for(b)
         y = TITLE_H + PAD
         total_w = 0
@@ -423,11 +505,21 @@ class HierarchyLayout(Layout):
             if b["kind"] == "box":
                 b["side"] = self._pick_side(b["box"], self._center(a), fixed.get(b["id"]) or
                                             (near_side if near_side and not b["box"].extra.get("stub") else None))
+            # a block diagram with pins: the arrow lands on the pin group of the far instance
+            for me, other in ((a, b), (b, a)):
+                anchors = me["box"].extra.get("anchors") if me["kind"] == "box" else None
+                if anchors and other["id"] in anchors:
+                    an = anchors[other["id"]]
+                    bx = me["box"]
+                    me["side"] = an["side"]
+                    me["pt"] = (bx.x + (0 if an["side"] == "left" else bx.w), bx.y + an["y"])
+                    me["pinned"] = True
+                    sp["label"] = None          # the pins carry the signal names
             ends.append((sp, a, b))
         groups = {}
         for sp, a, b in ends:
             for me, other in ((a, b), (b, a)):
-                if me["kind"] == "box":
+                if me["kind"] == "box" and not me.get("pinned"):
                     groups.setdefault((me["id"], me["side"]), []).append((me, self._center(other)))
         for (bid, side), lst in groups.items():
             horiz = side in ("top", "bottom")
@@ -488,7 +580,7 @@ class HierarchyLayout(Layout):
             b_in = self.visible_owner(e["to"], boxes)
             if a_in is None or b_in is None or a_in == b_in:
                 continue
-            sp = {"edge": e, "from": e["from"], "to": e["to"]}
+            sp = {"edge": e, "from": e["from"], "to": e["to"], "_pair": frozenset((a_in, b_in))}
             if collapse_vif:
                 key = (e["kind"], a_in, b_in)
                 if key in seen:
@@ -497,6 +589,16 @@ class HierarchyLayout(Layout):
                 if e["kind"] == "vif":
                     sp["label"] = "vif"
             specs.append(sp)
+        if collapse_vif:
+            # module port bundles: one arrow per pair of boxes, the bidirectional one if there is one
+            best = {}
+            for sp in specs:
+                if sp["edge"]["kind"] != "port":
+                    continue
+                cur = best.get(sp["_pair"])
+                if cur is None or (sp["edge"].get("bidir") and not cur["edge"].get("bidir")):
+                    best[sp["_pair"]] = sp
+            specs = [sp for sp in specs if sp["edge"]["kind"] != "port" or best[sp["_pair"]] is sp]
         return self.plan_edges(specs, boxes, ports)
 
     def add_stubs(self, root_box, boxes, ports, edges, scene_root):

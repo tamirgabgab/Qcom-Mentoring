@@ -69,6 +69,38 @@ def run_all(m, model_json, html):
             return False
         for e in s["edges"]:
             expect(anchored(e["from"]) and anchored(e["to"]), f"{s['id']}: edge {e['id']} floats")
+    # the DUT block diagram in the root scene (pins + registers block) and the register map
+    root = next(s for s in m["scenes"] if s["id"] == "h:root")
+    dut = next((it for it in root["items"] if it["id"] == "hw_top.dut"), None)
+    expect(dut is not None and dut.get("style") == "dut_spec", "root scene: DUT drawn as a block diagram")
+    if dut:
+        expect(len(dut.get("pins", [])) == len(N["hw_top.dut"]["ports"]) == 19, f"DUT pins: {len(dut.get('pins', []))}")
+        expect(dut["w"] >= 500 and dut.get("regmap") and len(dut["regmap"]["rows"]) == 5, "DUT box: wide, with the 5-row register block")
+        expect(len(dut.get("anchors", {})) == 7, f"pin anchors for the 7 hw_top instances: {len(dut.get('anchors', {}))}")
+        pinned = [e for e in root["edges"] if e["kind"] == "port" and "hw_top.dut" in (e["from"], e["to"])]
+        expect(len(pinned) == 7 and all(not e.get("label") for e in pinned), f"7 unlabeled arrows land on the DUT pins ({len(pinned)})")
+    regmap = (m.get("meta") or {}).get("regmap") or {}
+    expect(regmap.get("registers") and regmap.get("memories"), "regmap.yaml loaded into meta.regmap")
+    if regmap:
+        # regmap.yaml <-> RTL localparams (yapp_hbus_regs.sv) <-> RAL offsets (yapp_regs_c.sv)
+        params = {p["name"]: int(p["value"].split("'d")[1]) for p in N["hw_top.dut.u_regs"].get("params", []) if "'d" in p["value"]}
+        rtl = {"ctrl_reg": "ADDR_CTRL_REG", "en_reg": "ADDR_EN_REG", "parity_err_cnt_reg": "ADDR_PARITY_ERR", "oversized_pkt_cnt_reg": "ADDR_OVERSIZED",
+               "addr3_cnt_reg": "ADDR_ADDR3_CNT", "addr0_cnt_reg": "ADDR_ADDR0_CNT", "addr1_cnt_reg": "ADDR_ADDR1_CNT", "addr2_cnt_reg": "ADDR_ADDR2_CNT",
+               "mem_size_reg": "ADDR_MEM_SIZE", "yapp_pkt_mem": "ADDR_PKT_MEM_BASE", "yapp_mem": "ADDR_MEM_BASE"}
+        for r in regmap["registers"] + regmap["memories"]:
+            addr = r.get("addr", r.get("base"))
+            expect(params.get(rtl.get(r["name"])) == addr, f"regmap {r['name']} {addr:#x} != RTL {rtl.get(r['name'])} {params.get(rtl.get(r['name']))}")
+        ral = open(os.path.join(ROOT, "yapp_project", "tb", "reg", "yapp_regs_c.sv"), encoding="utf-8").read()
+        import re as _re
+        offs = {mm.group(1): int(mm.group(2), 16) for mm in _re.finditer(r"default_map\.add_(?:reg|mem)\(\s*(\w+)\s*,\s*'h([0-9a-fA-F]+)", ral)}
+        ral_names = {r["name"]: r["name"] for r in regmap["registers"] + regmap["memories"]}   # the RAL uses the register names
+        expect(len(offs) >= 11, f"RAL offsets parsed from yapp_regs_c.sv: {len(offs)}")
+        for r in regmap["registers"] + regmap["memories"]:
+            addr = r.get("addr", r.get("base"))
+            got = offs.get(ral_names.get(r["name"]))
+            expect(got is not None and got + 0x1000 == addr, f"regmap {r['name']} {addr:#x} != RAL offset {got}")
+        expect(all(r["policy"] in ("RW", "RO") for r in regmap["registers"] + regmap["memories"]), "regmap policies are RW / RO")
+    expect("window.YAPP_REGMAP" in html and "YappSim" in html, "standalone inlines regmap.js and sim.js")
     # standalone
     expect(len(html) < 2 * 1024 * 1024, f"standalone too big: {len(html)} bytes")
     expect("fetch(" not in html.split('<script id="pm-model"')[0], "standalone must not fetch")

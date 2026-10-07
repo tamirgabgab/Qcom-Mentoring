@@ -361,6 +361,9 @@
           if (it.fields && it.fields.length) { y += 4; grp.append(svg("line", { class: "sep", x1: 0, y1: y, x2: it.w, y2: y })); y += 4; }
           (it.methods || []).forEach(f => { y += 16; const m = svg("text", { class: "member", x: 8, y: y - 4 }); m.textContent = f; grp.append(m); });
         }
+      } else if (it.style === "dut_spec") {
+        grp.classList.add("dut-spec");
+        this.drawDutSpec(grp, it);
       } else {
         grp.append(svg("rect", { class: "stripe", width: 5, height: it.h, rx: 2 }));
         const t = svg("text", { class: "label", x: 14, y: 19 }); t.textContent = it.label; grp.append(t);
@@ -389,6 +392,48 @@
       grp.addEventListener("mouseenter", () => this.hover(it.id, true));
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
       return grp;
+    }
+    // The DUT as a block diagram (course figure): pins with their direction and bus width
+    // written inside the box, the module name, and the registers block with the address map.
+    drawDutSpec(grp, it) {
+      grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
+      const name = svg("text", { class: "label", x: 12, y: 22 }); name.textContent = it.label; grp.append(name);
+      if (it.sub) { const st = svg("text", { class: "sub", x: 14 + it.label.length * 8.2, y: 22 }); st.textContent = ": " + it.sub; grp.append(st); }
+      const big = svg("text", { class: "dut-title", x: it.w / 2, y: it.title_y || it.h / 2, "text-anchor": "middle" }); big.textContent = it.title || "DUT"; grp.append(big);
+      (it.pins || []).forEach(p => {
+        const left = p.side === "left";
+        const x0 = left ? 0 : it.w, dir = left ? 1 : -1;           // dir: into the box
+        const pg = svg("g", { class: `pin ${p.dir}` });
+        pg.append(svg("line", { x1: x0, y1: p.y, x2: x0 + dir * 22, y2: p.y }));
+        // arrow head(s): in -> points into the box, out -> points out, inout -> both
+        const head = (tipX, sign) => svg("path", { class: "arrow", d: `M${tipX},${p.y} l${-sign * 7},-3.5 v7 z` });
+        if (p.dir === "in" || p.dir === "inout") pg.append(head(x0 + dir * 22, dir));
+        if (p.dir === "out" || p.dir === "inout") pg.append(head(x0, -dir));
+        if (p.width > 1) {
+          const sx = x0 + dir * 12;
+          pg.append(svg("line", { class: "bus", x1: sx - 3, y1: p.y + 4, x2: sx + 3, y2: p.y - 4 }));
+          const bw = svg("text", { class: "bus", x: sx + 1, y: p.y - 5, "text-anchor": "middle" }); bw.textContent = p.width; pg.append(bw);
+        }
+        const t = svg("text", { class: "pin", x: x0 + dir * 28, y: p.y + 4, "text-anchor": left ? "start" : "end" }); t.textContent = p.name; pg.append(t);
+        grp.append(pg);
+      });
+      const r = it.regmap;
+      if (r) {
+        const rg = svg("g", { class: "pm-regmap", "data-id": r.node || it.id, transform: `translate(${r.x},${r.y})` });
+        rg.style.pointerEvents = "all";
+        rg.append(svg("rect", { width: r.w, height: r.h, rx: 4 }));
+        const tt = svg("title"); tt.textContent = "the register map -- click to try reads and writes"; rg.append(tt);
+        const title = svg("text", { class: "rt", x: r.w / 2, y: 15, "text-anchor": "middle" }); title.textContent = r.title; rg.append(title);
+        rg.append(svg("line", { x1: 0, y1: 21, x2: r.w, y2: 21 }));
+        const c0 = 12, c1 = c0 + r.cols[0] + 10, c2 = r.w - 12;
+        (r.rows || []).forEach((row, i) => {
+          const y = 21 + 17 * (i + 1) - 4;
+          const a = svg("text", { class: "rr", x: c0, y }); a.textContent = row[0]; rg.append(a);
+          const b = svg("text", { class: "rr", x: c1, y }); b.textContent = row[1]; rg.append(b);
+          const c = svg("text", { class: "rp", x: c2, y, "text-anchor": "end" }); c.textContent = row[2]; rg.append(c);
+        });
+        grp.append(rg);
+      }
     }
     drawEdge(e) {
       const g = svg("g", { class: `pm-edge kind-${e.kind}` + (e.dashed ? " dashed" : "") + (e.bidir ? " bidir" : ""), "data-id": e.id, "data-from": e.from, "data-to": e.to });
@@ -571,7 +616,8 @@
       // hit area of an arrow drawn on top of it
       const stack = (document.elementsFromPoint ? document.elementsFromPoint(x, y) : [target]).filter(e => this.svg.contains(e));
       const pick = sel => { for (const e of stack) { const hit = e.closest && e.closest(sel); if (hit) return hit; } return null; };
-      const port = pick(".pm-port"), more = pick("text.more");
+      const port = pick(".pm-port"), more = pick("text.more"), regmap = pick(".pm-regmap");
+      if (regmap) { this.state.tab = "sim"; this.select(regmap.closest(".pm-node").dataset.id); return; }
       const closest = sel => (target && target.closest) ? target.closest(sel) : null;
       const edge = port || more ? null : closest(".pm-edge");
       const node = port ? null : (more ? more.closest(".pm-node") : (edge ? null : (closest(".pm-node") || pick(".pm-node"))));
@@ -676,10 +722,13 @@
       }
       if ((this.where[n.id] || []).some(sid => this.scenes[sid].view === "tlm") && this.state.view !== "tlm") acts.append(el("button", { onclick: () => this.gotoNode(n.id, "tlm") }, ["TLM"]));
       if (this.fileOf(n) && !(this.codeVisible() || this.state.tab === "code")) acts.append(el("button", { onclick: () => this.showCode() }, ["</> Code"]));
+      const sim = this.simKind(n);
+      if (sim && this.state.tab !== "sim") acts.append(el("button", { onclick: () => { this.state.tab = "sim"; this.renderPanel(); } }, ["▶ Simulate"]));
       if (acts.children.length) head.append(acts);
       p.append(head);
+      if (this.state.tab === "sim" && !sim) this.state.tab = "overview";
       const tabs = el("div", { class: "pm-tabs" });
-      [["overview", "Overview"], ["code", "Code"], ["links", "Links"]].forEach(([t, l]) => {
+      [["overview", "Overview"], ["code", "Code"], ["links", "Links"]].concat(sim ? [["sim", "Simulate"]] : []).forEach(([t, l]) => {
         tabs.append(el("button", { class: this.state.tab === t ? "on" : "", onclick: () => { this.state.tab = t; this.renderPanel(); } }, [l]));
       });
       p.append(tabs);
@@ -687,7 +736,26 @@
       p.append(body);
       if (this.state.tab === "code") this.renderCode(body, n);
       else if (this.state.tab === "links") this.renderLinks(body, n);
+      else if (this.state.tab === "sim") this.renderSim(body, n, sim);
       else this.renderOverview(body, n);
+    }
+    // ---- the interactive simulators (sim.js): registers + HBUS for the DUT side, the packet
+    // playground for the packet classes. One router model per map, so the state survives
+    // re-renders and tab switches.
+    simKind(n) {
+      if (!n) return null;
+      const regs = new Set(["hw_top.dut", "hw_top.dut.u_regs", "hw_top.hbus0", "cls:yapp_regs_c", "cls:yapp_router_regs_t", "tb.yapp_rm", "tb.reg2hbus"]);
+      const pkt = new Set(["cls:yapp_packet", "cls:short_yapp_packet", "cls:channel_packet", "hw_top.in0", "hw_top.dut.u_input_fsm"]);
+      if (regs.has(n.id) || ["yapp_router", "yapp_hbus_regs", "hbus_if"].includes(n.type)) return "regs";
+      if (pkt.has(n.id) || pkt.has(n.cls)) return "packet";
+      return null;
+    }
+    renderSim(body, n, kind) {
+      if (!window.YappSim) { body.innerHTML = '<p class="empty">The simulator script (sim.js) is not loaded.</p>'; return; }
+      this.sim = this.sim || new window.YappSim.RouterModel();
+      const host = el("div", { class: "yapp-sim pm-sim" });
+      body.append(host);
+      window.YappSim.mount(host, kind, this.sim);
     }
     // ---- source text: model.files[file] sliced by the node's line range
     fileOf(n) { return n.file || (n.cls && this.N[n.cls] ? this.N[n.cls].file : null); }
