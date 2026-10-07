@@ -1,0 +1,87 @@
+/* sim.css -- the register simulator and the packet playground (sim.js).
+   Used inside the project map's side panel and on the docs pages. Colours follow the map's
+   --pm-* tokens when present, Material's --md-* tokens on the site, and a fallback otherwise. */
+.yapp-sim {
+  --ys-fg: var(--pm-fg, var(--md-default-fg-color, #1f2430));
+  --ys-muted: var(--pm-muted, var(--md-default-fg-color--light, #6b7280));
+  --ys-border: var(--pm-border, var(--md-default-fg-color--lightest, #d6d9e0));
+  --ys-bg: var(--pm-canvas, var(--md-default-bg-color, #fff));
+  --ys-soft: var(--pm-code-bg, var(--md-code-bg-color, #f3f4f6));
+  --ys-accent: var(--pm-accent, var(--md-accent-fg-color, #3f51b5));
+  --ys-ok: #2e7d32;
+  --ys-bad: #c62828;
+  --ys-warn: #ef6c00;
+  --ys-rw: #1565c0;
+  --ys-ro: #6a1b9a;
+  --ys-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ys-fg);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0.6em 0 1em;
+}
+[data-md-color-scheme="slate"] .yapp-sim, :root[data-theme="dark"] .yapp-sim {
+  --ys-ok: #81c784; --ys-bad: #ef9a9a; --ys-warn: #ffb74d; --ys-rw: #90caf9; --ys-ro: #ce93d8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .yapp-sim:not([data-md-color-scheme]) { --ys-ok: #81c784; --ys-bad: #ef9a9a; --ys-warn: #ffb74d; --ys-rw: #90caf9; --ys-ro: #ce93d8; }
+}
+.yapp-sim * { box-sizing: border-box; }
+.yapp-sim .ys-card { border: 1px solid var(--ys-border); border-radius: 8px; background: var(--ys-bg); padding: 10px 12px; margin-bottom: 10px; }
+.yapp-sim h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ys-muted); font-weight: 600; }
+.yapp-sim .ys-row { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: flex-end; margin-bottom: 8px; }
+.yapp-sim label.ys-f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--ys-muted); }
+.yapp-sim label.ys-f > span { white-space: nowrap; }
+.yapp-sim input, .yapp-sim select, .yapp-sim textarea, .yapp-sim button {
+  font: inherit; color: var(--ys-fg); background: var(--ys-bg); border: 1px solid var(--ys-border); border-radius: 6px; padding: 4px 8px;
+}
+.yapp-sim input[type="text"], .yapp-sim input[type="number"], .yapp-sim select { font-family: var(--ys-mono); font-size: 12.5px; min-width: 0; }
+.yapp-sim input.w6 { width: 7.5em; } .yapp-sim input.w4 { width: 5em; } .yapp-sim select.wide { width: 15em; max-width: 100%; }
+.yapp-sim textarea { font-family: var(--ys-mono); font-size: 12px; width: 100%; min-height: 56px; resize: vertical; }
+.yapp-sim button { cursor: pointer; line-height: 1.4; }
+.yapp-sim button:hover { border-color: var(--ys-accent); }
+.yapp-sim button.primary { background: var(--ys-accent); color: #fff; border-color: var(--ys-accent); font-weight: 600; }
+.yapp-sim button.small { font-size: 11px; padding: 2px 7px; }
+.yapp-sim button:disabled { opacity: .45; cursor: default; }
+.yapp-sim .ys-radio { display: inline-flex; border: 1px solid var(--ys-border); border-radius: 6px; overflow: hidden; }
+.yapp-sim .ys-radio button { border: 0; border-radius: 0; border-right: 1px solid var(--ys-border); }
+.yapp-sim .ys-radio button:last-child { border-right: 0; }
+.yapp-sim .ys-radio button.on { background: var(--ys-accent); color: #fff; }
+.yapp-sim .ys-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 10px; border: 1px solid currentColor; vertical-align: middle; letter-spacing: .03em; }
+.yapp-sim .ys-badge.RW { color: var(--ys-rw); } .yapp-sim .ys-badge.RO { color: var(--ys-ro); } .yapp-sim .ys-badge.none { color: var(--ys-muted); }
+.yapp-sim .ys-note { font-size: 12px; color: var(--ys-muted); margin: 2px 0 6px; }
+.yapp-sim .ys-msg { font-size: 12.5px; padding: 6px 9px; border-radius: 6px; background: var(--ys-soft); margin: 6px 0; font-family: var(--ys-mono); white-space: pre-wrap; }
+.yapp-sim .ys-msg.ok { border-left: 3px solid var(--ys-ok); } .yapp-sim .ys-msg.bad { border-left: 3px solid var(--ys-bad); } .yapp-sim .ys-msg.warn { border-left: 3px solid var(--ys-warn); }
+.yapp-sim table.ys-t { width: 100%; border-collapse: collapse; font-size: 12px; margin: 4px 0; }
+.yapp-sim table.ys-t th, .yapp-sim table.ys-t td { text-align: left; padding: 3px 5px; border-bottom: 1px solid var(--ys-border); vertical-align: top; word-break: break-word; }
+.yapp-sim table.ys-t th { font-weight: 600; color: var(--ys-muted); font-size: 11px; }
+.yapp-sim table.ys-t td.mono, .yapp-sim .mono { font-family: var(--ys-mono); }
+.yapp-sim table.ys-t tr.changed td { background: color-mix(in srgb, var(--ys-accent) 12%, transparent); }
+.yapp-sim table.ys-t tr.hit td { background: color-mix(in srgb, var(--ys-warn) 14%, transparent); }
+.yapp-sim .ys-bits { display: inline-flex; flex-wrap: wrap; gap: 2px; font-family: var(--ys-mono); font-size: 10.5px; }
+.yapp-sim .ys-bits span { display: inline-block; min-width: 1.6em; text-align: center; border: 1px solid var(--ys-border); border-radius: 3px; padding: 0 2px; color: var(--ys-muted); }
+.yapp-sim .ys-bits span.one { color: var(--ys-fg); font-weight: 700; border-color: var(--ys-accent); }
+.yapp-sim .ys-mem { display: grid; grid-template-columns: auto repeat(16, 1fr); gap: 2px 3px; font-family: var(--ys-mono); font-size: 11px; margin: 4px 0; }
+.yapp-sim .ys-mem .a { color: var(--ys-muted); padding-right: 6px; }
+.yapp-sim .ys-mem .b { text-align: center; border-radius: 3px; background: var(--ys-soft); padding: 1px 0; }
+.yapp-sim .ys-mem .b.hdr { outline: 1px solid var(--ys-accent); }
+.yapp-sim .ys-mem .b.new { background: color-mix(in srgb, var(--ys-accent) 22%, transparent); }
+.yapp-sim .ys-mem .b.last { outline: 1px solid var(--ys-warn); }
+.yapp-sim .ys-log { font-family: var(--ys-mono); font-size: 11.5px; max-height: 150px; overflow: auto; background: var(--ys-soft); border-radius: 6px; padding: 6px 8px; }
+.yapp-sim .ys-log div { white-space: pre; }
+.yapp-sim .ys-log .bad { color: var(--ys-bad); } .yapp-sim .ys-log .ok { color: var(--ys-ok); } .yapp-sim .ys-log .warn { color: var(--ys-warn); }
+.yapp-sim .ys-bytes { display: flex; flex-wrap: wrap; gap: 4px; font-family: var(--ys-mono); font-size: 11.5px; margin: 6px 0; }
+.yapp-sim .ys-bytes .byte { border: 1px solid var(--ys-border); border-radius: 5px; padding: 2px 6px; background: var(--ys-soft); text-align: center; min-width: 3.2em; }
+.yapp-sim .ys-bytes .byte small { display: block; font-size: 9.5px; color: var(--ys-muted); }
+.yapp-sim .ys-bytes .byte.hdr { border-color: var(--ys-accent); } .yapp-sim .ys-bytes .byte.par { border-color: var(--ys-ro); } .yapp-sim .ys-bytes .byte.bad { border-color: var(--ys-bad); color: var(--ys-bad); }
+.yapp-sim ul.ys-checks { list-style: none; margin: 6px 0; padding: 0; font-size: 12.5px; }
+.yapp-sim ul.ys-checks li { padding: 2px 0; }
+.yapp-sim ul.ys-checks li::before { content: "✔ "; color: var(--ys-ok); font-weight: 700; }
+.yapp-sim ul.ys-checks li.bad::before { content: "✘ "; color: var(--ys-bad); }
+.yapp-sim ul.ys-checks li.warn::before { content: "! "; color: var(--ys-warn); }
+.yapp-sim details { margin: 6px 0; }
+.yapp-sim details summary { cursor: pointer; color: var(--ys-accent); font-size: 12.5px; }
+.yapp-sim .ys-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--ys-border); margin-bottom: 8px; }
+.yapp-sim .ys-tabs button { border: 0; border-radius: 0; background: transparent; padding: 5px 10px; border-bottom: 2px solid transparent; color: var(--ys-muted); }
+.yapp-sim .ys-tabs button.on { color: var(--ys-accent); border-bottom-color: var(--ys-accent); }
+.yapp-sim .ys-kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12.5px; }
+.yapp-sim .ys-kv b { font-weight: 600; color: var(--ys-muted); }

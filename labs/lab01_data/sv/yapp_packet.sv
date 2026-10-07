@@ -1,9 +1,17 @@
 //------------------------------------------------------------------------------
 // yapp_packet.sv -- the YAPP packet as a UVM sequence item (Lab 1)
 //
-//   byte 0     header  {length[5:0], addr[1:0]}
-//   byte 1..N  payload (N == length, 1..63 bytes)
-//   byte N+1   parity  even bitwise parity (XOR) of header and payload
+//          7   6   5   4   3   2   1   0
+//        +-----------------------+-------+
+// byte 0 |      length[5:0]      | addr  |  header
+//        +-----------------------+-------+
+// byte 1 |          payload[0]           |  \
+//        |             ...               |   > N == length, 1..63 bytes
+// byte N |         payload[N-1]          |  /
+//        +-------------------------------+
+// byte N+1 |          parity             |  even bitwise parity (XOR) of header and payload
+//        +-------------------------------+
+//   figure: docs/assets/packet_structure.svg (see README.md in this directory)
 //
 // Control knobs (not part of the packet on the wire):
 //   parity_type  -- GOOD_PARITY / BAD_PARITY, decides what set_parity() writes

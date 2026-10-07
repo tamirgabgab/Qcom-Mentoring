@@ -145,6 +145,21 @@ A packet is therefore `length + 2` bytes long, from 3 to 65 bytes.
 | `0x1010` | `yapp_pkt_mem` | 64 × 8 | RO | bytes of the last packet received |
 | `0x1100` | `yapp_mem` | 256 × 8 | RW | scratch memory |
 
+Addresses `0x1002`, `0x1003`, `0x1007`, `0x1008`, `0x100c`, `0x100e` … `0x100f` and
+`0x1050` … `0x10ff` are not mapped: they read as `0x00` and ignore writes. Every address holds
+one byte: the 64 packet-memory bytes occupy `0x1010` … `0x104f`, the 256 scratch bytes
+`0x1100` … `0x11ff`.
+
+### Try it: the register file
+
+A model of `yapp_hbus_regs` + the end-of-packet report of `yapp_input_fsm`. Pick an address, read
+or write it, and watch the policy work; **Send a packet** moves the counters, fills
+`yapp_pkt_mem` and updates `mem_size_reg` exactly as the RTL does. The same widget sits on the
+[project map](../project-map.md#view=hierarchy&node=hw_top.dut) (click the registers block
+inside the DUT).
+
+<div class="yapp-sim" data-sim="regs"></div>
+
 ## Behaviour rules
 
 * `length > maxpktsize` → the **whole packet is dropped**.

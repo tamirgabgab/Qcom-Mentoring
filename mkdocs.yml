@@ -71,6 +71,11 @@ validation:
 
 extra_css:
   - assets/extra.css
+  - assets/project_map/sim.css
+
+extra_javascript:
+  - assets/project_map/regmap.js     # the register map (generated from scripts/project_map/regmap.yaml)
+  - assets/project_map/sim.js        # register simulator + packet playground widgets
 
 nav:
   - Home: index.md

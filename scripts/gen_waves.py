@@ -8,7 +8,7 @@ Each diagram is a list of signals. A signal is (name, kind, values, edge):
          'bus'  : a label per slot ('' = idle, '-' = continue previous value)
   edge   'neg'  : the signal changes on the FALLING edge (testbench-driven)
          'pos'  : the signal changes on the RISING edge (DUT-driven)
-Output: docs/assets/wave_<name>.svg
+Output: docs/assets/wave_<name>.svg and docs/assets/packet_structure.svg
 """
 import os
 
@@ -116,7 +116,60 @@ def render(name, signals, cycles, notes=()):
     print("wrote", os.path.relpath(path))
 
 
+def packet_structure(name="packet_structure"):
+    """The YAPP packet byte layout: header {length[5:0], addr[1:0]}, payload[0..N-1], parity."""
+    BW, BH, X0, Y0 = 250, 30, 90, 46            # byte box width / height, left edge, top
+    rows = [("header", [("length", 6), ("addr", 2)]), ("payload[0]", None), ("payload[1]", None),
+            ("…", None), ("payload[N-1]", None), ("parity", None)]
+    width, height = X0 + 640, Y0 + BH * len(rows) + 70
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+           f'viewBox="0 0 {width} {height}" font-family="sans-serif" font-size="13">',
+           '<style>'
+           '.box{fill:#dbe8ff;stroke:#1a5fb4;stroke-width:1.3}.hdr{fill:#c5d8ff}.par{fill:#e9ddf5}.dots{fill:#f3f6fb}'
+           '.txt{fill:#1a1a1a;text-anchor:middle;font-family:monospace}.lbl{fill:#444}.bit{fill:#444;text-anchor:middle;font-family:monospace;font-size:12px}'
+           '.ttl{fill:#1a1a1a;font-weight:bold;font-size:15px}.side{fill:#1a1a1a;font-size:14px}.brace{fill:none;stroke:#444;stroke-width:1.2}'
+           '.note{fill:#555;font-size:12px}'
+           '@media (prefers-color-scheme: dark){.box{fill:#1e3a66;stroke:#8ab4f8}.hdr{fill:#243f70}.par{fill:#3b2a52}.dots{fill:#2a2f3a}'
+           '.txt,.ttl,.side{fill:#eee}.lbl,.bit{fill:#ccc}.brace{stroke:#ccc}.note{fill:#bbb}}'
+           '</style>',
+           f'<text class="ttl" x="{X0}" y="22">Packet structure</text>']
+    # bit ruler 7 .. 0 over the header
+    for i in range(8):
+        out.append(f'<text class="bit" x="{X0 + BW/8*(i+0.5):.1f}" y="{Y0-6}">{7-i}</text>')
+    for r, (label, fields) in enumerate(rows):
+        y = Y0 + r * BH
+        cls = "box hdr" if r == 0 else "box par" if label == "parity" else "box dots" if label == "…" else "box"
+        if fields:
+            x = X0
+            for fname, bits in fields:
+                w = BW * bits / 8
+                out.append(f'<rect class="{cls}" x="{x:.1f}" y="{y}" width="{w:.1f}" height="{BH}"/>')
+                out.append(f'<text class="txt" x="{x + w/2:.1f}" y="{y + BH*0.65:.1f}">{fname}</text>')
+                x += w
+        else:
+            out.append(f'<rect class="{cls}" x="{X0}" y="{y}" width="{BW}" height="{BH}"/>')
+            out.append(f'<text class="txt" x="{X0 + BW/2}" y="{y + BH*0.65:.1f}">{label}</text>')
+        byte = {0: "byte 0", 1: "byte 1", 4: "byte N", 5: "byte N+1"}.get(r)
+        if byte:
+            out.append(f'<text class="lbl" x="{X0 + BW + 10}" y="{y + BH*0.65:.1f}">{byte}</text>')
+    # side labels
+    out.append(f'<text class="side" x="{X0 + BW + 95}" y="{Y0 + BH*0.65:.1f}">Header</text>')
+    out.append(f'<text class="side" x="{X0 + BW + 95}" y="{Y0 + BH*5 + BH*0.65:.1f}">Parity</text>')
+    y1, y2 = Y0 + BH + 3, Y0 + BH * 5 - 3
+    bx = X0 + BW + 72
+    out.append(f'<path class="brace" d="M{bx},{y1} h8 v{(y2-y1)/2 - 6:.1f} l6,6 l-6,6 v{(y2-y1)/2 - 6:.1f} h-8"/>')
+    out.append(f'<text class="side" x="{bx + 24}" y="{(y1 + y2)/2 + 5:.1f}">Payload</text>')
+    out.append(f'<text class="note" x="{X0}" y="{Y0 + BH*6 + 26}">1 ≤ N ≤ 63 payload bytes · header = {{length[5:0], addr[1:0]}} · addr 3 is illegal</text>')
+    out.append(f'<text class="note" x="{X0}" y="{Y0 + BH*6 + 44}">parity = even bitwise parity (XOR) over the header and all payload bytes · packet = N + 2 bytes</text>')
+    out.append("</svg>")
+    path = os.path.join(OUT, f"{name}.svg")
+    with open(path, "w") as fh:
+        fh.write("\n".join(out))
+    print("wrote", path)
+
+
 def main():
+    packet_structure()
     # ---- YAPP input port: two packets, the second one suspended for a cycle
     render("yapp_input", [
         ("clock",       "clk", None, "pos"),

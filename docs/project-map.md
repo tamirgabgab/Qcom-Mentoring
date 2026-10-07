@@ -68,6 +68,15 @@ guide, lab page, the same item in the other views, a shareable link). The **Sour
 (toolbar button or ++c++) is a third column with the whole file of the selected class, module or
 RTL block, the item's lines marked; it can be downloaded or opened on GitHub from there.
 
+**Simulate.** The DUT is drawn as in the course figure, pins inside and the register map in a
+block; click that block (or the **Simulate** tab on the DUT, `u_regs`, `hbus0`, the register
+model or a packet class) for two small interactive models: HBUS reads and writes against the
+register file with its RW / RO policy, and a packet playground that builds or decodes a YAPP
+packet, computes the parity, lists the checks and sends the bytes through the router model so
+the counters and `yapp_pkt_mem` move. The same widgets are on the
+[DUT specification](dut/spec.md#try-it-the-register-file) and
+[packet](components/packet.md#try-it-build-or-check-a-packet) pages.
+
 The map is generated from the SystemVerilog by `scripts/project_map/` — pyslang reads the
 classes, ports, `connect()` calls and the module tree; `annotations.yaml` adds the prose — so it
 never drifts from the code (`make map` regenerates it, CI checks it is current).

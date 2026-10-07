@@ -7,6 +7,33 @@ A sequence item is the **unit of stimulus**: one object that describes one
 transaction. For YAPP that is one packet; for HBUS one read or write; for the
 channel one "receive a packet with this response delay".
 
+## The packet on the wire
+
+<div class="wave" markdown>
+![YAPP packet structure](../assets/packet_structure.svg)
+</div>
+
+| Byte | Bits | Content |
+|---|---|---|
+| 0 (header) | `[7:2]` | `length` — number of payload bytes, 1 … 63 |
+|  | `[1:0]` | `addr` — output channel 0, 1 or 2; **3 is illegal** |
+| 1 … length | `[7:0]` | `payload[0]` … `payload[length-1]` |
+| length + 1 | `[7:0]` | `parity` — even bitwise parity: the XOR of the header and every payload byte |
+
+A packet is `length + 2` bytes long (3 to 65). `yapp_packet` holds exactly these fields plus two
+knobs that never reach the wire: `parity_type` (GOOD or BAD, what `set_parity()` writes) and
+`packet_delay`. The same figure lives next to the code, in `yapp_project/uvc/yapp/README.md`.
+
+### Try it: build or check a packet
+
+Set the fields and watch the byte stream, the computed parity and the checks (legal address,
+length vs. payload size, parity, `maxpktsize`); flip **BAD_PARITY** to see what the error
+injection of the course does. **Parse bytes** decodes a packet copied from a log. **Send to
+router** pushes it through the same router model as the register simulator on the
+[DUT page](../dut/spec.md#try-it-the-register-file).
+
+<div class="yapp-sim" data-sim="packet"></div>
+
 ## What a sequence item must have
 
 | Element | `yapp_packet` | Why |
