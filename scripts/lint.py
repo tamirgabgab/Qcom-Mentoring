@@ -135,6 +135,7 @@ def main():
     if ns.all:
         targets += sorted(glob.glob(os.path.join(ROOT, "test_install", "run.f")))
         targets += sorted(glob.glob(os.path.join(ROOT, "labs", "*", "tb", "run.f")))
+        targets += sorted(glob.glob(os.path.join(ROOT, "labs", "*", "run.f")))   # lab11a (no tb/)
     if not targets:
         ap.error("no run.f given (use --all)")
 

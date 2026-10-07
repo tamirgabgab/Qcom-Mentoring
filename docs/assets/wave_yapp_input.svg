@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="798" height="272" viewBox="0 0 798 272" font-family="monospace" font-size="12">
+<style>.lbl{fill:#444}.sig{fill:none;stroke:#1a5fb4;stroke-width:1.6}.clk{fill:none;stroke:#555;stroke-width:1.4}.bus{fill:#e8f0fe;stroke:#1a5fb4;stroke-width:1.2}.idle{stroke:#999;stroke-width:1.2;stroke-dasharray:0}.z{stroke:#999;stroke-dasharray:3 3}.txt{fill:#1a1a1a;text-anchor:middle}.grid{stroke:#ddd;stroke-width:0.8;stroke-dasharray:2 3}.note{fill:#c01c28;font-size:11px}@media (prefers-color-scheme: dark){.lbl{fill:#ccc}.clk{stroke:#aaa}.txt{fill:#eee}.bus{fill:#1e2a44}.grid{stroke:#444}}</style>
+<line class="grid" x1="118" y1="14" x2="118" y2="224"/>
+<line class="grid" x1="162" y1="14" x2="162" y2="224"/>
+<line class="grid" x1="206" y1="14" x2="206" y2="224"/>
+<line class="grid" x1="250" y1="14" x2="250" y2="224"/>
+<line class="grid" x1="294" y1="14" x2="294" y2="224"/>
+<line class="grid" x1="338" y1="14" x2="338" y2="224"/>
+<line class="grid" x1="382" y1="14" x2="382" y2="224"/>
+<line class="grid" x1="426" y1="14" x2="426" y2="224"/>
+<line class="grid" x1="470" y1="14" x2="470" y2="224"/>
+<line class="grid" x1="514" y1="14" x2="514" y2="224"/>
+<line class="grid" x1="558" y1="14" x2="558" y2="224"/>
+<line class="grid" x1="602" y1="14" x2="602" y2="224"/>
+<line class="grid" x1="646" y1="14" x2="646" y2="224"/>
+<line class="grid" x1="690" y1="14" x2="690" y2="224"/>
+<line class="grid" x1="734" y1="14" x2="734" y2="224"/>
+<line class="grid" x1="778" y1="14" x2="778" y2="224"/>
+<text class="lbl" x="110" y="32.2" text-anchor="end">clock</text>
+<path class="clk" d="M118,40 L118,14 L140.0,14 L140.0,40 L162,40 L162,40 L162,14 L184.0,14 L184.0,40 L206,40 L206,40 L206,14 L228.0,14 L228.0,40 L250,40 L250,40 L250,14 L272.0,14 L272.0,40 L294,40 L294,40 L294,14 L316.0,14 L316.0,40 L338,40 L338,40 L338,14 L360.0,14 L360.0,40 L382,40 L382,40 L382,14 L404.0,14 L404.0,40 L426,40 L426,40 L426,14 L448.0,14 L448.0,40 L470,40 L470,40 L470,14 L492.0,14 L492.0,40 L514,40 L514,40 L514,14 L536.0,14 L536.0,40 L558,40 L558,40 L558,14 L580.0,14 L580.0,40 L602,40 L602,40 L602,14 L624.0,14 L624.0,40 L646,40 L646,40 L646,14 L668.0,14 L668.0,40 L690,40 L690,40 L690,14 L712.0,14 L712.0,40 L734,40 L734,40 L734,14 L756.0,14 L756.0,40 L778,40"/>
+<text class="lbl" x="110" y="76.2" text-anchor="end">in_data_vld</text>
+<path class="sig" d="M140.0,84 L184.0,84 L184.0,84 L184.0,58 L228.0,58 L228.0,58 L272.0,58 L272.0,58 L316.0,58 L316.0,58 L360.0,58 L360.0,58 L360.0,84 L404.0,84 L404.0,84 L448.0,84 L448.0,84 L492.0,84 L492.0,84 L492.0,58 L536.0,58 L536.0,58 L580.0,58 L580.0,58 L624.0,58 L624.0,58 L668.0,58 L668.0,58 L712.0,58 L712.0,58 L712.0,84 L756.0,84 L756.0,84 L800.0,84"/>
+<text class="lbl" x="110" y="120.2" text-anchor="end">in_data</text>
+<line class="idle" x1="140.0" y1="115.0" x2="184.0" y2="115.0"/>
+<path class="bus" d="M184.0,115.0 L189.0,102 L223.0,102 L228.0,115.0 L223.0,128 L189.0,128 Z"/>
+<text class="txt" x="206.0" y="119.0">H</text>
+<path class="bus" d="M228.0,115.0 L233.0,102 L267.0,102 L272.0,115.0 L267.0,128 L233.0,128 Z"/>
+<text class="txt" x="250.0" y="119.0">D0</text>
+<path class="bus" d="M272.0,115.0 L277.0,102 L311.0,102 L316.0,115.0 L311.0,128 L277.0,128 Z"/>
+<text class="txt" x="294.0" y="119.0">D1</text>
+<path class="bus" d="M316.0,115.0 L321.0,102 L355.0,102 L360.0,115.0 L355.0,128 L321.0,128 Z"/>
+<text class="txt" x="338.0" y="119.0">D2</text>
+<path class="bus" d="M360.0,115.0 L365.0,102 L399.0,102 L404.0,115.0 L399.0,128 L365.0,128 Z"/>
+<text class="txt" x="382.0" y="119.0">P</text>
+<line class="idle" x1="404.0" y1="115.0" x2="448.0" y2="115.0"/>
+<line class="idle" x1="448.0" y1="115.0" x2="492.0" y2="115.0"/>
+<path class="bus" d="M492.0,115.0 L497.0,102 L531.0,102 L536.0,115.0 L531.0,128 L497.0,128 Z"/>
+<text class="txt" x="514.0" y="119.0">H</text>
+<path class="bus" d="M536.0,115.0 L541.0,102 L575.0,102 L580.0,115.0 L575.0,128 L541.0,128 Z"/>
+<text class="txt" x="558.0" y="119.0">D0</text>
+<path class="bus" d="M580.0,115.0 L585.0,102 L619.0,102 L624.0,115.0 L619.0,128 L585.0,128 Z"/>
+<text class="txt" x="602.0" y="119.0">D0</text>
+<path class="bus" d="M624.0,115.0 L629.0,102 L663.0,102 L668.0,115.0 L663.0,128 L629.0,128 Z"/>
+<text class="txt" x="646.0" y="119.0">D1</text>
+<path class="bus" d="M668.0,115.0 L673.0,102 L707.0,102 L712.0,115.0 L707.0,128 L673.0,128 Z"/>
+<text class="txt" x="690.0" y="119.0">D2</text>
+<path class="bus" d="M712.0,115.0 L717.0,102 L751.0,102 L756.0,115.0 L751.0,128 L717.0,128 Z"/>
+<text class="txt" x="734.0" y="119.0">P</text>
+<line class="idle" x1="756.0" y1="115.0" x2="800.0" y2="115.0"/>
+<text class="lbl" x="110" y="164.2" text-anchor="end">in_suspend</text>
+<path class="sig" d="M118,172 L162,172 L162,172 L206,172 L206,172 L250,172 L250,172 L294,172 L294,172 L338,172 L338,172 L382,172 L382,172 L426,172 L426,172 L470,172 L470,172 L514,172 L514,172 L514,146 L558,146 L558,146 L558,172 L602,172 L602,172 L646,172 L646,172 L690,172 L690,172 L734,172 L734,172 L778,172"/>
+<text class="lbl" x="110" y="208.2" text-anchor="end">packet</text>
+<line class="idle" x1="140.0" y1="203.0" x2="184.0" y2="203.0"/>
+<path class="bus" d="M184.0,203.0 L189.0,190 L399.0,190 L404.0,203.0 L399.0,216 L189.0,216 Z"/>
+<text class="txt" x="294.0" y="207.0">packet 1 (len 3)</text>
+<line class="idle" x1="404.0" y1="203.0" x2="448.0" y2="203.0"/>
+<line class="idle" x1="448.0" y1="203.0" x2="492.0" y2="203.0"/>
+<path class="bus" d="M492.0,203.0 L497.0,190 L751.0,190 L756.0,203.0 L751.0,216 L497.0,216 Z"/>
+<text class="txt" x="624.0" y="207.0">packet 2 (D0 held one cycle)</text>
+<line class="idle" x1="756.0" y1="203.0" x2="800.0" y2="203.0"/>
+<text class="note" x="118" y="248">inputs change on the falling edge; the DUT samples on the rising edge</text>
+</svg>
