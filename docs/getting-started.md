@@ -93,6 +93,12 @@ make serve      # http://127.0.0.1:8000, live reload
 make docs       # static site in site/
 ```
 
+!!! note "Diagrams need network access"
+    The block diagrams are Mermaid sources rendered in the browser; Material
+    for MkDocs fetches the Mermaid library from `unpkg.com` on page load. On a
+    network that blocks CDNs the diagrams show as text. The protocol waveforms
+    are plain SVG files and always render.
+
 ## UVM versions
 
 The code targets **UVM 1.1d and 1.2** (Cadence libraries). The only API that
