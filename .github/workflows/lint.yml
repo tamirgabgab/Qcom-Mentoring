@@ -1,0 +1,24 @@
+name: lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  slang-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pyslang
+        run: pip install pyslang==12.0.0
+
+      - name: Fetch the UVM library source (lint only)
+        run: bash scripts/get_uvm.sh
+
+      - name: Elaborate every lab with slang
+        run: python3 scripts/lint.py --all --quiet

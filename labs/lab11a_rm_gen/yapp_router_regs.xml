@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  yapp_router_regs.xml : IP-XACT (IEEE 1685-2009) description of the YAPP
+  router registers and memories. In the Cadence flow this is the input of
+  reg_verifier, which generates the UVM register model:
+
+    reg_verifier -domain uvmreg -top yapp_router_regs.xml -dut yapp_router_regs \
+                 -out_file yapp_router_regs -quicktest -cov -pkg yapp_router_reg_pkg
+
+  The hand-written model in yapp_router_reg_pkg.sv is equivalent to what the
+  tool produces from this file. Questions to answer from the XML:
+    * access policy of ctrl_reg      -> read-write
+    * access policy of addr0_cnt_reg -> read-only
+-->
+<spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
+  <spirit:vendor>uvm-course</spirit:vendor>
+  <spirit:library>yapp</spirit:library>
+  <spirit:name>yapp_router_regs</spirit:name>
+  <spirit:version>1.0</spirit:version>
+
+  <spirit:memoryMaps>
+    <spirit:memoryMap>
+      <spirit:name>default_map</spirit:name>
+      <spirit:addressBlock>
+        <spirit:name>router_yapp_regs</spirit:name>
+        <spirit:baseAddress>0x1000</spirit:baseAddress>
+        <spirit:range>0x200</spirit:range>
+        <spirit:width>8</spirit:width>
+
+        <spirit:register>
+          <spirit:name>ctrl_reg</spirit:name>
+          <spirit:addressOffset>0x0</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset><spirit:value>0x3f</spirit:value></spirit:reset>
+          <spirit:field>
+            <spirit:name>plen</spirit:name>
+            <spirit:description>Maximum packet length (maxpktsize)</spirit:description>
+            <spirit:bitOffset>0</spirit:bitOffset>
+            <spirit:bitWidth>6</spirit:bitWidth>
+            <spirit:access>read-write</spirit:access>
+          </spirit:field>
+          <spirit:field>
+            <spirit:name>unused</spirit:name>
+            <spirit:bitOffset>6</spirit:bitOffset>
+            <spirit:bitWidth>2</spirit:bitWidth>
+            <spirit:access>read-write</spirit:access>
+          </spirit:field>
+        </spirit:register>
+
+        <spirit:register>
+          <spirit:name>en_reg</spirit:name>
+          <spirit:addressOffset>0x1</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset><spirit:value>0x01</spirit:value></spirit:reset>
+          <spirit:field><spirit:name>router_en</spirit:name><spirit:bitOffset>0</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>parity_err_cnt_en</spirit:name><spirit:bitOffset>1</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>oversized_pkt_cnt_en</spirit:name><spirit:bitOffset>2</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>reserved</spirit:name><spirit:bitOffset>3</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>addr0_cnt_en</spirit:name><spirit:bitOffset>4</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>addr1_cnt_en</spirit:name><spirit:bitOffset>5</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>addr2_cnt_en</spirit:name><spirit:bitOffset>6</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+          <spirit:field><spirit:name>addr3_cnt_en</spirit:name><spirit:bitOffset>7</spirit:bitOffset><spirit:bitWidth>1</spirit:bitWidth><spirit:access>read-write</spirit:access></spirit:field>
+        </spirit:register>
+
+        <spirit:register>
+          <spirit:name>parity_err_cnt_reg</spirit:name>
+          <spirit:addressOffset>0x4</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>oversized_pkt_cnt_reg</spirit:name>
+          <spirit:addressOffset>0x5</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>addr3_cnt_reg</spirit:name>
+          <spirit:addressOffset>0x6</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>addr0_cnt_reg</spirit:name>
+          <spirit:addressOffset>0x9</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>addr1_cnt_reg</spirit:name>
+          <spirit:addressOffset>0xa</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>addr2_cnt_reg</spirit:name>
+          <spirit:addressOffset>0xb</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>mem_size_reg</spirit:name>
+          <spirit:addressOffset>0xd</spirit:addressOffset>
+          <spirit:size>8</spirit:size>
+          <spirit:access>read-only</spirit:access>
+          <spirit:reset><spirit:value>0x00</spirit:value></spirit:reset>
+        </spirit:register>
+      </spirit:addressBlock>
+
+      <spirit:addressBlock>
+        <spirit:name>yapp_pkt_mem</spirit:name>
+        <spirit:usage>memory</spirit:usage>
+        <spirit:baseAddress>0x1010</spirit:baseAddress>
+        <spirit:range>64</spirit:range>
+        <spirit:width>8</spirit:width>
+        <spirit:access>read-only</spirit:access>
+      </spirit:addressBlock>
+
+      <spirit:addressBlock>
+        <spirit:name>yapp_mem</spirit:name>
+        <spirit:usage>memory</spirit:usage>
+        <spirit:baseAddress>0x1100</spirit:baseAddress>
+        <spirit:range>256</spirit:range>
+        <spirit:width>8</spirit:width>
+        <spirit:access>read-write</spirit:access>
+      </spirit:addressBlock>
+    </spirit:memoryMap>
+  </spirit:memoryMaps>
+</spirit:component>

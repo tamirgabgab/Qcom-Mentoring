@@ -1,0 +1,40 @@
+# Simulator output (Xcelium / VCS / Questa)
+xcelium.d/
+INCA_libs/
+xrun.log
+xrun.history
+*.log
+*.history
+*.shm/
+*.trn
+*.dsn
+*.vcd
+*.fsdb
+*.wlf
+work/
+simv*
+csrc/
+ucli.key
+cov_work/
+*.ucd
+*.ucm
+.simvision/
+waves.shm/
+*.err
+
+# Lint harness: the UVM library is fetched by `make uvm-src`, never committed
+scripts/uvm_src/
+scripts/__pycache__/
+.lint/
+
+# Docs build
+site/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Course material that must not be redistributed
+*.pdf

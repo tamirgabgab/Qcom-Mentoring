@@ -1,0 +1,119 @@
+site_name: YAPP Router — UVM Course
+site_description: Reference solutions, DUT and teaching material for the SystemVerilog/UVM YAPP router project
+repo_url: https://github.com/tamirgabgab/Qcom-Mentoring
+repo_name: tamirgabgab/Qcom-Mentoring
+edit_uri: ""
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: [".", "docs"]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+
+extra_css:
+  - assets/extra.css
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - The DUT:
+      - Specification: dut/spec.md
+      - RTL walkthrough: dut/rtl.md
+  - UVM:
+      - The big picture: uvm/big-picture.md
+      - Project architecture: uvm/architecture.md
+      - Phases and objections: uvm/phases.md
+      - Factory and configuration: uvm/factory-config.md
+      - TLM connections: uvm/tlm.md
+  - Component guides:
+      - Overview: components/index.md
+      - Packet (sequence item): components/packet.md
+      - Driver: components/driver.md
+      - Sequencer and sequences: components/sequences.md
+      - Monitor: components/monitor.md
+      - Agent and env: components/agent-env.md
+      - Scoreboard: components/scoreboard.md
+      - Reference model and module UVC: components/reference-model.md
+      - Virtual sequencer: components/virtual-sequencer.md
+      - Functional coverage: components/coverage.md
+      - Register model (RAL): components/register-model.md
+  - Test plan: test-plan.md
+  - Labs:
+      - Overview: labs/index.md
+      - "Lab 1 — Stimulus model": labs/lab01.md
+      - "Lab 2 — Test and testbench": labs/lab02.md
+      - "Lab 3 — A simple UVC": labs/lab03.md
+      - "Lab 4 — Factories": labs/lab04.md
+      - "Lab 5 — Sequences": labs/lab05.md
+      - "Lab 6 — Virtual interfaces and the DUT": labs/lab06.md
+      - "Lab 7 — Integrating UVCs": labs/lab07.md
+      - "Lab 8 — Multichannel sequences": labs/lab08.md
+      - "Lab 9A — Scoreboard (TLM)": labs/lab09a.md
+      - "Lab 9B — Router module UVC": labs/lab09b.md
+      - "Lab 9C — TLM exports": labs/lab09c.md
+      - "Lab 9D — Analysis FIFOs": labs/lab09d.md
+      - "Lab 10 — Functional coverage": labs/lab10.md
+      - "Lab 11A — Register model generation": labs/lab11a.md
+      - "Lab 11B — Register model integration": labs/lab11b.md
+      - "Lab 11C — Register tests": labs/lab11c.md
+  - Appendix:
+      - Files, classes, tests, sequences: appendix/index-tables.md
+      - UVM concept → lab map: appendix/concept-map.md
+      - Pitfalls: appendix/pitfalls.md
+      - xrun options: appendix/xrun.md
+      - Known-unverified items: appendix/unverified.md

@@ -1,0 +1,16 @@
+/* Slightly wider content for code-heavy pages */
+.md-grid { max-width: 72rem; }
+
+/* Mermaid diagrams: center and give them room */
+.mermaid { text-align: center; }
+.mermaid svg { max-width: 100%; height: auto; }
+
+/* Inline SVG waveforms */
+.wave { overflow-x: auto; margin: 1em 0; }
+.wave svg { font-family: var(--md-code-font-family); font-size: 12px; }
+
+/* Checkpoint question boxes */
+.md-typeset details.question > summary { font-weight: 600; }
+
+/* Compact tables */
+.md-typeset table:not([class]) { font-size: 0.8rem; }
