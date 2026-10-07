@@ -67,7 +67,11 @@ def run_all(m, model_json, html):
     # standalone
     expect(len(html) < 2 * 1024 * 1024, f"standalone too big: {len(html)} bytes")
     expect("fetch(" not in html.split('<script id="pm-model"')[0], "standalone must not fetch")
-    expect(model_json.count('"code":') > 50, "code snippets missing from the model")
+    expect(len(m.get("files", {})) > 50, "source files missing from the model")
+    for nid, n in N.items():
+        if n.get("file"):
+            expect(n["file"] in m["files"], f"{nid}: source file {n['file']} not in the model")
+            expect(0 < n["line"] <= n.get("end_line", n["line"]) <= m["files"][n["file"]].count("\n") + 1, f"{nid}: line range outside {n['file']}")
     if problems:
         print(f"{len(problems)} problem(s):")
         for p in problems:

@@ -85,15 +85,20 @@ def item_type_of(base_str):
     return m.group(1).split("::")[-1] if m else None
 
 
-def source_lines(path, line, end_line):
-    """file[line..end_line] (1-based, inclusive) as plain text; highlighted in the browser."""
-    full = os.path.join(ROOT, path)
-    try:
-        with open(full, encoding="utf-8") as fh:
-            lines = fh.read().split("\n")
-    except OSError:
-        return ""
-    return "\n".join(lines[line - 1:end_line])
+FILE_CACHE = {}
+
+
+def read_file(path):
+    """The whole source file as plain text (highlighted in the browser). Every class lives in its
+    own file, so the map shows the file and marks the item's line range inside it."""
+    if path not in FILE_CACHE:
+        full = os.path.join(ROOT, path)
+        try:
+            with open(full, encoding="utf-8") as fh:
+                FILE_CACHE[path] = fh.read().rstrip("\n")
+        except OSError:
+            FILE_CACHE[path] = ""
+    return FILE_CACHE[path]
 
 
 # ----------------------------------------------------------------------------- lab scan
@@ -545,7 +550,6 @@ class ModelBuilder:
         for name, cls in sorted(self.classes.items()):
             kind = class_kind(cls)
             summary, description = self.describe(name)
-            code = source_lines(cls["file"], cls["line"], cls["end_line"]) if cls["file"] else ""
             item = item_type_of(cls["base"])
             n = self.add_node(
                 f"cls:{name}", kind=kind, name=name, type=name, parent=None, scope="cls",
@@ -554,7 +558,7 @@ class ModelBuilder:
                 file=cls["file"], line=cls["line"], end_line=cls["end_line"],
                 fields=[self.field_info(p) for p in cls["properties"]],
                 methods=cls["methods"], constraints=cls["constraints"],
-                summary=summary, description=description, code=code,
+                summary=summary, description=description,
                 lab=self.lab_for(name), item_type=item,
                 overrides=cls.get("overrides", []), config_sets=cls.get("config_sets", []),
                 notable_calls=cls.get("notable_calls", []),
@@ -649,9 +653,6 @@ class ModelBuilder:
                 n["note"] = notes[nid]
             n.setdefault("summary", kinfo.get("role", ""))
             n.setdefault("description", "")
-            # code for hardware nodes
-            if n.get("scope") == "hw" and n.get("file") and "code" not in n:
-                n["code"] = source_lines(n["file"], n["line"], n["end_line"])
             # docs links
             docs = list(n.get("docs", []))
             if kinfo.get("doc") and not any(d["url"] == kinfo["doc"] for d in docs):
@@ -699,6 +700,7 @@ class ModelBuilder:
             "groups": self.ann["groups"],
             "labs": self.ann["labs"],
             "nodes": self.nodes,
+            "files": {f: read_file(f) for f in sorted({n["file"] for n in self.nodes.values() if n.get("file")}) if read_file(f)},
             "edges": self.edges,
             "paths": self.paths,
             "unresolved": self.unresolved,

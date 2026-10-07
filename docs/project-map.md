@@ -5,9 +5,12 @@ hide:
 
 # Project map
 
-One picture of the whole project that you can look into: **double-click** a box to open it,
-**click** anything for its role, source code and lab. Three views: Hierarchy, TLM / data flow,
-Classes (UML). Press ++question++ inside the map for the keyboard shortcuts.
+One picture of the whole project that you can look into: **click** a box for its role, its file
+and its lab, **double-click** (or the `▸ open` corner) to open it. Three views: Hierarchy,
+TLM / data flow, Classes (UML). The **Source** column on the right shows the complete file of
+whatever is selected (one class per file). Press ++question++ inside the map for the shortcuts.
+
+<style>.md-grid { max-width: none; }</style>
 
 [Open full screen](downloads/yapp_project_map.html){ .md-button .md-button--primary }
 [Download the offline copy](downloads/yapp_project_map.html){ .md-button download="yapp_project_map.html" }
@@ -61,7 +64,9 @@ Classes (UML). Press ++question++ inside the map for the keyboard shortcuts.
 
 The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
 introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
-guide, lab page, the same item in the other views, a shareable link).
+guide, lab page, the same item in the other views, a shareable link). The **Source** column
+(toolbar button or ++c++) is a third column with the whole file of the selected class, module or
+RTL block, the item's lines marked; it can be downloaded or opened on GitHub from there.
 
 The map is generated from the SystemVerilog by `scripts/project_map/` — pyslang reads the
 classes, ports, `connect()` calls and the module tree; `annotations.yaml` adds the prose — so it

@@ -7,6 +7,8 @@
  *
  * Deep links:  #view=hierarchy|tlm|classes & scene=<id> & node=<id> [& theme=dark]
  * API:         window.projectMap = { sceneIds(), show(id), select(id), exportSvgString(), setTheme(t) }
+ *
+ * Source text comes from model.files (one class per file); a node only carries file + line range.
  */
 (function () {
   "use strict";
@@ -52,7 +54,7 @@
   const SV_RE = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*")|(`\w+)|(\$\w+)|(\b\d+'[sS]?[bodhBODH][0-9a-fA-F_xzXZ?]+\b|\b\d[\d_]*\b)|(\b[A-Za-z_]\w*\b)/g;
   function highlightSV(code) {
     return code.replace(SV_RE, (m, com, str, mac, sys, num, id) => {
-      if (com) return `<span class="c">${com}</span>`;
+      if (com) return com.split("\n").map(x => `<span class="c">${x}</span>`).join("\n");
       if (str) return `<span class="s">${str}</span>`;
       if (mac) return `<span class="m">${mac}</span>`;
       if (sys) return `<span class="y">${sys}</span>`;
@@ -74,10 +76,11 @@
       this.scenes = {};
       model.scenes.forEach(s => this.scenes[s.id] = s);
       this.where = model.where || {};
-      this.state = { view: "hierarchy", scene: "h:root", selected: null, full: false, variant: false, group: null, tab: "overview" };
+      this.state = { view: "hierarchy", scene: "h:root", selected: null, full: false, variant: false, group: null, tab: "overview", code: this.codeDefault() };
       this.vp = { x: 0, y: 0, k: 1 };
       this.buildDom();
       this.initTheme();
+      this.root.classList.toggle("code-hidden", !this.state.code);
       this.applyHash(location.hash) || this.show("h:root");
       window.addEventListener("hashchange", () => this.applyHash(location.hash));
       window.addEventListener("resize", () => this.fit());
@@ -129,9 +132,10 @@
       ]);
       document.addEventListener("click", e => { if (!this.menu.contains(e.target)) this.menu.classList.remove("open"); });
       this.btnTheme = el("button", { title: "Toggle light / dark", onclick: () => this.toggleTheme() }, ["◐"]);
-      this.btnPanel = el("button", { title: "Show / hide the panel", onclick: () => { r.classList.toggle("panel-hidden"); this.fit(); } }, ["Panel"]);
+      this.btnPanel = el("button", { title: "Show / hide the panel (p)", onclick: () => { r.classList.toggle("panel-hidden"); this.fit(); } }, ["Panel"]);
+      this.btnCode = el("button", { title: "Show / hide the source column (c)", onclick: () => this.toggleCode() }, ["</> Source"]);
       const btnHelp = el("button", { title: "Keyboard shortcuts (?)", onclick: () => this.help.classList.toggle("open") }, ["?"]);
-      this.tools.append(this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnLabels, zoom, this.menu, this.btnTheme, this.btnPanel, btnHelp);
+      this.tools.append(this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnLabels, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
       if (this.opts.standaloneUrl) {
         this.tools.append(el("a", { href: this.opts.standaloneUrl, download: "", title: "Save this map as one HTML file that works offline" }, [el("button", {}, ["Download offline copy"])]));
       }
@@ -151,12 +155,14 @@
       this.hint = el("div", { class: "pm-hint" }, ["drag to pan · wheel to zoom · click to inspect · double-click to open"]);
       this.canvas.append(this.legend, this.hint);
       this.panel = el("aside", { class: "pm-panel" });
+      this.codePane = el("aside", { class: "pm-codepane" });
       this.help = el("div", { class: "pm-help", onclick: e => { if (e.target === this.help) this.help.classList.remove("open"); } }, [
         el("div", { class: "card", html:
           "<h3 style='margin-top:0'>Keyboard</h3><table>" +
           "<tr><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td>Hierarchy / TLM / Classes</td></tr>" +
           "<tr><td><kbd>/</kbd></td><td>search</td></tr>" +
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
+          "<tr><td><kbd>c</kbd></td><td>source column on / off</td></tr>" +
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
@@ -164,7 +170,7 @@
           "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr></table>" +
           "<p style='color:var(--pm-muted);font-size:12px'>Generated from the SystemVerilog source with pyslang; descriptions from <code>scripts/project_map/annotations.yaml</code>.</p>" }),
       ]);
-      r.append(el("div", { class: "pm-body" }, [this.canvas, this.panel, this.help]));
+      r.append(el("div", { class: "pm-body" }, [this.canvas, this.panel, this.codePane, this.help]));
       this.initPanZoom();
       this.initKeys();
     }
@@ -289,6 +295,7 @@
       this.render();
       this.fit();
       this.renderPanel();
+      this.renderCodePane();
       this.updateHash();
       this._silent = false;
     }
@@ -328,7 +335,7 @@
       this.btnVariant.style.display = s.view === "tlm" ? "" : "none";
       this.btnVariant.classList.toggle("on", !!this.state.variant);
       this.hint.textContent = s.view === "hierarchy" ? "drag to pan · wheel to zoom · click to inspect · double-click a box to open it"
-        : s.view === "tlm" ? "click a port or an arrow to highlight the whole path" : "click a class · Members shows fields and methods";
+        : s.view === "tlm" ? "click a port or an arrow to highlight the whole path" : "click a class to see its file · Members shows fields and methods";
     }
     drawItem(it, s) {
       const n = this.N[it.id] || {};
@@ -363,7 +370,6 @@
           more.textContent = "▸ open";
           const tt = svg("title"); tt.textContent = "open this component"; more.append(tt);
           more.style.pointerEvents = "all";
-          more.addEventListener("click", ev => { ev.stopPropagation(); this.open(it.id, it); });
           grp.append(more);
         }
         if (it.stub) {
@@ -375,13 +381,11 @@
         pg.append(svg("circle", { cx: p.x - it.x, cy: p.y - it.y, r: 5 }));
         const t = svg("text", { x: p.side === "left" ? p.x - it.x + 10 : p.x - it.x - 10, y: p.y - it.y + 4, "text-anchor": p.side === "left" ? "start" : "end" });
         t.textContent = p.label; pg.append(t);
-        pg.addEventListener("click", ev => { ev.stopPropagation(); this.select(p.id); });
         pg.addEventListener("mouseenter", () => this.hover(p.id, true));
         pg.addEventListener("mouseleave", () => this.hover(p.id, false));
         grp.append(pg);
       });
-      grp.addEventListener("click", ev => { ev.stopPropagation(); if (it.stub) this.open(it.id, it); else this.select(it.id); });
-      grp.addEventListener("dblclick", ev => { ev.stopPropagation(); this.open(it.id, it); });
+      grp.__item = it;
       grp.addEventListener("mouseenter", () => this.hover(it.id, true));
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
       return grp;
@@ -399,7 +403,6 @@
         t.textContent = trunc(e.label, 48); g.append(t);
       }
       if (this.denseLabels) g.classList.add("quiet");
-      g.addEventListener("click", ev => { ev.stopPropagation(); this.select(e.id); });
       g.addEventListener("mouseenter", () => this.hoverEdge(e.id, true));
       g.addEventListener("mouseleave", () => this.hoverEdge(e.id, false));
       return g;
@@ -461,6 +464,7 @@
         }
       }
       this.renderPanel();
+      this.renderCodePane();
       if (!(o && o.silent)) this.updateHash();
     }
     incidentEdges(nid) {
@@ -511,10 +515,12 @@
           const [a, b] = [...pointers.values()];
           pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), k: this.vp.k, cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2, x: this.vp.x, y: this.vp.y };
           drag = null;
+          pointers.forEach((_, id) => { try { c.setPointerCapture(id); } catch (err) { /* released */ } });
         } else {
-          drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false };
+          drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false, target: e.target, id: e.pointerId };
         }
-        c.setPointerCapture(e.pointerId);
+        // NB: no pointer capture here -- a captured pointer makes the browser retarget the click
+        // to the canvas, so the boxes would never receive it. Capture starts with the drag.
       });
       c.addEventListener("pointermove", e => {
         if (!pointers.has(e.pointerId)) return;
@@ -531,7 +537,11 @@
           this.applyVp();
         } else if (drag) {
           const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-          if (Math.abs(dx) + Math.abs(dy) > 3) { drag.moved = true; c.classList.add("dragging"); }
+          if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 3) {
+            drag.moved = true; c.classList.add("dragging");
+            try { c.setPointerCapture(drag.id); } catch (err) { /* released */ }
+          }
+          if (!drag.moved) return;
           this.vp.x = drag.vx + dx; this.vp.y = drag.vy + dy;
           this.applyVp();
         }
@@ -539,7 +549,7 @@
       const end = e => {
         pointers.delete(e.pointerId);
         if (pointers.size < 2) pinch = null;
-        if (drag && !drag.moved && e.target === this.svg) this.select(null);
+        if (drag && !drag.moved && e.type === "pointerup") this.tap(drag.target, drag.x, drag.y);
         drag = null;
         c.classList.remove("dragging");
       };
@@ -552,7 +562,28 @@
         const f = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015));
         this.zoomAt(f, px, py);
       }, { passive: false });
-      c.addEventListener("dblclick", e => { if (e.target === this.svg) this.fit(); });
+    }
+    // A click or a double-click on the picture, resolved from the element under the pointer:
+    // "▸ open" and dashed stubs open, a double-click opens, a single click selects.
+    tap(target, x, y) {
+      const now = Date.now();
+      // everything under the pointer: a port or an "open" marker wins over the (wide, invisible)
+      // hit area of an arrow drawn on top of it
+      const stack = (document.elementsFromPoint ? document.elementsFromPoint(x, y) : [target]).filter(e => this.svg.contains(e));
+      const pick = sel => { for (const e of stack) { const hit = e.closest && e.closest(sel); if (hit) return hit; } return null; };
+      const port = pick(".pm-port"), more = pick("text.more");
+      const closest = sel => (target && target.closest) ? target.closest(sel) : null;
+      const edge = port || more ? null : closest(".pm-edge");
+      const node = port ? null : (more ? more.closest(".pm-node") : (edge ? null : (closest(".pm-node") || pick(".pm-node"))));
+      const id = port ? port.dataset.id : node ? node.dataset.id : edge ? edge.dataset.id : null;
+      const dbl = !!(this._tap && now - this._tap.t < 400 && this._tap.id === id);
+      this._tap = { t: now, id };
+      if (!id) { if (dbl) this.fit(); else this.select(null); return; }
+      if (port) { this.select(id); return; }
+      if (edge) { this.select(id); return; }
+      const it = node.__item || {};
+      if (more || it.stub || dbl) this.open(id, it);
+      else this.select(id);
     }
     applyVp() { this.viewport.setAttribute("transform", `translate(${this.vp.x},${this.vp.y}) scale(${this.vp.k})`); }
     zoomAt(f, px, py) {
@@ -605,6 +636,7 @@
         else if (k === "m") this.toggleFull();
         else if (k === "l") { this.state.labels = !this.state.labels; this.render(); }
         else if (k === "p") { this.root.classList.toggle("panel-hidden"); this.fit(); }
+        else if (k === "c") this.toggleCode();
         else if (k === "?") this.help.classList.toggle("open");
         else if (k === "Enter") { if (this.state.selected && this.N[this.state.selected]) this.open(this.state.selected); }
         else if (k === "ArrowRight" || k === "ArrowLeft" || k === "ArrowDown" || k === "ArrowUp") {
@@ -643,7 +675,7 @@
         if (inst) acts.append(el("button", { onclick: () => this.gotoNode(inst.id, "hierarchy") }, ["Instance ⇄"]));
       }
       if ((this.where[n.id] || []).some(sid => this.scenes[sid].view === "tlm") && this.state.view !== "tlm") acts.append(el("button", { onclick: () => this.gotoNode(n.id, "tlm") }, ["TLM"]));
-      if ((n.code || (n.cls && this.N[n.cls] && this.N[n.cls].code)) && this.state.tab !== "code") acts.append(el("button", { onclick: () => { this.state.tab = "code"; this.renderPanel(); } }, ["</> Code"]));
+      if (this.fileOf(n) && !(this.codeVisible() || this.state.tab === "code")) acts.append(el("button", { onclick: () => this.showCode() }, ["</> Code"]));
       if (acts.children.length) head.append(acts);
       p.append(head);
       const tabs = el("div", { class: "pm-tabs" });
@@ -656,6 +688,87 @@
       if (this.state.tab === "code") this.renderCode(body, n);
       else if (this.state.tab === "links") this.renderLinks(body, n);
       else this.renderOverview(body, n);
+    }
+    // ---- source text: model.files[file] sliced by the node's line range
+    fileOf(n) { return n.file || (n.cls && this.N[n.cls] ? this.N[n.cls].file : null); }
+    rangeOf(n) { const c = n.file ? n : ((n.cls && this.N[n.cls]) || n); const a = c.line || 1; return [a, c.end_line || a]; }
+    fileText(file) { return (file && this.m.files && this.m.files[file]) || ""; }
+    codeOf(n) {
+      const txt = this.fileText(this.fileOf(n));
+      if (!txt) return "";
+      const [a, b] = this.rangeOf(n);
+      return txt.split("\n").slice(a - 1, b).join("\n");
+    }
+    codeDefault() {
+      try { const v = localStorage.getItem("pm-code"); if (v === "0" || v === "1") return v === "1"; } catch (e) { /* no storage */ }
+      return window.innerWidth >= 1400;
+    }
+    codeVisible() { return this.state.code && window.matchMedia("(min-width: 1100px)").matches; }
+    toggleCode(force) {
+      this.state.code = force === undefined ? !this.state.code : !!force;
+      try { localStorage.setItem("pm-code", this.state.code ? "1" : "0"); } catch (e) { /* no storage */ }
+      this.root.classList.toggle("code-hidden", !this.state.code);
+      this.btnCode.classList.toggle("on", !!this.state.code);
+      this.renderCodePane();
+      this.renderPanel();
+      this.fit();
+    }
+    showCode() {
+      if (window.matchMedia("(min-width: 1100px)").matches) this.toggleCode(true);
+      else { this.state.tab = "code"; this.renderPanel(); }
+    }
+    codeRows(text, a, b) {
+      // escape first, then colour (the regex works on the escaped text; entities contain no SV tokens of interest)
+      const html = highlightSV(text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+      const table = el("table");
+      html.split("\n").forEach((l, i) => {
+        const ln = i + 1;
+        const tr = el("tr", { class: a && ln >= a && ln <= b ? "hl" : "" });
+        tr.append(el("td", { class: "ln" }, [String(ln)]), el("td", { html: l || " " }));
+        table.append(tr);
+      });
+      return table;
+    }
+    renderCodePane() {
+      const cp = this.codePane;
+      cp.innerHTML = "";
+      this.btnCode.classList.toggle("on", !!this.state.code);
+      if (!this.state.code) return;
+      const sel = this.state.selected;
+      let n = sel && this.N[sel] ? this.N[sel] : null;
+      if (n && n.port && !this.fileOf(n) && n.parent && this.N[n.parent]) n = this.N[n.parent];
+      const s = this.scenes[this.state.scene];
+      if (!n && s && s.node && this.N[s.node]) n = this.N[s.node];
+      if (!n && s && s.id === "h:root" && this.N.tb_top) n = this.N.tb_top;
+      const file = n ? this.fileOf(n) : null;
+      const text = this.fileText(file);
+      const head = el("div", { class: "pm-codepane-head" });
+      cp.append(head);
+      if (!text) {
+        head.append(el("div", { class: "title" }, [el("b", {}, ["Source"])]),
+          el("div", { class: "acts" }, [el("a", { class: "close", title: "Hide the source column (c)", onclick: () => this.toggleCode(false) }, ["×"])]));
+        cp.append(el("div", { class: "pm-codepane-empty" }, [sel && this.E[sel] ? "Arrows have no file of their own: click one of the two ends." : "Click a class or a component in the picture to see its file here (one class per file)."]));
+        return;
+      }
+      const [a, b] = this.rangeOf(n);
+      const total = text.split("\n").length;
+      const whole = a <= 1 && b >= total;
+      const label = n.scope === "cls" ? n.name : (n.type && n.type !== n.name ? `${n.name} : ${n.type}` : n.name);
+      head.append(el("div", { class: "title" }, [el("span", { class: "pm-badge", style: `--kc: var(--k-${n.kind})` }, [n.kind_label || n.kind]), " ", el("b", {}, [label])]));
+      head.append(el("div", { class: "file" }, [el("code", {}, [file]), el("span", {}, [whole ? `${total} lines` : `lines ${a}–${b} of ${total}`])]));
+      const acts = el("div", { class: "acts" });
+      if (this.opts.repoUrl) acts.append(el("a", { href: `${this.opts.repoUrl}/blob/main/${file}#L${a}-L${b}`, target: "_blank", rel: "noopener" }, ["open on GitHub ↗"]));
+      acts.append(el("a", { onclick: () => this.download(new Blob([text + "\n"], { type: "text/plain" }), file.split("/").pop()) }, ["⤓ download file"]));
+      acts.append(el("a", { onclick: () => { if (navigator.clipboard) navigator.clipboard.writeText(text + "\n").then(() => { this.hint.textContent = "file copied"; }); } }, ["copy"]));
+      acts.append(el("a", { class: "close", title: "Hide the source column (c)", onclick: () => this.toggleCode(false) }, ["×"]));
+      head.append(acts);
+      const box = el("div", { class: "pm-code pane" });
+      const table = this.codeRows(text, whole ? 0 : a, b);
+      box.append(table);
+      cp.append(box);
+      // bring the item's first line near the top of the column
+      const row = table.rows[Math.max(0, a - 3)];
+      if (row && !whole) requestAnimationFrame(() => { box.scrollTop = row.offsetTop; });
     }
     nodeLink(id, text) {
       const n = this.N[id];
@@ -756,15 +869,18 @@
         add("<p>" + n.tasks.map(t => `<code>${esc(t.name)}(${esc((t.args || []).join(", "))})</code>`).join(" · ") + "</p>");
       }
       // source preview
-      const code = n.code || (n.cls && this.N[n.cls] ? this.N[n.cls].code : "");
-      const cfile = n.file || (n.cls && this.N[n.cls] ? this.N[n.cls].file : null);
-      if (code) {
+      const code = this.codeOf(n);
+      const cfile = this.fileOf(n);
+      if (code && this.codeVisible()) {
+        add("<h3>Source</h3>");
+        body.append(el("div", { class: "pm-code-head" }, [el("code", {}, [cfile]), el("a", { class: "node", onclick: () => this.showCode() }, ["shown in the source column →"])]));
+      } else if (code) {
         add("<h3>Source</h3>");
         const lines = code.split("\n");
-        const headLine = n.line || (n.cls && this.N[n.cls] ? this.N[n.cls].line : 1);
+        const headLine = this.rangeOf(n)[0];
         const prev = lines.slice(0, 14).join("\n");
         body.append(el("div", { class: "pm-code-head" }, [el("span", {}, [`${cfile}:${headLine}  (${lines.length} lines)`]),
-          el("a", { class: "node", onclick: () => { this.state.tab = "code"; this.renderPanel(); } }, ["show the whole file →"])]));
+          el("a", { class: "node", onclick: () => this.showCode() }, ["show the whole file →"])]));
         const box = el("div", { class: "pm-code preview" });
         const table = el("table");
         highlightSV(prev.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")).split("\n").forEach((l, i) => {
@@ -792,26 +908,21 @@
       return out;
     }
     renderCode(body, n) {
-      const code = n.code || (n.cls && this.N[n.cls] ? this.N[n.cls].code : "");
-      const file = n.file || (n.cls && this.N[n.cls] ? this.N[n.cls].file : null);
-      const line = n.line || (n.cls && this.N[n.cls] ? this.N[n.cls].line : 1);
-      if (!code) { body.innerHTML = '<p class="empty">No source attached to this item.</p>'; return; }
-      // escape first, then colour (the regex works on the escaped text; entities contain no SV tokens of interest)
-      const html = highlightSV(code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+      const file = this.fileOf(n);
+      const text = this.fileText(file);
+      if (!text) { body.innerHTML = '<p class="empty">No source attached to this item.</p>'; return; }
+      const [a, b] = this.rangeOf(n);
+      const total = text.split("\n").length;
       const head = el("div", { class: "pm-code-head" });
-      head.append(el("span", {}, [`${file}:${line}`]));
-      if (this.opts.repoUrl && file) head.append(el("a", { href: `${this.opts.repoUrl}/blob/main/${file}#L${line}`, target: "_blank", rel: "noopener" }, ["open on GitHub ↗"]));
+      head.append(el("span", {}, [`${file}  (${total} lines${a > 1 || b < total ? `, item at ${a}–${b}` : ""})`]));
+      if (this.opts.repoUrl && file) head.append(el("a", { href: `${this.opts.repoUrl}/blob/main/${file}#L${a}-L${b}`, target: "_blank", rel: "noopener" }, ["open on GitHub ↗"]));
       body.append(head);
       const box = el("div", { class: "pm-code" });
-      const table = el("table");
-      html.split("\n").forEach((l, i) => {
-        const tr = el("tr");
-        tr.append(el("td", { class: "ln" }, [String(line + i)]));
-        tr.append(el("td", { html: l || " " }));
-        table.append(tr);
-      });
+      const table = this.codeRows(text, a > 1 || b < total ? a : 0, b);
       box.append(table);
       body.append(box);
+      const row = table.rows[Math.max(0, a - 3)];
+      if (row && a > 1) requestAnimationFrame(() => { body.scrollTop = row.offsetTop + box.offsetTop - body.offsetTop; });
     }
     docUrl(u) { return /^https?:/.test(u) ? u : (this.opts.docsBase || "") + u.replace(/\.md$/, "/").replace(/index\/$/, ""); }
     renderLinks(body, n) {
