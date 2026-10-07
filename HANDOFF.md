@@ -1,8 +1,8 @@
 # HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
 
 > נכתב בסוף הסשן הרביעי (2026-10-07). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר.
-> HEAD: `4948f7f` על `claude/hopeful-meitner-r5epiu`, `main` מצביע לאותו commit. עץ העבודה נקי.
-> CI (lint + docs) ירוק על `4948f7f`. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
+> HEAD: `c98a036` על `claude/hopeful-meitner-r5epiu`, `main` מצביע לאותו commit. עץ העבודה נקי.
+> CI (lint + docs) ירוק על `4948f7f` (הקוד); `c928f3d` ו-`c98a036` שינו רק HANDOFF/README/צילומים. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
 
 ---
 
@@ -83,7 +83,8 @@
   ל-en_reg, כתיבה ל-RO נדחית, ו-10 assertions על `RouterModel` (reset, good packet, bad parity,
   addr 3, oversized, router disabled, unmapped, warm reset, checkPacket) — הכול עבר.
 - CI ב-GitHub: workflow `lint` (slang + style-check + map-check) ו-`docs` (mkdocs → GitHub Pages)
-  ירוקים על `4948f7f`.
+  ירוקים על `4948f7f`; שני ה-commits שאחריו (`c928f3d`, `c98a036`) נגעו רק ב-HANDOFF.md, README.md,
+  `scripts/readme_shots.mjs`, `Makefile` ו-`docs/assets/readme/` — לבדוק שגם הם ירוקים.
 - GitHub Pages פעיל (Source = GitHub Actions), האתר חי, המפה ב-`/project-map/` והקובץ העצמאי
   ב-`/downloads/yapp_project_map.html`.
 
@@ -133,14 +134,26 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    `docs/assets/packet_structure.svg` (gen_waves.py), `yapp_project/uvc/yapp/README.md`, ASCII של
    מבנה הפקטה בכותרת `yapp_packet.sv` (פרויקט + 6 עותקי מעבדות זהים), exports חודשו.
 4. נשלחו `QcommMentoring.zip`, `yapp_project_map.html`, `project_map_root.png`. סיכום בעברית ניתן.
+5. `c928f3d` — **HANDOFF.md** נכתב (לפי התבנית `handoff.md` של תמיר) ובסוף גם נכנס ל-commit: התבנית
+   אמרה "בלי commit", אבל ה-stop hook שלו דרש פעמיים ושאלתו רמזה שהוא מצפה לקובץ בריפו.
+6. `c98a036` — **שדרוג README.md** לפי 4 תשובות של תמיר (קהל: סטודנטיות קודם, מנטורים אחריהן; תמונות:
+   היררכיה מלאה + זום על ה-DUT + סימולטור רגיסטרים + מגרש פקטה; עץ מלא עם שורת הסבר לכל תיקייה
+   וקובץ מרכזי; badges של CI וקישורים לאתר/למפה בראש). מבנה: badges + תוכן עניינים → For students
+   (המפה, ה-DUT ומפת הרגיסטרים המקוצרת, שני הסימולטורים, טבלת 8 המפגשים של המעבדות עם קישורים לאתר)
+   → Quick start → Repository layout (עץ מלא, GENERATED מסומן) → For mentors (סגנון, כלים ו-CI, מה לא
+   אומת). ארבעת הצילומים ב-`docs/assets/readme/` נוצרים ע"י **`scripts/readme_shots.mjs`**
+   (`make readme-shots` = `mkdocs build --strict` + Playwright): `map_overview.png` (root scene עם `tb`
+   נבחר, פאנל + עמודת Source), `map_dut.png` (hw_top בזום, פאנלים/legend/hint מוסתרים),
+   `sim_registers.png` (דף `dut/spec` אחרי WR ל-0x1004 שנדחה), `sim_packet.png` (דף `components/packet`
+   אחרי Send to router). נשלחו zip + README.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
 
 ### סטטוס git
-- ענף: `claude/hopeful-meitner-r5epiu` (= `origin/claude/hopeful-meitner-r5epiu` = `main` = `origin/main`), HEAD `4948f7f`.
-- אין שינויים לא-committed (מלבד `HANDOFF.md` הזה, שלא עושים לו commit לפי הבקשה).
-- 16 commits בסך הכול; האחרונים: `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`, `c78e729`, `1c8da5e`, `a4efbfb`.
+- ענף: `claude/hopeful-meitner-r5epiu` (= `origin/claude/hopeful-meitner-r5epiu` = `main` = `origin/main`), HEAD `c98a036`.
+- אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit (ראה סעיף 2, פריט 5).
+- 18 commits בסך הכול; האחרונים: `c98a036` (README), `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`, `c78e729`, `1c8da5e`, `a4efbfb`.
 
 ---
 
@@ -248,7 +261,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `docs/project-map.md` | דף המפה (iframe) + פסקת **Simulate** | כן |
 | `docs/dut/spec.md` | מפרט; טבלאות רגיסטרים/זיכרונות; **הערת כתובות לא ממופות + widget `data-sim="regs"`** | כן |
 | `docs/components/packet.md` | מדריך הפקטה; **איור + טבלת bytes + widget `data-sim="packet"`** | כן |
-| `docs/getting-started.md`, `README.md` | מבנה, הרצה, **כללי הסגנון** | כן |
+| `docs/getting-started.md` | מבנה, הרצה, **כללי הסגנון** | כן |
+| **`README.md`** | דף הבית של הריפו: badges, For students (מפה, DUT, סימולטורים, מעבדות) עם 4 צילומים, Quick start, עץ מלא מוסבר, For mentors | **נכתב מחדש** |
+| **`scripts/readme_shots.mjs`** | מצלם את 4 תמונות ה-README מהמפה העצמאית ומ-`site/` (Playwright); `make readme-shots` | **חדש** |
+| **`docs/assets/readme/*.png`** | `map_overview`, `map_dut`, `sim_registers`, `sim_packet` (מיוצרים, ב-commit, ~1.2MB) | **חדש** |
 | `docs/appendix/unverified.md` | 11 פריטים שרק xrun יכול לאמת | — |
 | `mkdocs.yml` | אתר; **`extra_javascript` (regmap.js, sim.js), `extra_css` (sim.css)** | כן |
 | `.github/workflows/lint.yml` | pyslang + UVM src → **style-check** → lint → map-check | כן |
@@ -259,9 +275,9 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `yapp_project/tb/reg/yapp_regs_c.sv` | ה-RAL block עם `add_reg/add_mem` offsets — **נבדק מול regmap.yaml ב-CI** | — |
 | `labs/lab01_data … lab11c_rm_sim` | snapshots; 7+ קומפלים מ-`yapp_project`; 1–6 עם `sv/` משלהם | style pass |
 | `test_install/` | בדיקת התקנה | — |
-| **`HANDOFF.md`** | המסמך הזה (לא ב-commit) | חדש |
+| **`HANDOFF.md`** | המסמך הזה (ב-commit) | חדש |
 
-קבצים שנמחקו בעבר: `router_rtl/` (עבר ל-`yapp_project/rtl/`), `<uvc>/sv/` (עברו ל-`yapp_project/uvc/`). קבצים חד-פעמיים שאינם בריפו: `restyle.py`, `split_classes.py`, `sim_test.mjs`, `shot.mjs` (scratchpad של הסשנים).
+קבצים שנמחקו בעבר: `router_rtl/` (עבר ל-`yapp_project/rtl/`), `<uvc>/sv/` (עברו ל-`yapp_project/uvc/`). קבצים חד-פעמיים שאינם בריפו: `restyle.py`, `split_classes.py`, `sim_test.mjs`, `shot.mjs` (scratchpad של הסשנים). `readme_shots.mjs` לעומתם **כן** בריפו.
 
 ---
 
@@ -299,6 +315,8 @@ coverage closure, מרווחי race של מוניטורים). תמיר אמר ש
 - ה-packet playground מציג `maxpktsize`/`router_en` מהמודל המשותף — אחרי שינוי ברגיסטרים הוא מתעדכן דרך `model.on`, אבל שני widgets על אותו דף מתרנדרים מחדש כולם בכל שינוי (עדיין מהיר).
 - `test_model.py` לא בודק את `sim.js` עצמו (ה-assertions על RouterModel חיו ב-`sim_test.mjs` ב-scratchpad). רעיון: `scripts/project_map/test_sim.mjs` שרץ ב-`make map-check` אם node קיים — **לא מומש**.
 - אין `CLAUDE.md` בריפו (רק הקובץ הזה והתיעוד).
+- צילומי ה-README לא נבדקים ב-CI (כמו ה-exports): אחרי שינוי בממשק של המפה/הסימולטורים להריץ `make readme-shots` ולעשות commit לתמונות. התמונות תלויות ב-`site/` בנוי, לכן ה-target תלוי ב-`docs`.
+- ב-README יש badge מ-shields.io (קישורים סטטיים לאתר/למפה) — תלות חיצונית קוסמטית בלבד.
 
 **שאלות שעדיין לא נענו / החלטות של תמיר.**
 - תוצאות הרגרסיה ב-xrun ומה לתקן.
@@ -311,7 +329,7 @@ coverage closure, מרווחי race של מוניטורים). תמיר אמר ש
 
 ## 8. הצעד הבא
 
-**ראשון, קונקרטי:** לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
+**ראשון, קונקרטי:** לבדוק ב-GitHub Actions שה-workflows ירוקים על `c98a036`, ואז לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
 (`cd yapp_project/tb && make run TEST=reg_function_test`, `router_simple_mcseq_test`,
 `reg_access_test`, `uvm_mem_walk_test`, ו-`labs/lab09_sbd` `scoreboard_drop_test`) ולבקש את
 `UVM Report Summary` + שגיאות קומפילציה. אם יש שגיאות — לתקן אותן קודם לכל דבר אחר (קטנות, מקומיות),
@@ -340,6 +358,7 @@ make map && make map-check                  # לבנות ולבדוק את המ�
 mkdocs build --strict                       # האתר ל-site/ (gitignored)
 python3 scripts/gen_waves.py                # waveforms + packet_structure.svg
 make map-export                             # SVG/PNG ל-docs/assets/project_map/export/ (ל-commit), PDF ל-build/
+make readme-shots                           # בונה את האתר ומצלם מחדש את 4 תמונות ה-README ל-docs/assets/readme/
 
 # בדיקות נקודתיות
 python3 scripts/sv_style.py --check --diff path/to/file.sv
