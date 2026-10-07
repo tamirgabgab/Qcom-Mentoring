@@ -49,6 +49,20 @@ flowchart TB
 
 ```systemverilog
 --8<-- "labs/lab11a_rm_gen/yapp_router_reg_pkg.sv"
+--8<-- "labs/lab11a_rm_gen/reg/ctrl_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/en_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/ro_byte_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/parity_err_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/oversized_pkt_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/addr3_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/addr0_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/addr1_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/addr2_cnt_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/mem_size_reg_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/yapp_pkt_mem_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/yapp_mem_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/yapp_regs_c.sv"
+--8<-- "labs/lab11a_rm_gen/reg/yapp_router_regs_t.sv"
 ```
 
 ### 3. The quick test — `quicktest.sv`

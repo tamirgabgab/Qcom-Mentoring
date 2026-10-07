@@ -1,0 +1,23 @@
+//------------------------------------------------------------------------------
+// short_packet_test.sv -- short_packet_test (test library (Lab 4: factory, overrides, configuration))
+// Split out of router_test_lib.sv: one class per file.
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// short_packet_test: every yapp_packet the factory creates becomes a
+// short_yapp_packet. Nothing in the UVC changes.
+//------------------------------------------------------------------------------
+class short_packet_test extends base_test;
+
+  `uvm_component_utils(short_packet_test)
+
+  function new(string name, uvm_component parent);
+    super.new(name, parent);
+  endfunction : new
+
+  function void build_phase(uvm_phase phase);
+    set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
+    super.build_phase(phase);
+  endfunction : build_phase
+
+endclass : short_packet_test

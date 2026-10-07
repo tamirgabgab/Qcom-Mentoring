@@ -85,6 +85,9 @@ flowchart TB
 
 ```systemverilog
 --8<-- "labs/lab07_integ/tb/router_test_lib.sv"
+--8<-- "labs/lab07_integ/tb/tests/base_test.sv"
+--8<-- "labs/lab07_integ/tb/tests/simple_test.sv"
+--8<-- "labs/lab07_integ/tb/tests/test_uvc_integration.sv"
 ```
 
 ## Run

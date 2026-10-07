@@ -68,6 +68,8 @@ For now the driver only prints the packet; pins arrive in Lab 6.
 
 ```systemverilog
 --8<-- "labs/lab03_uvc/sv/yapp_tx_seqs.sv"
+--8<-- "labs/lab03_uvc/sv/seqs/yapp_base_seq.sv"
+--8<-- "labs/lab03_uvc/sv/seqs/yapp_5_packets.sv"
 ```
 
 ### 7. Package include order — `sv/yapp_pkg.sv`

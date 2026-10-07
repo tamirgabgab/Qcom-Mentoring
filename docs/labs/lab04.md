@@ -54,6 +54,9 @@ endclass
 
 ```systemverilog
 --8<-- "labs/lab04_factory/tb/router_test_lib.sv"
+--8<-- "labs/lab04_factory/tb/tests/base_test.sv"
+--8<-- "labs/lab04_factory/tb/tests/short_packet_test.sv"
+--8<-- "labs/lab04_factory/tb/tests/set_config_test.sv"
 ```
 
 ### 4. The testbench — `tb/router_tb.sv`

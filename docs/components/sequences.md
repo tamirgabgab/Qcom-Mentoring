@@ -61,6 +61,18 @@ payload *after* randomization and *before* sending.
 
 ```systemverilog
 --8<-- "yapp/sv/yapp_tx_seqs.sv"
+--8<-- "yapp/sv/seqs/yapp_base_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_5_packets.sv"
+--8<-- "yapp/sv/seqs/yapp_1_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_012_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_111_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_repeat_addr_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_incr_payload_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_rnd_seq.sv"
+--8<-- "yapp/sv/seqs/six_yapp_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_exhaustive_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_coverage_seq.sv"
+--8<-- "yapp/sv/seqs/yapp_88_packets_seq.sv"
 ```
 
 ## Patterns worth copying

@@ -29,10 +29,17 @@ Every lab directory has the same shape:
 ```
 labs/lab05_seq/
 ├── sv/        the UVC source files of that lab (Labs 1-6 only; later labs use yapp/sv)
+│   └── seqs/      one file per sequence class, included by yapp_tx_seqs.sv
 └── tb/        testbench, tests, top modules
+    ├── tests/     one file per test class, included by router_test_lib.sv
     ├── run.f      xrun command file: what to compile + default plusargs
     └── Makefile   make run / gui / lint / clean
 ```
+
+**One class per file.** The course's library files (`yapp_tx_seqs.sv`, `router_test_lib.sv`,
+`router_mcseqs_lib.sv`, `yapp_router_reg_pkg.sv`) are kept as the files the packages include,
+but each of them only `include`s the class files of its sub-directory (`seqs/`, `tests/`,
+`mcseqs/`, `reg/`). `short_yapp_packet` has its own file next to `yapp_packet.sv`.
 
 ```bash
 cd labs/lab05_seq/tb

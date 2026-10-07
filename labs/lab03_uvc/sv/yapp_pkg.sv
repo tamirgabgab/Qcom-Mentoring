@@ -9,7 +9,6 @@ package yapp_pkg;
   import uvm_pkg::*;
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
-
   `include "yapp_packet.sv"
   `include "yapp_tx_monitor.sv"
   `include "yapp_tx_sequencer.sv"

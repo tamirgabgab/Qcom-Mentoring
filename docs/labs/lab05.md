@@ -34,6 +34,16 @@ flowchart TB
 
 ```systemverilog
 --8<-- "labs/lab05_seq/sv/yapp_tx_seqs.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_base_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_5_packets.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_1_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_012_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_111_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_repeat_addr_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_incr_payload_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_rnd_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/six_yapp_seq.sv"
+--8<-- "labs/lab05_seq/sv/seqs/yapp_exhaustive_seq.sv"
 ```
 
 | Sequence | Technique |

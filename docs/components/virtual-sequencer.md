@@ -35,6 +35,8 @@ mcseqr.yapp_seqr = yapp.agent.sequencer;
 
 ```systemverilog
 --8<-- "labs/lab08_mcseq/tb/router_mcseqs_lib.sv"
+--8<-- "labs/lab08_mcseq/tb/mcseqs/router_mcseq_base.sv"
+--8<-- "labs/lab08_mcseq/tb/mcseqs/router_simple_mcseq.sv"
 ```
 
 * `` `uvm_declare_p_sequencer(router_mcsequencer) `` adds a typed

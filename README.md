@@ -43,7 +43,7 @@ pip install pyslang pyyaml jinja2 && make map
 
 ```
 router_rtl/           DUT
-yapp/ hbus/ channel/ clock_and_reset/ router/   UVCs (sv/ in each)
+yapp/ hbus/ channel/ clock_and_reset/ router/   UVCs (sv/ in each; one class per file, seqs/ for the sequences)
 labs/lab01_data … lab11c_rm_sim                 one snapshot per lab
 test_install/         UVM installation check
 common/               uvm_version_compat.svh (1.1d / 1.2 shim), lab.mk

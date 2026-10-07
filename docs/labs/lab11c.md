@@ -32,6 +32,13 @@ flowchart LR
 
 ```systemverilog
 --8<-- "labs/lab11c_rm_sim/tb/router_test_lib.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/base_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/uvm_reset_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/uvm_mem_walk_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/reg_access_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/reg_function_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/reg_function_check_test.sv"
+--8<-- "labs/lab11c_rm_sim/tb/tests/reg_introspection_test.sv"
 ```
 
 | Test | What it does |

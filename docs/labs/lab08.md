@@ -44,6 +44,8 @@ sequenceDiagram
 
 ```systemverilog
 --8<-- "labs/lab08_mcseq/tb/router_mcseqs_lib.sv"
+--8<-- "labs/lab08_mcseq/tb/mcseqs/router_mcseq_base.sv"
+--8<-- "labs/lab08_mcseq/tb/mcseqs/router_simple_mcseq.sv"
 ```
 
 ### 3. `router_tb`: build and connect
