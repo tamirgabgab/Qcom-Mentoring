@@ -18,7 +18,7 @@ flowchart LR
         MAP --- BLK
     end
     RM -->|"front door"| AD["hbus_reg_adapter<br/>reg2bus / bus2reg"] --> SQ["hbus master sequencer → driver"] --> DUT
-    RM -->|"backdoor<br/>hw_top.dut.ctrl_reg"| DUT
+    RM -->|"backdoor<br/>hw_top.dut.u_regs.ctrl_reg"| DUT
     DUT -. "mirror (auto predict)" .-> RM
 ```
 
@@ -35,27 +35,29 @@ an IP-XACT file). Three layers:
 | top block | `yapp_router_regs_t` | the sub-block at base `0x1000`, `default_map` |
 
 ```systemverilog
---8<-- "labs/lab11a_rm_gen/yapp_router_reg_pkg.sv"
---8<-- "labs/lab11a_rm_gen/reg/ctrl_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/en_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/ro_byte_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/parity_err_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/oversized_pkt_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/addr3_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/addr0_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/addr1_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/addr2_cnt_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/mem_size_reg_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/yapp_pkt_mem_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/yapp_mem_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/yapp_regs_c.sv"
---8<-- "labs/lab11a_rm_gen/reg/yapp_router_regs_t.sv"
+--8<-- "yapp_project/tb/yapp_router_reg_pkg.sv"
+--8<-- "yapp_project/tb/reg/ctrl_reg_c.sv"
+--8<-- "yapp_project/tb/reg/en_reg_c.sv"
+--8<-- "yapp_project/tb/reg/ro_byte_reg_c.sv"
+--8<-- "yapp_project/tb/reg/parity_err_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/oversized_pkt_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/addr3_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/addr0_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/addr1_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/addr2_cnt_reg_c.sv"
+--8<-- "yapp_project/tb/reg/mem_size_reg_c.sv"
+--8<-- "yapp_project/tb/reg/yapp_pkt_mem_c.sv"
+--8<-- "yapp_project/tb/reg/yapp_mem_c.sv"
+--8<-- "yapp_project/tb/reg/yapp_regs_c.sv"
+--8<-- "yapp_project/tb/reg/yapp_router_regs_t.sv"
 ```
+
+(The same files, as written in Lab 11A, are in `labs/lab11a_rm_gen/`.)
 
 ## The adapter (HBUS UVC)
 
 ```systemverilog
---8<-- "hbus/sv/hbus_reg_adapter.sv"
+--8<-- "yapp_project/uvc/hbus/hbus_reg_adapter.sv"
 ```
 
 `provides_responses = 0` because the HBUS driver writes the read data straight
@@ -69,7 +71,7 @@ into the request item: the map reads it back from the same object after
 yapp_rm = yapp_router_regs_t::type_id::create("yapp_rm");
 yapp_rm.build();                               // registers, fields, maps
 yapp_rm.lock_model();                          // freeze and compute addresses
-yapp_rm.set_hdl_path_root("hw_top.dut");       // backdoor root
+yapp_rm.set_hdl_path_root("hw_top.dut.u_regs"); // backdoor root: the register block of the router
 yapp_rm.default_map.set_auto_predict(1);       // mirror follows every access
 reg2hbus = hbus_reg_adapter::type_id::create("reg2hbus");
 
@@ -114,7 +116,11 @@ checks over every register instead of two hand-picked ones.
 ## Things that bite
 
 * Register names in the model **must** equal the RTL variable names for the
-  backdoor to resolve (`hw_top.dut.ctrl_reg`).
+  backdoor to resolve, and the root must be the module that holds them. Every
+  register and memory of the router lives in the `yapp_hbus_regs` instance
+  `u_regs`, so the root is `hw_top.dut.u_regs` and `ctrl_reg` resolves to
+  `hw_top.dut.u_regs.ctrl_reg`. Move a register to another module and the
+  model needs `add_hdl_path_slice` with the relative path, or a new root.
 * Reserved / unused bits: `en_reg[3]` and `ctrl_reg[7:6]` are RW in the DUT
   here, so round trips are clean; on another DUT they might read as 0.
 * `mem_size_reg` only receives 6 bits from the packet logic, but `poke` writes

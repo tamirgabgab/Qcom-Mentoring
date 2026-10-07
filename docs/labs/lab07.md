@@ -3,8 +3,8 @@
 [Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb){ .pm-link }
 
 
-**Directory:** `labs/lab07_integ` (only `tb/`; the YAPP UVC moved to `yapp/sv`) ·
-**UVCs added:** `hbus/sv`, `channel/sv`, `clock_and_reset/sv`
+**Directory:** `labs/lab07_integ` (only `tb/`; the YAPP UVC moved to `yapp_project/uvc/yapp`) ·
+**UVCs added:** `yapp_project/uvc/hbus`, `yapp_project/uvc/channel`, `yapp_project/uvc/clock_and_reset`
 
 ## Objective
 
@@ -116,8 +116,8 @@ collect 3 × 20 = 60 packets.
 ??? question "Why `uvm_config_int::set(this, "chan0", "channel_id", 0)` and not a constructor argument?"
     UVM components all share the `(name, parent)` constructor so the factory
     can create them. Per-instance values go through the configuration
-    database; `channel_env` picks `channel_id` up automatically thanks to its
-    `` `uvm_field_int ``.
+    database; `channel_env` reads `channel_id` with `uvm_config_int::get` at
+    the start of its `build_phase` and passes it on to its agent.
 
 ??? question "Why no default sequence for the HBUS in `simple_test`?"
     The router's reset values (maxpktsize 63, enabled) already let short
@@ -136,7 +136,7 @@ collect 3 × 20 = 60 packets.
 
 ```bash
 diff -r labs/lab06_vif/tb labs/lab07_integ/tb
-diff -r labs/lab06_vif/sv yapp/sv          # the UVC became standalone (+ later additions)
+diff -r labs/lab06_vif/sv yapp_project/uvc/yapp          # the UVC became standalone (+ later additions)
 ```
 
 * `router_tb`: three channel envs, HBUS env, Clock & Reset env, their configuration

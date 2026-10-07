@@ -15,8 +15,9 @@ it and sends more.
 ## Concepts
 
 virtual sequencer with sub-sequencer handles · `` `uvm_declare_p_sequencer `` ·
-`` `uvm_do_on `` / `` `uvm_do_on_with `` · objection on the starting phase ·
-hierarchical references in `connect_phase`
+`seq.start(p_sequencer.hbus_seqr, this)` (the course's `` `uvm_do_on `` /
+`` `uvm_do_on_with ``) · objection on the starting phase · hierarchical
+references in `connect_phase`
 
 ```mermaid
 sequenceDiagram

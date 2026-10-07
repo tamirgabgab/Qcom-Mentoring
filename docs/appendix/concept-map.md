@@ -2,13 +2,13 @@
 
 | Concept | Lab | Where in the code |
 |---|---|---|
-| Data items, field macros, constraints, `post_randomize` | 1 | `yapp_packet.sv` |
+| Data items, `do_print` / `do_copy` / `do_compare` / `do_pack`, constraints, `post_randomize` | 1 | `yapp_packet.sv` |
 | Components, phases, `run_test`, `+UVM_TESTNAME`, verbosity, topology | 2 | `router_tb.sv`, `router_test_lib.sv`, `top.sv` |
 | Driver / sequencer / monitor / agent / env, active vs passive | 3 | `yapp_tx_*.sv`, `yapp_env.sv` |
 | Phase ordering (`start_of_simulation`, bottom-up) | 3 opt. | every component of `labs/lab03_uvc/sv` |
 | Factory `create`, type overrides | 4 | `short_packet_test` |
 | Configuration (`uvm_config_int`, `uvm_config_wrapper`), `check_config_usage` | 3, 4, 7 | `base_test`, `set_config_test`, `router_tb` |
-| Sequences, nesting, `` `uvm_do_with ``, `` `uvm_create `` / `` `uvm_send `` | 5 | `yapp_tx_seqs.sv` |
+| Sequences, `start_item` / `randomize() with` / `finish_item`, nesting with `seq.start(m_sequencer, this)` | 5 | `yapp_tx_seqs.sv`, `seqs/` |
 | Objections, drain time | 5, 6, 8 | `yapp_base_seq`, `base_test::run_phase`, `router_mcseq_base` |
 | Randomization debug (SimVision / Verisium) | 5 | `exhaustive_seq_test` with the Lab 4 `short_yapp_packet` |
 | Interfaces, virtual interfaces, `uvm_config_db` | 6, 7 | `yapp_if.sv`, `tb_top.sv`, driver/monitor `connect_phase` |

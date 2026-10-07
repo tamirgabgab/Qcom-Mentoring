@@ -108,14 +108,14 @@ classDiagram
 
 | Concept | One-line summary | Lab |
 |---|---|---|
-| Field macros | `` `uvm_field_int `` etc. give `print/copy/compare/pack` for free | [1](../labs/lab01.md) |
+| Data item methods | `do_print` / `do_copy` / `do_compare` / `do_pack` behind `print()`, `copy()`, `clone()`, `compare()`, `pack()` (the course uses `` `uvm_field_* `` macros for the same thing) | [1](../labs/lab01.md) |
 | Phases | `build` (top-down) → `connect` → `end_of_elaboration` → `start_of_simulation` → **`run`** (time passes) → `extract` → `check` → `report` | [2](../labs/lab02.md), [3](../labs/lab03.md) |
 | `run_test()` | creates the test named by `+UVM_TESTNAME` and starts phasing | [2](../labs/lab02.md) |
 | Agent, active/passive | `is_active` decides whether a driver and sequencer are built | [3](../labs/lab03.md) |
 | Default sequence | `uvm_config_wrapper::set(..., "run_phase", "default_sequence", type)` | [3](../labs/lab03.md) |
 | Factory | `type_id::create()` + `set_type_override_by_type()` | [4](../labs/lab04.md) |
 | Configuration | `uvm_config_int::set/get`, `check_config_usage()` | [4](../labs/lab04.md), [7](../labs/lab07.md) |
-| Sequences | `body()`, `` `uvm_do ``, `` `uvm_do_with ``, nesting | [5](../labs/lab05.md) |
+| Sequences | `body()`, `start_item` / `randomize() with` / `finish_item`, `seq.start(sequencer, this)` for nesting | [5](../labs/lab05.md) |
 | Objections | `raise_objection` / `drop_objection` keep `run_phase` alive; drain time | [5](../labs/lab05.md), [6](../labs/lab06.md) |
 | Virtual interface | `uvm_config_db #(virtual yapp_if)` | [6](../labs/lab06.md) |
 | Virtual sequencer | a sequencer that only holds handles to other sequencers | [8](../labs/lab08.md) |

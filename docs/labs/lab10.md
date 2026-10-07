@@ -3,8 +3,8 @@
 [Open on the project map →](../project-map.md#view=classes&node=cls:yapp_tx_monitor){ .pm-link }
 
 
-**Directory:** `labs/lab10_cov` · **Changed:** `yapp/sv/yapp_tx_monitor.sv` (covergroup),
-`yapp/sv/yapp_tx_seqs.sv` (`yapp_coverage_seq`), `tb/router_test_lib.sv`, `run.f` (`-coverage U`)
+**Directory:** `labs/lab10_cov` · **Changed:** `yapp_project/uvc/yapp/yapp_tx_monitor.sv` (covergroup),
+`yapp_project/uvc/yapp/yapp_tx_seqs.sv` (`yapp_coverage_seq`), `tb/router_test_lib.sv`, `run.f` (`-coverage U`)
 
 ## Objective
 
@@ -62,20 +62,25 @@ Every length bucket × every address (0..3) × good/bad parity = 40 packets.
 The packet's `c_addr_legal` constraint is switched off to reach address 3.
 
 ```systemverilog
-task body();
+task yapp_coverage_seq::body();
   int lengths[5] = '{1, 5, 20, 50, 63};   // one value inside each bin
   for (int a = 0; a < 4; a++)
     foreach (lengths[i])
       for (int bad = 0; bad < 2; bad++) begin
-        `uvm_create(req)
-        req.c_addr_legal.constraint_mode(0);
+        req = yapp_packet::type_id::create("req");
+        req.c_addr_legal.constraint_mode(0);        // before randomize(): allow addr 3
         if (!req.randomize() with { req.addr == a; req.length == lengths[i];
                                     req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); })
           `uvm_error(get_type_name(), "Randomization failed")
-        `uvm_send(req)
+        start_item(req);
+        finish_item(req);
       end
-endtask
+endtask : body
 ```
+
+The constraint is switched off on the object *before* `randomize()`, which is
+why the sequence randomizes first and only then does `start_item` /
+`finish_item`.
 
 ### 3. `coverage_test`
 
@@ -131,6 +136,6 @@ report line shows the percentage. With `coverage_test` all 5 length bins, all
 ## What changed since the previous lab
 
 ```bash
-diff labs/lab06_vif/sv/yapp_tx_monitor.sv yapp/sv/yapp_tx_monitor.sv   # covergroup + analysis port
+diff labs/lab06_vif/sv/yapp_tx_monitor.sv yapp_project/uvc/yapp/yapp_tx_monitor.sv   # covergroup + analysis port
 diff -r labs/lab09_sbc/tb labs/lab10_cov/tb
 ```

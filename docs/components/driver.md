@@ -42,7 +42,7 @@ That separates *what* (a packet) from *how* (edges and handshake), and the
 same task is reusable from a non-UVM testbench.
 
 ```systemverilog
---8<-- "yapp/sv/yapp_if.sv"
+--8<-- "yapp_project/uvc/yapp/yapp_if.sv"
 ```
 
 `wait_accept()` is the heart of the handshake: on a falling edge, if
@@ -52,7 +52,7 @@ and the next one may be driven; if it is high the byte must be held.
 ## The reference implementation
 
 ```systemverilog
---8<-- "yapp/sv/yapp_tx_driver.sv"
+--8<-- "yapp_project/uvc/yapp/yapp_tx_driver.sv"
 ```
 
 ## Reset handling

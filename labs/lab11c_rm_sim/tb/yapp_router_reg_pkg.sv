@@ -23,7 +23,7 @@
 // Backdoor: every register / memory is configured with the HDL name of the
 // matching RTL variable, so after
 //     yapp_rm.set_hdl_path_root("hw_top.dut.u_regs");
-// peek()/poke() resolve to hw_top.dut.ctrl_reg, hw_top.dut.yapp_mem[i], ...
+// peek()/poke() resolve to hw_top.dut.u_regs.ctrl_reg, hw_top.dut.u_regs.yapp_mem[i], ...
 //------------------------------------------------------------------------------
 package yapp_router_reg_pkg;
 

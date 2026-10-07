@@ -18,7 +18,7 @@ flowchart LR
 ```
 
 ```systemverilog
---8<-- "router/sv/router_reference.sv"
+--8<-- "yapp_project/uvc/router/router_reference.sv"
 ```
 
 The model is deliberately tiny: it mirrors two register fields from the bus
@@ -40,11 +40,11 @@ and the scoreboard, connects them, and (Lab 9C) exposes **exports** so the
 testbench never reaches inside.
 
 ```systemverilog
---8<-- "router/sv/router_module_env.sv"
+--8<-- "yapp_project/uvc/router/router_module_env.sv"
 ```
 
 ```systemverilog
---8<-- "router/sv/router_module_pkg.sv"
+--8<-- "yapp_project/uvc/router/router_module_pkg.sv"
 ```
 
 ## The analysis-FIFO variant (Lab 9D)
@@ -55,7 +55,7 @@ blocking `get()` calls, keeps the register mirror in a parallel thread and
 checks in `check_phase` that every FIFO is empty.
 
 ```systemverilog
---8<-- "router/sv/router_fifo_scoreboard.sv"
+--8<-- "yapp_project/uvc/router/router_fifo_scoreboard.sv"
 ```
 
 | | imp / callback style (9A–9C) | FIFO / process style (9D) |

@@ -56,7 +56,7 @@ endtask
 ```
 
 `starting_phase` is only set for a sequence that the sequencer starts as its
-**default sequence**; for a sub-sequence (`` `uvm_do(seq_1) ``) it is `null`,
+**default sequence**; for a sub-sequence (`seq_1.start(m_sequencer, this)`) it is `null`,
 hence the test. The multichannel sequence (Lab 8) and the HBUS/Clock sequences
 use the same pattern. The channel response sequence deliberately does **not**
 raise one: a receiver must never keep the simulation running on its own.
@@ -92,8 +92,10 @@ gantt
 
 ## Phase-related pitfalls seen in the labs
 
-* Forgetting `super.build_phase(phase)` — field automation (`` `uvm_field_* ``
-  configuration) is applied there.
+* Reading the configuration (`uvm_config_int::get(this, "", "is_active", …)`)
+  **after** creating the children — the value arrives too late to decide
+  whether a driver exists. In this repository the `get()` calls come right
+  after `super.build_phase(phase)`, before any `create`.
 * Calling `uvm_config_*::set` **after** creating the component that reads it
   (Lab 4 `set_config_test`).
 * No drain time → the last packet never leaves the router and the scoreboard

@@ -22,7 +22,7 @@ flowchart LR
     SEQ["uvm_reg_hw_reset_seq<br/>model = tb.yapp_rm"] --> RM["yapp_rm<br/>default_map"]
     RM -->|"reg2bus"| AD["reg2hbus : hbus_reg_adapter"] --> SQ["hbus.masters[0].sequencer"] --> DRV["hbus driver"] --> DUT
     DUT -->|"read data"| DRV -->|"req.hdata"| AD -->|"bus2reg"| RM
-    RM -. "backdoor<br/>hw_top.dut.<reg>" .-> DUT
+    RM -. "backdoor<br/>hw_top.dut.u_regs.<reg>" .-> DUT
 ```
 
 ## Solution
@@ -40,7 +40,7 @@ Step by step in `build_phase`:
 | `yapp_rm = yapp_router_regs_t::type_id::create("yapp_rm")` | the model is an object, no parent |
 | `yapp_rm.build()` | creates sub-block, registers, fields, memories, maps |
 | `yapp_rm.lock_model()` | no more structural changes; addresses are computed |
-| `yapp_rm.set_hdl_path_root("hw_top.dut")` | backdoor paths become `hw_top.dut.ctrl_reg`, … |
+| `yapp_rm.set_hdl_path_root("hw_top.dut.u_regs")` | backdoor paths become `hw_top.dut.u_regs.ctrl_reg`, … — `u_regs` is the `yapp_hbus_regs` instance that holds every register and memory of the router |
 | `yapp_rm.default_map.set_auto_predict(1)` | the mirror follows every front-door access |
 | `reg2hbus = hbus_reg_adapter::type_id::create("reg2hbus")` | the translator |
 
@@ -49,7 +49,7 @@ and in `connect_phase`: `yapp_rm.default_map.set_sequencer(hbus.masters[0].seque
 ### 2. The adapter (already in the HBUS UVC)
 
 ```systemverilog
---8<-- "hbus/sv/hbus_reg_adapter.sv"
+--8<-- "yapp_project/uvc/hbus/hbus_reg_adapter.sv"
 ```
 
 ### 3. `tb_top`: import the package before `router_tb`
@@ -93,8 +93,8 @@ make run TEST=uvm_mem_walk_test XRUN_OPTS="-define INJECT_ERROR"
 
 **Expected:**
 
-* `uvm_reset_test`: the topology shows `yapp_rm` under `tb` (thanks to
-  `` `uvm_field_object ``); the HBUS monitor logs one `READ` per register
+* `uvm_reset_test`: the topology shows `yapp_rm` under `tb` (`router_tb::do_print`
+  calls `printer.print_object("yapp_rm", yapp_rm)`); the HBUS monitor logs one `READ` per register
   (`0x1000`, `0x1001`, `0x1004` … `0x100d`); `UVM_ERROR : 0`.
 * `uvm_mem_walk_test`: HBUS traffic over `0x1100..0x11ff` only (`yapp_pkt_mem`
   is RO and skipped); the HBUS report says **511 writes, 255 reads**.

@@ -7,7 +7,7 @@ instead of signals. UVM has many flavours; the course uses four.
 
 ```mermaid
 flowchart LR
-    SEQ["sequence<br/>`uvm_do(req)"] -->|start_item / finish_item| SQR["sequencer<br/>seq_item_export"]
+    SEQ["sequence<br/>body()"] -->|"start_item(req) / finish_item(req)"| SQR["sequencer<br/>seq_item_export"]
     SQR -->|"get_next_item(req)<br/>item_done()"| DRV["driver<br/>seq_item_port"]
 ```
 

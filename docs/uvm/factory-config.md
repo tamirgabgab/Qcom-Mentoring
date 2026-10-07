@@ -16,7 +16,7 @@ sequenceDiagram
     participant S as yapp_012_seq
     T->>F: set_type_override_by_type(yapp_packet, short_yapp_packet)
     Note over S: later, in body()
-    S->>F: yapp_packet::type_id::create("req")   (`uvm_do)
+    S->>F: req = yapp_packet::type_id::create("req")
     F-->>S: a short_yapp_packet
 ```
 
@@ -26,7 +26,9 @@ Rules of the game:
    `` `uvm_component_utils(T) `` (Lab 1, 2).
 2. **Create** through the factory, never with `new()` directly, for anything a
    test might want to replace: `` T::type_id::create("name", this) `` for
-   components (Lab 4), `` `uvm_create `` / `` `uvm_do `` for sequence items.
+   components (Lab 4), `` req = yapp_packet::type_id::create("req") `` in a
+   sequence for items (the `` `uvm_do `` macros of the course do the same
+   call internally).
 3. **Override** from the test, before the object is created:
 
 ```systemverilog
@@ -73,12 +75,26 @@ if (!yapp_vif_config::get(this, "", "vif", vif))
   `uvm_error("NOVIF", "vif not set")
 ```
 
-How a component receives a setting:
+How a component receives a setting: with `get()`, in its `build_phase`, right
+after `super.build_phase(phase)` and before it creates its children:
 
-* **automatically**, for fields declared with `` `uvm_field_* `` macros —
-  `super.build_phase()` looks them up (that is how `is_active` and
-  `channel_id` arrive);
-* **explicitly**, with `get()` (virtual interfaces).
+```systemverilog
+function void yapp_tx_agent::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  begin
+    uvm_bitstream_t cfg_is_active;
+    if (uvm_config_int::get(this, "", "is_active", cfg_is_active))
+      is_active = uvm_active_passive_enum'(cfg_is_active);
+  end
+  monitor = yapp_tx_monitor::type_id::create("monitor", this);
+  ...
+```
+
+That is how `is_active`, `channel_id`, `num_masters` and the virtual
+interfaces arrive. The course declares such fields with `` `uvm_field_* ``
+macros and lets `super.build_phase()` look them up; the result is the same,
+but with the explicit `get()` you can see which settings a component reads
+and when, and `check_config_usage()` below reports the ones nobody read.
 
 ### `check_config_usage()`
 

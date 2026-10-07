@@ -72,7 +72,7 @@ flowchart TB
     mcseqr -.-> hseqr
     mcseqr -.-> yseqr
     yrm -. "front door via reg2hbus" .-> hseqr
-    yrm -. "backdoor: hw_top.dut.*" .-> dut
+    yrm -. "backdoor: hw_top.dut.u_regs.*" .-> dut
 ```
 
 ### Instance paths
@@ -173,19 +173,27 @@ sequenceDiagram
 
 ## Files of the final environment
 
+The final environment is `yapp_project/` (`rtl/`, `uvc/`, `tb/`); the lab column says
+where each file first appears. Every class has its own file, with `extern` prototypes
+in the class and the method bodies after `endclass`; sequences spell out
+`start_item` / `randomize` / `finish_item` instead of `uvm_do*`, and data items
+implement their `do_*` methods instead of using `uvm_field_*` macros
+(see [Component guides](../components/index.md)).
+
 | File | Class / module | Lab |
 |---|---|---|
-| `yapp/sv/yapp_packet.sv` | `yapp_packet`, `short_yapp_packet`, `parity_type_e` | 1, 4 |
-| `yapp/sv/yapp_tx_driver.sv` | `yapp_tx_driver` | 3, 6 |
-| `yapp/sv/yapp_tx_sequencer.sv` | `yapp_tx_sequencer` | 3 |
-| `yapp/sv/yapp_tx_monitor.sv` | `yapp_tx_monitor` (+ analysis port, covergroup) | 3, 6, 9A, 10 |
-| `yapp/sv/yapp_tx_agent.sv`, `yapp_env.sv` | `yapp_tx_agent`, `yapp_env` | 3, 4 |
-| `yapp/sv/yapp_tx_seqs.sv` | the sequence library | 3, 5, 7, 10 |
-| `yapp/sv/yapp_if.sv` | `yapp_if` | 6 |
-| `hbus/sv/*`, `channel/sv/*`, `clock_and_reset/sv/*` | the provided UVCs | 7 |
-| `labs/*/tb/router_tb.sv` | `router_tb` | 2 → 11B |
-| `labs/*/tb/router_test_lib.sv` | the tests | 2 → 11C |
-| `labs/*/tb/hw_top.sv`, `tb_top.sv` | top modules | 6, 7 |
-| `labs/lab08_mcseq/tb/router_mcsequencer.sv`, `router_mcseqs_lib.sv` | virtual sequencer and sequences | 8 |
-| `router/sv/router_scoreboard.sv`, `router_reference.sv`, `router_module_env.sv`, `router_fifo_scoreboard.sv` | router module UVC | 9A–9D |
-| `labs/lab11a_rm_gen/yapp_router_reg_pkg.sv` | register model | 11A |
+| `yapp_project/uvc/yapp/yapp_packet.sv` | `yapp_packet`, `short_yapp_packet`, `parity_type_e` | 1, 4 |
+| `yapp_project/uvc/yapp/yapp_tx_driver.sv` | `yapp_tx_driver` | 3, 6 |
+| `yapp_project/uvc/yapp/yapp_tx_sequencer.sv` | `yapp_tx_sequencer` | 3 |
+| `yapp_project/uvc/yapp/yapp_tx_monitor.sv` | `yapp_tx_monitor` (+ analysis port, covergroup) | 3, 6, 9A, 10 |
+| `yapp_project/uvc/yapp/yapp_tx_agent.sv`, `yapp_env.sv` | `yapp_tx_agent`, `yapp_env` | 3, 4 |
+| `yapp_project/uvc/yapp/yapp_tx_seqs.sv` | the sequence library | 3, 5, 7, 10 |
+| `yapp_project/uvc/yapp/yapp_if.sv` | `yapp_if` | 6 |
+| `yapp_project/uvc/hbus/*`, `yapp_project/uvc/channel/*`, `yapp_project/uvc/clock_and_reset/*` | the provided UVCs | 7 |
+| `yapp_project/tb/router_tb.sv` | `router_tb` | 2 → 11B |
+| `yapp_project/tb/router_test_lib.sv` + `tests/` | the tests, one class per file | 2 → 11C |
+| `yapp_project/tb/hw_top.sv`, `tb_top.sv` | top modules | 6, 7 |
+| `yapp_project/tb/router_mcsequencer.sv`, `router_mcseqs_lib.sv` + `mcseqs/` | virtual sequencer and sequences | 8 |
+| `yapp_project/uvc/router/router_scoreboard.sv`, `router_reference.sv`, `router_module_env.sv`, `router_fifo_scoreboard.sv` | router module UVC | 9A–9D |
+| `yapp_project/tb/yapp_router_reg_pkg.sv` + `reg/` | register model | 11A |
+| `yapp_project/rtl/yapp_router.sv`, `yapp_input_fsm.sv`, `yapp_output_channel.sv`, `yapp_fifo.sv`, `yapp_hbus_regs.sv`, `yapp_error_timer.sv` (`yapp_router.f`) | the DUT, one module per file | — |

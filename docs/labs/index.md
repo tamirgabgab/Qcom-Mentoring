@@ -24,7 +24,7 @@ result → Checkpoint questions → Optional → What changed since the previous
 ```mermaid
 flowchart LR
     L1[lab01_data] --> L2[lab02_test] --> L3[lab03_uvc] --> L4[lab04_factory] --> L5[lab05_seq] --> L6[lab06_vif]
-    L6 -->|"yapp/sv"| L7[lab07_integ] --> L8[lab08_mcseq] --> L9A[lab09_sba] --> L9B[lab09_sbb]
+    L6 -->|"yapp_project/uvc/yapp"| L7[lab07_integ] --> L8[lab08_mcseq] --> L9A[lab09_sba] --> L9B[lab09_sbb]
     L9B --> L9C[lab09_sbc] --> L10[lab10_cov]
     L9B --> L9D[lab09_sbd]
     L11A[lab11a_rm_gen] --> L11B[lab11b_rm_integ] --> L11C[lab11c_rm_sim]
@@ -32,10 +32,13 @@ flowchart LR
 ```
 
 Labs 1–6 carry their own copy of the YAPP UVC in `labs/<lab>/sv`. From Lab 7
-on, the finished UVC lives in `yapp/sv` and the labs only contain the
-testbench (`tb/`). The router module UVC built in 9A–9D ends up in
-`router/sv`; the register model built in 11A is copied into the `tb/` of 11B
-and 11C, as the course does.
+on, the finished UVC lives in `yapp_project/uvc/yapp` and the labs only contain the
+testbench (`tb/`); their `run.f` compiles the UVCs from `yapp_project/uvc/` and the
+DUT from `yapp_project/rtl/yapp_router.f`. The router module UVC built in 9A–9D ends
+up in `yapp_project/uvc/router`; the register model built in 11A is copied into the
+`tb/` of 11B and 11C, as the course does. The end of the chain, with every UVC, the
+virtual sequencer and the register model, is `yapp_project/tb/`
+(see [Getting started](../getting-started.md#the-complete-project-yapp_project)).
 
 ## Comparing two labs
 

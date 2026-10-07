@@ -33,13 +33,13 @@ flowchart LR
 ## The reference implementation
 
 ```systemverilog
---8<-- "router/sv/router_scoreboard.sv"
+--8<-- "yapp_project/uvc/router/router_scoreboard.sv"
 ```
 
 The comparison functions (`` `include``d into the class body):
 
 ```systemverilog
---8<-- "router/sv/packet_compare.sv"
+--8<-- "yapp_project/uvc/router/packet_compare.sv"
 ```
 
 ## What a failure looks like

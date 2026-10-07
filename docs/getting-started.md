@@ -22,13 +22,55 @@ The log must show the UVM version banner and
 UVM_INFO ... [INSTALL] UVM TEST INSTALL PASSED!
 ```
 
+## The complete project: `yapp_project/`
+
+`yapp_project/` is the source of truth: the finished verification environment, the state the
+course reaches at the end of Lab 11C. Everything else in the repository is derived from it.
+
+```
+yapp_project/
+├── rtl/                 the DUT, one module per file
+│   ├── yapp_router.sv       top level: wiring only
+│   ├── yapp_input_fsm.sv    receives a packet, checks it, routes it
+│   ├── yapp_output_channel.sv   FIFO + output handshake, one instance per channel
+│   ├── yapp_fifo.sv
+│   ├── yapp_hbus_regs.sv    every register and memory, the HBUS slave
+│   ├── yapp_error_timer.sv
+│   └── yapp_router.f        file list, used from run.f as -F ../rtl/yapp_router.f
+├── uvc/
+│   ├── yapp/            YAPP input UVC (seqs/ holds the sequence classes)
+│   ├── hbus/            HBUS UVC, including hbus_reg_adapter
+│   ├── channel/         Channel UVC
+│   ├── clock_and_reset/ Clock & Reset UVC and clkgen
+│   └── router/          router module UVC: reference model, scoreboards, packet_compare
+└── tb/                  the final testbench
+    ├── tb_top.sv, hw_top.sv, router_tb.sv, router_mcsequencer.sv
+    ├── tests/           one file per test class, included by router_test_lib.sv
+    ├── mcseqs/          the multichannel sequences, included by router_mcseqs_lib.sv
+    ├── reg/             the register model classes, included by yapp_router_reg_pkg.sv
+    ├── run.f            xrun command file (default test: reg_function_test)
+    └── Makefile         make run / gui / lint / clean
+```
+
+```bash
+cd yapp_project/tb
+make run TEST=reg_function_test       # any test of tests/, see run.f for the list
+make run TEST=uvm_mem_walk_test XRUN_OPTS="+UVM_VERBOSITY=UVM_HIGH"
+make lint                             # slang elaboration check, no simulator
+```
+
+The labs are snapshots along the way to this project. Labs 1–6 carry their own copy of the
+YAPP UVC in `labs/<lab>/sv`; from Lab 7 on, every lab's `run.f` compiles the UVCs from
+`yapp_project/uvc/` and the DUT from `yapp_project/rtl/yapp_router.f`, and the lab directory
+only contains the testbench of that lab.
+
 ## Running a lab
 
 Every lab directory has the same shape:
 
 ```
 labs/lab05_seq/
-├── sv/        the UVC source files of that lab (Labs 1-6 only; later labs use yapp/sv)
+├── sv/        the UVC source files of that lab (Labs 1-6 only; later labs compile yapp_project/uvc/*)
 │   └── seqs/      one file per sequence class, included by yapp_tx_seqs.sv
 └── tb/        testbench, tests, top modules
     ├── tests/     one file per test class, included by router_test_lib.sv
@@ -36,10 +78,22 @@ labs/lab05_seq/
     └── Makefile   make run / gui / lint / clean
 ```
 
-**One class per file.** The course's library files (`yapp_tx_seqs.sv`, `router_test_lib.sv`,
-`router_mcseqs_lib.sv`, `yapp_router_reg_pkg.sv`) are kept as the files the packages include,
-but each of them only `include`s the class files of its sub-directory (`seqs/`, `tests/`,
-`mcseqs/`, `reg/`). `short_yapp_packet` has its own file next to `yapp_packet.sv`.
+**One class per file, bodies outside the class.** The course's library files (`yapp_tx_seqs.sv`,
+`router_test_lib.sv`, `router_mcseqs_lib.sv`, `yapp_router_reg_pkg.sv`) are kept as the files
+the packages include, but each of them only `include`s the class files of its sub-directory
+(`seqs/`, `tests/`, `mcseqs/`, `reg/`). `short_yapp_packet` has its own file next to
+`yapp_packet.sv`. Inside a file the class body is a table of contents: fields, the `utils`
+macro, constraints and `extern` prototypes. The method bodies follow `endclass` under a
+`// <class> -- method implementations` banner, as `function yapp_packet::set_parity();` or
+`task yapp_012_seq::body();`. Read the prototypes to learn what a class does, scroll down to
+see how.
+
+The classes also do without the shortcut macros of the course material: no `uvm_do*`
+(a sequence writes `create` → `start_item` → `randomize` → `finish_item` itself, and starts a
+sub-sequence with `seq.start(sequencer, this)`), and no `uvm_field_*` automation (`do_print`,
+`do_copy`, `do_compare`, `do_pack`, `do_unpack` and `do_record` are written by hand, and a
+component reads its configuration with `uvm_config_int::get` in `build_phase`). What the
+macros would hide is on the page, where you can read it.
 
 ```bash
 cd labs/lab05_seq/tb

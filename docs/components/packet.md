@@ -12,7 +12,8 @@ channel one "receive a packet with this response delay".
 | Element | `yapp_packet` | Why |
 |---|---|---|
 | base class `uvm_sequence_item` | ✔ | sequencers and drivers are parameterized with it |
-| `` `uvm_object_utils_begin/end `` with field macros | `addr`, `length`, `payload`, `parity`, `parity_type`, `packet_delay` | factory registration + `print/copy/compare/pack` |
+| `` `uvm_object_utils `` | ✔ | factory registration (`type_id::create`, overrides) |
+| `do_print`, `do_copy`, `do_compare`, `do_pack` / `do_unpack`, `do_record` | one line per field: `addr`, `length`, `payload`, `parity`, `parity_type`, `packet_delay` | what `print()`, `copy()`, `clone()`, `compare()`, `pack()` and transaction recording do with the fields — written by hand, no `uvm_field_*` automation |
 | constructor `new(string name = "...")` | ✔ | objects have a name, no parent |
 | `rand` fields + constraints | legal address, length/payload size, parity distribution, delay | random stimulus with the rules of the protocol |
 | derived values | `parity` via `set_parity()` in `post_randomize()` | computed from the random fields |
@@ -21,7 +22,7 @@ channel one "receive a packet with this response delay".
 ## The reference implementation
 
 ```systemverilog
---8<-- "yapp/sv/yapp_packet.sv"
+--8<-- "yapp_project/uvc/yapp/yapp_packet.sv"
 ```
 
 ## Design notes
@@ -32,8 +33,13 @@ channel one "receive a packet with this response delay".
 * `parity` is **not** `rand`: it is a function of the other fields. It is
   recomputed in `post_randomize()`, and `set_parity()` is public so a sequence
   that edits the payload afterwards (`yapp_incr_payload_seq`) can call it.
-* `packet_delay` has `UVM_NOCOMPARE`: two packets with the same contents are
-  equal even if they were sent with different gaps.
+* `do_compare` leaves `packet_delay` out (the course marks the field
+  `UVM_NOCOMPARE`): two packets with the same contents are equal even if they
+  were sent with different gaps. `do_copy` and `do_print` do include it.
+* The `do_*` methods are the one place where every field is listed. Add a
+  field and forget one of them, and `print()` still works but `compare()` is
+  silently blind to it — the kind of bug the field macros hide and these
+  methods make visible.
 * `short_yapp_packet` adds a constraint, nothing else. The factory override in
   the tests turns every packet into a short one.
 
@@ -53,6 +59,9 @@ pkt.print(uvm_default_tree_printer);  // same data, other layout
 * Making `parity` `rand` → the parity is wrong *unless* you add a constraint,
   and then you cannot inject errors.
 * Declaring `parity_type_e` inside the class → sequences cannot name
-  `GOOD_PARITY` / `BAD_PARITY` (`` `uvm_do_with `` constraints reference them).
+  `GOOD_PARITY` / `BAD_PARITY` (the inline `randomize() with { … }` constraints
+  reference them).
+* `$cast` missing in `do_copy` / `do_compare`: `rhs` arrives as a `uvm_object`;
+  without the cast you cannot reach the fields.
 * Using `new()` instead of `type_id::create()` in sequences → the factory
   override of Lab 4 never applies.

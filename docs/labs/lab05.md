@@ -13,9 +13,17 @@ understand objections and randomization failures.
 
 ## Concepts
 
-`uvm_sequence #(T)` · `body()` · `` `uvm_do `` / `` `uvm_do_with `` ·
-`` `uvm_create `` / `` `uvm_send `` · nested sequences · random sequence
+`uvm_sequence #(T)` · `body()` · `type_id::create` → `start_item` → `randomize() with` →
+`finish_item` · `seq.start(m_sequencer, this)` for a nested sequence · random sequence
 properties · objections (`yapp_base_seq`) · randomization debugging
+
+!!! note "No `uvm_do` macros here"
+    The course material writes `` `uvm_do_with(req, { req.addr == 2'd1; }) ``. This repository
+    writes the four steps the macro hides, so you see them: create the item through the
+    factory, `start_item(req)` (wait for the sequencer's grant), `req.randomize() with {…}`
+    (check the result), `finish_item(req)` (hand it to the driver, wait for `item_done`).
+    A nested sequence is created the same way and started with `seq.start(m_sequencer, this)`
+    — that is what `` `uvm_do(seq_1) `` would do.
 
 ```mermaid
 flowchart TB
@@ -48,13 +56,13 @@ flowchart TB
 
 | Sequence | Technique |
 |---|---|
-| `yapp_1_seq` | `` `uvm_do_with(req, { req.addr == 2'd1; }) `` |
-| `yapp_012_seq` | three `` `uvm_do_with `` with different constraints |
-| `yapp_111_seq` | nested: `` `uvm_do(seq_1) `` three times |
+| `yapp_1_seq` | one item: `start_item(req)` → `req.randomize() with { req.addr == 2'd1; }` → `finish_item(req)` |
+| `yapp_012_seq` | the same three times with different inline constraints |
+| `yapp_111_seq` | nested: `seq_1 = yapp_1_seq::type_id::create("seq_1")` → `seq_1.start(m_sequencer, this)`, three times |
 | `yapp_repeat_addr_seq` | `rand bit [1:0] seq_addr` with `!= 3`; both items use it |
-| `yapp_incr_payload_seq` | `` `uvm_create `` → `randomize()` → edit payload → `set_parity()` → `` `uvm_send `` |
+| `yapp_incr_payload_seq` | `create` → `randomize()` → edit payload → `set_parity()` → `start_item` / `finish_item` |
 | `yapp_rnd_seq` | `rand int count` in 1..10, printed in the info message |
-| `six_yapp_seq` | `` `uvm_do_with(rnd_seq, { rnd_seq.count == 6; }) `` |
+| `six_yapp_seq` | `rnd_seq.randomize() with { rnd_seq.count == 6; }` before `rnd_seq.start(m_sequencer, this)` |
 | `yapp_exhaustive_seq` | runs all of the above, with named handles |
 
 ### 2. The tests
@@ -93,12 +101,16 @@ per sequence and 1 + 3 + 3 + 2 + 1 + *count* + 6 packets, no warnings.
 With the Lab 4 version of `short_yapp_packet` (`addr != 2`) the run shows:
 
 ```
-UVM_WARNING ... [RNDFLD] Randomization failed in uvm_do_with action
+UVM_ERROR ... [yapp_012_seq] req.randomize() failed
 ```
 
-for every `` `uvm_do_with(req, { req.addr == 2'd2; }) ``: the inline constraint
-wants address 2 and the class constraint forbids it. The simulation **does not
-stop** in batch mode; the packet keeps its previous values and is still sent.
+for every `req.randomize() with { req.addr == 2'd2; }`: the inline constraint
+wants address 2 and the class constraint forbids it, so `randomize()` returns 0
+and the `if (!req.randomize() …)` guard reports it (the simulator prints its own
+constraint-solver warning next to it; with the course's `` `uvm_do_with `` macro
+you would see `UVM_WARNING [RNDFLD] Randomization failed in uvm_do_with action`
+instead). The simulation **does not stop** in batch mode; the packet keeps its
+previous values and `finish_item` still sends it.
 
 In the GUI (`-gui -access rwc`) the simulation stops at the failure and the
 *Constraints Manager* lists the two conflicting constraints —
@@ -115,8 +127,9 @@ lab's `sv/yapp_packet.sv`). Do this before Lab 6.
     `short_yapp_packet`, and `req.addr == 2` from `yapp_012_seq`.
 
 ??? question "What happens to the packet when a constraint violation is found?"
-    `randomize()` returns 0; UVM prints a warning; the fields keep their
-    previous (or default) values; the item is still handed to the driver.
+    `randomize()` returns 0; the sequence reports it with `` `uvm_error ``; the
+    fields keep their previous (or default) values; `finish_item` still hands
+    the item to the driver.
 
 ??? question "How do objections keep the simulation alive here?"
     `yapp_base_seq::pre_body()` raises an objection on the sequence's
@@ -124,9 +137,12 @@ lab's `sv/yapp_packet.sv`). Do this before Lab 6.
     sequence, so its `starting_phase` is set; nested sequences see `null` and
     skip the calls.
 
-??? question "Why is `` `uvm_create `` + `` `uvm_send `` needed for the incrementing payload?"
-    `` `uvm_do `` randomizes and sends in one go. To change the payload *after*
-    randomization and *before* the driver sees it you need the two halves.
+??? question "Why does `yapp_incr_payload_seq` randomize *before* `start_item`?"
+    It has to change the payload *after* randomization and *before* the driver
+    sees it, and recompute the parity. So it creates and randomizes the packet,
+    edits it, calls `set_parity()`, and only then does `start_item` /
+    `finish_item`. The course expresses the same split with `` `uvm_create ``
+    and `` `uvm_send ``; `` `uvm_do `` would randomize and send in one go.
 
 ## Optional
 

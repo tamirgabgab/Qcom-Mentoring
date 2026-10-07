@@ -88,11 +88,11 @@ one idea per class, comments that say *why*.
 
 | Lab | Title | What you build | Key UVM / SV concepts |
 |---|---|---|---|
-| [1](labs/lab01.md) | Creating a stimulus model | `yapp_packet` | `uvm_sequence_item`, field macros, constraints, `post_randomize` |
+| [1](labs/lab01.md) | Creating a stimulus model | `yapp_packet` | `uvm_sequence_item`, `do_print`/`do_copy`/`do_compare`, constraints, `post_randomize` |
 | [2](labs/lab02.md) | Test and testbench components | `router_tb`, `base_test` | `uvm_env`, `uvm_test`, `build_phase`, `run_test()`, verbosity |
 | [3](labs/lab03.md) | A simple UVC | driver, sequencer, monitor, agent, env | `uvm_driver`, `seq_item_port`, `is_active`, default sequence |
 | [4](labs/lab04.md) | Factories | `short_yapp_packet`, config tests | `type_id::create`, type overrides, `uvm_config_int`, `check_config_usage` |
-| [5](labs/lab05.md) | Sequences | the YAPP sequence library | `uvm_sequence`, `` `uvm_do_with ``, nesting, objections, randomization debug |
+| [5](labs/lab05.md) | Sequences | the YAPP sequence library | `uvm_sequence`, `start_item`/`finish_item`, nesting, objections, randomization debug |
 | [6](labs/lab06.md) | Virtual interfaces and the DUT | `yapp_if`, `hw_top`, `tb_top` | `interface`, `virtual interface`, `uvm_config_db`, drain time |
 | [7](labs/lab07.md) | Integrating UVCs | HBUS, Channel, Clock & Reset in `router_tb` | reuse, configuration, multiple interfaces |
 | [8](labs/lab08.md) | Multichannel sequences | `router_mcsequencer`, `router_simple_mcseq` | virtual sequencer, `` `uvm_declare_p_sequencer `` |
@@ -108,7 +108,7 @@ one idea per class, comments that say *why*.
 ```mermaid
 flowchart LR
     L1[lab01_data] --> L2[lab02_test] --> L3[lab03_uvc] --> L4[lab04_factory] --> L5[lab05_seq] --> L6[lab06_vif]
-    L6 -->|YAPP UVC moves to yapp/sv| L7[lab07_integ] --> L8[lab08_mcseq] --> L9A[lab09_sba] --> L9B[lab09_sbb]
+    L6 -->|YAPP UVC moves to yapp_project/uvc| L7[lab07_integ] --> L8[lab08_mcseq] --> L9A[lab09_sba] --> L9B[lab09_sbb]
     L9B --> L9C[lab09_sbc]
     L9B --> L9D[lab09_sbd]
     L9C --> L10[lab10_cov]
@@ -119,16 +119,19 @@ flowchart LR
 ## What is in the repository
 
 ```
-router_rtl/          the DUT (yapp_router.sv)
-yapp/sv/             YAPP input UVC   -- built in Labs 1-6, final state
-hbus/sv/             HBUS UVC         -- "provided"
-channel/sv/          Channel UVC      -- "provided"
-clock_and_reset/sv/  Clock & Reset UVC-- "provided"
-router/sv/           router module UVC (scoreboard, reference model) -- Labs 9A-9D
-labs/<lab>/          one self-contained snapshot per lab (sv/, tb/, run.f, Makefile)
-test_install/        does the simulator find UVM?
-scripts/             lint harness (slang) and the waveform generator for these docs
-docs/                this site
+yapp_project/                the complete project, the state after Lab 11C (source of truth)
+├── rtl/                     the DUT, one module per file (yapp_router.sv + yapp_router.f)
+├── uvc/yapp/                YAPP input UVC   -- built in Labs 1-6, final state
+├── uvc/hbus/                HBUS UVC         -- "provided"
+├── uvc/channel/             Channel UVC      -- "provided"
+├── uvc/clock_and_reset/     Clock & Reset UVC-- "provided"
+├── uvc/router/              router module UVC (scoreboard, reference model) -- Labs 9A-9D
+└── tb/                      the final testbench: tests/, mcseqs/, reg/, run.f, Makefile
+labs/<lab>/                  one snapshot per lab (sv/ in Labs 1-6, tb/, run.f, Makefile);
+                             Labs 7+ compile the UVCs and the DUT from yapp_project/
+test_install/                does the simulator find UVM?
+scripts/                     lint harness (slang), project-map generator, waveform generator
+docs/                        this site
 ```
 
 !!! note "About the original material"

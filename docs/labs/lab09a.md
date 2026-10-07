@@ -4,7 +4,7 @@
 
 
 **Directory:** `labs/lab09_sba` · **New:** `sv/router_scoreboard.sv`, `sv/packet_compare.sv` ·
-**Changed:** `yapp/sv/yapp_tx_monitor.sv` (analysis port), `tb/router_tb.sv`, `tb/tb_top.sv`, tests
+**Changed:** `yapp_project/uvc/yapp/yapp_tx_monitor.sv` (analysis port), `tb/router_tb.sv`, `tb/tb_top.sv`, tests
 
 ## Objective
 
@@ -30,7 +30,7 @@ flowchart LR
 
 ## Solution
 
-### 1. Analysis port in the YAPP monitor (`yapp/sv/yapp_tx_monitor.sv`)
+### 1. Analysis port in the YAPP monitor (`yapp_project/uvc/yapp/yapp_tx_monitor.sv`)
 
 ```systemverilog
 uvm_analysis_port #(yapp_packet) item_collected_port;
@@ -43,7 +43,7 @@ endfunction
 item_collected_port.write(pkt);      // after each collected packet
 ```
 
-The channel monitor already had one (`channel/sv/channel_rx_monitor.sv`).
+The channel monitor already had one (`yapp_project/uvc/channel/channel_rx_monitor.sv`).
 
 ### 2. The scoreboard — `sv/router_scoreboard.sv`
 

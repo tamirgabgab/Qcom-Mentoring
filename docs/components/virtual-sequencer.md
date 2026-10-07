@@ -13,14 +13,14 @@ on it starts sub-sequences on those handles.
 flowchart LR
     T["router_simple_mcseq_test"] -->|"default_sequence"| MC["router_mcsequencer<br/>hbus_seqr, yapp_seqr"]
     MS["router_simple_mcseq<br/>p_sequencer"] -.->|runs on| MC
-    MS -->|"`uvm_do_on(hbus_small_seq, p_sequencer.hbus_seqr)"| H["hbus sequencer → driver → DUT registers"]
-    MS -->|"`uvm_do_on(yapp_012, p_sequencer.yapp_seqr)"| Y["yapp sequencer → driver → DUT input"]
+    MS -->|"hbus_small_seq.start(p_sequencer.hbus_seqr, this)"| H["hbus sequencer → driver → DUT registers"]
+    MS -->|"yapp_012.start(p_sequencer.yapp_seqr, this)"| Y["yapp sequencer → driver → DUT input"]
 ```
 
 ## The sequencer
 
 ```systemverilog
---8<-- "labs/lab08_mcseq/tb/router_mcsequencer.sv"
+--8<-- "yapp_project/tb/router_mcsequencer.sv"
 ```
 
 The handles are assigned in `router_tb.connect_phase` with **hierarchical
@@ -34,15 +34,21 @@ mcseqr.yapp_seqr = yapp.agent.sequencer;
 ## The sequence
 
 ```systemverilog
---8<-- "labs/lab08_mcseq/tb/router_mcseqs_lib.sv"
---8<-- "labs/lab08_mcseq/tb/mcseqs/router_mcseq_base.sv"
---8<-- "labs/lab08_mcseq/tb/mcseqs/router_simple_mcseq.sv"
+--8<-- "yapp_project/tb/router_mcseqs_lib.sv"
+--8<-- "yapp_project/tb/mcseqs/router_mcseq_base.sv"
+--8<-- "yapp_project/tb/mcseqs/router_simple_mcseq.sv"
 ```
 
 * `` `uvm_declare_p_sequencer(router_mcsequencer) `` adds a typed
   `p_sequencer` handle (and a cast check when the sequence starts).
-* `` `uvm_do_on(seq, seqr) `` / `` `uvm_do_on_with `` are `` `uvm_do `` with an
-  explicit target sequencer.
+* Each sub-sequence is created through the factory, randomized (the one
+  constraint in this sequence is `yapp_rnd.count == 6`) and started with
+  `seq.start(p_sequencer.hbus_seqr, this)` or
+  `seq.start(p_sequencer.yapp_seqr, this)`: the first argument picks the
+  **real** sequencer, the second makes this sequence the parent. The course
+  writes `` `uvm_do_on(seq, seqr) `` / `` `uvm_do_on_with `` for the same thing.
+* `start()` blocks until the sub-sequence's `body()` returns, which is what
+  gives the "program, then send, then reprogram" ordering.
 * The objection is raised on the **virtual** sequence's starting phase; the
   sub-sequences see `null` and skip theirs.
 * The channels are not controlled from here: they run `channel_rx_resp_seq`

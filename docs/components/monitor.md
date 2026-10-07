@@ -27,7 +27,7 @@ flowchart LR
 ## The reference implementation
 
 ```systemverilog
---8<-- "yapp/sv/yapp_tx_monitor.sv"
+--8<-- "yapp_project/uvc/yapp/yapp_tx_monitor.sv"
 ```
 
 ## Design notes

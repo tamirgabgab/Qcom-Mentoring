@@ -15,7 +15,7 @@ proven by a run on Xcelium. Please report what you see.
 | 3 | **HBUS read timing**: data sampled in the second cycle, tri-state release | `hbus_read_max_pkt_seq` reports 20 then 63; no `x`/`z` on `hdata_w` during reads |
 | 4 | **Reset sequencing at time 0**: `clk10_rst5_seq` asserts reset before any driver starts | first HBUS/YAPP activity after reset release; no packets lost at the start |
 | 5 | **`error` pulse** 1..10 cycles after a bad-parity packet | waveform in `test_uvc_integration` |
-| 6 | **Register model backdoor paths** (`hw_top.dut.<reg>`, `hw_top.dut.yapp_mem[i]`) | `reg_access_test` peek/poke values; requires `-access +rwc` |
+| 6 | **Register model backdoor paths** (`hw_top.dut.u_regs.<reg>`, `hw_top.dut.u_regs.yapp_mem[i]`) | `reg_access_test` peek/poke values; requires `-access +rwc` |
 | 7 | **`uvm_reg_hw_reset_seq` on counters**: counters are not `volatile` in the model, so they are compared with 0 right after reset | `uvm_reset_test`: 0 errors |
 | 8 | **`uvm_mem_walk_seq` counts**: 511 writes / 255 reads; `INJECT_ERROR` detected | `uvm_mem_walk_test` HBUS report |
 | 9 | **UVM 1.1d compatibility** of library calls (`get_objection().set_drain_time`, `uvm_config_wrapper`, `uvm_comparer::compare_field_int`, `find() with` on queues of `uvm_reg`) | compile with `-uvmhome CDNS-1.1d` |

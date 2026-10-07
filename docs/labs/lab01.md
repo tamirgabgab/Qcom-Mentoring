@@ -7,13 +7,22 @@
 
 ## Objective
 
-Model the YAPP packet as a UVM data item and explore the automation you get for
-free: printing, copying, cloning, comparing.
+Model the YAPP packet as a UVM data item and explore what the base class gives
+you once the item describes its fields: printing, copying, cloning, comparing.
 
 ## Concepts
 
-`uvm_sequence_item` · `` `uvm_object_utils_begin/end `` · field macros · `rand` and
-constraints · `dist` · `post_randomize()` · control knobs · packages
+`uvm_sequence_item` · `` `uvm_object_utils `` · `do_print` / `do_copy` / `do_compare` /
+`do_pack` / `do_unpack` / `do_record` · `rand` and constraints · `dist` · `post_randomize()` ·
+control knobs · packages
+
+!!! note "No `uvm_field_*` macros here"
+    The course material lists the fields between `` `uvm_object_utils_begin `` and
+    `` `uvm_object_utils_end `` with `` `uvm_field_int(addr, UVM_ALL_ON) `` and so on, and
+    the macros generate `print`, `copy`, `compare`, `pack` and `record` for you. This
+    repository writes those methods out (`do_print` uses `printer.print_field`,
+    `do_compare` uses `comparer.compare_field_int`, …) so you see what each `pkt.print()`
+    or `pkt.compare()` actually does — and what it costs to add a field.
 
 ## The packet and its knobs
 
@@ -58,8 +67,11 @@ Points worth a second look:
   `set_parity()`, which uses `calc_parity()` for a good packet and flips one
   bit for a bad one.
 * **Named constraints** can be disabled later (`c_addr_legal.constraint_mode(0)`).
-* `UVM_NOCOMPARE` on `packet_delay`: two identical packets sent with different
-  gaps still compare equal.
+* `do_compare` does not look at `packet_delay` (the course's `UVM_NOCOMPARE`):
+  two identical packets sent with different gaps still compare equal.
+* The class body only *declares* the methods (`extern`); their bodies follow
+  `endclass` as `function yapp_packet::set_parity();`. Read the class to learn
+  what a packet can do, read below it to learn how.
 
 ### 2. `sv/yapp_pkg.sv`
 
@@ -109,9 +121,11 @@ message for the modified clone, and the same packet in table and tree layout.
     `uvm_object`, hence the `$cast`.
 
 ??? question "Where does `print()` get the field names and formats from?"
-    From the `` `uvm_field_* `` macros between `` `uvm_object_utils_begin `` and
-    `` `uvm_object_utils_end ``. `UVM_DEC` prints `length` in decimal, the
-    default radix is hex.
+    From `yapp_packet::do_print`: one `printer.print_field("length", length,
+    $bits(length), UVM_DEC)` per field (`UVM_DEC` prints `length` in decimal,
+    the others use hex), `print_array_header/footer` around the payload and
+    `print_generic` for the enum. `print()` itself belongs to `uvm_object`; it
+    picks the printer (table or tree) and calls `do_print`.
 
 ## Optional
 

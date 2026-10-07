@@ -112,8 +112,9 @@ the driver, 10 ns apart.
     the test, `tb.yapp.agent.sequencer` (relative to `this`).
 
 ??? question "What value does `is_active` have in the topology print?"
-    `UVM_ACTIVE` (the default of `uvm_agent`). It shows because of the
-    `` `uvm_field_enum `` macro in the agent's utils block.
+    `UVM_ACTIVE` (the default of `uvm_agent`). It shows because the agent's
+    `do_print` adds it (`printer.print_generic("is_active", …, is_active.name())`);
+    the topology print calls `do_print` on every component.
 
 ??? question "Which `start_of_simulation_phase` runs first, which last, why?"
     First the leaves (`driver`, `monitor`, `sequencer` — siblings in

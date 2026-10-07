@@ -5,7 +5,7 @@
 
 **Directory:** `labs/lab09_sbb` · **New:** `sv/router_reference.sv`, `sv/router_module_env.sv`,
 `sv/router_module_pkg.sv` · **Changed:** `tb/router_tb.sv`, `tb/tb_top.sv`, `run.f` ·
-**Result copied to:** `router/sv`
+**Result copied to:** `yapp_project/uvc/router`
 
 ## Objective
 
