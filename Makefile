@@ -12,6 +12,7 @@
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
 #   make map-check            verify the committed project map is up to date (CI)
 #   make map-export           export every map view to SVG/PNG/PDF (node + playwright)
+#   make readme-shots         retake the README screenshots (site build + node + playwright)
 #   make clean                remove simulator output in every lab
 # ---------------------------------------------------------------------------
 PYTHON    ?= python3
@@ -20,10 +21,10 @@ XRUN_OPTS ?=
 LAB       ?=
 TEST      ?= base_test
 
-.PHONY: help lint style style-check uvm-src run run-project docs serve map map-check map-export clean
+.PHONY: help lint style style-check uvm-src run run-project docs serve map map-check map-export readme-shots clean
 
 help:
-	@sed -n '2,17p' $(MAKEFILE_LIST)
+	@sed -n '2,18p' $(MAKEFILE_LIST)
 
 uvm-src:
 	@bash scripts/get_uvm.sh
@@ -61,6 +62,9 @@ map-check: uvm-src
 
 map-export:
 	node scripts/project_map/export.mjs
+
+readme-shots: docs
+	node scripts/readme_shots.mjs
 
 serve:
 	mkdocs serve
