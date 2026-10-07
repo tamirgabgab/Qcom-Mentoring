@@ -20,7 +20,7 @@ module top;
     end
 
     //--------------------------------------------------------------------
-    // Optional: explore the built-in automation
+    // Optional: explore copy / compare / print (do_copy, do_compare, do_print in yapp_packet)
     //--------------------------------------------------------------------
     begin
       yapp_packet copy_pkt, clone_pkt;

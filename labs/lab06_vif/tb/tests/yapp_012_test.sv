@@ -11,13 +11,20 @@ class yapp_012_test extends base_test;
 
   `uvm_component_utils(yapp_012_test)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
-
-  function void configure_sequences();
-    uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
-                            "default_sequence", yapp_012_seq::get_type());
-  endfunction : configure_sequences
+  extern function new(string name, uvm_component parent);
+  extern function void configure_sequences();
 
 endclass : yapp_012_test
+
+//------------------------------------------------------------------------------
+// yapp_012_test -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_012_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void yapp_012_test::configure_sequences();
+  uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
+                          "default_sequence", yapp_012_seq::get_type());
+endfunction : configure_sequences

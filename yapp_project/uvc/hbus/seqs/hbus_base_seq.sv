@@ -11,18 +11,27 @@ class hbus_base_seq extends uvm_sequence #(hbus_transaction);
 
   `uvm_object_utils(hbus_base_seq)
 
-  function new(string name = "hbus_base_seq");
-    super.new(name);
-  endfunction : new
+  extern function new(string name = "hbus_base_seq");
+  extern task pre_body();
 
-  task pre_body();
-    uvm_phase phase = `YAPP_STARTING_PHASE;
-    if (phase != null) phase.raise_objection(this, get_type_name());
-  endtask : pre_body
-
-  task post_body();
-    uvm_phase phase = `YAPP_STARTING_PHASE;
-    if (phase != null) phase.drop_objection(this, get_type_name());
-  endtask : post_body
+  extern task post_body();
 
 endclass : hbus_base_seq
+
+//------------------------------------------------------------------------------
+// hbus_base_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function hbus_base_seq::new(string name = "hbus_base_seq");
+  super.new(name);
+endfunction : new
+
+task hbus_base_seq::pre_body();
+  uvm_phase phase = `YAPP_STARTING_PHASE;
+  if (phase != null) phase.raise_objection(this, get_type_name());
+endtask : pre_body
+
+task hbus_base_seq::post_body();
+  uvm_phase phase = `YAPP_STARTING_PHASE;
+  if (phase != null) phase.drop_objection(this, get_type_name());
+endtask : post_body

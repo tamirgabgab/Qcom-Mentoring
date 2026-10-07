@@ -46,51 +46,69 @@ class yapp_tx_monitor extends uvm_monitor;
     }
   endgroup : yapp_pkt_cg
 
-  `uvm_component_utils_begin(yapp_tx_monitor)
-    `uvm_field_int(num_pkt_col, UVM_ALL_ON | UVM_DEC)
-  `uvm_component_utils_end
+  `uvm_component_utils(yapp_tx_monitor)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-    item_collected_port = new("item_collected_port", this);
-    yapp_pkt_cg = new();   // a covergroup inside a class is created with new()
-  endfunction : new
+  // The fields are printed by do_print() below:
+  // no uvm_field_* automation.
+  extern virtual function void do_print(uvm_printer printer);
+  extern function new(string name, uvm_component parent);
 
-  function void connect_phase(uvm_phase phase);
-    if (!yapp_vif_config::get(this, "", "vif", vif))
-      `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
-  endfunction : connect_phase
+  extern function void connect_phase(uvm_phase phase);
+  extern task run_phase(uvm_phase phase);
 
-  task run_phase(uvm_phase phase);
-    `uvm_info(get_type_name(), "YAPP monitor running", UVM_LOW)
-    collect_packets();
-  endtask : run_phase
-
-  task collect_packets();
-    yapp_packet pkt;
-    // Nothing to observe while reset is active
-    @(posedge vif.clock);
-    wait (vif.reset === 1'b0);
-    forever begin
-      // A NEW object per packet: subscribers keep the handle (analysis FIFOs
-      // do not clone), so re-using one object would corrupt earlier packets.
-      pkt = yapp_packet::type_id::create("pkt", this);
-      vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity);
-      void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
-      pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
-      num_pkt_col++;
-      if (pkt.parity_type == BAD_PARITY) num_bad_parity++;
-      `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_LOW)
-      yapp_pkt_cg.sample(pkt.length, pkt.addr, pkt.parity_type);
-      item_collected_port.write(pkt);
-      end_tr(pkt);
-    end
-  endtask : collect_packets
-
-  function void report_phase(uvm_phase phase);
-    `uvm_info(get_type_name(),
-              $sformatf("YAPP monitor report: %0d packets collected, coverage %.1f%%",
-                        num_pkt_col, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
-  endfunction : report_phase
+  extern task collect_packets();
+  extern function void report_phase(uvm_phase phase);
 
 endclass : yapp_tx_monitor
+
+//------------------------------------------------------------------------------
+// yapp_tx_monitor -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_tx_monitor::new(string name, uvm_component parent);
+  super.new(name, parent);
+  item_collected_port = new("item_collected_port", this);
+  yapp_pkt_cg = new();   // a covergroup inside a class is created with new()
+endfunction : new
+
+function void yapp_tx_monitor::connect_phase(uvm_phase phase);
+  if (!yapp_vif_config::get(this, "", "vif", vif))
+    `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+endfunction : connect_phase
+
+task yapp_tx_monitor::run_phase(uvm_phase phase);
+  `uvm_info(get_type_name(), "YAPP monitor running", UVM_LOW)
+  collect_packets();
+endtask : run_phase
+
+task yapp_tx_monitor::collect_packets();
+  yapp_packet pkt;
+  // Nothing to observe while reset is active
+  @(posedge vif.clock);
+  wait (vif.reset === 1'b0);
+  forever begin
+    // A NEW object per packet: subscribers keep the handle (analysis FIFOs
+    // do not clone), so re-using one object would corrupt earlier packets.
+    pkt = yapp_packet::type_id::create("pkt", this);
+    vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity);
+    void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
+    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
+    num_pkt_col++;
+    if (pkt.parity_type == BAD_PARITY) num_bad_parity++;
+    `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_LOW)
+    yapp_pkt_cg.sample(pkt.length, pkt.addr, pkt.parity_type);
+    item_collected_port.write(pkt);
+    end_tr(pkt);
+  end
+endtask : collect_packets
+
+function void yapp_tx_monitor::report_phase(uvm_phase phase);
+  `uvm_info(get_type_name(),
+            $sformatf("YAPP monitor report: %0d packets collected, coverage %.1f%%",
+                      num_pkt_col, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
+endfunction : report_phase
+
+function void yapp_tx_monitor::do_print(uvm_printer printer);
+  super.do_print(printer);
+  printer.print_field("num_pkt_col", num_pkt_col, $bits(num_pkt_col), UVM_DEC);
+endfunction : do_print

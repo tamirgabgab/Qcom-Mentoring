@@ -7,8 +7,14 @@ class channel_rx_base_seq extends uvm_sequence #(channel_packet);
 
   `uvm_object_utils(channel_rx_base_seq)
 
-  function new(string name = "channel_rx_base_seq");
-    super.new(name);
-  endfunction : new
+  extern function new(string name = "channel_rx_base_seq");
 
 endclass : channel_rx_base_seq
+
+//------------------------------------------------------------------------------
+// channel_rx_base_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function channel_rx_base_seq::new(string name = "channel_rx_base_seq");
+  super.new(name);
+endfunction : new

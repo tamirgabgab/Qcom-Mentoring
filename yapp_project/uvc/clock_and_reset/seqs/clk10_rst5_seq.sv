@@ -9,13 +9,24 @@ class clk10_rst5_seq extends clock_and_reset_base_seq;
 
   `uvm_object_utils(clk10_rst5_seq)
 
-  function new(string name = "clk10_rst5_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing clk10_rst5_seq", UVM_LOW)
-    `uvm_do_with(req, { req.clock_period == 10; req.reset_cycles == 5; })
-  endtask : body
+  extern function new(string name = "clk10_rst5_seq");
+  extern task body();
 
 endclass : clk10_rst5_seq
+
+//------------------------------------------------------------------------------
+// clk10_rst5_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function clk10_rst5_seq::new(string name = "clk10_rst5_seq");
+  super.new(name);
+endfunction : new
+
+task clk10_rst5_seq::body();
+  `uvm_info(get_type_name(), "Executing clk10_rst5_seq", UVM_LOW)
+  req = clock_and_reset_transaction::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.clock_period == 10; req.reset_cycles == 5; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+endtask : body

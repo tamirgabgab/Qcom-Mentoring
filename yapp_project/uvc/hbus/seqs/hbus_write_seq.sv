@@ -11,14 +11,25 @@ class hbus_write_seq extends hbus_base_seq;
 
   `uvm_object_utils(hbus_write_seq)
 
-  function new(string name = "hbus_write_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), $sformatf("Executing hbus_write_seq addr=0x%04h data=0x%02h",
-                                         addr, data), UVM_LOW)
-    `uvm_do_with(req, { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_WRITE; })
-  endtask : body
+  extern function new(string name = "hbus_write_seq");
+  extern task body();
 
 endclass : hbus_write_seq
+
+//------------------------------------------------------------------------------
+// hbus_write_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function hbus_write_seq::new(string name = "hbus_write_seq");
+  super.new(name);
+endfunction : new
+
+task hbus_write_seq::body();
+  `uvm_info(get_type_name(), $sformatf("Executing hbus_write_seq addr=0x%04h data=0x%02h",
+                                       addr, data), UVM_LOW)
+  req = hbus_transaction::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_WRITE; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+endtask : body

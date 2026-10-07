@@ -7,5 +7,12 @@
 // the model keeps the full byte like the register map does.
 class mem_size_reg_c extends ro_byte_reg_c;
   `uvm_object_utils(mem_size_reg_c)
-  function new(string name = "mem_size_reg_c"); super.new(name); endfunction
+  extern function new(string name = "mem_size_reg_c");
 endclass : mem_size_reg_c
+
+//------------------------------------------------------------------------------
+// mem_size_reg_c -- method implementations
+//------------------------------------------------------------------------------
+
+function mem_size_reg_c::new(string name = "mem_size_reg_c"); super.new(name);
+endfunction : new

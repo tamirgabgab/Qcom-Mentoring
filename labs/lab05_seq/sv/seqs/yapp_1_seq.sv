@@ -8,13 +8,24 @@ class yapp_1_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_1_seq)
 
-  function new(string name = "yapp_1_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing yapp_1_seq sequence", UVM_LOW)
-    `uvm_do_with(req, { req.addr == 2'd1; })
-  endtask : body
+  extern function new(string name = "yapp_1_seq");
+  extern task body();
 
 endclass : yapp_1_seq
+
+//------------------------------------------------------------------------------
+// yapp_1_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_1_seq::new(string name = "yapp_1_seq");
+  super.new(name);
+endfunction : new
+
+task yapp_1_seq::body();
+  `uvm_info(get_type_name(), "Executing yapp_1_seq sequence", UVM_LOW)
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == 2'd1; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+endtask : body

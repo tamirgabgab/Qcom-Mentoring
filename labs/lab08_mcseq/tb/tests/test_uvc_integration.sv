@@ -10,16 +10,23 @@ class test_uvc_integration extends base_test;
 
   `uvm_component_utils(test_uvc_integration)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
-
-  function void configure_sequences();
-    uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
-                            "default_sequence", yapp_88_packets_seq::get_type());
-    uvm_config_wrapper::set(this, "tb.hbus.masters[0].sequencer.run_phase",
-                            "default_sequence", hbus_small_packet_seq::get_type());
-    set_clock_and_channel_sequences();
-  endfunction : configure_sequences
+  extern function new(string name, uvm_component parent);
+  extern function void configure_sequences();
 
 endclass : test_uvc_integration
+
+//------------------------------------------------------------------------------
+// test_uvc_integration -- method implementations
+//------------------------------------------------------------------------------
+
+function test_uvc_integration::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void test_uvc_integration::configure_sequences();
+  uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
+                          "default_sequence", yapp_88_packets_seq::get_type());
+  uvm_config_wrapper::set(this, "tb.hbus.masters[0].sequencer.run_phase",
+                          "default_sequence", hbus_small_packet_seq::get_type());
+  set_clock_and_channel_sequences();
+endfunction : configure_sequences

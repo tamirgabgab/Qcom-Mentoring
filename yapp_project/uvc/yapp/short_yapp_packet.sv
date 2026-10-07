@@ -16,8 +16,14 @@ class short_yapp_packet extends yapp_packet;
 
   constraint c_short_length { length < 15; }
 
-  function new(string name = "short_yapp_packet");
-    super.new(name);
-  endfunction : new
+  extern function new(string name = "short_yapp_packet");
 
 endclass : short_yapp_packet
+
+//------------------------------------------------------------------------------
+// short_yapp_packet -- method implementations
+//------------------------------------------------------------------------------
+
+function short_yapp_packet::new(string name = "short_yapp_packet");
+  super.new(name);
+endfunction : new

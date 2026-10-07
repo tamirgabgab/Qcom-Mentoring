@@ -12,15 +12,31 @@ class yapp_repeat_addr_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_repeat_addr_seq)
 
-  function new(string name = "yapp_repeat_addr_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(),
-              $sformatf("Executing yapp_repeat_addr_seq sequence (addr %0d)", seq_addr), UVM_LOW)
-    `uvm_do_with(req, { req.addr == seq_addr; })
-    `uvm_do_with(req, { req.addr == seq_addr; })
-  endtask : body
+  extern function new(string name = "yapp_repeat_addr_seq");
+  extern task body();
 
 endclass : yapp_repeat_addr_seq
+
+//------------------------------------------------------------------------------
+// yapp_repeat_addr_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_repeat_addr_seq::new(string name = "yapp_repeat_addr_seq");
+  super.new(name);
+endfunction : new
+
+task yapp_repeat_addr_seq::body();
+  `uvm_info(get_type_name(),
+            $sformatf("Executing yapp_repeat_addr_seq sequence (addr %0d)", seq_addr), UVM_LOW)
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == seq_addr; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == seq_addr; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+endtask : body

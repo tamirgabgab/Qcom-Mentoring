@@ -8,15 +8,36 @@ class yapp_012_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_012_seq)
 
-  function new(string name = "yapp_012_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing yapp_012_seq sequence", UVM_LOW)
-    `uvm_do_with(req, { req.addr == 2'd0; })
-    `uvm_do_with(req, { req.addr == 2'd1; })
-    `uvm_do_with(req, { req.addr == 2'd2; })
-  endtask : body
+  extern function new(string name = "yapp_012_seq");
+  extern task body();
 
 endclass : yapp_012_seq
+
+//------------------------------------------------------------------------------
+// yapp_012_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_012_seq::new(string name = "yapp_012_seq");
+  super.new(name);
+endfunction : new
+
+task yapp_012_seq::body();
+  `uvm_info(get_type_name(), "Executing yapp_012_seq sequence", UVM_LOW)
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == 2'd0; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == 2'd1; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+
+  req = yapp_packet::type_id::create("req");
+  start_item(req);
+  if (!req.randomize() with { req.addr == 2'd2; })
+    `uvm_error(get_type_name(), "req.randomize() failed")
+  finish_item(req);
+endtask : body

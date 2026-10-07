@@ -5,5 +5,12 @@
 
 class addr2_cnt_reg_c extends ro_byte_reg_c;
   `uvm_object_utils(addr2_cnt_reg_c)
-  function new(string name = "addr2_cnt_reg_c"); super.new(name); endfunction
+  extern function new(string name = "addr2_cnt_reg_c");
 endclass : addr2_cnt_reg_c
+
+//------------------------------------------------------------------------------
+// addr2_cnt_reg_c -- method implementations
+//------------------------------------------------------------------------------
+
+function addr2_cnt_reg_c::new(string name = "addr2_cnt_reg_c"); super.new(name);
+endfunction : new

@@ -10,13 +10,23 @@ class six_yapp_seq extends yapp_base_seq;
 
   `uvm_object_utils(six_yapp_seq)
 
-  function new(string name = "six_yapp_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing six_yapp_seq sequence", UVM_LOW)
-    `uvm_do_with(rnd_seq, { rnd_seq.count == 6; })
-  endtask : body
+  extern function new(string name = "six_yapp_seq");
+  extern task body();
 
 endclass : six_yapp_seq
+
+//------------------------------------------------------------------------------
+// six_yapp_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function six_yapp_seq::new(string name = "six_yapp_seq");
+  super.new(name);
+endfunction : new
+
+task six_yapp_seq::body();
+  `uvm_info(get_type_name(), "Executing six_yapp_seq sequence", UVM_LOW)
+  rnd_seq = yapp_rnd_seq::type_id::create("rnd_seq");
+  if (!rnd_seq.randomize() with { rnd_seq.count == 6; })
+    `uvm_error(get_type_name(), "rnd_seq.randomize() failed")
+  rnd_seq.start(m_sequencer, this);
+endtask : body

@@ -11,26 +11,33 @@ class reg_introspection_test extends reg_access_test;
 
   `uvm_component_utils(reg_introspection_test)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
-
-  virtual task access_checks();
-    uvm_reg all_q[$];
-    uvm_reg rw_q[$];
-    uvm_reg ro_q[$];
-
-    tb.yapp_rm.get_registers(all_q);          // every register in the model
-    rw_q = all_q.find(r) with (r.get_rights() == "RW");
-    ro_q = all_q.find(r) with (r.get_rights() == "RO");
-
-    foreach (rw_q[i])
-      `uvm_info("REG_INTRO", $sformatf("RW register: %s @ 0x%04h", rw_q[i].get_name(), rw_q[i].get_address()), UVM_NONE)
-    foreach (ro_q[i])
-      `uvm_info("REG_INTRO", $sformatf("RO register: %s @ 0x%04h", ro_q[i].get_name(), ro_q[i].get_address()), UVM_NONE)
-
-    foreach (rw_q[i]) check_rw_register(rw_q[i], 8'h25, 8'h1a);
-    foreach (ro_q[i]) check_ro_register(ro_q[i], 8'h5a, 8'h33);
-  endtask : access_checks
+  extern function new(string name, uvm_component parent);
+  extern virtual task access_checks();
 
 endclass : reg_introspection_test
+
+//------------------------------------------------------------------------------
+// reg_introspection_test -- method implementations
+//------------------------------------------------------------------------------
+
+function reg_introspection_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+task reg_introspection_test::access_checks();
+  uvm_reg all_q[$];
+  uvm_reg rw_q[$];
+  uvm_reg ro_q[$];
+
+  tb.yapp_rm.get_registers(all_q);          // every register in the model
+  rw_q = all_q.find(r) with (r.get_rights() == "RW");
+  ro_q = all_q.find(r) with (r.get_rights() == "RO");
+
+  foreach (rw_q[i])
+    `uvm_info("REG_INTRO", $sformatf("RW register: %s @ 0x%04h", rw_q[i].get_name(), rw_q[i].get_address()), UVM_NONE)
+  foreach (ro_q[i])
+    `uvm_info("REG_INTRO", $sformatf("RO register: %s @ 0x%04h", ro_q[i].get_name(), ro_q[i].get_address()), UVM_NONE)
+
+  foreach (rw_q[i]) check_rw_register(rw_q[i], 8'h25, 8'h1a);
+  foreach (ro_q[i]) check_ro_register(ro_q[i], 8'h5a, 8'h33);
+endtask : access_checks

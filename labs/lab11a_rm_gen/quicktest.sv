@@ -22,26 +22,35 @@ module quicktest;
 
     `uvm_component_utils(qt_test)
 
-    function new(string name, uvm_component parent);
-      super.new(name, parent);
-    endfunction : new
+    extern function new(string name, uvm_component parent);
+    extern function void build_phase(uvm_phase phase);
 
-    function void build_phase(uvm_phase phase);
-      super.build_phase(phase);
-      model = yapp_router_regs_t::type_id::create("model");
-      model.build();          // creates registers, fields, memories, maps
-      model.lock_model();     // no more changes; computes the address map
-    endfunction : build_phase
-
-    task run_phase(uvm_phase phase);
-      phase.raise_objection(this);
-      model.reset();          // mirrored values <- reset values
-      model.print();          // hierarchy: block -> registers -> fields
-      model.default_map.print();   // addresses as seen from the HBUS
-      phase.drop_objection(this);
-    endtask : run_phase
+    extern task run_phase(uvm_phase phase);
 
   endclass : qt_test
+
+//------------------------------------------------------------------------------
+// qt_test -- method implementations
+//------------------------------------------------------------------------------
+
+function qt_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void qt_test::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  model = yapp_router_regs_t::type_id::create("model");
+  model.build();          // creates registers, fields, memories, maps
+  model.lock_model();     // no more changes; computes the address map
+endfunction : build_phase
+
+task qt_test::run_phase(uvm_phase phase);
+  phase.raise_objection(this);
+  model.reset();          // mirrored values <- reset values
+  model.print();          // hierarchy: block -> registers -> fields
+  model.default_map.print();   // addresses as seen from the HBUS
+  phase.drop_objection(this);
+endtask : run_phase
 
   initial run_test("qt_test");
 

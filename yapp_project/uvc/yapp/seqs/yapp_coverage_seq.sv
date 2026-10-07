@@ -12,26 +12,34 @@ class yapp_coverage_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_coverage_seq)
 
-  function new(string name = "yapp_coverage_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    int lengths[5] = '{1, 5, 20, 50, 63};   // one value inside each bin
-    `uvm_info(get_type_name(), "Executing yapp_coverage_seq sequence", UVM_LOW)
-    for (int a = 0; a < 4; a++) begin
-      foreach (lengths[i]) begin
-        for (int bad = 0; bad < 2; bad++) begin
-          `uvm_create(req)
-          req.c_addr_legal.constraint_mode(0);
-          if (!req.randomize() with { req.addr == a;
-                                      req.length == lengths[i];
-                                      req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); })
-            `uvm_error(get_type_name(), "Randomization failed")
-          `uvm_send(req)
-        end
-      end
-    end
-  endtask : body
+  extern function new(string name = "yapp_coverage_seq");
+  extern task body();
 
 endclass : yapp_coverage_seq
+
+//------------------------------------------------------------------------------
+// yapp_coverage_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_coverage_seq::new(string name = "yapp_coverage_seq");
+  super.new(name);
+endfunction : new
+
+task yapp_coverage_seq::body();
+  int lengths[5] = '{1, 5, 20, 50, 63};   // one value inside each bin
+  `uvm_info(get_type_name(), "Executing yapp_coverage_seq sequence", UVM_LOW)
+  for (int a = 0; a < 4; a++) begin
+    foreach (lengths[i]) begin
+      for (int bad = 0; bad < 2; bad++) begin
+        req = yapp_packet::type_id::create("req");
+        req.c_addr_legal.constraint_mode(0);
+        if (!req.randomize() with { req.addr == a;
+                                    req.length == lengths[i];
+                                    req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); })
+          `uvm_error(get_type_name(), "Randomization failed")
+        start_item(req);
+        finish_item(req);
+      end
+    end
+  end
+endtask : body

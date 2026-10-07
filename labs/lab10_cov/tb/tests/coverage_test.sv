@@ -12,14 +12,21 @@ class coverage_test extends base_test;
 
   `uvm_component_utils(coverage_test)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
-
-  function void configure_sequences();
-    uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
-                            "default_sequence", yapp_coverage_seq::get_type());
-    set_clock_and_channel_sequences();
-  endfunction : configure_sequences
+  extern function new(string name, uvm_component parent);
+  extern function void configure_sequences();
 
 endclass : coverage_test
+
+//------------------------------------------------------------------------------
+// coverage_test -- method implementations
+//------------------------------------------------------------------------------
+
+function coverage_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void coverage_test::configure_sequences();
+  uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
+                          "default_sequence", yapp_coverage_seq::get_type());
+  set_clock_and_channel_sequences();
+endfunction : configure_sequences

@@ -11,18 +11,27 @@ class incr_payload_test extends base_test;
 
   `uvm_component_utils(incr_payload_test)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
+  extern function new(string name, uvm_component parent);
+  extern function void build_phase(uvm_phase phase);
 
-  function void build_phase(uvm_phase phase);
-    set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
-    super.build_phase(phase);
-  endfunction : build_phase
-
-  function void configure_sequences();
-    uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
-                            "default_sequence", yapp_incr_payload_seq::get_type());
-  endfunction : configure_sequences
+  extern function void configure_sequences();
 
 endclass : incr_payload_test
+
+//------------------------------------------------------------------------------
+// incr_payload_test -- method implementations
+//------------------------------------------------------------------------------
+
+function incr_payload_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void incr_payload_test::build_phase(uvm_phase phase);
+  set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
+  super.build_phase(phase);
+endfunction : build_phase
+
+function void incr_payload_test::configure_sequences();
+  uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
+                          "default_sequence", yapp_incr_payload_seq::get_type());
+endfunction : configure_sequences

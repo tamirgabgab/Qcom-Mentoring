@@ -8,15 +8,26 @@ class channel_rx_fast_seq extends channel_rx_base_seq;
 
   `uvm_object_utils(channel_rx_fast_seq)
 
-  function new(string name = "channel_rx_fast_seq");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing channel_rx_fast_seq (forever)", UVM_LOW)
-    forever begin
-      `uvm_do_with(req, { req.delay == 0; })
-    end
-  endtask : body
+  extern function new(string name = "channel_rx_fast_seq");
+  extern task body();
 
 endclass : channel_rx_fast_seq
+
+//------------------------------------------------------------------------------
+// channel_rx_fast_seq -- method implementations
+//------------------------------------------------------------------------------
+
+function channel_rx_fast_seq::new(string name = "channel_rx_fast_seq");
+  super.new(name);
+endfunction : new
+
+task channel_rx_fast_seq::body();
+  `uvm_info(get_type_name(), "Executing channel_rx_fast_seq (forever)", UVM_LOW)
+  forever begin
+    req = channel_packet::type_id::create("req");
+    start_item(req);
+    if (!req.randomize() with { req.delay == 0; })
+      `uvm_error(get_type_name(), "req.randomize() failed")
+    finish_item(req);
+  end
+endtask : body

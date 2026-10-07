@@ -12,16 +12,23 @@ class yapp_router_regs_t extends uvm_reg_block;
 
   `uvm_object_utils(yapp_router_regs_t)
 
-  function new(string name = "yapp_router_regs_t");
-    super.new(name, UVM_NO_COVERAGE);
-  endfunction : new
-
-  virtual function void build();
-    default_map = create_map("default_map", 'h0, 1, UVM_LITTLE_ENDIAN, 0);
-    router_yapp_regs = yapp_regs_c::type_id::create("router_yapp_regs");
-    router_yapp_regs.configure(this, "");      // no extra HDL hierarchy level
-    router_yapp_regs.build();
-    default_map.add_submap(router_yapp_regs.default_map, 'h1000);
-  endfunction : build
+  extern function new(string name = "yapp_router_regs_t");
+  extern virtual function void build();
 
 endclass : yapp_router_regs_t
+
+//------------------------------------------------------------------------------
+// yapp_router_regs_t -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_router_regs_t::new(string name = "yapp_router_regs_t");
+  super.new(name, UVM_NO_COVERAGE);
+endfunction : new
+
+function void yapp_router_regs_t::build();
+  default_map = create_map("default_map", 'h0, 1, UVM_LITTLE_ENDIAN, 0);
+  router_yapp_regs = yapp_regs_c::type_id::create("router_yapp_regs");
+  router_yapp_regs.configure(this, "");      // no extra HDL hierarchy level
+  router_yapp_regs.build();
+  default_map.add_submap(router_yapp_regs.default_map, 'h1000);
+endfunction : build

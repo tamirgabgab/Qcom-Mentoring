@@ -11,8 +11,14 @@ class test2 extends base_test;
 
   `uvm_component_utils(test2)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
+  extern function new(string name, uvm_component parent);
 
 endclass : test2
+
+//------------------------------------------------------------------------------
+// test2 -- method implementations
+//------------------------------------------------------------------------------
+
+function test2::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new

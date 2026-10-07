@@ -16,13 +16,20 @@ class scoreboard_drop_test extends router_simple_mcseq_test;
 
   `uvm_component_utils(scoreboard_drop_test)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
-
-  function void build_phase(uvm_phase phase);
-    // Skip router_simple_mcseq_test::build_phase -> no type override
-    base_test::build_phase(phase);
-  endfunction : build_phase
+  extern function new(string name, uvm_component parent);
+  extern function void build_phase(uvm_phase phase);
 
 endclass : scoreboard_drop_test
+
+//------------------------------------------------------------------------------
+// scoreboard_drop_test -- method implementations
+//------------------------------------------------------------------------------
+
+function scoreboard_drop_test::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+function void scoreboard_drop_test::build_phase(uvm_phase phase);
+  // Skip router_simple_mcseq_test::build_phase -> no type override
+  base_test::build_phase(phase);
+endfunction : build_phase

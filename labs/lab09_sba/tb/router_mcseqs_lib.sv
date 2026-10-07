@@ -3,7 +3,7 @@
 //
 // `uvm_declare_p_sequencer gives every sequence a typed `p_sequencer` handle,
 // so `p_sequencer.hbus_seqr` / `p_sequencer.yapp_seqr` are available.
-// `uvm_do_on(seq, seqr) runs a sub-sequence on another sequencer.
+// seq.start(p_sequencer.<seqr>, this) runs a sub-sequence on another sequencer.
 //
 // One class per file: the classes live in mcseqs/<class>.sv and are included below.
 //------------------------------------------------------------------------------

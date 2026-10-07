@@ -5,8 +5,14 @@ class clock_and_reset_sequencer extends uvm_sequencer #(clock_and_reset_transact
 
   `uvm_component_utils(clock_and_reset_sequencer)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
+  extern function new(string name, uvm_component parent);
 
 endclass : clock_and_reset_sequencer
+
+//------------------------------------------------------------------------------
+// clock_and_reset_sequencer -- method implementations
+//------------------------------------------------------------------------------
+
+function clock_and_reset_sequencer::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new

@@ -13,8 +13,14 @@ class router_mcsequencer extends uvm_sequencer;
 
   `uvm_component_utils(router_mcsequencer)
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-  endfunction : new
+  extern function new(string name, uvm_component parent);
 
 endclass : router_mcsequencer
+
+//------------------------------------------------------------------------------
+// router_mcsequencer -- method implementations
+//------------------------------------------------------------------------------
+
+function router_mcsequencer::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
