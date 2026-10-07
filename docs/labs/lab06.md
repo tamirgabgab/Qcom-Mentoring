@@ -1,5 +1,8 @@
 # Lab 6 — Connecting to the DUT using virtual interfaces
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=hw_top.in0){ .pm-link }
+
+
 **Directory:** `labs/lab06_vif` · **New:** `sv/yapp_if.sv`, `tb/hw_top.sv`, `tb/clkgen.sv`,
 `tb/tb_top.sv` (was `top.sv`), `tb/yapp_router_instance.txt` ·
 **Changed:** monitor, driver, `yapp_pkg.sv`, tests, `run.f`

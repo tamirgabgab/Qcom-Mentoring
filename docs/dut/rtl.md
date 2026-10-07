@@ -1,5 +1,8 @@
 # RTL walkthrough — `router_rtl/yapp_router.sv`
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:hw_top.dut){ .pm-link }
+
+
 The DUT is written to be readable from top to bottom in one sitting: one file,
 two modules, no vendor features. This page follows that order.
 

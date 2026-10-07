@@ -1,5 +1,8 @@
 # Functional coverage
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_tx_monitor){ .pm-link }
+
+
 Functional coverage answers "**did we exercise what we meant to?**" — not
 whether the DUT was right (that is the scoreboard's job). It lives in the
 **monitor** because the monitor sees what *actually* happened on the bus,

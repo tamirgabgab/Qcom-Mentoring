@@ -1,5 +1,8 @@
 # Lab 9B — Router module UVC
 
+[Open on the project map →](../project-map.md#view=tlm&node=tb.router_module.reference){ .pm-link }
+
+
 **Directory:** `labs/lab09_sbb` · **New:** `sv/router_reference.sv`, `sv/router_module_env.sv`,
 `sv/router_module_pkg.sv` · **Changed:** `tb/router_tb.sv`, `tb/tb_top.sv`, `run.f` ·
 **Result copied to:** `router/sv`

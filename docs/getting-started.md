@@ -99,6 +99,20 @@ make docs       # static site in site/
     network that blocks CDNs the diagrams show as text. The protocol waveforms
     are plain SVG files and always render.
 
+## Regenerating the project map
+
+The [project map](project-map.md) is generated from the code. After changing a class, a port or
+a `connect()` call:
+
+```bash
+pip install pyslang pyyaml jinja2
+make map            # rewrites docs/assets/project_map/model.json and docs/downloads/yapp_project_map.html
+make map-check      # what CI runs: fails if the committed map is stale
+make map-export     # optional: SVG/PNG/PDF of every view (needs node + playwright)
+```
+
+Descriptions, lab numbers and layout hints live in `scripts/project_map/annotations.yaml`.
+
 ## UVM versions
 
 The code targets **UVM 1.1d and 1.2** (Cadence libraries). The only API that

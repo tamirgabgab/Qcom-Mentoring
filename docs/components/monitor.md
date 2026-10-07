@@ -1,5 +1,8 @@
 # Monitor
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.yapp.agent.monitor){ .pm-link }
+
+
 The monitor is the **passive** half of an agent: it watches the interface,
 rebuilds transactions and publishes them. It never drives anything, it is
 always built (active *and* passive agents), and everything that checks or

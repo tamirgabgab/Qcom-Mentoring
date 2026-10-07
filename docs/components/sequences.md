@@ -1,5 +1,8 @@
 # Sequencer and sequences
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_base_seq){ .pm-link }
+
+
 The **sequencer** is the traffic controller of an agent: sequences run *on* it,
 it arbitrates between them and hands one item at a time to the driver. The
 **sequences** are where the stimulus is actually described.

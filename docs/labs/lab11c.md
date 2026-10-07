@@ -1,5 +1,8 @@
 # Lab 11C — Register model: simulation
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:reg_access_test){ .pm-link }
+
+
 **Directory:** `labs/lab11c_rm_sim` · **Changed:** `tb/router_test_lib.sv` (+ 4 tests)
 
 ## Objective

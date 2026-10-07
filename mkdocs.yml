@@ -1,5 +1,6 @@
 site_name: YAPP Router — UVM Course
 site_description: Reference solutions, DUT and teaching material for the SystemVerilog/UVM YAPP router project
+site_url: https://tamirgabgab.github.io/Qcom-Mentoring/
 repo_url: https://github.com/tamirgabgab/Qcom-Mentoring
 repo_name: tamirgabgab/Qcom-Mentoring
 edit_uri: ""
@@ -65,12 +66,16 @@ markdown_extensions:
 plugins:
   - search
 
+validation:
+  anchors: info        # deep links into the project map (#view=...&node=...) are not page anchors
+
 extra_css:
   - assets/extra.css
 
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - Project map: project-map.md
   - The DUT:
       - Specification: dut/spec.md
       - RTL walkthrough: dut/rtl.md

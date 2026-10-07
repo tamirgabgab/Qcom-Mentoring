@@ -1,5 +1,8 @@
 # Driver
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.yapp.agent.driver){ .pm-link }
+
+
 The driver pulls transactions from the sequencer and turns them into **pin
 activity** through a virtual interface. It is the only component that *drives*
 DUT inputs.

@@ -1,5 +1,8 @@
 # Project architecture
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:root){ .pm-link }
+
+
 This is what the testbench looks like once every lab is done
 (`labs/lab11c_rm_sim`). Each lab page has the sub-diagram for its own stage.
 

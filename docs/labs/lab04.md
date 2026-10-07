@@ -1,5 +1,8 @@
 # Lab 4 — Using factories
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:short_yapp_packet){ .pm-link }
+
+
 **Directory:** `labs/lab04_factory` · **Changed:** every `new()` of a component → `type_id::create()`;
 `sv/yapp_packet.sv` (+ `short_yapp_packet`); `tb/router_test_lib.sv` (+ 2 tests)
 

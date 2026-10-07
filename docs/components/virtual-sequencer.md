@@ -1,5 +1,8 @@
 # Virtual (multichannel) sequencer
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.mcseqr){ .pm-link }
+
+
 A system-level test needs to say "program the router over the HBUS, **then**
 send YAPP traffic, **then** reprogram it". No single agent can express that
 ordering. A **virtual sequencer** is a sequencer that drives no interface: it

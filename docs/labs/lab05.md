@@ -1,5 +1,8 @@
 # Lab 5 — Generating UVM sequences
 
+[Open on the project map →](../project-map.md#view=classes&scene=uml:yapp_pkg){ .pm-link }
+
+
 **Directory:** `labs/lab05_seq` · **Changed:** `sv/yapp_tx_seqs.sv` (the library),
 `sv/yapp_packet.sv` (constraint fix), `tb/router_test_lib.sv` (+ 2 tests)
 

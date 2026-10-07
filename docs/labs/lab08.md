@@ -1,5 +1,8 @@
 # Lab 8 — Multichannel sequences and system-level tests
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.mcseqr){ .pm-link }
+
+
 **Directory:** `labs/lab08_mcseq` · **New:** `tb/router_mcsequencer.sv`, `tb/router_mcseqs_lib.sv` ·
 **Changed:** `router_tb.sv`, `router_test_lib.sv`, `tb_top.sv`
 

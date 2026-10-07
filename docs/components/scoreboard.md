@@ -1,5 +1,8 @@
 # Scoreboard
 
+[Open on the project map →](../project-map.md#view=tlm&node=tb.router_module.scoreboard){ .pm-link }
+
+
 The scoreboard answers one question: **did the right packet come out of the
 right channel, in order?** It receives what went *in* (YAPP monitor) and what
 came *out* (three channel monitors) and compares.

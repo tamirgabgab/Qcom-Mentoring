@@ -1,5 +1,8 @@
 # Lab 9D — Using TLM analysis FIFOs *(optional)*
 
+[Open on the project map →](../project-map.md#view=tlm&scene=tlm:lab09d&node=tb.fifo_sb){ .pm-link }
+
+
 **Directory:** `labs/lab09_sbd` · **New:** `sv/router_fifo_scoreboard.sv` · **Changed:** `tb/router_tb.sv`
 
 ## Objective

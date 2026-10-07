@@ -1,0 +1,383 @@
+# annotations.yaml -- the hand-written half of the project map.
+#
+# extract.py reads the structure from the SystemVerilog; this file adds what a
+# compiler cannot know: what each piece is FOR, which lab introduces it, where
+# it is explained, and how the pictures should be arranged.
+#
+# Keys
+#   root_test       the test class the instance tree is built from
+#   sources         run.f files to extract (first = primary, others add classes / variants)
+#   groups          package -> display group (used by the Classes view and colours)
+#   labs            lab directory -> label + docs page (course order = key order)
+#   lab_overrides   class name or node id -> lab label (when the text scan is wrong)
+#   array_sizes     instance path of a dynamic array -> how many elements to show
+#   notes           node id -> short note shown in the panel
+#   kinds           kind -> label, colour, default doc page, one-line role
+#   classes         class name -> summary (one line) + description (markdown)
+#   nodes           node id -> summary / description / docs overrides
+#   dut_blocks      functional blocks of the DUT (not module instances)
+#   layout          placement hints for the hierarchy scenes
+
+root_test: base_test
+
+sources:
+  - labs/lab11c_rm_sim/tb/run.f      # final superset: RAL, mcseqr, module UVC with exports
+  - labs/lab10_cov/tb/run.f          # pre-RAL tests (simple, mcseq, integration, coverage)
+  - labs/lab09_sbd/tb/run.f          # fifo_sb variant of the testbench + scoreboard_drop_test
+
+groups:
+  yapp_pkg:            {label: "YAPP UVC",          color: yapp}
+  hbus_pkg:            {label: "HBUS UVC",          color: hbus}
+  channel_pkg:         {label: "Channel UVC",       color: channel}
+  clock_and_reset_pkg: {label: "Clock & Reset UVC", color: clock}
+  router_module_pkg:   {label: "Router module UVC", color: router}
+  yapp_router_reg_pkg: {label: "Register model",    color: reg}
+  tb_top:              {label: "Testbench & tests",  color: tb}
+
+labs:
+  lab01_data:     {label: "1",   page: labs/lab01.md,  title: "Stimulus model"}
+  lab02_test:     {label: "2",   page: labs/lab02.md,  title: "Test and testbench"}
+  lab03_uvc:      {label: "3",   page: labs/lab03.md,  title: "A simple UVC"}
+  lab04_factory:  {label: "4",   page: labs/lab04.md,  title: "Factories"}
+  lab05_seq:      {label: "5",   page: labs/lab05.md,  title: "Sequences"}
+  lab06_vif:      {label: "6",   page: labs/lab06.md,  title: "Virtual interfaces and the DUT"}
+  lab07_integ:    {label: "7",   page: labs/lab07.md,  title: "Integrating UVCs"}
+  lab08_mcseq:    {label: "8",   page: labs/lab08.md,  title: "Multichannel sequences"}
+  lab09_sba:      {label: "9A",  page: labs/lab09a.md, title: "Scoreboard (TLM)"}
+  lab09_sbb:      {label: "9B",  page: labs/lab09b.md, title: "Router module UVC"}
+  lab09_sbc:      {label: "9C",  page: labs/lab09c.md, title: "TLM exports"}
+  lab09_sbd:      {label: "9D",  page: labs/lab09d.md, title: "Analysis FIFOs"}
+  lab10_cov:      {label: "10",  page: labs/lab10.md,  title: "Functional coverage"}
+  lab11a_rm_gen:  {label: "11A", page: labs/lab11a.md, title: "Register model generation"}
+  lab11b_rm_integ: {label: "11B", page: labs/lab11b.md, title: "Register model integration"}
+  lab11c_rm_sim:  {label: "11C", page: labs/lab11c.md, title: "Register tests"}
+
+lab_overrides:
+  # shared UVC directories hold the FINAL files, so the text scan sees them from Lab 7 on
+  yapp_coverage_seq: "10"
+  yapp_88_packets_seq: "7"
+  hbus_router_disable_seq: "11C"
+  hbus_router_enable_seq: "11C"
+  hbus_reg_adapter: "11B"
+  # ports and members added later than their class
+  tb.yapp.agent.monitor.item_collected_port: "9A"
+  yapp_tx_monitor.yapp_pkt_cg: "10"
+  # provided UVCs appear with the integration lab
+  hbus_slave_agent: "7"
+  # DUT and interfaces
+  hw_top: "6"
+  hw_top.dut: "6"
+  hw_top.in0: "6"
+  hw_top.clkgen: "6"
+  hw_top.hbus0: "7"
+  hw_top.ch0: "7"
+  hw_top.ch1: "7"
+  hw_top.ch2: "7"
+  hw_top.clk_rst_if: "7"
+  tb_top: "2"
+
+array_sizes:
+  tb.hbus.masters: 1      # uvm_config_int::set(this, "hbus", "num_masters", 1) in router_tb
+  tb.hbus.slaves: 0       # ... "num_slaves", 0 -- the router is the only slave
+
+notes:
+  tb.yapp.agent.driver:    "Built only when is_active == UVM_ACTIVE (set_config_test makes the agent passive)."
+  tb.yapp.agent.sequencer: "Built only when is_active == UVM_ACTIVE."
+  tb.hbus.masters[0]:      "num_masters = 1: one master agent. The DUT is the only slave (num_slaves = 0)."
+  tb.chan0:                "channel_id = 0: the monitor checks that every packet carries address 0."
+  tb.chan1:                "channel_id = 1."
+  tb.chan2:                "channel_id = 2."
+  tb.yapp_rm:              "Created with create(\"yapp_rm\") -- an object, not a component -- then build(), lock_model(), set_hdl_path_root(\"hw_top.dut\")."
+  tb.reg2hbus:             "Object owned by the testbench; passed to default_map.set_sequencer() together with the HBUS sequencer."
+  tb.fifo_sb:              "Lab 9D variant: replaces router_module (reference + scoreboard) with one TLM-FIFO based scoreboard."
+
+kinds:
+  module:        {label: "Module",           doc: dut/rtl.md,                      role: "RTL: the design under test and the hardware side of the testbench"}
+  interface:     {label: "Interface",        doc: components/driver.md,            role: "Signals plus the tasks that drive and sample them; reached through a virtual interface"}
+  rtl_block:     {label: "RTL block",        doc: dut/rtl.md,                      role: "A functional block inside the DUT"}
+  test:          {label: "Test",             doc: uvm/architecture.md,             role: "Builds the environment and picks the stimulus (default sequences, overrides)"}
+  env:           {label: "Env",              doc: components/agent-env.md,         role: "Container: builds agents (or UVCs), configures and connects them"}
+  agent:         {label: "Agent",            doc: components/agent-env.md,         role: "One interface: driver + sequencer (active) and monitor"}
+  driver:        {label: "Driver",           doc: components/driver.md,            role: "Transaction -> pins, through the virtual interface"}
+  sequencer:     {label: "Sequencer",        doc: components/sequences.md,         role: "Arbitrates sequences and hands items to the driver"}
+  vsequencer:    {label: "Virtual sequencer", doc: components/virtual-sequencer.md, role: "Holds handles to other sequencers so one sequence can coordinate several interfaces"}
+  monitor:       {label: "Monitor",          doc: components/monitor.md,           role: "Pins -> transaction; publishes on an analysis port; collects coverage"}
+  scoreboard:    {label: "Scoreboard",       doc: components/scoreboard.md,        role: "Compares what came out with what was expected"}
+  reference:     {label: "Reference model",  doc: components/reference-model.md,   role: "Predicts what the DUT should do"}
+  component:     {label: "Component",        doc: uvm/big-picture.md,              role: "A uvm_component"}
+  sequence:      {label: "Sequence",         doc: components/sequences.md,         role: "Generates transactions (or runs other sequences)"}
+  sequence_item: {label: "Sequence item",    doc: components/packet.md,            role: "The transaction: random fields, constraints, utility methods"}
+  object:        {label: "Object",           doc: uvm/big-picture.md,              role: "A uvm_object"}
+  tlm_port:      {label: "Analysis port",    doc: uvm/tlm.md,                      role: "Producer side of a TLM connection: write() fans out to every connected imp"}
+  tlm_export:    {label: "Export",           doc: uvm/tlm.md,                      role: "Forwards a connection into a component"}
+  tlm_imp:       {label: "Analysis imp",     doc: uvm/tlm.md,                      role: "Consumer side: bound to a write_<suffix>() method"}
+  tlm_fifo:      {label: "Analysis FIFO",    doc: uvm/tlm.md,                      role: "Buffers transactions so a consumer can get() them in its own thread"}
+  get_port:      {label: "Get port",         doc: uvm/tlm.md,                      role: "Blocking get() from a FIFO"}
+  seq_item_port: {label: "Sequence item port", doc: uvm/tlm.md,                    role: "Driver <-> sequencer handshake: get_next_item / item_done"}
+  reg_block:     {label: "Register block",   doc: components/register-model.md,    role: "A group of registers and memories with an address map"}
+  reg:           {label: "Register",         doc: components/register-model.md,    role: "Fields, access policy, reset value; front door and backdoor"}
+  mem:           {label: "Memory",           doc: components/register-model.md,    role: "A memory region of the register model"}
+  reg_adapter:   {label: "Register adapter", doc: components/register-model.md,    role: "Translates register operations into bus transactions"}
+  enum:          {label: "Enum",             doc: components/packet.md,            role: "Enumerated type"}
+  uvm_base:      {label: "UVM base class",   doc: uvm/big-picture.md,              role: "Part of the UVM library"}
+
+classes:
+  # ---------------------------------------------------------------- YAPP UVC
+  yapp_packet:
+    summary: "The YAPP transaction: addr, length, payload, parity -- with constraints and parity helpers."
+    description: |
+      One packet on the YAPP input port: header `{length[5:0], addr[1:0]}`, `length`
+      payload bytes, then an even-parity byte. `parity_type` (GOOD 5 : BAD 1) decides
+      whether `set_parity()` corrupts the computed parity. `packet_delay` is the gap the
+      driver waits before sending. Built in Lab 1, used everywhere after.
+  short_yapp_packet:
+    summary: "yapp_packet with length constrained to 1..15 -- substituted through the factory."
+    description: |
+      Only adds `c_short_length`. `short_packet_test` installs it with a type override, so
+      every `yapp_packet::type_id::create()` in the sequences silently returns a short packet.
+  yapp_tx_driver:
+    summary: "Gets packets from the sequencer and drives them pin by pin through yapp_if."
+    description: |
+      `run_phase` resets the interface, waits for reset release, then loops
+      `seq_item_port.get_next_item(req)` -> `vif.send_to_dut(...)` -> `item_done()`.
+      All pin activity lives in the interface task; the driver only sequences it and
+      records the transaction (`begin_tr`/`end_tr`).
+  yapp_tx_sequencer:
+    summary: "uvm_sequencer #(yapp_packet): arbitrates YAPP sequences for the driver."
+  yapp_tx_monitor:
+    summary: "Samples yapp_if on the rising edge, rebuilds packets, publishes them and collects coverage."
+    description: |
+      `collect_packets` runs forever: one new `yapp_packet` per packet, published on
+      `item_collected_port` (Lab 9A) and sampled by `yapp_pkt_cg` (Lab 10). Counts packets
+      and bad-parity packets; `num_bad_parity` is read by the register tests.
+  yapp_tx_agent:
+    summary: "Monitor always; driver + sequencer only when is_active == UVM_ACTIVE."
+  yapp_env:
+    summary: "The YAPP UVC's env: one tx agent."
+  yapp_base_seq:
+    summary: "Base of every YAPP sequence: raises/drops the objection of the starting phase."
+  yapp_5_packets:   {summary: "Five random packets (`uvm_do`)."}
+  yapp_1_seq:       {summary: "One random packet."}
+  yapp_012_seq:     {summary: "Three packets to addresses 0, 1, 2 in order."}
+  yapp_111_seq:     {summary: "Three packets to address 1."}
+  yapp_repeat_addr_seq: {summary: "Two packets with the same random address."}
+  yapp_incr_payload_seq: {summary: "One packet with payload 0,1,2,... and the parity recomputed afterwards."}
+  yapp_rnd_seq:     {summary: "`count` random packets (default 5)."}
+  six_yapp_seq:     {summary: "Six random packets -- a sequence that runs another sequence (`uvm_do` of yapp_5_packets + 1)."}
+  yapp_exhaustive_seq: {summary: "Runs the whole library once: 1, 012, 111, repeat_addr, incr_payload, rnd, six."}
+  yapp_coverage_seq: {summary: "40 packets with the legal-address constraint switched off, to fill the covergroup."}
+  yapp_88_packets_seq: {summary: "88 packets -- enough to fill a 16-byte channel FIFO and exercise in_suspend."}
+  # ---------------------------------------------------------------- HBUS UVC
+  hbus_transaction: {summary: "One HBUS access: haddr, hdata, hwr_rd (HBUS_READ / HBUS_WRITE)."}
+  hbus_master_driver:
+    summary: "Drives HBUS writes (1 cycle) and reads (2 cycles); copies read data back into the item."
+  hbus_master_sequencer: {summary: "uvm_sequencer #(hbus_transaction)."}
+  hbus_master_agent: {summary: "HBUS master: driver + sequencer (the monitor is shared at env level)."}
+  hbus_slave_agent:  {summary: "Placeholder slave agent -- the router is the only slave, so none is built."}
+  hbus_monitor:
+    summary: "Watches the shared bus and publishes every access on item_collected_port (feeds the reference model)."
+  hbus_env:
+    summary: "num_masters master agents, num_slaves slave agents and one shared monitor."
+  hbus_base_seq: {summary: "Base of the HBUS sequences; objection handling."}
+  hbus_write_seq: {summary: "One write to `haddr` with `hdata`."}
+  hbus_read_seq:  {summary: "One read from `haddr`; the result lands in the item."}
+  hbus_set_default_regs_seq: {summary: "Writes the reset defaults: ctrl_reg = 0x3f, en_reg = 0x01."}
+  hbus_small_packet_seq: {summary: "ctrl_reg (maxpktsize) = 20, en_reg = 1."}
+  hbus_large_packet_seq: {summary: "ctrl_reg (maxpktsize) = 63."}
+  hbus_read_max_pkt_seq: {summary: "Reads ctrl_reg and prints maxpktsize."}
+  hbus_router_disable_seq: {summary: "en_reg = 0: the router ignores its input."}
+  hbus_router_enable_seq:  {summary: "en_reg = 1."}
+  hbus_reg_adapter:
+    summary: "uvm_reg_adapter: reg2bus() builds an hbus_transaction, bus2reg() reads one back."
+  # ------------------------------------------------------------- Channel UVC
+  channel_packet: {summary: "A packet as seen on an output channel (addr, length, payload, parity, response delay)."}
+  channel_rx_driver: {summary: "Responder: receives packets from the DUT with a random suspend delay."}
+  channel_rx_sequencer: {summary: "uvm_sequencer #(channel_packet)."}
+  channel_rx_monitor:
+    summary: "Collects packets on the channel and checks that the address matches channel_id."
+  channel_rx_agent: {summary: "One output channel: responder driver, sequencer, monitor."}
+  channel_env: {summary: "channel_id tells the agent which output it watches (0, 1 or 2)."}
+  channel_rx_base_seq: {summary: "Base of the channel sequences (no objection: responders run forever)."}
+  channel_rx_resp_seq: {summary: "Forever: receive the next packet with a random delay 0..10."}
+  channel_rx_fast_seq: {summary: "Forever: receive with no delay."}
+  # ----------------------------------------------------- Clock & Reset UVC
+  clock_and_reset_transaction: {summary: "clock period + number of reset cycles."}
+  clock_and_reset_driver: {summary: "Calls clk_rst_if.start_clock_and_reset(period, reset_cycles)."}
+  clock_and_reset_sequencer: {summary: "uvm_sequencer #(clock_and_reset_transaction)."}
+  clock_and_reset_agent: {summary: "driver + sequencer (no monitor)."}
+  clock_and_reset_env: {summary: "One agent."}
+  clock_and_reset_base_seq: {summary: "Base sequence with objection handling."}
+  clk10_rst5_seq: {summary: "10 ns clock, reset held for 5 cycles -- the default in every test."}
+  clk_rst_rand_seq: {summary: "Random period and reset length."}
+  # ------------------------------------------------------- Router module UVC
+  router_scoreboard:
+    summary: "Four analysis imps: expected packets queued per address, compared with what each channel delivered."
+    description: |
+      `write_yapp` clones the packet into `pkt_q[addr]`; `write_chan0/1/2` pop the head of
+      the matching queue and compare with `comp_equal()`. Counts matched / mismatched /
+      unexpected; `report_phase` prints the totals. Packets to address 3 are dropped here
+      in Lab 9A; from Lab 9B the reference model filters them first.
+  router_reference:
+    summary: "Mirrors maxpktsize and router_en from the HBUS traffic and forwards only the packets the router will route."
+    description: |
+      `write_hbus` updates the mirrored registers on every write to 0x1000/0x1001.
+      `write_yapp` applies the DUT's drop rules (disabled, length > maxpktsize, addr == 3)
+      and publishes survivors on `yapp_valid_out` -> scoreboard.
+  router_module_env:
+    summary: "The router module UVC: reference + scoreboard, with exports as the only connection points."
+  router_fifo_scoreboard:
+    summary: "Lab 9D: the same checks built on uvm_tlm_analysis_fifo and blocking get() in run_phase threads."
+  # ------------------------------------------------------- Testbench & tests
+  router_tb:
+    summary: "The environment: five UVC envs, the virtual sequencer, the module UVC and the register model."
+    description: |
+      `build_phase` configures the channels (channel_id) and the HBUS env (one master, no
+      slave), creates everything, builds and locks the register model. `connect_phase`
+      wires the monitors to the module UVC, the virtual sequencer to the two sub-sequencers
+      and the register map to the HBUS sequencer through the adapter.
+  router_mcsequencer:
+    summary: "Virtual sequencer: handles to the HBUS and YAPP sequencers, no items of its own."
+  router_mcseq_base:
+    summary: "Base of the multichannel sequences; `uvm_declare_p_sequencer(router_mcsequencer)`."
+  router_simple_mcseq:
+    summary: "Programs maxpktsize = 20, sends 6 short packets, then maxpktsize = 63 and 6 random packets."
+  base_test:
+    summary: "Builds router_tb, sets the clock/reset and channel default sequences, enables recording."
+    description: |
+      Every other test extends it. `configure_sequences()` is the hook the tests override;
+      `end_of_elaboration_phase` prints the topology; `check_phase` runs `check_config_usage()`.
+  simple_test: {summary: "Default sequences only: yapp_012_seq on the YAPP sequencer."}
+  test_uvc_integration: {summary: "Lab 7: hbus_small_packet_seq + yapp_012_seq -- all UVCs talking to the DUT."}
+  router_simple_mcseq_test: {summary: "Runs router_simple_mcseq on the virtual sequencer."}
+  scoreboard_drop_test: {summary: "Lab 9: packets the reference model drops must not reach the scoreboard."}
+  coverage_test: {summary: "Lab 10: yapp_coverage_seq to close yapp_pkt_cg."}
+  uvm_reset_test: {summary: "uvm_reg_hw_reset_seq: every register reads its reset value."}
+  uvm_mem_walk_test: {summary: "uvm_mem_walk_seq on yapp_mem (511 writes / 255 reads); detects INJECT_ERROR."}
+  reg_access_test: {summary: "Hand-written RW / RO register checks, front door and backdoor."}
+  reg_function_test: {summary: "Sends packets and checks the counters through the register model."}
+  reg_function_check_test: {summary: "set_check_on_read + predict(): the model checks every read itself."}
+  reg_introspection_test: {summary: "get_registers() and queue find(): the model describing itself."}
+  # ---------------------------------------------------------- Register model
+  yapp_router_regs_t: {summary: "Top register block: default_map with the yapp_regs sub-block at 0x1000."}
+  yapp_regs_c: {summary: "The register file: ctrl_reg, en_reg, six RO counters, mem_size_reg, two memories."}
+  ctrl_reg_c: {summary: "0x1000 ctrl_reg: plen[5:0] (maxpktsize, reset 0x3f)."}
+  en_reg_c: {summary: "0x1001 en_reg: router_en and the counter enables (reset 0x01)."}
+  ro_byte_reg_c: {summary: "Base of the read-only 8-bit counters."}
+  parity_err_cnt_reg_c: {summary: "0x1004: packets with bad parity."}
+  oversized_pkt_cnt_reg_c: {summary: "0x1005: packets longer than maxpktsize."}
+  addr3_cnt_reg_c: {summary: "0x1006: packets to illegal address 3."}
+  addr0_cnt_reg_c: {summary: "0x1009: packets to address 0."}
+  addr1_cnt_reg_c: {summary: "0x100a: packets to address 1."}
+  addr2_cnt_reg_c: {summary: "0x100b: packets to address 2."}
+  mem_size_reg_c: {summary: "0x100d: length of the last packet."}
+  yapp_pkt_mem_c: {summary: "0x1010: 64 x 8 RO -- bytes of the last packet."}
+  yapp_mem_c: {summary: "0x1100: 256 x 8 RW scratch memory."}
+
+nodes:
+  tb_top:
+    summary: "UVM side of the testbench: publishes the virtual interfaces with *_vif_config::set(), then run_test()."
+  hw_top:
+    summary: "Hardware side: clock generator, the five interface instances and the DUT."
+  hw_top.dut:
+    summary: "yapp_router: one YAPP input, three FIFO-buffered output channels, HBUS register access."
+    docs: [{title: "DUT specification", url: dut/spec.md}, {title: "RTL walkthrough", url: dut/rtl.md}]
+  hw_top.in0:
+    summary: "yapp_if: in_data / in_data_vld / in_suspend + tasks send_to_dut (driver) and collect_packets (monitor)."
+  hw_top.hbus0:
+    summary: "hbus_if: haddr / hen / hwr_rd and the bidirectional hdata (DUT connects to the wire hdata_w)."
+  hw_top.ch0: {summary: "channel_if for output 0: data / data_vld / suspend."}
+  hw_top.ch1: {summary: "channel_if for output 1."}
+  hw_top.ch2: {summary: "channel_if for output 2."}
+  hw_top.clk_rst_if: {summary: "clock_and_reset_if: owns reset, run_clock and clock_period."}
+  hw_top.clkgen: {summary: "Free-running clock generator controlled by run_clock / clock_period."}
+  uvm_test_top:
+    summary: "The test selected with +UVM_TESTNAME. base_test is shown; the other tests only change the stimulus."
+
+dut_blocks:
+  - id: input_fsm
+    name: "Input FSM"
+    summary: "IDLE -> PAYLOAD -> PARITY: accepts the header, decides drop, pushes bytes, checks parity."
+    description: |
+      The header is latched in IDLE (`cur_addr`, `cur_len`, `cur_drop`). Bytes are pushed into
+      FIFO[addr] while `in_data_vld && !in_suspend`. In PARITY the accumulated XOR is compared
+      with the parity byte; counters, mem_size_reg and yapp_pkt_mem are updated.
+    lines: [239, 381]
+    symbols: [state, state_e, cur_addr, cur_len, byte_cnt, parity_acc, cur_drop, cur_oversized, cur_enabled, hdr_addr, hdr_len, hdr_ovs, hdr_drop, accept]
+  - id: backpressure
+    name: "in_suspend"
+    summary: "Asserted when the target FIFO is full: the driver must hold the byte."
+    lines: [258, 278]
+    symbols: [in_suspend, fifo_full]
+  - id: fifos
+    name: "3 x yapp_fifo (16 x 8)"
+    summary: "One FIFO per output channel, instantiated in the g_fifo generate loop."
+    lines: [193, 214]
+    symbols: [fifo_push, fifo_pop, fifo_empty, fifo_full, fifo_dout, fifo_din]
+  - id: outputs
+    name: "Output handshake x3"
+    summary: "data_vld_x = !empty; the FIFO pops when the receiver has suspend_x low."
+    lines: [217, 234]
+    symbols: [suspend]
+  - id: error_timer
+    name: "Error timer"
+    summary: "A free-running counter picks a delay 1..10; `error` pulses that many cycles after a bad-parity packet."
+    lines: [281, 290]
+    symbols: [rnd_cnt, err_timer, err_delay, error]
+  - id: regfile
+    name: "HBUS slave + registers"
+    summary: "1-cycle writes, 2-cycle reads with tri-state hdata; ctrl_reg, en_reg, counters, mem_size_reg."
+    lines: [384, 441]
+    symbols: [ctrl_reg, en_reg, parity_err_cnt_reg, oversized_pkt_cnt_reg, addr3_cnt_reg, addr0_cnt_reg, addr1_cnt_reg, addr2_cnt_reg, mem_size_reg, maxpktsize, router_en, hdata_out, hdata_oe, rd_mux]
+  - id: memories
+    name: "yapp_pkt_mem / yapp_mem"
+    summary: "64 bytes of the last packet (RO) and 256 bytes of scratch memory (RW)."
+    lines: [165, 166]
+    symbols: [yapp_pkt_mem, yapp_mem]
+
+dut_flows:          # arrows between DUT blocks / interface instances (from, to, label)
+  - [hw_top.in0, input_fsm, "in_data / in_data_vld"]
+  - [input_fsm, hw_top.in0, "in_suspend"]
+  - [input_fsm, fifos, "push byte to FIFO[addr]"]
+  - [fifos, outputs, "head byte / empty"]
+  - [outputs, hw_top.ch0, "data_0 / data_vld_0"]
+  - [outputs, hw_top.ch1, "data_1 / data_vld_1"]
+  - [outputs, hw_top.ch2, "data_2 / data_vld_2"]
+  - [input_fsm, error_timer, "bad parity"]
+  - [input_fsm, regfile, "counters, mem_size"]
+  - [input_fsm, memories, "yapp_pkt_mem"]
+  - [hw_top.hbus0, regfile, "haddr / hen / hwr_rd / hdata"]
+  - [regfile, memories, "read / write"]
+  - [regfile, input_fsm, "maxpktsize, router_en"]
+
+layout:
+  hierarchy:
+    root:
+      # the overview scene: UVM side above, hardware below
+      rows:
+        - [tb_top]
+        - [hw_top]
+    tb_top:
+      rows: [[uvm_test_top]]
+    uvm_test_top:
+      rows: [[tb]]
+    tb:
+      rows:
+        - [yapp, hbus, chan0, chan1, chan2, clk_rst]
+        - [mcseqr, router_module, yapp_rm, reg2hbus]
+    hw_top:
+      rows:
+        - [clk_rst_if, clkgen]
+        - [in0, dut, hbus0]
+        - [ch0, ch1, ch2]
+    tb.yapp.agent:
+      rows: [[sequencer, driver], [monitor]]
+    tb.hbus:
+      rows: [["masters[0]", monitor]]
+    tb.router_module:
+      rows: [[reference, scoreboard]]
+    hw_top.dut:
+      rows:
+        - [input_fsm, backpressure]
+        - [fifos, outputs]
+        - [error_timer, regfile, memories]
+        - ["g_fifo[0].u_fifo", "g_fifo[1].u_fifo", "g_fifo[2].u_fifo"]

@@ -1,5 +1,8 @@
 # Reference model and the router module UVC
 
+[Open on the project map →](../project-map.md#view=tlm&node=tb.router_module.reference){ .pm-link }
+
+
 ## Why a reference model
 
 The scoreboard of Lab 9A expects **every** packet to come out. The router

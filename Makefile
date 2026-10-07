@@ -6,6 +6,9 @@
 #   make run LAB=lab05_seq TEST=exhaustive_seq_test   run one test with xrun
 #   make docs                 build the teaching site into site/
 #   make serve                serve the teaching site locally
+#   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
+#   make map-check            verify the committed project map is up to date (CI)
+#   make map-export           export every map view to SVG/PNG/PDF (node + playwright)
 #   make clean                remove simulator output in every lab
 # ---------------------------------------------------------------------------
 PYTHON    ?= python3
@@ -14,10 +17,10 @@ XRUN_OPTS ?=
 LAB       ?=
 TEST      ?= base_test
 
-.PHONY: help lint uvm-src run docs serve clean
+.PHONY: help lint uvm-src run docs serve map map-check map-export clean
 
 help:
-	@sed -n '2,11p' $(MAKEFILE_LIST)
+	@sed -n '2,14p' $(MAKEFILE_LIST)
 
 uvm-src:
 	@bash scripts/get_uvm.sh
@@ -38,10 +41,19 @@ endif
 docs:
 	mkdocs build --strict
 
+map: uvm-src
+	$(PYTHON) -m scripts.project_map.build
+
+map-check: uvm-src
+	$(PYTHON) -m scripts.project_map.build --check
+
+map-export:
+	node scripts/project_map/export.mjs
+
 serve:
 	mkdocs serve
 
 clean:
 	find . -type d \( -name xcelium.d -o -name INCA_libs -o -name '*.shm' -o -name cov_work \) -prune -exec rm -rf {} +
 	find . -type f \( -name xrun.log -o -name xrun.history -o -name '*.key' \) -delete
-	rm -rf site
+	rm -rf site build

@@ -1,5 +1,8 @@
 # Packet — the sequence item
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_packet){ .pm-link }
+
+
 A sequence item is the **unit of stimulus**: one object that describes one
 transaction. For YAPP that is one packet; for HBUS one read or write; for the
 channel one "receive a packet with this response delay".

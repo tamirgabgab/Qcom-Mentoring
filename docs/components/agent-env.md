@@ -1,5 +1,8 @@
 # Agent and env
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb.yapp.agent){ .pm-link }
+
+
 ## Agent: one interface, three components
 
 An agent packages everything one interface needs. `is_active` decides whether

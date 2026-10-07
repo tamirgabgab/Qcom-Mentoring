@@ -1,5 +1,8 @@
 # Lab 11B — Register model: integration
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.yapp_rm){ .pm-link }
+
+
 **Directory:** `labs/lab11b_rm_integ` · **New in `tb/`:** `yapp_router_reg_pkg.sv` (copied from 11A) ·
 **Changed:** `router_tb.sv`, `tb_top.sv`, `router_test_lib.sv`, `run.f` (`-access +rwc`)
 

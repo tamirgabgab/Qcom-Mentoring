@@ -13,6 +13,10 @@ Verification Using UVM* training), written for mentoring:
 * a **teaching site** (`docs/`, MkDocs Material) with architecture diagrams,
   protocol waveforms, one guide per component, a test plan and one page per
   lab with the solution, expected results and checkpoint questions;
+* an **interactive project map** (`docs/project-map.md`, also a single offline
+  file `docs/downloads/yapp_project_map.html`): hierarchy with drill-down, TLM
+  data flow and UML class views, generated from the SystemVerilog with pyslang
+  (`scripts/project_map/`), with the role, source and lab of every block;
 * a **lint harness** (`scripts/lint.py`, slang + Accellera UVM) that
   elaborates every lab without a simulator, run in CI.
 
@@ -30,6 +34,9 @@ pip install pyslang && make lint
 
 # read / build the docs
 pip install mkdocs-material && make serve
+
+# regenerate the interactive project map after changing the code
+pip install pyslang pyyaml jinja2 && make map
 ```
 
 ## Layout
@@ -40,7 +47,7 @@ yapp/ hbus/ channel/ clock_and_reset/ router/   UVCs (sv/ in each)
 labs/lab01_data … lab11c_rm_sim                 one snapshot per lab
 test_install/         UVM installation check
 common/               uvm_version_compat.svh (1.1d / 1.2 shim), lab.mk
-scripts/              lint.py, get_uvm.sh, gen_waves.py
+scripts/              lint.py, get_uvm.sh, gen_waves.py, project_map/ (extract, model, layout, build)
 docs/ mkdocs.yml      the site
 ```
 

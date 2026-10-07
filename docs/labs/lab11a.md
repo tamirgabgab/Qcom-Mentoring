@@ -1,5 +1,8 @@
 # Lab 11A — Register model: generation
 
+[Open on the project map →](../project-map.md#view=classes&scene=uml:yapp_router_reg_pkg){ .pm-link }
+
+
 **Directory:** `labs/lab11a_rm_gen` · **Files:** `yapp_router_regs.xml`, `yapp_router_reg_pkg.sv`,
 `quicktest.sv`, `run.f`, `Makefile`
 

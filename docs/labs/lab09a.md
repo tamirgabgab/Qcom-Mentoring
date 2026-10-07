@@ -1,5 +1,8 @@
 # Lab 9A — Creating a scoreboard using TLM
 
+[Open on the project map →](../project-map.md#view=tlm&node=tb.router_module.scoreboard){ .pm-link }
+
+
 **Directory:** `labs/lab09_sba` · **New:** `sv/router_scoreboard.sv`, `sv/packet_compare.sv` ·
 **Changed:** `yapp/sv/yapp_tx_monitor.sv` (analysis port), `tb/router_tb.sv`, `tb/tb_top.sv`, tests
 

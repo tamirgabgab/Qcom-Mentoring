@@ -1,5 +1,8 @@
 # The YAPP router — specification
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=hw_top.dut){ .pm-link }
+
+
 **YAPP** stands for *Yet Another Packet Protocol*. The router accepts packets on
 **one input port** and forwards each one to **one of three output channels**,
 chosen by the address in the packet header. A **host bus (HBUS)** programs the

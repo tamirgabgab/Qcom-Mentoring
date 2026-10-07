@@ -1,5 +1,8 @@
 # Lab 1 — Creating a stimulus model
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_packet){ .pm-link }
+
+
 **Directory:** `labs/lab01_data` · **Files:** `sv/yapp_packet.sv`, `sv/yapp_pkg.sv`, `tb/top.sv`, `tb/run.f`
 
 ## Objective

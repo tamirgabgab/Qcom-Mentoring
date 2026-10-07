@@ -1,5 +1,8 @@
 # Lab 10 — A simple functional coverage model *(optional)*
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_tx_monitor){ .pm-link }
+
+
 **Directory:** `labs/lab10_cov` · **Changed:** `yapp/sv/yapp_tx_monitor.sv` (covergroup),
 `yapp/sv/yapp_tx_seqs.sv` (`yapp_coverage_seq`), `tb/router_test_lib.sv`, `run.f` (`-coverage U`)
 

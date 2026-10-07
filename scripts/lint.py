@@ -87,8 +87,9 @@ def parse_run_f(path, args, seen):
             args.append(os.path.join(base, tok))
 
 
-def lint_one(run_f, quiet=False):
-    args = [
+def standard_args():
+    """slang arguments shared by every lint/extraction run (UVM source first)."""
+    return [
         "-I", UVM_SRC, os.path.join(UVM_SRC, "uvm_pkg.sv"),
         "-I", COMMON,
         "-D", "UVM_ENABLE_DEPRECATED_API",   # starting_phase, uvm_top, ... (1.1d/1.2 style)
@@ -104,6 +105,23 @@ def lint_one(run_f, quiet=False):
         "-Wno-sign-conversion",
         "-Wno-unknown-escape-code",   # one regex string inside the UVM library
     ]
+
+
+def compile_run_f(run_f):
+    """Parse + elaborate one run.f; returns (driver, compilation) or (driver, None)."""
+    args = standard_args()
+    parse_run_f(run_f, args, set())
+    drv = pyslang.driver.Driver()
+    drv.addStandardArgs()
+    cmd = "slang " + " ".join(shlex.quote(a) for a in args)
+    if not drv.parseCommandLine(cmd) or not drv.processOptions():
+        return drv, None
+    drv.parseAllSources()
+    return drv, drv.createCompilation()
+
+
+def lint_one(run_f, quiet=False):
+    args = standard_args()
     parse_run_f(run_f, args, set())
 
     drv = pyslang.driver.Driver()

@@ -1,5 +1,8 @@
 # Lab 7 — Integrating multiple UVCs
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb){ .pm-link }
+
+
 **Directory:** `labs/lab07_integ` (only `tb/`; the YAPP UVC moved to `yapp/sv`) ·
 **UVCs added:** `hbus/sv`, `channel/sv`, `clock_and_reset/sv`
 

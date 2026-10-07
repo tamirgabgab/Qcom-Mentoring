@@ -1,5 +1,8 @@
 # Lab 2 — Creating test and testbench components
 
+[Open on the project map →](../project-map.md#view=classes&node=cls:base_test){ .pm-link }
+
+
 **Directory:** `labs/lab02_test` · **New files:** `tb/router_tb.sv`, `tb/router_test_lib.sv`
 
 ## Objective

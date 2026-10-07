@@ -1,5 +1,8 @@
 # Register model (RAL)
 
+[Open on the project map →](../project-map.md#view=hierarchy&node=tb.yapp_rm){ .pm-link }
+
+
 The UVM register layer models the DUT's registers as **objects**: a test writes
 `regs.ctrl_reg.write(status, 8'h14)` and never spells out an HBUS cycle. The
 same call can go through the **front door** (real bus transactions, via an

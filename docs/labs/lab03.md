@@ -1,5 +1,8 @@
 # Lab 3 — Creating a simple UVC
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb.yapp.agent){ .pm-link }
+
+
 **Directory:** `labs/lab03_uvc` · **New files:** `sv/yapp_tx_driver.sv`, `yapp_tx_sequencer.sv`,
 `yapp_tx_monitor.sv`, `yapp_tx_agent.sv`, `yapp_env.sv`, `yapp_tx_seqs.sv`
 

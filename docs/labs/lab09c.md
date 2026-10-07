@@ -1,5 +1,8 @@
 # Lab 9C — Using TLM export connectors *(optional)*
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb.router_module){ .pm-link }
+
+
 **Directory:** `labs/lab09_sbc` · **Changed:** `sv/router_module_env.sv`, `tb/router_tb.sv`
 
 ## Objective

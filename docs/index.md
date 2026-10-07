@@ -1,5 +1,11 @@
 # YAPP Router — SystemVerilog & UVM Course
 
+!!! tip "New: the interactive project map"
+    [Open the project map](project-map.md) — one picture of the whole testbench and DUT you can
+    drill into (hierarchy, TLM data flow, UML classes), generated from the source. Also
+    available as a [single offline HTML file](downloads/yapp_project_map.html).
+
+
 This site is the companion to the **YAPP packet-router verification project**: a
 complete UVM environment built from scratch over eleven labs, exactly the way a
 verification engineer would build one at work — one component at a time, each

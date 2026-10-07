@@ -1,5 +1,8 @@
 # Component guides
 
+[Open on the project map →](../project-map.md#view=hierarchy&scene=h:tb){ .pm-link }
+
+
 The lab pages follow the course order. These guides explain the same code by
 **role**: open the one for the component you are writing, read what it must do,
 look at the reference implementation and the mistakes people make.

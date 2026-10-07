@@ -1,0 +1,73 @@
+---
+hide:
+  - toc
+---
+
+# Project map
+
+One picture of the whole project that you can look into: **double-click** a box to open it,
+**click** anything for its role, source code and lab. Three views: Hierarchy, TLM / data flow,
+Classes (UML). Press ++question++ inside the map for the keyboard shortcuts.
+
+[Open full screen](downloads/yapp_project_map.html){ .md-button .md-button--primary }
+[Download the offline copy](downloads/yapp_project_map.html){ .md-button download="yapp_project_map.html" }
+[Exported pictures](https://github.com/tamirgabgab/Qcom-Mentoring/tree/main/docs/assets/project_map/export){ .md-button }
+
+<div class="pm-embed" markdown>
+<iframe id="pm-iframe" src="../downloads/yapp_project_map.html" title="YAPP router project map" loading="eager" allow="clipboard-write"></iframe>
+</div>
+
+<script>
+(function () {
+  var frame = document.getElementById("pm-iframe");
+  if (!frame) return;
+  var base = frame.getAttribute("src").split("#")[0];
+  function theme() { return (document.body.getAttribute("data-md-color-scheme") === "slate") ? "dark" : "light"; }
+  function hashWithTheme(h) {
+    var p = new URLSearchParams((h || "").replace(/^#/, ""));
+    p.set("theme", theme());
+    return "#" + p.toString().replace(/%3A/g, ":").replace(/%5B/g, "[").replace(/%5D/g, "]");
+  }
+  // deep link from the page URL into the map
+  frame.setAttribute("src", base + hashWithTheme(location.hash));
+  window.addEventListener("hashchange", function () {
+    if (frame.contentWindow) frame.contentWindow.postMessage({ pmHash: hashWithTheme(location.hash) }, "*");
+  });
+  // the map reports its state back so the page URL stays shareable
+  window.addEventListener("message", function (ev) {
+    if (ev.source === frame.contentWindow && ev.data && ev.data.pmHash) {
+      var h = ev.data.pmHash.replace(/[&?]theme=\w+/, "");
+      if (location.hash !== h) history.replaceState(null, "", h);
+    }
+  });
+  // follow the site's light / dark toggle
+  new MutationObserver(function () {
+    if (frame.contentWindow) frame.contentWindow.postMessage({ pmTheme: theme() }, "*");
+  }).observe(document.body, { attributes: true, attributeFilter: ["data-md-color-scheme"] });
+})();
+</script>
+
+## How to read it
+
+* **Hierarchy** — who contains whom (test → testbench → UVC → agent → driver / monitor /
+  sequencer, DUT → FSM / FIFOs / registers), with the TLM ports on each component and the
+  virtual interfaces down to the hardware. Dashed boxes outside a frame are the far ends of
+  connections leaving that level; click one to jump there.
+* **TLM / data flow** — sequencers → drivers → DUT → monitors → reference model → scoreboard;
+  click a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the
+  FIFO-based scoreboard.
+* **Classes (UML)** — inheritance per package; **Members** shows fields (with `rand`), methods
+  and constraints. Dashed arrows: *runs on*, *uses*, *starts* (default sequence), *overrides*.
+
+The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
+introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
+guide, lab page, the same item in the other views, a shareable link).
+
+The map is generated from the SystemVerilog by `scripts/project_map/` — pyslang reads the
+classes, ports, `connect()` calls and the module tree; `annotations.yaml` adds the prose — so it
+never drifts from the code (`make map` regenerates it, CI checks it is current).
+
+!!! tip "Offline use in class"
+    The offline copy is one self-contained HTML file (no network needed). Save it, double-click
+    it, press ++f++ to fit the view and ++question++ for the shortcuts. The **Export** menu
+    produces SVG / PNG of the current view for slides; `make map-export` renders every view at once.
