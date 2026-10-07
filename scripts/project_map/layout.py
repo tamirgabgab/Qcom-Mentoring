@@ -504,6 +504,14 @@ class HierarchyLayout(Layout):
         Producers feeding the scene sit on the left, everything the scene talks to on the right."""
         specs = []
         stubs = {}
+        # a far end that also reaches a child of the container: the arrow to the frame itself is
+        # the coarse version of that connection, so it is left out (module scenes)
+        detailed = set()
+        for e in self.E:
+            if e["kind"] in ("port",) and not e.get("variant"):
+                for far, near in ((e["from"], e["to"]), (e["to"], e["from"])):
+                    if near != scene_root and near.startswith(scene_root + ".") and self.visible_owner(near, boxes):
+                        detailed.add(far)
         for e in self.E:
             if e["kind"] not in EDGE_KINDS_IN_SCENES or e.get("variant"):
                 continue
@@ -513,6 +521,8 @@ class HierarchyLayout(Layout):
                 continue
             far = ends[0] if inside[0] is None else ends[1]
             near = ends[1] if inside[0] is None else ends[0]
+            if near == scene_root and e["kind"] == "port" and far in detailed:
+                continue
             incoming = e["from"] == far
             if far not in stubs:
                 owner_far = far if not self.is_port(far) else self.N[far]["parent"]

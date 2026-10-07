@@ -35,7 +35,12 @@ def run_all(m, model_json, html):
     expect(kinds["handle"] == 2, f"virtual sequencer handles: {kinds['handle']}")
     expect(kinds["reg_adapter"] == 1 and kinds["backdoor"] == 1, "register model wiring (set_sequencer / hdl root)")
     expect(len([n for n in N.values() if n.get("parent") == "hw_top"]) == 8, "hw_top must have 8 instances")
-    expect(len([n for n in N.values() if n["id"].startswith("hw_top.dut.g_fifo")]) == 3, "3 yapp_fifo instances")
+    expect(len([n for n in N.values() if n.get("type") == "yapp_output_channel"]) == 3, "3 output channels")
+    expect(len([n for n in N.values() if n.get("type") == "yapp_fifo"]) == 3, "3 yapp_fifo instances (inside the channels)")
+    expect(sorted(N["hw_top.dut"]["children"]) == sorted(["hw_top.dut.u_input_fsm", "hw_top.dut.u_regs", "hw_top.dut.u_error_timer",
+           "hw_top.dut.g_ch[0].u_ch", "hw_top.dut.g_ch[1].u_ch", "hw_top.dut.g_ch[2].u_ch"]), "DUT sub-modules")
+    dut_edges = [e for e in m["edges"] if e["kind"] == "port" and e["from"].startswith("hw_top.dut.") and e["to"].startswith("hw_top.dut.")]
+    expect(len(dut_edges) >= 6, f"edges between the DUT sub-modules: {len(dut_edges)}")
     expect("tb.fifo_sb" in N and N["tb.fifo_sb"].get("variant"), "lab09d variant fifo_sb present and tagged")
     expect("tb.mcseqr" in N and not [k for k in N if k.startswith("tb.mcseqr.")], "virtual sequencer has no children")
     # every node has a lab, a summary and a scene

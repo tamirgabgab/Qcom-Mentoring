@@ -209,11 +209,20 @@ class Extractor:
                     prop["type"] = "covergroup"
                     prop["type_name"] = "covergroup"
                 info["properties"].append(prop)
-            elif k == SK.Subroutine:
+            elif k == SK.Subroutine or str(k).endswith("MethodPrototype"):
                 if m.name in MACRO_MEMBERS or m.name.startswith("__m_uvm"):
                     continue
                 if self.file_of(m.location) != info["file"]:
                     continue   # macro expansion from a library file
+                if k != SK.Subroutine:
+                    # `extern` prototype: the body is the out-of-block definition after endclass
+                    try:
+                        sub = m.subroutine
+                    except Exception:
+                        sub = None
+                    if sub is None:
+                        continue
+                    m = sub
                 l1, l2 = self.span(m)
                 flags = ""
                 try:
@@ -397,7 +406,7 @@ class Extractor:
                 except Exception:
                     pass
                 info["blocks"].append({"kind": pk, "line": l1, "end_line": l2})
-            elif k == "Instance" and depth < 2:
+            elif k == "Instance" and depth < 3:
                 info["instances"].append(self.extract_instance_body(m, depth + 1))
             elif k == "GenerateBlockArray":
                 entries = list(m.entries)

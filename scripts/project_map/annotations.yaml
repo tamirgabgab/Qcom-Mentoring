@@ -15,13 +15,13 @@
 #   kinds           kind -> label, colour, default doc page, one-line role
 #   classes         class name -> summary (one line) + description (markdown)
 #   nodes           node id -> summary / description / docs overrides
-#   dut_blocks      functional blocks of the DUT (not module instances)
+#   extra_flows     module connections the port analysis cannot see (assign statements)
 #   layout          placement hints for the hierarchy scenes
 
 root_test: base_test
 
 sources:
-  - labs/lab11c_rm_sim/tb/run.f      # final superset: RAL, mcseqr, module UVC with exports
+  - yapp_project/tb/run.f            # the complete project: RAL, mcseqr, module UVC with exports
   - labs/lab10_cov/tb/run.f          # pre-RAL tests (simple, mcseq, integration, coverage)
   - labs/lab09_sbd/tb/run.f          # fifo_sb variant of the testbench + scoreboard_drop_test
 
@@ -67,6 +67,12 @@ lab_overrides:
   # DUT and interfaces
   hw_top: "6"
   hw_top.dut: "6"
+  yapp_router: "6"
+  yapp_input_fsm: "6"
+  yapp_fifo: "6"
+  yapp_output_channel: "6"
+  yapp_hbus_regs: "6"
+  yapp_error_timer: "6"
   hw_top.in0: "6"
   hw_top.clkgen: "6"
   hw_top.hbus0: "7"
@@ -87,7 +93,7 @@ notes:
   tb.chan0:                "channel_id = 0: the monitor checks that every packet carries address 0."
   tb.chan1:                "channel_id = 1."
   tb.chan2:                "channel_id = 2."
-  tb.yapp_rm:              "Created with create(\"yapp_rm\") -- an object, not a component -- then build(), lock_model(), set_hdl_path_root(\"hw_top.dut\")."
+  tb.yapp_rm:              "Created with create(\"yapp_rm\") -- an object, not a component -- then build(), lock_model(), set_hdl_path_root(\"hw_top.dut.u_regs\")."
   tb.reg2hbus:             "Object owned by the testbench; passed to default_map.set_sequencer() together with the HBUS sequencer."
   tb.fifo_sb:              "Lab 9D variant: replaces router_module (reference + scoreboard) with one TLM-FIFO based scoreboard."
 
@@ -279,8 +285,39 @@ nodes:
   hw_top:
     summary: "Hardware side: clock generator, the five interface instances and the DUT."
   hw_top.dut:
-    summary: "yapp_router: one YAPP input, three FIFO-buffered output channels, HBUS register access."
+    summary: "yapp_router: one YAPP input, three FIFO-buffered output channels, HBUS register access. One module per file in yapp_project/rtl/."
     docs: [{title: "DUT specification", url: dut/spec.md}, {title: "RTL walkthrough", url: dut/rtl.md}]
+  hw_top.dut.u_input_fsm:
+    summary: "IDLE -> PAYLOAD -> PARITY: accepts the header, decides drop, pushes bytes, checks parity."
+    description: |
+      The header is latched in IDLE (`cur_addr`, `cur_len`, `cur_drop`). Bytes are pushed into
+      the channel FIFO while `in_data_vld && !in_suspend`; `in_suspend` is asserted only when the
+      target FIFO is full and the packet is not dropped. In PARITY the accumulated XOR is compared
+      with the parity byte and the packet is reported to the register block (`pkt_done`,
+      `pkt_addr`, `pkt_len`, `pkt_parity_err`, `pkt_oversized`) in the same cycle. The
+      `ROUTER DROPS PACKET` messages come from here.
+  hw_top.dut.u_regs:
+    summary: "HBUS slave + register file: ctrl_reg, en_reg, counters, mem_size_reg, yapp_pkt_mem, yapp_mem."
+    description: |
+      1-cycle writes, 2-cycle reads with tri-state `hdata`. Counters and `mem_size_reg` are updated
+      from the FSM's end-of-packet report; `yapp_pkt_mem` through the `pkt_mem_*` write port.
+      The register model's backdoor root is `hw_top.dut.u_regs`. `INJECT_ERROR` lives here.
+  hw_top.dut.u_error_timer:
+    summary: "A free-running counter picks a delay 1..10; `error` pulses that many cycles after a bad-parity packet."
+  "hw_top.dut.g_ch[0].u_ch":
+    summary: "Output channel 0: a 16 x 8 FIFO and the data_vld / suspend handshake."
+    description: &outch |
+      `data` is the FIFO head, `data_vld = !empty`; the FIFO pops when the receiver has `suspend`
+      low on a rising edge, so a new byte appears every cycle while the receiver keeps up.
+  "hw_top.dut.g_ch[1].u_ch":
+    summary: "Output channel 1: a 16 x 8 FIFO and the data_vld / suspend handshake."
+    description: *outch
+  "hw_top.dut.g_ch[2].u_ch":
+    summary: "Output channel 2: a 16 x 8 FIFO and the data_vld / suspend handshake."
+    description: *outch
+  "hw_top.dut.g_ch[0].u_ch.u_fifo": {summary: "Synchronous FIFO, DEPTH 16 x WIDTH 8: count tells empty / full, dout is always the head."}
+  "hw_top.dut.g_ch[1].u_ch.u_fifo": {summary: "Synchronous FIFO, DEPTH 16 x WIDTH 8: count tells empty / full, dout is always the head."}
+  "hw_top.dut.g_ch[2].u_ch.u_fifo": {summary: "Synchronous FIFO, DEPTH 16 x WIDTH 8: count tells empty / full, dout is always the head."}
   hw_top.in0:
     summary: "yapp_if: in_data / in_data_vld / in_suspend + tasks send_to_dut (driver) and collect_packets (monitor)."
   hw_top.hbus0:
@@ -293,61 +330,10 @@ nodes:
   uvm_test_top:
     summary: "The test selected with +UVM_TESTNAME. base_test is shown; the other tests only change the stimulus."
 
-dut_blocks:
-  - id: input_fsm
-    name: "Input FSM"
-    summary: "IDLE -> PAYLOAD -> PARITY: accepts the header, decides drop, pushes bytes, checks parity."
-    description: |
-      The header is latched in IDLE (`cur_addr`, `cur_len`, `cur_drop`). Bytes are pushed into
-      FIFO[addr] while `in_data_vld && !in_suspend`. In PARITY the accumulated XOR is compared
-      with the parity byte; counters, mem_size_reg and yapp_pkt_mem are updated.
-    lines: [239, 381]
-    symbols: [state, state_e, cur_addr, cur_len, byte_cnt, parity_acc, cur_drop, cur_oversized, cur_enabled, hdr_addr, hdr_len, hdr_ovs, hdr_drop, accept]
-  - id: backpressure
-    name: "in_suspend"
-    summary: "Asserted when the target FIFO is full: the driver must hold the byte."
-    lines: [258, 278]
-    symbols: [in_suspend, fifo_full]
-  - id: fifos
-    name: "3 x yapp_fifo (16 x 8)"
-    summary: "One FIFO per output channel, instantiated in the g_fifo generate loop."
-    lines: [193, 214]
-    symbols: [fifo_push, fifo_pop, fifo_empty, fifo_full, fifo_dout, fifo_din]
-  - id: outputs
-    name: "Output handshake x3"
-    summary: "data_vld_x = !empty; the FIFO pops when the receiver has suspend_x low."
-    lines: [217, 234]
-    symbols: [suspend]
-  - id: error_timer
-    name: "Error timer"
-    summary: "A free-running counter picks a delay 1..10; `error` pulses that many cycles after a bad-parity packet."
-    lines: [281, 290]
-    symbols: [rnd_cnt, err_timer, err_delay, error]
-  - id: regfile
-    name: "HBUS slave + registers"
-    summary: "1-cycle writes, 2-cycle reads with tri-state hdata; ctrl_reg, en_reg, counters, mem_size_reg."
-    lines: [384, 441]
-    symbols: [ctrl_reg, en_reg, parity_err_cnt_reg, oversized_pkt_cnt_reg, addr3_cnt_reg, addr0_cnt_reg, addr1_cnt_reg, addr2_cnt_reg, mem_size_reg, maxpktsize, router_en, hdata_out, hdata_oe, rd_mux]
-  - id: memories
-    name: "yapp_pkt_mem / yapp_mem"
-    summary: "64 bytes of the last packet (RO) and 256 bytes of scratch memory (RW)."
-    lines: [165, 166]
-    symbols: [yapp_pkt_mem, yapp_mem]
-
-dut_flows:          # arrows between DUT blocks / interface instances (from, to, label)
-  - [hw_top.in0, input_fsm, "in_data / in_data_vld"]
-  - [input_fsm, hw_top.in0, "in_suspend"]
-  - [input_fsm, fifos, "push byte to FIFO[addr]"]
-  - [fifos, outputs, "head byte / empty"]
-  - [outputs, hw_top.ch0, "data_0 / data_vld_0"]
-  - [outputs, hw_top.ch1, "data_1 / data_vld_1"]
-  - [outputs, hw_top.ch2, "data_2 / data_vld_2"]
-  - [input_fsm, error_timer, "bad parity"]
-  - [input_fsm, regfile, "counters, mem_size"]
-  - [input_fsm, memories, "yapp_pkt_mem"]
-  - [hw_top.hbus0, regfile, "haddr / hen / hwr_rd / hdata"]
-  - [regfile, memories, "read / write"]
-  - [regfile, input_fsm, "maxpktsize, router_en"]
+extra_flows:        # connections made by assign statements inside yapp_router (from, to, label, bidir)
+  - ["hw_top.dut.g_ch[0].u_ch", hw_top.ch0, "data_0 / data_vld_0 <- suspend_0", true]
+  - ["hw_top.dut.g_ch[1].u_ch", hw_top.ch1, "data_1 / data_vld_1 <- suspend_1", true]
+  - ["hw_top.dut.g_ch[2].u_ch", hw_top.ch2, "data_2 / data_vld_2 <- suspend_2", true]
 
 layout:
   hierarchy:
@@ -376,7 +362,6 @@ layout:
       rows: [[reference, scoreboard]]
     hw_top.dut:
       rows:
-        - [input_fsm, backpressure]
-        - [fifos, outputs]
-        - [error_timer, regfile, memories]
-        - ["g_fifo[0].u_fifo", "g_fifo[1].u_fifo", "g_fifo[2].u_fifo"]
+        - [u_input_fsm, u_error_timer]
+        - ["g_ch[0].u_ch", "g_ch[1].u_ch", "g_ch[2].u_ch"]
+        - [u_regs]

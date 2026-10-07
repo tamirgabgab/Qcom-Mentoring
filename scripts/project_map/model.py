@@ -134,6 +134,8 @@ def scan_labs(ann):
                 line = line.split("//")[0].strip()
                 if line.endswith(".sv") and not line.startswith(("-", "+")):
                     refs.append(os.path.normpath(os.path.join(base, line)))
+                elif line.startswith(("-F ", "-f ")):      # nested file list (the DUT): scan its directory
+                    refs.append(os.path.normpath(os.path.join(base, line.split()[1])))
             # a package `include`s its files: scan the whole directory of each referenced file
             dirs = sorted({os.path.dirname(r) for r in refs})
             files = []
@@ -340,6 +342,9 @@ class ModelBuilder:
                 return {"file": m["file"], "line": m["line"], "end_line": m["end_line"]}
         return {}
 
+    HIDDEN_NETS = {"clock", "reset"}
+    IDENT_RX = re.compile(r"[A-Za-z_]\w*(?:\.\w+)?")
+
     def build_hardware(self):
         hw = self.primary["modules"].get("hw_top")
         if not hw:
@@ -347,44 +352,84 @@ class ModelBuilder:
         self.add_node("hw_top", kind="module", name="hw_top", type="hw_top", parent=None, scope="hw",
                       file=hw["file"], line=hw["line"], end_line=hw["end_line"],
                       signals=hw["signals"], lab=self.lab_for("hw_top", "hw_top"))
+        self.wire_module("hw_top", hw, upper=None)
+        # connections the port analysis cannot see (continuous assigns inside a module)
+        for frm, to, label, *rest in self.ann.get("extra_flows", []):
+            if frm in self.nodes and to in self.nodes:
+                self.add_edge("port", frm, to, label=label, bidir=bool(rest and rest[0]))
+
+    def inst_node(self, parent_id, inst):
+        nid = f"{parent_id}.{inst['name']}"
+        kind = "interface" if inst["kind"] == "interface" else "module"
+        self.add_node(nid, kind=kind, name=inst["name"], type=inst["definition"], parent=parent_id,
+                      scope="hw", file=inst["file"], line=inst["line"], end_line=inst["end_line"],
+                      ports=inst["ports"], signals=inst["signals"], tasks=inst["tasks"],
+                      params=inst["params"], lab=self.lab_for(inst["definition"], nid))
+        return nid
+
+    def nets_in(self, expr, parent):
+        """Net names used by a port-connection expression: `in0.in_data` -> [in0.in_data];
+        `pkt_done && pkt_parity_err` -> [pkt_done, pkt_parity_err]; `fifo_push[ch]` -> [fifo_push]."""
+        known = {s["name"] for s in parent.get("signals", [])} | {p["name"] for p in parent.get("ports", [])}
+        out = []
+        for m in self.IDENT_RX.finditer(expr):
+            tok = m.group(0)
+            if "." in tok or tok in known:
+                if tok not in out:
+                    out.append(tok)
+        return out
+
+    def wire_module(self, parent_id, parent, upper):
+        """Nodes for the instances inside module `parent` (incl. generate loops) and edges for the
+        nets they share. `upper` maps a port of the parent to the nodes it is wired to one level
+        up, so a child connected straight to a parent port gets an edge to that far side (drawn
+        as a dashed stub in the scene). Recurses into children that have instances of their own."""
+        children = list(parent.get("instances", []))
+        for g in parent.get("generate", []):
+            children += g["instances"]
+        parent_ports = {p["name"] for p in parent.get("ports", [])}
         net_users = {}   # net -> [(instance id, port, dir)]
-        for inst in hw["instances"]:
-            nid = f"hw_top.{inst['name']}"
-            kind = "interface" if inst["kind"] == "interface" else "module"
-            self.add_node(nid, kind=kind, name=inst["name"], type=inst["definition"], parent="hw_top",
-                          scope="hw", file=inst["file"], line=inst["line"], end_line=inst["end_line"],
-                          ports=inst["ports"], signals=inst["signals"], tasks=inst["tasks"],
-                          params=inst["params"], lab=self.lab_for(inst["definition"], nid))
+        made = []
+        for inst in children:
+            nid = self.inst_node(parent_id, inst)
+            made.append((nid, inst))
             dirs = {p["name"]: p["dir"] for p in inst["ports"]}
             for pc in inst.get("port_connections", []):
-                if pc["expr"]:
-                    net_users.setdefault(pc["expr"], []).append((nid, pc["port"], dirs.get(pc["port"], "?")))
-            if inst["name"] == "dut":
-                self.build_dut(nid, inst)
-        # edges between instances that share a net / an interface signal
+                if not pc["expr"]:
+                    continue
+                for net in self.nets_in(pc["expr"], parent):
+                    net_users.setdefault(net, []).append((nid, pc["port"], dirs.get(pc["port"], "?")))
         pair_labels = {}
         for net, users in net_users.items():
+            if net in self.HIDDEN_NETS and parent_id != "hw_top":
+                continue      # clock / reset fan-out inside a module: not drawn, not listed
             if "." in net:   # interface signal: in0.in_data -> the interface instance is the other side
-                ifname = net.split(".")[0]
+                other = f"{parent_id}.{net.split('.')[0]}"
+                if other not in self.nodes:
+                    continue
                 for (nid, port, d) in users:
-                    other = f"hw_top.{ifname}"
-                    if other not in self.nodes:
-                        continue
                     src, dst = (other, nid) if d == "in" else (nid, other) if d == "out" else (other, nid)
                     pair_labels.setdefault((src, dst, d == "inout"), []).append(net.split(".")[1])
+            elif net in parent_ports and upper is not None:
+                # straight through a port of the parent: connect to what that port is wired to
+                for (nid, port, d) in users:
+                    for other in upper.get(net, []):
+                        src, dst = (other, nid) if d == "in" else (nid, other) if d == "out" else (other, nid)
+                        pair_labels.setdefault((src, dst, d == "inout"), []).append(net)
             elif len(users) > 1:
                 outs = [u for u in users if u[2] == "out"]
                 ins = [u for u in users if u[2] != "out"]
                 if outs:
                     for o in outs:
                         for i in ins:
-                            pair_labels.setdefault((o[0], i[0], False), []).append(net)
-                else:
+                            if i[0] != o[0]:
+                                pair_labels.setdefault((o[0], i[0], False), []).append(net)
+                elif parent_id == "hw_top":
                     a, b = users[0], users[1]
                     pair_labels.setdefault((a[0], b[0], True), []).append(net)
         merged = {}
         for (src, dst, bidir), nets in pair_labels.items():
-            key = tuple(sorted((src, dst)))
+            key = tuple(sorted((src, dst))) if (parent_id == "hw_top" or bidir) else (src, dst)
             m = merged.setdefault(key, {"src": src, "dst": dst, "nets": [], "dirs": set()})
             m["nets"] += nets
             m["dirs"].add("both" if bidir else ("fwd" if (src, dst) == key else "rev"))
@@ -392,48 +437,43 @@ class ModelBuilder:
             bidir = len(m["dirs"]) > 1 or "both" in m["dirs"]
             nets = sorted(set(m["nets"]))
             kind = "port"
-            # the clock / reset fan-out to every interface is noise in the picture: keep it for the
-            # panel only (kind "clock"); the DUT and the clock generator keep their edges
-            ifs = {x for x in (m["src"], m["dst"]) if self.nodes[x]["kind"] == "interface" and x != "hw_top.clk_rst_if"}
-            if set(nets) <= {"clock", "reset"} and ifs:
-                kind = "clock"
+            # the clock / reset fan-out is noise in the picture: keep it for the panel only
+            # (kind "clock"). At the top the DUT and the clock generator keep their edges.
+            if set(nets) <= self.HIDDEN_NETS:
+                ifs = {x for x in (m["src"], m["dst"])
+                       if self.nodes[x]["kind"] == "interface" and x != "hw_top.clk_rst_if"}
+                if parent_id != "hw_top" or ifs:
+                    kind = "clock"
             self.add_edge(kind, m["src"], m["dst"], label=", ".join(nets), bidir=bidir)
-
-    def build_dut(self, dut_id, inst):
-        for g in inst.get("generate", []):
-            for sub in g["instances"]:
-                nid = f"{dut_id}.{sub['name']}"
-                self.add_node(nid, kind="module", name=sub["name"], type=sub["definition"], parent=dut_id,
-                              scope="hw", file=sub["file"], line=sub["line"], end_line=sub["end_line"],
-                              ports=sub["ports"], signals=sub["signals"], params=sub["params"],
-                              lab=self.lab_for("yapp_fifo", nid) or "6",
-                              summary="Synchronous 16 x 8 FIFO: one per output channel.")
-        sym_index = {}
-        for s in inst["signals"] + inst["ports"]:
-            sym_index[s["name"]] = s
-        for t in inst["typedefs"]:
-            sym_index[t["name"]] = {"name": t["name"], "type": t["type"], "line": t["line"]}
-        for p in inst["params"]:
-            sym_index[p["name"]] = {"name": p["name"], "type": "localparam", "line": p["line"], "value": p["value"]}
-        block_ids = {}
-        for b in self.ann.get("dut_blocks", []):
-            nid = f"{dut_id}#{b['id']}"
-            block_ids[b["id"]] = nid
-            syms = [sym_index[s] for s in b.get("symbols", []) if s in sym_index]
-            self.add_node(nid, kind="rtl_block", name=b["name"], type="yapp_router", parent=dut_id, scope="hw",
-                          file=inst["file"], line=b["lines"][0], end_line=b["lines"][1], signals=syms,
-                          summary=b.get("summary", ""), description=b.get("description", ""), lab="6")
-        for frm, to, label in self.ann.get("dut_flows", []):
-            f = block_ids.get(frm, frm)
-            t = block_ids.get(to, to)
-            if f in self.nodes and t in self.nodes:
-                self.add_edge("flow", f, t, label=label)
-        # the generate instances belong to the FIFO block
-        for g in inst.get("generate", []):
-            for sub in g["instances"]:
-                if "fifos" in block_ids:
-                    self.add_edge("flow", block_ids["fifos"], f"{dut_id}.{sub['name']}", label="instance",
-                                  dashed=True)
+        # one level down
+        for nid, inst in made:
+            if not (inst.get("instances") or inst.get("generate")):
+                continue
+            up = {}
+            dirs = {p["name"]: p["dir"] for p in inst["ports"]}
+            for pc in inst.get("port_connections", []):
+                if not pc["expr"]:
+                    continue
+                d = dirs.get(pc["port"], "?")
+                for net in self.nets_in(pc["expr"], parent):
+                    if "." in net:
+                        other = f"{parent_id}.{net.split('.')[0]}"
+                        far = [other] if other in self.nodes else []
+                    elif net in parent_ports and upper is not None:
+                        far = list(upper.get(net, []))
+                    else:
+                        others = [u for u in net_users.get(net, []) if u[0] != nid]
+                        if d == "in":
+                            far = [u[0] for u in others if u[2] == "out"] or []
+                        elif d == "out":
+                            far = [u[0] for u in others if u[2] != "out"]
+                        else:
+                            far = [u[0] for u in others]
+                    for f in far:
+                        up.setdefault(pc["port"], [])
+                        if f not in up[pc["port"]]:
+                            up[pc["port"]].append(f)
+            self.wire_module(nid, inst, up)
 
     # ----------------------------------------------------------------- edges
     def resolve_path(self, base, text, cls_props=None):
