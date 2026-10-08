@@ -324,7 +324,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 אומת ב-slang בלבד. ראה `docs/appendix/unverified.md` (11 פריטים: back-pressure, channel handshake,
 HBUS read timing, reset ב-t=0, error pulse, backdoor paths `hw_top.dut.u_regs.*`, reset seq על
 counters לא volatile, mem walk 511/255, תאימות 1.1d של `set_drain_time`/`compare_field_int`/`find() with`,
-coverage closure, מרווחי race של מוניטורים). תמיר אמר שיריץ; **אין עדיין תוצאות**.
+coverage closure, מרווחי race של מוניטורים). **החלטה (סשן 5, 2026-10-08): לתמיר אין מכונה עם Xcelium ואין סימולטור אחר. הוחלט להשאיר את הקוד
+לא-מאומת בינתיים ולהריץ את כל הטסטים מאוחר יותר. לא לשאול שוב על רגרסיה עד שתמיר יעלה את זה.**
+אופציות שהוצגו לו אם ירצה בעתיד: Questa Intel FPGA Starter Edition (חינמי, Windows, UVM מלא; ידרוש
+flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM חלקית), EDA Playground (web, מוגבל).
 
 **חוב טכני / נדחה.**
 - `hbus_slave_agent` הוא placeholder (ה-router הוא ה-slave היחיד).
@@ -349,8 +352,10 @@ coverage closure, מרווחי race של מוניטורים). תמיר אמר ש
 
 ## 8. הצעד הבא
 
-**ראשון, קונקרטי:** ~~לבדוק ב-GitHub Actions שה-workflows ירוקים~~ (בוצע בסשן 5: ירוק על `79b5fd4`; לבדוק
-שגם ה-commit של סשן 5 ירוק). לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
+**ראשון, קונקרטי:** ~~לבדוק ב-GitHub Actions שה-workflows ירוקים~~ (בוצע בסשן 5: ירוק גם על `98565ae`).
+~~לשאול את תמיר אם הריץ רגרסיה ב-xrun~~ — **נדחה לבקשת תמיר (אין סימולטור), ראה סעיף 7.** הצעד הבא
+נקבע לפי מה שתמיר יבקש; אם לא יבקש כלום, לפי רשימת העדיפות למטה (3, 4). הסעיף הישן נשמר כאן להקשר:
+לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
 (`cd yapp_project/tb && make run TEST=reg_function_test`, `router_simple_mcseq_test`,
 `reg_access_test`, `uvm_mem_walk_test`, ו-`labs/lab09_sbd` `scoreboard_drop_test`) ולבקש את
 `UVM Report Summary` + שגיאות קומפילציה. אם יש שגיאות — לתקן אותן קודם לכל דבר אחר (קטנות, מקומיות),
