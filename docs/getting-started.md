@@ -172,7 +172,9 @@ a `connect()` call:
 ```bash
 pip install pyslang pyyaml jinja2
 make map            # rewrites docs/assets/project_map/model.json and docs/downloads/yapp_project_map.html
-make map-check      # what CI runs: fails if the committed map is stale
+make map-check      # what CI runs: fails if the committed map is stale; also runs the
+                    # consistency checks (test_model.py) and, when node is installed,
+                    # the simulator checks (test_sim.mjs: RouterModel vs. the documented RTL rules)
 make map-export     # optional: SVG/PNG/PDF of every view (needs node + playwright)
 ```
 

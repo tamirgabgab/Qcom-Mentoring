@@ -3,8 +3,9 @@
 build.py -- generate the project map.
 
     python3 -m scripts.project_map.build            # model.json + standalone HTML
-    python3 -m scripts.project_map.build --check    # also run the consistency checks and fail
-                                                    # if the committed files are out of date
+    python3 -m scripts.project_map.build --check    # also run the consistency checks (test_model.py,
+                                                    # test_sim.mjs with node) and fail if the
+                                                    # committed files are out of date
 
 Outputs (committed, so the site and the offline file never need pyslang):
     docs/assets/project_map/model.json
@@ -83,9 +84,22 @@ def build(write=True):
     return m, model_json, html
 
 
+def check_sim():
+    """Behavioural checks of sim.js (RouterModel) with node, when node is available."""
+    import shutil
+    node = shutil.which("node")
+    if not node:
+        print("sim checks: skipped (node not found); run `node scripts/project_map/test_sim.mjs`")
+        return True
+    proc = subprocess.run([node, os.path.join(HERE, "test_sim.mjs")], cwd=ROOT)
+    return proc.returncode == 0
+
+
 def check(m, model_json, html):
     from . import test_model
     test_model.run_all(m, model_json, html)
+    if not check_sim():
+        return False
     # staleness: the committed files must match what we just generated
     stale = []
     for path, content in GENERATED.items():

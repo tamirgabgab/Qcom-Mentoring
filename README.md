@@ -240,6 +240,7 @@ scripts/
     layout.py                       the geometry of every scene (hierarchy, TLM, UML, the DUT block diagram)
     build.py                        writes model.json, regmap.js and the standalone HTML (`make map`, `--check`)
     test_model.py                   consistency checks, incl. regmap.yaml ⇔ RTL ⇔ register model
+    test_sim.mjs                    behavioural checks of sim.js (RouterModel) with node (`make map-check`)
     annotations.yaml                the hand-written half: roles, labs, layout hints
     regmap.yaml                     the register map as data (picture, simulator, checks)
     export.mjs                      renders every view to SVG / PNG / PDF (`make map-export`)
@@ -310,9 +311,12 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 * **The simulators** (`docs/assets/project_map/sim.js`) are a hand-written
   model of `yapp_hbus_regs.sv` + `yapp_input_fsm.sv`. If the RTL's behaviour
   changes, update `RouterModel` with it (and the reference model, the register
-  tests and `docs/dut/spec.md`, which document the same decisions).
+  tests and `docs/dut/spec.md`, which document the same decisions), then update
+  `scripts/project_map/test_sim.mjs`: it replays the register policy, the drop
+  rules, the counters and the packet helpers against the model and runs as
+  part of `make map-check` whenever `node` is installed.
 * **CI.** `lint.yml` runs on every push: style check → slang lint → map
-  staleness check. `docs.yml` builds the site with `mkdocs build --strict`
+  staleness check (incl. `test_model.py` and `test_sim.mjs`). `docs.yml` builds the site with `mkdocs build --strict`
   and deploys it to GitHub Pages from `main`.
 * **Screenshots.** `make readme-shots` rebuilds the site and retakes the
   pictures of this README with headless Chromium (Playwright).

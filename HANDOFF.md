@@ -1,8 +1,8 @@
 # HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
 
-> נכתב בסוף הסשן הרביעי (2026-10-07). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר.
-> HEAD: `c98a036` על `claude/hopeful-meitner-r5epiu`, `main` מצביע לאותו commit. עץ העבודה נקי.
-> CI (lint + docs) ירוק על `4948f7f` (הקוד); `c928f3d` ו-`c98a036` שינו רק HANDOFF/README/צילומים. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
+> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר.
+> HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
+> CI (lint + docs) ירוק על `79b5fd4` (אומת בסשן 5 דרך GitHub Actions API). האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
 
 ---
 
@@ -51,7 +51,8 @@
     `uvm_declare_p_sequencer`, `uvm_analysis_imp_decl`.
 - **ה-DUT מפוצל למודול בכל קובץ לפי הארכיטקטורה** (`yapp_project/rtl/`), נטען עם
   `-F ../rtl/yapp_router.f`.
-- **Git**: לפתח על `claude/hopeful-meitner-r5epiu`, לדחוף, ואז **fast-forward של `main`** לאותו
+- **Git**: לפתח על ענף ה-`claude/...` שהסשן קיבל (סשן 1–4: `claude/hopeful-meitner-r5epiu`; סשן 5:
+  `claude/confident-rubin-m1zkvc`), לדחוף, ואז **fast-forward של `main`** לאותו
   commit אחרי כל push (תמיר רוצה ש-`main` וה-Pages יישאו הכול). כל הודעת commit מסתיימת ב:
   ```
   Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
@@ -76,15 +77,16 @@
   ב-0 שגיאות ו-0 אזהרות.
 - `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
 - `make map && make map-check` — 217 nodes, 188 edges, 39 scenes; `test_model.py` עובר
-  (כולל הבדיקות החדשות: pins/regmap ב-root scene, regmap.yaml ⇔ localparams ב-RTL ⇔ offsets ב-RAL).
+  (כולל הבדיקות החדשות: pins/regmap ב-root scene, regmap.yaml ⇔ localparams ב-RTL ⇔ offsets ב-RAL)
+  **+ `test_sim.mjs` (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**.
 - `mkdocs build --strict` — 0 אזהרות (רק INFO על anchors של deep links — צפוי).
 - בדיקת דפדפן (Playwright, סקריפט חד-פעמי ב-scratchpad, לא בריפו): המפה נטענת בבהיר/כהה,
   ה-DUT מצויר עם 19 פינים ובלוק רגיסטרים, קליק על הבלוק פותח את לשונית Simulate, כתיבה דרך ה-UI
   ל-en_reg, כתיבה ל-RO נדחית, ו-10 assertions על `RouterModel` (reset, good packet, bad parity,
   addr 3, oversized, router disabled, unmapped, warm reset, checkPacket) — הכול עבר.
 - CI ב-GitHub: workflow `lint` (slang + style-check + map-check) ו-`docs` (mkdocs → GitHub Pages)
-  ירוקים על `4948f7f`; שני ה-commits שאחריו (`c928f3d`, `c98a036`) נגעו רק ב-HANDOFF.md, README.md,
-  `scripts/readme_shots.mjs`, `Makefile` ו-`docs/assets/readme/` — לבדוק שגם הם ירוקים.
+  ירוקים על `79b5fd4` (נבדק בסשן 5). ה-runner של GitHub (ubuntu-latest) כולל node, ולכן `map-check`
+  ב-CI מריץ גם את `test_sim.mjs`.
 - GitHub Pages פעיל (Source = GitHub Actions), האתר חי, המפה ב-`/project-map/` והקובץ העצמאי
   ב-`/downloads/yapp_project_map.html`.
 
@@ -146,14 +148,30 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    נבחר, פאנל + עמודת Source), `map_dut.png` (hw_top בזום, פאנלים/legend/hint מוסתרים),
    `sim_registers.png` (דף `dut/spec` אחרי WR ל-0x1004 שנדחה), `sim_packet.png` (דף `components/packet`
    אחרי Send to router). נשלחו zip + README.
+7. `79b5fd4` — HANDOFF.md עודכן (README + כלי הצילומים).
+
+**סשן 5 (2026-10-08):**
+1. נבדק ב-GitHub Actions ש-`lint` ו-`docs` ירוקים על `79b5fd4` (גם ב-main וגם בענף).
+2. **`scripts/project_map/test_sim.mjs`** — פריט 2 מרשימת "הצעד הבא": 10 התרחישים של `RouterModel`
+   מה-scratchpad של סשן 4 הועברו לריפו והורחבו ל-536 assertions (ערכי reset, מדיניות RW/RO/זיכרונות/לא
+   ממופה כולל החורים 0x1002–3, 0x1007–8, 0x100c, 0x100e–f, פקטה תקינה, bad parity (נספר + error + מועבר),
+   addr 3, oversized מול `ctrl_reg`, router disabled, gating של כל מונה לפי `en_reg`, פקטה חלקית/בתים
+   עודפים/גלישת מונה, warm vs cold reset, `encodePacket/checkPacket/parseBytes/evenParity`). הסקריפט טוען
+   את `regmap.js`+`sim.js` ב-`node:vm` עם stub של `window/document` (אין תלות ב-DOM). `build.py:check()` מריץ
+   אותו אחרי `test_model.run_all` כש-`node` ב-PATH (אחרת מדפיס skipped). תועד ב-README (עץ + For mentors)
+   וב-`docs/getting-started.md`. אומת: lint 18/18, style OK, map-check OK (לא STALE), mkdocs strict OK.
+3. **לא** נשאל/נענה עדיין: תוצאות הרגרסיה ב-xrun (ראה סעיף 8).
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
 
 ### סטטוס git
-- ענף: `claude/hopeful-meitner-r5epiu` (= `origin/claude/hopeful-meitner-r5epiu` = `main` = `origin/main`), HEAD `c98a036`.
-- אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit (ראה סעיף 2, פריט 5).
-- 18 commits בסך הכול; האחרונים: `c98a036` (README), `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`, `c78e729`, `1c8da5e`, `a4efbfb`.
+- ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
+  `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
+- אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
+- 20 commits בסך הכול; האחרונים: (סשן 5) test_sim.mjs + HANDOFF, `79b5fd4` (HANDOFF), `c98a036` (README),
+  `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
+  `c78e729`, `1c8da5e`, `a4efbfb`.
 
 ---
 
@@ -247,8 +265,9 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `scripts/project_map/layout.py` | גיאומטריית הסצנות; **`arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`** | כן |
 | `scripts/project_map/annotations.yaml` | החצי הידני: summaries, labs, layout hints; **`hw_top.columns`, `hw_top.dut.style: dut_spec`, `pin_groups`** | כן |
 | **`scripts/project_map/regmap.yaml`** | מפת הרגיסטרים כנתונים (registers, memories, fields, `figure_rows`) | **חדש** |
-| `scripts/project_map/build.py` | בונה model.json, **regmap.js**, standalone HTML (inlines app.css/js + **sim.css/js + regmap.js**); `--check`; `GENERATED` dict | כן |
+| `scripts/project_map/build.py` | בונה model.json, **regmap.js**, standalone HTML (inlines app.css/js + **sim.css/js + regmap.js**); `--check` (test_model + **`check_sim()` → test_sim.mjs**); `GENERATED` dict | כן (+סשן 5) |
 | `scripts/project_map/test_model.py` | בדיקות עקביות; **+ DUT block, regmap ⇔ RTL params ⇔ RAL offsets, standalone inlines sim** | כן |
+| **`scripts/project_map/test_sim.mjs`** | בדיקות התנהגות של `sim.js` (`RouterModel`, עוזרי פקטה) ב-node; רץ מ-`build --check` | **חדש (סשן 5)** |
 | `scripts/project_map/export.mjs` | Playwright → `export/*.svg|png`, PDF ל-`build/` | — |
 | `scripts/project_map/templates/standalone.html.j2` | שלד ה-HTML העצמאי | + sim/regmap |
 | `docs/assets/project_map/app.js` | אפליקציית המפה; **`drawDutSpec`, tap על `.pm-regmap`, `simKind`, `renderSim`, לשונית Simulate** | כן |
@@ -292,7 +311,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 **תלויות/גרסאות.** Python 3.12; pyslang 12.0.0 (pinned ב-CI); PyYAML 6, Jinja2 3.1; mkdocs 1.6.1, mkdocs-material 9.7.7; Node 22; Playwright ב-`/opt/node-tools` (רק לייצוא/בדיקות, לא ב-CI). Xcelium אצל תמיר (CDNS-1.1d/1.2). אין משתני סביבה/סודות. Mermaid נטען מ-unpkg CDN בזמן צפייה.
 
 **הנחות עבודה לא כתובות בקוד.**
-- המודל של `sim.js` **משכפל** את התנהגות ה-RTL ביד; שינוי ב-`yapp_input_fsm.sv`/`yapp_hbus_regs.sv` מחייב עדכון `RouterModel.send/write/read` (אין בדיקה אוטומטית לזה — רק מפת הכתובות נבדקת).
+- המודל של `sim.js` **משכפל** את התנהגות ה-RTL ביד; שינוי ב-`yapp_input_fsm.sv`/`yapp_hbus_regs.sv` מחייב עדכון `RouterModel.send/write/read` **וגם `test_sim.mjs`** (הטסט מקבע את הכללים המתועדים; הוא לא קורא את ה-RTL — רק מפת הכתובות מושווית ל-RTL).
 - `test_model.py` קשיח על מספרים (10 connects ב-router_tb, 6 ב-router_module_env, 11 vif, 8 מופעים ב-hw_top, 19 פינים, 7 anchors…) — שינוי מבני דורש עדכון הציפיות.
 - `annotations.yaml` `lab_overrides`/`labs` ממפים קבצים ללאב "שהציג אותם"; קובץ חדש ב-`yapp_project` בלי מקבילה בלאב ייפול ב-`expect(n.get("lab"))`.
 - הלאבים 1–6 הם snapshots עצמאיים; תיקון ב-`yapp_project/uvc/yapp` לא מתפשט אליהם אוטומטית (ולהפך).
@@ -313,7 +332,8 @@ coverage closure, מרווחי race של מוניטורים). תמיר אמר ש
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
 - בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact" — אפשר לשפר UX.
 - ה-packet playground מציג `maxpktsize`/`router_en` מהמודל המשותף — אחרי שינוי ברגיסטרים הוא מתעדכן דרך `model.on`, אבל שני widgets על אותו דף מתרנדרים מחדש כולם בכל שינוי (עדיין מהיר).
-- `test_model.py` לא בודק את `sim.js` עצמו (ה-assertions על RouterModel חיו ב-`sim_test.mjs` ב-scratchpad). רעיון: `scripts/project_map/test_sim.mjs` שרץ ב-`make map-check` אם node קיים — **לא מומש**.
+- ~~`test_model.py` לא בודק את `sim.js` עצמו~~ — **בוצע בסשן 5**: `test_sim.mjs` רץ ב-`map-check` כשיש node.
+  מה שעדיין לא נבדק אוטומטית: ה-widgets עצמם (DOM) — רק דרך `readme_shots.mjs`/בדיקה ידנית.
 - אין `CLAUDE.md` בריפו (רק הקובץ הזה והתיעוד).
 - צילומי ה-README לא נבדקים ב-CI (כמו ה-exports): אחרי שינוי בממשק של המפה/הסימולטורים להריץ `make readme-shots` ולעשות commit לתמונות. התמונות תלויות ב-`site/` בנוי, לכן ה-target תלוי ב-`docs`.
 - ב-README יש badge מ-shields.io (קישורים סטטיים לאתר/למפה) — תלות חיצונית קוסמטית בלבד.
@@ -329,7 +349,8 @@ coverage closure, מרווחי race של מוניטורים). תמיר אמר ש
 
 ## 8. הצעד הבא
 
-**ראשון, קונקרטי:** לבדוק ב-GitHub Actions שה-workflows ירוקים על `c98a036`, ואז לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
+**ראשון, קונקרטי:** ~~לבדוק ב-GitHub Actions שה-workflows ירוקים~~ (בוצע בסשן 5: ירוק על `79b5fd4`; לבדוק
+שגם ה-commit של סשן 5 ירוק). לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
 (`cd yapp_project/tb && make run TEST=reg_function_test`, `router_simple_mcseq_test`,
 `reg_access_test`, `uvm_mem_walk_test`, ו-`labs/lab09_sbd` `scoreboard_drop_test`) ולבקש את
 `UVM Report Summary` + שגיאות קומפילציה. אם יש שגיאות — לתקן אותן קודם לכל דבר אחר (קטנות, מקומיות),
@@ -338,7 +359,7 @@ push, ff main, לשלוח zip.
 
 **אחר כך, לפי עדיפות (אם תמיר לא מבקש משהו אחר):**
 1. לעבור על `docs/appendix/unverified.md` מול תוצאות הסימולציה ולסמן מה אומת.
-2. `scripts/project_map/test_sim.mjs` — להעביר את 10 ה-assertions של `RouterModel` מה-scratchpad לריפו ולהריץ ב-`map-check` כש-node זמין.
+2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
 3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
 4. שיפורי UX קטנים אם יתבקשו (טבלת רגיסטרים בפאנל צר, חיצי vif שחוצים את ה-hw_top).
 
@@ -364,6 +385,7 @@ make readme-shots                           # בונה את האתר ומצלם 
 python3 scripts/sv_style.py --check --diff path/to/file.sv
 python3 scripts/lint.py labs/lab05_seq/tb/run.f
 python3 -m pytest scripts/project_map/test_model.py
+node scripts/project_map/test_sim.mjs       # בדיקות ה-RouterModel לבד (536 assertions, ~0.1s)
 
 # סימולציה (אצל תמיר, Xcelium)
 cd yapp_project/tb && make run TEST=reg_function_test
@@ -372,8 +394,8 @@ cd labs/lab07_integ/tb && make run TEST=simple_test
 cd test_install && xrun -f run.f
 
 # git (הכללים של תמיר)
-git push -u origin claude/hopeful-meitner-r5epiu
-git branch -f main claude/hopeful-meitner-r5epiu && git push origin main
+git push -u origin <הענף של הסשן>          # סשן 5: claude/confident-rubin-m1zkvc
+git branch -f main <הענף של הסשן> && git push origin main
 
 # מסירה
 zip -qr QcommMentoring.zip qcom-mentoring -x "qcom-mentoring/.git/*" "qcom-mentoring/site/*" "qcom-mentoring/build/*" "*/__pycache__/*" "qcom-mentoring/scripts/uvm_src/*"
@@ -388,8 +410,9 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 
 ## 10. הערות לסשן הבא
 
-- **לפני שמתחילים:** `git fetch && git status`; לוודא ש-`main` == `claude/hopeful-meitner-r5epiu`.
-  אם ה-branch מוזג (אין PRs, אז לא צפוי) — להתחיל מחדש מ-`origin/main` באותו שם.
+- **לפני שמתחילים:** `git fetch && git status`; לוודא ש-`main` == הענף של הסשן הקודם (סשן 5:
+  `claude/confident-rubin-m1zkvc`). סשן חדש מקבל שם ענף חדש מה-system prompt — לפתוח אותו מ-`origin/main`
+  ולעבוד עליו; `main` מקבל ff אחרי כל push.
 - **הודעת ה-system reminder** של הסשן נותנת trailer עם session id חדש — להשתמש בו, לא בישן.
 - **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), ואחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml` — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
 - `build --check` לא כותב; `build` ואז `--check`. אל תעשה `| head` על ה-build.
