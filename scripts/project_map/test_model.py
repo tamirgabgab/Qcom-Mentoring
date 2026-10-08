@@ -82,15 +82,38 @@ def run_all(m, model_json, html):
             pin_ids = {p["id"] for p in pins}
             vifs = [e for e in tlm["edges"] if e["kind"] == "vif"]
             expect(len(vifs) == kinds["vif"] and all(e["from"] in pin_ids or e["to"] in pin_ids for e in vifs), f"{sid}: every vif arrow touches a DUT pin")
-    # the Tests view: one card per test class, with its plan; the Environment view: every
-    # sequencer / driver / monitor of the testbench on one page, one role line per leaf
-    tests = next((s for s in m["scenes"] if s["id"] == "tests:main"), None)
+    # the Test plan view: one card per feature group of the plan (annotations.yaml: plan) and
+    # one per test class with its plan; the Environment view: every sequencer / driver /
+    # monitor of the testbench on one page, one role line per leaf
+    plan = next((s for s in m["scenes"] if s["id"] == "plan:main"), None)
     test_nodes = [n for n in N.values() if n.get("scope") == "cls" and n.get("kind") == "test"]
-    expect(tests is not None and len(tests["items"]) == len(test_nodes) >= 17, f"tests scene: {len(tests['items']) if tests else 0} cards for {len(test_nodes)} tests")
-    if tests:
-        expect(all(it.get("style") == "test_card" and it.get("stages") for it in tests["items"]), "every test card has a plan with stages")
-        expect(all(N[it["id"]].get("plan") and N[it["id"]]["plan"].get("expected") for it in tests["items"]), "every test node carries its plan (annotations.yaml: tests)")
-        expect(len(tests["edges"]) == len(tests["items"]) - 1 and all(e["kind"] == "inherits" for e in tests["edges"]), "tests scene: one inherits arrow per derived test")
+    feat_nodes = [n for n in N.values() if n.get("kind") == "feature"]
+    expect(plan is not None and plan["view"] == "plan", "plan scene exists")
+    if plan:
+        tests = [it for it in plan["items"] if it.get("style") == "test_card"]
+        feats = [it for it in plan["items"] if it.get("style") == "feature_card"]
+        expect(len(tests) == len(test_nodes) >= 24, f"plan scene: {len(tests)} test cards for {len(test_nodes)} tests")
+        expect(len(feats) == len(feat_nodes) == len(m["plan"]) >= 11, f"plan scene: {len(feats)} feature cards for {len(m['plan'])} groups")
+        expect(all(it.get("stages") for it in tests), "every test card has a plan with stages")
+        expect(all(N[it["id"]].get("plan") and N[it["id"]]["plan"].get("expected") for it in tests), "every test node carries its plan (annotations.yaml: tests)")
+        expect(all(it.get("plan_items") for it in feats), "every feature card lists its items")
+        expect(all(f["y"] + f["h"] <= plan["split"] <= min(t["y"] for t in tests) for f in feats), "feature cards above the split line, test cards below")
+        inh = [e for e in plan["edges"] if e["kind"] == "inherits"]
+        cov = [e for e in plan["edges"] if e["kind"] == "covers"]
+        expect(len(inh) == len(tests) - 1, "plan scene: one inherits arrow per derived test")
+        expect(len(cov) == len([e for e in E if e["kind"] == "covers"]) >= 50, f"plan scene: {len(cov)} covers arrows")
+    # the plan itself: ids unique, statuses known, every test named exists, every test is named
+    items = [it for g in m["plan"] for it in g["items"]]
+    ids = [it["id"] for it in items]
+    expect(len(ids) == len(set(ids)) >= 50, f"plan: {len(ids)} items, unique ids")
+    expect(all(it["status"] in ("covered", "partial", "gap", "excluded") for it in items), "plan: every item has a known status")
+    expect(all(it.get("stimulus") and it.get("check") for it in items), "plan: every item has a stimulus and a check")
+    expect(all(it["tests"] or it["status"] in ("gap", "excluded") for it in items), "plan: a covered or partial item names at least one test")
+    expect(all(it.get("note") for it in items if it["status"] != "covered"), "plan: every partial / gap / excluded item has a note")
+    named = {t for it in items for t in it["tests"]}
+    expect(all(f"cls:{t}" in N for t in named), f"plan: unknown tests {sorted(t for t in named if f'cls:{t}' not in N)}")
+    expect(all(n["name"] in named for n in test_nodes), f"plan: tests not named by any item: {sorted(n['name'] for n in test_nodes if n['name'] not in named)}")
+    expect(all(n.get("covers") for n in test_nodes), "every test node carries its back links (covers)")
     env = next((s for s in m["scenes"] if s["id"] == "env:main"), None)
     expect(env is not None and env["view"] == "env", "env scene exists")
     if env:

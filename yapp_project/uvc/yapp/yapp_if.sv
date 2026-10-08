@@ -32,11 +32,15 @@ interface yapp_if (input logic clock, input logic reset);
     in_data_vld <= 1'b0;
   endtask : yapp_reset
 
-  // Hold the current byte until the DUT has accepted it (in_suspend low on a
-  // falling edge means the byte was taken at the preceding rising edge).
+  // Hold the current byte until the DUT has accepted it: a byte is taken at a
+  // rising edge where in_suspend is low, so the decision is sampled on the
+  // rising edge (exactly as the DUT and the monitor do). The next byte is then
+  // driven on the following falling edge. Sampling in_suspend on the falling
+  // edge instead would lose a header whose target FIFO was full at the rising
+  // edge and freed up right after it (in_suspend falls before the falling edge).
   task automatic wait_accept();
+    do @(posedge clock); while (in_suspend);
     @(negedge clock);
-    while (in_suspend) @(negedge clock);
   endtask : wait_accept
 
   task automatic send_to_dut(input bit [1:0] addr,

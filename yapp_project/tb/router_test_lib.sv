@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// router_test_lib.sv -- test library (Lab 11C: user-defined register stimulus)
+// router_test_lib.sv -- test library (Lab 11C register tests + the test-plan tests)
 //
 // Register access API used here (all on uvm_reg):
 //   write(status, value)  front door through the HBUS   (bus traffic)
@@ -18,3 +18,13 @@
 `include "tests/reg_function_test.sv"
 `include "tests/reg_function_check_test.sv"
 `include "tests/reg_introspection_test.sv"
+
+// Test-plan tests (yapp_project only): one DUT feature group each, see docs/test-plan.md
+`include "tests/router_disable_test.sv"
+`include "tests/router_filter_test.sv"
+`include "tests/pkt_mem_test.sv"
+`include "tests/reg_bit_walk_test.sv"
+`include "tests/hbus_protocol_test.sv"
+`include "tests/backpressure_test.sv"
+`include "tests/error_pulse_checker.sv"
+`include "tests/parity_error_test.sv"

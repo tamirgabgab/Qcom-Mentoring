@@ -52,6 +52,8 @@ labs:
   lab11a_rm_gen:  {label: "11A", page: labs/lab11a.md, title: "Register model generation"}
   lab11b_rm_integ: {label: "11B", page: labs/lab11b.md, title: "Register model integration"}
   lab11c_rm_sim:  {label: "11C", page: labs/lab11c.md, title: "Register tests"}
+  # not a lab: the test-plan tests and sequences of yapp_project (no directory under labs/)
+  test_plan:      {label: "TP",  page: test-plan.md,   title: "Test plan"}
 
 lab_overrides:
   # shared UVC directories hold the FINAL files, so the text scan sees them from Lab 7 on
@@ -60,6 +62,18 @@ lab_overrides:
   hbus_router_disable_seq: "11C"
   hbus_router_enable_seq: "11C"
   hbus_reg_adapter: "11B"
+  # the test-plan tests and sequences (yapp_project only): "TP" = the test plan, not a lab
+  router_disable_test: "TP"
+  router_filter_test: "TP"
+  pkt_mem_test: "TP"
+  reg_bit_walk_test: "TP"
+  hbus_protocol_test: "TP"
+  backpressure_test: "TP"
+  parity_error_test: "TP"
+  error_pulse_checker: "TP"
+  yapp_pkt_seq: "TP"
+  yapp_boundary_seq: "TP"
+  channel_rx_slow_seq: "TP"
   # ports and members added later than their class
   tb.yapp.agent.monitor.item_collected_port: "9A"
   yapp_tx_monitor.yapp_pkt_cg: "10"
@@ -127,6 +141,7 @@ kinds:
   reg_adapter:   {label: "Register adapter", doc: components/register-model.md,    role: "Translates register operations into bus transactions"}
   enum:          {label: "Enum",             doc: components/packet.md,            role: "Enumerated type"}
   uvm_base:      {label: "UVM base class",   doc: uvm/big-picture.md,              role: "Part of the UVM library"}
+  feature:       {label: "Feature group",    doc: test-plan.md,                    role: "A group of DUT features of the test plan, with the items that verify them"}
 
 classes:
   # ---------------------------------------------------------------- YAPP UVC
@@ -174,6 +189,8 @@ classes:
   yapp_exhaustive_seq: {summary: "Runs the whole library once: 1, 012, 111, repeat_addr, incr_payload, rnd, six."}
   yapp_coverage_seq: {summary: "40 packets with the legal-address constraint switched off, to fill the covergroup."}
   yapp_88_packets_seq: {summary: "88 packets -- enough to fill a 16-byte channel FIFO and exercise in_suspend."}
+  yapp_pkt_seq:        {summary: "One packet whose address, length and parity the test chooses (soft constraints); the packet stays in req."}
+  yapp_boundary_seq:   {summary: "Lengths maxpktsize-1, maxpktsize, maxpktsize+1 and 63 to every address incl. 3; counts what it sent."}
   # ---------------------------------------------------------------- HBUS UVC
   hbus_transaction: {summary: "One HBUS access: haddr, hdata, hwr_rd (HBUS_READ / HBUS_WRITE)."}
   hbus_master_driver:
@@ -207,6 +224,7 @@ classes:
   channel_rx_base_seq: {summary: "Base of the channel sequences (no objection: responders run forever)."}
   channel_rx_resp_seq: {summary: "Forever: receive the next packet with a random delay 0..10."}
   channel_rx_fast_seq: {summary: "Forever: receive with no delay."}
+  channel_rx_slow_seq: {summary: "Forever: answer 20..40 cycles late, so long packets fill the FIFO and the router stalls the input."}
   # ----------------------------------------------------- Clock & Reset UVC
   clock_and_reset_transaction: {summary: "clock period + number of reset cycles."}
   clock_and_reset_driver: {summary: "Calls clk_rst_if.start_clock_and_reset(period, reset_cycles)."}
@@ -269,6 +287,15 @@ classes:
   reg_function_test: {summary: "Sends packets and checks the counters through the register model."}
   reg_function_check_test: {summary: "set_check_on_read + predict(): the model checks every read itself."}
   reg_introspection_test: {summary: "get_registers() and queue find(): the model describing itself."}
+  # ------------------------------------------------------- test-plan tests
+  router_disable_test: {summary: "Test plan: router_en = 0 -- nothing delivered, counted or stored; traffic resumes when enabled."}
+  router_filter_test:  {summary: "Test plan: drops around maxpktsize and address 3, the counters behind them, with enables on and off."}
+  pkt_mem_test:        {summary: "Test plan: yapp_pkt_mem and mem_size_reg hold the last packet byte by byte, read-only, even when dropped."}
+  reg_bit_walk_test:   {summary: "Test plan: walking ones and zeros through the RW registers; writes ignored by every RO register."}
+  hbus_protocol_test:  {summary: "Test plan: raw HBUS cycles -- write, read back, tri-state after the read, unmapped and RO addresses."}
+  backpressure_test:   {summary: "Test plan: slow receivers fill the channel FIFOs; in_suspend stalls the input and no byte is lost."}
+  error_pulse_checker: {summary: "Subscriber of the YAPP monitor: one error pulse per bad-parity packet, 1..10 cycles after it."}
+  parity_error_test:   {summary: "Test plan: bad parity -- counted when enabled, error pulses on time, packet still delivered."}
   # ---------------------------------------------------------- Register model
   yapp_router_regs_t: {summary: "Top register block: default_map with the yapp_regs sub-block at 0x1000."}
   yapp_regs_c: {summary: "The register file: ctrl_reg, en_reg, six RO counters, mem_size_reg, two memories."}
@@ -527,6 +554,526 @@ tests:
       - {k: check,    t: "RO checks",          d: "check_ro_register on the six counters and mem_size_reg"}
     expected:
       - "`RW register: ctrl_reg @ 0x1000`, `RW register: en_reg @ 0x1001`, seven `RO register:` lines, then the access checks for all nine registers, 0 errors."
+  router_disable_test:
+    purpose: "Test plan: router_en = 0 makes the router deaf -- nothing reaches a channel, nothing is counted, nothing is stored; traffic resumes when it is enabled again."
+    stages:
+      - {k: config,   t: "default sequences",  d: "clock and channel sequences (inherited from reg_access_test)"}
+      - {k: program,  t: "en_reg = 0xfe",      d: "front door: router off, every counter on"}
+      - {k: stimulus, t: "yapp_012_seq",       d: "3 packets, one per channel, into a disabled router"}
+      - {k: check,    t: "nothing delivered",  d: "channel monitors collected nothing; the reference model reports 3 dropped (router disabled)"}
+      - {k: check,    t: "counters stay 0",    d: "addr0..3, parity, oversized and mem_size_reg all read 0"}
+      - {k: program,  t: "en_reg = 0xff",      d: "router on, counters on"}
+      - {k: stimulus, t: "yapp_012_seq",       d: "3 packets again"}
+      - {k: check,    t: "traffic resumes",    d: "3 packets on the channels, addr0/1/2 counters read 1"}
+    expected:
+      - "`router_en = 0: no packet reached a channel`, the reference model's `Packet dropped: router disabled` three times, and `ROUTER DROPS PACKET ... (router disabled)` from the RTL."
+      - "Every `check_counter` line says `reads 0 as expected` after the first run and `reads 1` for addr0/1/2 after the second; `UVM_ERROR : 0`."
+  router_filter_test:
+    purpose: "Test plan: the drop rules around the maxpktsize limit and the counters behind them, with the counters enabled and then disabled."
+    stages:
+      - {k: program,  t: "maxpktsize = 10",      d: "ctrl_reg = 10 through the front door; en_reg = 0xff"}
+      - {k: stimulus, t: "yapp_boundary_seq",    d: "lengths 9, 10, 11 and 63 to every address 0..3: 16 packets"}
+      - {k: check,    t: "scoreboard",           d: "only legal, non-oversized packets are matched (6); none unexpected"}
+      - {k: check,    t: "counters",             d: "oversized == 8, addr3 == 4, addr0/1/2 == 4 each (dropped ones included), parity == 0"}
+      - {k: program,  t: "en_reg = 0x01",        d: "every counter off, router on"}
+      - {k: stimulus, t: "yapp_boundary_seq",    d: "the same 16 packets"}
+      - {k: check,    t: "frozen counters",      d: "same drops (6 matched again), every counter unchanged"}
+    expected:
+      - "`ROUTER DROPS PACKET ... length > maxpktsize` for the 11- and 63-byte packets to addresses 0..2, `... illegal address` for the four address-3 packets."
+      - "`oversized_pkt_cnt_reg reads 8 as expected`, `addr3_cnt_reg reads 4`, `addr0_cnt_reg reads 4` (and 1, 2) after the first pass and unchanged after the second; scoreboard matched 12, unexpected 0."
+  pkt_mem_test:
+    purpose: "Test plan: the packet memory and mem_size_reg hold the last packet, byte by byte, even when the packet was dropped."
+    stages:
+      - {k: stimulus, t: "one packet",          d: "yapp_pkt_seq: address 1, 20 payload bytes, good parity"}
+      - {k: check,    t: "mem_size_reg == 20",  d: "front-door read through the register model"}
+      - {k: check,    t: "yapp_pkt_mem",        d: "[0] == header {length, addr}, [1..20] == the payload the sequence left in req"}
+      - {k: stimulus, t: "write to 0x1010",     d: "a raw hbus_write_seq to the packet memory"}
+      - {k: check,    t: "read-only",           d: "yapp_pkt_mem[0] still holds the header"}
+      - {k: program,  t: "maxpktsize = 5",      d: "ctrl_reg = 5"}
+      - {k: stimulus, t: "9-byte packet",       d: "dropped as oversized"}
+      - {k: check,    t: "still stored",        d: "mem_size_reg == 9 and the bytes are there (a received packet is stored, forwarded or not)"}
+    expected:
+      - "`packet (addr 1, length 20) stored byte by byte`, `write to yapp_pkt_mem ignored, as it should be`, then `ROUTER DROPS PACKET addr=2 length=9` followed by `packet (addr 2, length 9) stored byte by byte`."
+      - "22 reads of 0x1010..0x1025 in the HBUS monitor log for the first packet; `UVM_ERROR : 0`."
+  reg_bit_walk_test:
+    purpose: "Test plan: every bit of every register obeys its policy -- walking ones and zeros through the RW registers, writes ignored by the RO ones."
+    stages:
+      - {k: build,    t: "introspection",       d: "get_registers() and find() split the model into RW and RO queues"}
+      - {k: stimulus, t: "RW patterns",         d: "for ctrl_reg and en_reg: 0x01 << b, ~(0x01 << b), 0x00, 0xff, 0xaa, 0x55 -- 20 patterns each"}
+      - {k: check,    t: "read and peek",       d: "after every write the front-door read and the backdoor peek both return the pattern"}
+      - {k: stimulus, t: "RO registers",        d: "poke 0x00 / write 0xff / peek, then poke 0xff / write 0x00 / peek, on all 7 counters and mem_size_reg"}
+      - {k: check,    t: "RO unchanged",        d: "check_ro_register: the write did nothing"}
+      - {k: program,  t: "restore",             d: "ctrl_reg = 0x3f, en_reg = 0x01"}
+    expected:
+      - "`--- RW register ctrl_reg: walking ones and zeros ---` then the same for en_reg; at UVM_HIGH one line per pattern."
+      - "`--- RO register ... ---` blocks with `front-door write ... (RO: must be ignored)` and a matching peek; `UVM_ERROR : 0`. The reserved bits ctrl_reg[7:6] and en_reg[3] hold what was written (they are RW in the router)."
+  hbus_protocol_test:
+    purpose: "Test plan: the host port on the wire -- one-cycle writes, two-cycle reads, tri-state after the access, unmapped addresses -- with raw HBUS sequences, no register model."
+    stages:
+      - {k: stimulus, t: "write 0x2a",          d: "hbus_write_seq to ctrl_reg (0x1000)"}
+      - {k: stimulus, t: "read it back",        d: "hbus_read_seq: the value lands in rd.data"}
+      - {k: check,    t: "value and monitor",   d: "rd.data == 0x2a; the HBUS monitor counted one write and one read"}
+      - {k: check,    t: "tri-state",           d: "two edges after the read hdata_w reads 'z"}
+      - {k: stimulus, t: "unmapped addresses",  d: "write 0xa5 then read 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f, 0x1050"}
+      - {k: check,    t: "read 0x00",           d: "every unmapped address reads 0x00"}
+      - {k: stimulus, t: "write a RO address",  d: "0x77 to parity_err_cnt_reg (0x1004), read back"}
+      - {k: check,    t: "ignored",             d: "reads 0x00; ctrl_reg restored to 0x3f"}
+    expected:
+      - "HBUS monitor: `Collected WRITE addr=0x1000 data=0x2a`, `Collected READ addr=0x1000 data=0x2a`, then 8 write/read pairs with `data=0x00` on the reads."
+      - "`hdata tri-stated after the read`, `8 unmapped addresses read 0x00`, `UVM_ERROR : 0`."
+  backpressure_test:
+    purpose: "Test plan: the YAPP handshake under back-pressure -- slow receivers fill the 16-byte channel FIFOs, the router stalls the input with in_suspend and no byte is lost."
+    stages:
+      - {k: config,   t: "slow receivers",      d: "channel_rx_slow_seq (response delay 20..40 cycles) on chan0..2 instead of channel_rx_resp_seq"}
+      - {k: stimulus, t: "6 long packets",      d: "yapp_pkt_seq, 40..63 bytes, random legal addresses"}
+      - {k: check,    t: "in_suspend rose",     d: "a thread counts the rising edges of in_suspend on the YAPP interface: at least one"}
+      - {k: check,    t: "scoreboard",          d: "6 matched, 0 mismatched, 0 unexpected: every byte arrived exactly once"}
+      - {k: check,    t: "no bad parity",       d: "the YAPP monitor saw no parity error: a held byte stayed held"}
+    expected:
+      - "`in_suspend rose N times` with N > 0 (a 63-byte packet stalls for roughly the response delay), scoreboard `matched 6, mismatched 0, unexpected 0`."
+      - "In the waveform: in_suspend high while suspend_x is still high and the FIFO count is 16; in_data frozen meanwhile."
+  parity_error_test:
+    purpose: "Test plan: what a wrong parity byte does -- the counter counts it (when enabled), error pulses 1..10 cycles later, and the packet is still delivered."
+    stages:
+      - {k: build,    t: "error_pulse_checker", d: "a subscriber of the YAPP monitor that times every error pulse against the last bad packet"}
+      - {k: program,  t: "en_reg = 0x03",       d: "router on, parity counter on"}
+      - {k: stimulus, t: "8 bad packets",       d: "yapp_pkt_seq with pkt_parity == BAD_PARITY, random address and length"}
+      - {k: check,    t: "count and pulses",    d: "parity_err_cnt_reg == 8; 8 pulses, each 1..10 cycles after its packet; scoreboard matched 8"}
+      - {k: program,  t: "en_reg = 0x01",       d: "parity counter off"}
+      - {k: stimulus, t: "4 bad packets",       d: "same sequence"}
+      - {k: check,    t: "frozen count",        d: "counter still 8; 12 pulses in total, none outside the window"}
+    expected:
+      - "`error pulse K cycles after the bad packet` twelve times with K in 1..10; `parity_err_cnt_reg reads 8 as expected` twice."
+      - "The channel monitors print the packets with `parity_type CHANNEL_BAD_PARITY` -- the router forwards them; `UVM_ERROR : 0`."
+
+# ---------------------------------------------------------------------------
+# The verification plan, feature by feature, page by page of the course's DUT
+# description (Project Overview pp. 5-11) plus the lab chapters that add
+# requirements (7, 9A, 10, 11). One source for the Test plan view of the map
+# and for docs/test-plan.md (generated by scripts/project_map/build.py).
+#
+# status: covered  -- a test checks it (and says so in its log)
+#         partial  -- exercised, but the check or the coverage is incomplete
+#         gap      -- nothing checks it yet (the note says what would)
+#         excluded -- deliberately not tested (the note says why)
+# ---------------------------------------------------------------------------
+plan:
+  - id: ROUTE
+    title: "Routing"
+    spec: "Project Overview p. 5 -- YAPP Router Description"
+    doc: dut/spec.md
+    summary: "One input port, three output channels: the address in the header picks the channel and the packet comes out unchanged."
+    items:
+      - id: ROUTE-01
+        title: "The address selects the output channel"
+        stimulus: "Packets to addresses 0, 1 and 2 (yapp_012_seq, random sequences, yapp_boundary_seq)."
+        check: "Each channel monitor raises UVM_ERROR when a packet with another address appears on its channel; the scoreboard keeps one expected queue per channel."
+        coverage: "addr_cp.legal (yapp_pkt_cg)"
+        tests: [yapp_012_test, simple_test, router_simple_mcseq_test, reg_function_test, router_filter_test]
+        status: covered
+      - id: ROUTE-02
+        title: "Payload and parity arrive unchanged"
+        stimulus: "Every packet that is forwarded."
+        check: "comp_equal() in the scoreboard: address, length, every payload byte and the parity byte of the channel packet equal the YAPP packet; one UVM_ERROR per difference."
+        coverage: "length_cp"
+        tests: [router_simple_mcseq_test, scoreboard_drop_test, coverage_test, backpressure_test, router_filter_test]
+        status: covered
+      - id: ROUTE-03
+        title: "Order is kept per channel, channels are independent"
+        stimulus: "Back-to-back packets to the same channel (0,1,2,0,1,2) and to different channels while the receivers are slow."
+        check: "The scoreboard pops its per-channel queue in order: a swapped packet mismatches; the FIFO scoreboard (Lab 9D) blocks on the next packet of that channel."
+        tests: [router_simple_mcseq_test, coverage_test, router_filter_test, backpressure_test]
+        status: covered
+      - id: ROUTE-04
+        title: "Packets back to back with the minimum gap"
+        stimulus: "packet_delay is randomised 1..20 in every packet; nothing forces a run of packets with the gap of one cycle."
+        check: "Scoreboard as above."
+        tests: [coverage_test, scoreboard_drop_test]
+        status: partial
+        note: "Add a sequence (or a constraint `packet_delay == 1` in yapp_pkt_seq) and a coverpoint on packet_delay to prove the one-cycle gap was hit."
+  - id: PKT
+    title: "Packet format"
+    spec: "Project Overview p. 6 -- Packet Data Specification"
+    doc: dut/spec.md#packet-format
+    summary: "Header {length[7:2], addr[1:0]}, 1..63 payload bytes, one even-parity byte over header and payload; address 3 is illegal."
+    items:
+      - id: PKT-01
+        title: "Header: length in [7:2], address in [1:0]"
+        stimulus: "Every packet; the driver packs {length, addr}, the channel monitor unpacks it again."
+        check: "The channel monitor's length and address equal the YAPP packet's (scoreboard compare, channel address check); the DUT reads length + 2 bytes exactly, so the next header is found where the monitor expects it."
+        tests: [simple_test, router_simple_mcseq_test, coverage_test]
+        status: covered
+      - id: PKT-02
+        title: "Every payload length 1..63, including both extremes"
+        stimulus: "yapp_coverage_seq sends 1, 5, 20, 50 and 63 bytes; random sequences cover the rest; backpressure_test sends 40..63."
+        check: "Scoreboard compare; a wrong length would shift the parity byte and the monitors would disagree."
+        coverage: "length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX"
+        tests: [coverage_test, scoreboard_drop_test, backpressure_test]
+        status: covered
+      - id: PKT-03
+        title: "Address 3 is illegal"
+        stimulus: "Packets with addr == 3 (c_addr_legal switched off): yapp_88_packets_seq, yapp_coverage_seq, yapp_boundary_seq."
+        check: "No byte appears on any channel (scoreboard: nothing unexpected), the reference model drops it, addr3_cnt_reg counts it when addr3_cnt_en is set."
+        coverage: "addr_cp.illegal_addr"
+        tests: [test_uvc_integration, coverage_test, router_filter_test]
+        status: covered
+      - id: PKT-04
+        title: "Even bitwise parity over header and payload"
+        stimulus: "Every good packet: parity = XOR of the header and all payload bytes (yapp_packet::calc_parity)."
+        check: "The channel monitor recomputes the parity and tags the packet CHANNEL_GOOD_PARITY; the DUT counts nothing in parity_err_cnt_reg; no error pulse."
+        coverage: "parity_cp"
+        tests: [reg_function_test, coverage_test, router_filter_test]
+        status: covered
+      - id: PKT-05
+        title: "A wrong parity byte is detected -- and the packet still delivered"
+        stimulus: "parity_type == BAD_PARITY flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq)."
+        check: "parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md)."
+        coverage: "parity_cp, len_x_addr_x_parity (REQ3)"
+        tests: [reg_function_test, parity_error_test, test_uvc_integration]
+        status: covered
+  - id: IN
+    title: "Input port protocol"
+    spec: "Project Overview p. 7 -- Input Port Protocol"
+    doc: dut/spec.md#input-port-protocol
+    summary: "Driven on the falling edge, sampled on the rising edge; in_data_vld frames header and payload; in_suspend stalls the sender; error pulses 1..10 cycles after a bad packet."
+    items:
+      - id: IN-01
+        title: "in_data_vld rises with the header; one byte per falling edge"
+        stimulus: "yapp_if.send_to_dut in every packet test."
+        check: "DUT, driver and monitor agree on one rule -- a byte is accepted at a rising edge with in_suspend low; a disagreement shows as a parity error or a scoreboard mismatch."
+        tests: [yapp_012_test, simple_test, coverage_test]
+        status: covered
+      - id: IN-02
+        title: "in_data_vld is low with the parity byte"
+        stimulus: "Every packet: the driver drops in_data_vld on the falling edge after the last payload byte."
+        check: "The DUT's PARITY state takes the next accepted byte regardless of in_data_vld; the monitor samples the parity the same way; the packet count in the DUT (mem_size_reg, counters) matches."
+        tests: [simple_test, reg_function_test, pkt_mem_test]
+        status: covered
+      - id: IN-03
+        title: "in_suspend: the input holds while the target FIFO is full"
+        stimulus: "Slow receivers (channel_rx_slow_seq, 20..40 cycles) and 40..63-byte packets, so the 16-byte FIFO fills before the receiver starts."
+        check: "in_suspend rose at least once; scoreboard 6 matched, 0 mismatched, 0 unexpected; no parity error at the monitor (every byte accepted exactly once)."
+        tests: [backpressure_test]
+        status: covered
+        note: "Writing this test showed that yapp_if.wait_accept() sampled in_suspend on the falling edge; it now samples the rising edge, like the DUT and the monitor (see components/driver.md)."
+      - id: IN-04
+        title: "error asserts 1 to 10 cycles after a bad-parity packet"
+        stimulus: "12 packets with bad parity (parity_error_test)."
+        check: "error_pulse_checker: exactly one pulse per bad packet, 1..10 cycles after the parity byte was accepted; a pulse with no bad packet before it is an error."
+        tests: [parity_error_test, test_uvc_integration]
+        status: covered
+  - id: OUT
+    title: "Output port protocol"
+    spec: "Project Overview p. 8 -- Output Port Protocol (Channel Ports)"
+    doc: dut/spec.md#output-channel-protocol
+    summary: "16-byte FIFO per channel; data_vld_x with the byte, the receiver reads on the falling edge and de-asserts suspend_x; a new byte every rising edge while suspend_x is low."
+    items:
+      - id: OUT-01
+        title: "data_vld_x, suspend_x and one byte per rising edge"
+        stimulus: "channel_if.receive_packet in every scoreboard test: the receiver reads length + 2 bytes after it drops suspend_x."
+        check: "The channel monitor collects exactly length + 2 bytes (a wrong handshake would duplicate or skip a byte and the scoreboard would mismatch); the address check never fires."
+        tests: [simple_test, router_simple_mcseq_test, coverage_test]
+        status: covered
+      - id: OUT-02
+        title: "The receiver may answer late: the header is held"
+        stimulus: "channel_rx_resp_seq: response delay 0..10 cycles per packet; channel_rx_slow_seq: 20..40."
+        check: "Scoreboard compare: the header read after the delay is still the header."
+        tests: [simple_test, router_simple_mcseq_test, backpressure_test]
+        status: covered
+      - id: OUT-03
+        title: "The FIFO is 16 bytes deep"
+        stimulus: "Packets longer than 16 bytes with a receiver that waits 20..40 cycles: the FIFO fills, the router stalls the input."
+        check: "in_suspend seen (backpressure_test); no byte lost (scoreboard); the FIFO never overflows (a lost byte would show as a parity error)."
+        tests: [backpressure_test, scoreboard_drop_test]
+        status: covered
+      - id: OUT-04
+        title: "suspend_x is re-asserted at the parity byte: the next packet waits"
+        stimulus: "Back-to-back packets to the same channel (0,1,2,0,1,2 and the boundary sequence)."
+        check: "The second packet's header is held in the FIFO until the receiver answers again; the scoreboard matches both in order."
+        tests: [router_simple_mcseq_test, router_filter_test, backpressure_test]
+        status: covered
+      - id: OUT-05
+        title: "All three channels busy at the same time"
+        stimulus: "Random addresses with slow receivers: packets to channels 0, 1 and 2 are in flight together."
+        check: "Scoreboard: every channel matched, nothing unexpected."
+        tests: [backpressure_test, coverage_test]
+        status: covered
+  - id: REG
+    title: "Registers"
+    spec: "Project Overview p. 9, Lab 11 p. 49 -- Packet Router DUT Registers"
+    doc: dut/spec.md#registers
+    summary: "ctrl_reg (maxpktsize) and en_reg are RW, the six counters and mem_size_reg are RO; reset values 0x3f, 0x01 and 0x00."
+    items:
+      - id: REG-01
+        title: "Reset values"
+        stimulus: "uvm_reg_hw_reset_seq reads every register right after reset."
+        check: "The built-in sequence compares each read with the model's reset value: ctrl_reg 0x3f, en_reg 0x01, counters and mem_size_reg 0x00."
+        tests: [uvm_reset_test]
+        status: covered
+      - id: REG-02
+        title: "RW registers: every bit can be written and read back"
+        stimulus: "Walking one, walking zero, 0x00, 0xff, 0xaa, 0x55 through ctrl_reg and en_reg (20 patterns each)."
+        check: "After each write the front-door read and the backdoor peek return the pattern; the reserved bits ctrl_reg[7:6] and en_reg[3] hold their value (they are RW in the router)."
+        tests: [reg_bit_walk_test, reg_access_test]
+        status: covered
+      - id: REG-03
+        title: "RO registers ignore writes"
+        stimulus: "Front-door writes to every counter and to mem_size_reg (register model) and a raw HBUS write to 0x1004."
+        check: "peek after the write shows the poked value, the read shows 0x00 after the raw write."
+        tests: [reg_access_test, reg_introspection_test, reg_bit_walk_test, hbus_protocol_test]
+        status: covered
+      - id: REG-04
+        title: "Front door and backdoor see the same flip-flops"
+        stimulus: "write -> peek and poke -> read on a RW register; poke -> read on a RO register (-access +rwc)."
+        check: "The values agree; the HDL paths of the model (hw_top.dut.u_regs.<reg>) resolve."
+        tests: [reg_access_test, reg_introspection_test]
+        status: covered
+      - id: REG-05
+        title: "Unmapped addresses read 0x00 and ignore writes"
+        stimulus: "Write 0xa5 then read 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f and 0x1050 with raw HBUS sequences."
+        check: "Every read returns 0x00."
+        tests: [hbus_protocol_test]
+        status: covered
+      - id: REG-06
+        title: "mem_size_reg holds the payload length of the last packet"
+        stimulus: "A 20-byte packet, then a 9-byte packet that is dropped as oversized."
+        check: "mem_size_reg reads 20, then 9 (only bits [5:0] are used)."
+        tests: [pkt_mem_test]
+        status: covered
+      - id: REG-07
+        title: "Automatic checking on read (check_on_read + predict)"
+        stimulus: "The reg_function_test stimulus with set_check_on_read(1); predict() loads the expected counter before each read."
+        check: "The map compares every read with the mirror and raises UVM_ERROR on a difference."
+        tests: [reg_function_check_test]
+        status: covered
+  - id: DROP
+    title: "Drop rules"
+    spec: "Project Overview p. 10 -- maxpktsize, router_en, counters"
+    doc: dut/spec.md#behaviour-rules
+    summary: "The whole packet is dropped when length > maxpktsize, when the router is disabled, or when the address is 3; changing the enables mid-packet is undefined."
+    items:
+      - id: DROP-01
+        title: "length > maxpktsize drops the whole packet"
+        stimulus: "maxpktsize = 20 with full-size packets (scoreboard_drop_test, test_uvc_integration); maxpktsize = 10 with lengths 9, 10, 11 and 63 (router_filter_test)."
+        check: "Nothing of the packet appears on the channel: the reference model drops it and the scoreboard sees nothing unexpected; `ROUTER DROPS PACKET ... length > maxpktsize`; length == maxpktsize still passes."
+        tests: [router_filter_test, scoreboard_drop_test, test_uvc_integration]
+        status: covered
+      - id: DROP-02
+        title: "router_en = 0 drops every packet"
+        stimulus: "en_reg = 0xfe, then yapp_012_seq; en_reg = 0xff, yapp_012_seq again."
+        check: "Channel monitors collect nothing while disabled, the reference model reports 3 dropped (router disabled), no counter and not mem_size_reg moves; after re-enabling the packets flow and the address counters read 1."
+        tests: [router_disable_test]
+        status: covered
+      - id: DROP-03
+        title: "Address 3 drops the packet"
+        stimulus: "As PKT-03."
+        check: "Reference model drop, no unexpected channel packet, `ROUTER DROPS PACKET ... illegal address`."
+        tests: [router_filter_test, coverage_test, test_uvc_integration]
+        status: covered
+      - id: DROP-04
+        title: "An oversized packet to address 3 counts in both counters"
+        stimulus: "The 11- and 63-byte packets to address 3 of yapp_boundary_seq."
+        check: "oversized_pkt_cnt_reg counts them and addr3_cnt_reg counts them (the DUT evaluates the conditions independently -- see Decisions in dut/spec.md)."
+        tests: [router_filter_test]
+        status: covered
+      - id: DROP-05
+        title: "Changing router_en or a counter enable in the middle of a packet"
+        stimulus: "--"
+        check: "--"
+        tests: []
+        status: excluded
+        note: "The specification declares the behaviour undefined, so no test drives it; every test programs the registers between packets."
+  - id: CNT
+    title: "Counters"
+    spec: "Project Overview p. 10 -- The router counters"
+    doc: dut/spec.md#registers
+    summary: "Six 8-bit counters, each behind an enable bit of en_reg: parity errors, oversized packets, and one per address including the illegal 3."
+    items:
+      - id: CNT-01
+        title: "A counter counts only while its enable bit is set"
+        stimulus: "en_reg = 0x01 then 0xff around yapp_012_seq (address counters); 0xff then 0x01 around yapp_boundary_seq (oversized, addr3, addrN); 0x03 then 0x01 around bad packets (parity)."
+        check: "The counters read 0 (or stay frozen) while disabled and the exact packet count while enabled."
+        tests: [reg_function_test, router_filter_test, parity_error_test]
+        status: covered
+      - id: CNT-02
+        title: "addrN_cnt_reg counts every received packet with address N"
+        stimulus: "yapp_boundary_seq: 4 packets per address, half of them dropped as oversized."
+        check: "addr0/1/2_cnt_reg read 4 each: dropped packets are counted too (they were received -- see Decisions); yapp_012_seq twice gives 2 each."
+        tests: [router_filter_test, reg_function_test]
+        status: covered
+      - id: CNT-03
+        title: "parity_err_cnt_reg counts the bad-parity packets"
+        stimulus: "yapp_012_seq twice (random parity) and 8 + 4 deliberately bad packets."
+        check: "The register equals the YAPP monitor's num_bad_parity delta, then 8, then still 8 with the enable off."
+        tests: [reg_function_test, parity_error_test]
+        status: covered
+      - id: CNT-04
+        title: "oversized_pkt_cnt_reg counts packets longer than maxpktsize"
+        stimulus: "8 oversized packets of yapp_boundary_seq (11 and 63 bytes against maxpktsize 10); none in reg_function_test (maxpktsize 63)."
+        check: "Reads 8, then 0 in reg_function_test."
+        tests: [router_filter_test, reg_function_test]
+        status: covered
+      - id: CNT-05
+        title: "addr3_cnt_reg counts packets to address 3"
+        stimulus: "4 packets to address 3 (yapp_boundary_seq); none in yapp_012_seq."
+        check: "Reads 4, and 0 in reg_function_test."
+        tests: [router_filter_test, reg_function_test]
+        status: covered
+      - id: CNT-06
+        title: "Counter overflow after 255 packets"
+        stimulus: "--"
+        check: "--"
+        tests: []
+        status: gap
+        note: "The specification does not say whether a counter saturates or wraps; the RTL wraps to 0. A test would send 256 packets to one address and read 0 (wrap) -- decide the intended behaviour first."
+  - id: MEM
+    title: "Memories"
+    spec: "Project Overview p. 10, Lab 11 p. 50 -- Router Memories"
+    doc: dut/spec.md#memories
+    summary: "yapp_pkt_mem (64 bytes, RO) holds the last packet received; yapp_mem (256 bytes, RW) is scratch memory."
+    items:
+      - id: MEM-01
+        title: "yapp_pkt_mem holds the last packet, byte by byte"
+        stimulus: "A 20-byte packet to address 1 whose content the sequence keeps in req."
+        check: "yapp_pkt_mem[0] == {length, addr}, yapp_pkt_mem[1..20] == payload[0..19], read through the register model."
+        tests: [pkt_mem_test]
+        status: covered
+      - id: MEM-02
+        title: "yapp_pkt_mem is read-only"
+        stimulus: "A raw HBUS write to 0x1010 with the inverted header."
+        check: "yapp_pkt_mem[0] still reads the header."
+        tests: [pkt_mem_test]
+        status: covered
+      - id: MEM-03
+        title: "A dropped packet is still stored"
+        stimulus: "maxpktsize = 5 and a 9-byte packet."
+        check: "mem_size_reg reads 9 and the bytes are in yapp_pkt_mem: the packet was received, just not forwarded (Decisions in dut/spec.md)."
+        tests: [pkt_mem_test]
+        status: covered
+      - id: MEM-04
+        title: "yapp_mem: every byte can be written and read back"
+        stimulus: "uvm_mem_walk_seq: writes and reads the 256 bytes with a walking pattern; with +define+INJECT_ERROR the RTL flips bit 3 of address 0x2a."
+        check: "The built-in sequence compares; 0 errors without the define, one UVM_ERROR with it."
+        tests: [uvm_mem_walk_test]
+        status: covered
+  - id: HBUS
+    title: "Host port (HBUS)"
+    spec: "Project Overview p. 11 -- Host Interface Port Protocol"
+    doc: dut/spec.md#hbus-host-protocol
+    summary: "One-cycle writes and two-cycle reads driven on the falling edge; hdata is bidirectional and tri-stated by the DUT when hen is low."
+    items:
+      - id: HBUS-01
+        title: "Write: hen and hwr_rd for one cycle, data latched on the rising edge"
+        stimulus: "Every register write (hbus_if.hbus_write): raw sequences and the register model's front door."
+        check: "The value is read back (hbus_protocol_test, every reg test); the HBUS monitor decodes one WRITE per access."
+        tests: [hbus_protocol_test, router_simple_mcseq_test, reg_access_test]
+        status: covered
+      - id: HBUS-02
+        title: "Read: haddr sampled in cycle 1, hdata driven by the DUT in cycle 2"
+        stimulus: "Every register read (hbus_if.hbus_read); hbus_read_max_pkt_seq after each maxpktsize write."
+        check: "The value read equals what was written or poked (20 and 63 in router_simple_mcseq_test, 0x2a in hbus_protocol_test); the monitor decodes one READ."
+        tests: [hbus_protocol_test, router_simple_mcseq_test, reg_access_test]
+        status: covered
+      - id: HBUS-03
+        title: "hdata is tri-stated when hen drops"
+        stimulus: "A read, then two idle cycles."
+        check: "hbus_if.hdata_w reads 'z (the master's output enable is off, so only the DUT could still drive it)."
+        tests: [hbus_protocol_test]
+        status: covered
+      - id: HBUS-04
+        title: "Back-to-back accesses"
+        stimulus: "uvm_mem_walk_seq (511 writes and 255 reads with no gap), the 20-pattern walks of reg_bit_walk_test."
+        check: "Every read returns the expected value; the monitor count equals the number of accesses."
+        tests: [uvm_mem_walk_test, reg_bit_walk_test]
+        status: covered
+      - id: HBUS-05
+        title: "The register model's front door is HBUS traffic"
+        stimulus: "write()/read() through yapp_rm.default_map and the hbus_reg_adapter."
+        check: "The HBUS monitor logs the cycles, and the reference model mirrors maxpktsize and router_en from them (the drop rules follow the model's writes in router_disable_test and router_filter_test)."
+        tests: [reg_function_test, router_disable_test, router_filter_test]
+        status: covered
+  - id: COV
+    title: "Functional coverage"
+    spec: "Lab 10 p. 47 -- REQ1, REQ2, REQ3"
+    doc: labs/lab10.md
+    summary: "The coverage model in yapp_tx_monitor: length buckets, every address including the illegal one, and every length to every legal address with bad parity."
+    items:
+      - id: COV-01
+        title: "REQ1: all packet lengths, bucketed"
+        stimulus: "yapp_coverage_seq: 1, 5, 20, 50, 63."
+        check: "length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX all hit; the monitor report prints 100 %."
+        coverage: "length_cp"
+        tests: [coverage_test]
+        status: covered
+      - id: COV-02
+        title: "REQ2: every address received a packet, including the illegal one"
+        stimulus: "yapp_coverage_seq: addresses 0..3."
+        check: "addr_cp bins legal[0..2] and illegal_addr hit."
+        coverage: "addr_cp"
+        tests: [coverage_test]
+        status: covered
+      - id: COV-03
+        title: "REQ3: every length bucket to every legal address with a parity error"
+        stimulus: "yapp_coverage_seq: each length with BAD_PARITY to addresses 0..2."
+        check: "The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins."
+        coverage: "len_x_addr_x_parity"
+        tests: [coverage_test]
+        status: covered
+  - id: TB
+    title: "Testbench mechanics"
+    spec: "Labs 2-9 -- the course's own tests"
+    doc: labs/index.md
+    summary: "What the lab tests prove about the environment itself: topology, factory, configuration, sequences, virtual interfaces, the virtual sequencer and the scoreboard."
+    items:
+      - id: TB-01
+        title: "The test builds the testbench and the run ends cleanly"
+        stimulus: "base_test alone: no sequence, drain time 200 ns."
+        check: "print_topology shows uvm_test_top with router_tb below; UVM_ERROR : 0; check_config_usage reports nothing unused."
+        tests: [base_test]
+        status: covered
+      - id: TB-02
+        title: "A factory type override replaces the packet type everywhere"
+        stimulus: "set_type_override_by_type(yapp_packet, short_yapp_packet) before the environment is built."
+        check: "Every printed packet is a short_yapp_packet with length < 15; the sequences were not touched."
+        tests: [short_packet_test, incr_payload_test, exhaustive_seq_test, simple_test, router_simple_mcseq_test]
+        status: covered
+      - id: TB-03
+        title: "Configuration through the database, checked for use"
+        stimulus: "is_active = UVM_PASSIVE on the YAPP agent; configure_sequences() overridden to set nothing."
+        check: "The topology has no driver and no sequencer under the agent; no `never used` configuration report."
+        tests: [set_config_test]
+        status: covered
+      - id: TB-04
+        title: "The sequence library: sub-sequences and post_randomize shaping"
+        stimulus: "yapp_exhaustive_seq starts every library sequence once; yapp_incr_payload_seq rewrites the payload to 0 1 2 ..."
+        check: "One `Executing` line per sequence, the expected packet counts, the incrementing payload."
+        tests: [exhaustive_seq_test, incr_payload_test]
+        status: covered
+      - id: TB-05
+        title: "The virtual interface connects the driver to the DUT"
+        stimulus: "yapp_012_seq through yapp_if into hw_top.dut."
+        check: "Each packet appears on data_0, data_1, data_2 in the waveform; later the channel monitors confirm it."
+        tests: [yapp_012_test, simple_test]
+        status: covered
+      - id: TB-06
+        title: "A multichannel sequence coordinates HBUS and YAPP"
+        stimulus: "router_simple_mcseq on the virtual sequencer: program, read back, send, reprogram, send."
+        check: "The log shows the sub-sequences in order; the read-backs return 20 and 63."
+        tests: [router_simple_mcseq_test]
+        status: covered
+      - id: TB-07
+        title: "The scoreboard notices a wrong packet"
+        stimulus: "Full-size packets while maxpktsize is 20, without the reference model (Lab 9A)."
+        check: "Expected PKT_COMPARE errors and packets left in the queues: the negative test of the checker itself."
+        tests: [scoreboard_drop_test]
+        status: covered
+      - id: TB-08
+        title: "The register model describes itself"
+        stimulus: "get_registers() and find() by get_rights()."
+        check: "2 RW and 7 RO registers listed, then the access checks run on all of them."
+        tests: [reg_introspection_test]
+        status: covered
+
 
 layout:
   hierarchy:

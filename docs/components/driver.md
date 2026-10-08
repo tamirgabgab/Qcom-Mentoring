@@ -45,9 +45,14 @@ same task is reusable from a non-UVM testbench.
 --8<-- "yapp_project/uvc/yapp/yapp_if.sv"
 ```
 
-`wait_accept()` is the heart of the handshake: on a falling edge, if
-`in_suspend` is low the previous byte was taken at the preceding rising edge
-and the next one may be driven; if it is high the byte must be held.
+`wait_accept()` is the heart of the handshake: a byte is taken at a **rising**
+edge where `in_suspend` is low, so the task waits for such a rising edge and
+only then, on the next falling edge, lets the driver change the data. Sampling
+`in_suspend` on the falling edge would be wrong: a header offered to a full
+FIFO is refused at the rising edge, and if the receiver frees a slot at that
+same edge `in_suspend` is already low again at the falling edge, so the driver
+would move on and the header would be lost. The `backpressure_test` of the
+[test plan](../test-plan.md) exercises exactly this path.
 
 ## The reference implementation
 

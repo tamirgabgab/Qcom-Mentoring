@@ -40,7 +40,9 @@ hw_top.sv
 tb_top.sv
 
 // Tests: base_test | uvm_reset_test | uvm_mem_walk_test | reg_access_test |
-//        reg_function_test | reg_function_check_test | reg_introspection_test
+//        reg_function_test | reg_function_check_test | reg_introspection_test |
+//        router_disable_test | router_filter_test | pkt_mem_test | reg_bit_walk_test |
+//        hbus_protocol_test | backpressure_test | parity_error_test   (docs/test-plan.md)
 +UVM_TESTNAME=reg_function_test
 +UVM_VERBOSITY=UVM_LOW
 +SVSEED=random

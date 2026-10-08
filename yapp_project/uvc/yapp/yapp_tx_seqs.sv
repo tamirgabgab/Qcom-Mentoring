@@ -26,3 +26,10 @@
 `include "seqs/yapp_exhaustive_seq.sv"
 `include "seqs/yapp_coverage_seq.sv"
 `include "seqs/yapp_88_packets_seq.sv"
+
+//------------------------------------------------------------------------------
+// Test-plan sequences (used by the tests of yapp_project/tb/tests)
+//------------------------------------------------------------------------------
+
+`include "seqs/yapp_pkt_seq.sv"
+`include "seqs/yapp_boundary_seq.sv"

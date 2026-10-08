@@ -41,7 +41,7 @@ The course builds a UVM testbench for a small packet router, one lab at a time.
 Everything you need is on the **course site**: the DUT specification with the
 protocol waveforms, one guide per UVM component (packet, driver, sequences,
 monitor, agent/env, scoreboard, reference model, virtual sequencer, coverage,
-register model), a test plan, and one page per lab with the full solution,
+register model), a feature-by-feature test plan, and one page per lab with the full solution,
 the expected results and checkpoint questions.
 
 ### The project map
@@ -53,9 +53,10 @@ down; the **Source** column on the right shows the complete file of whatever
 is selected (one class per file). Five views: **Hierarchy** (who contains
 whom), **TLM / data flow** (who talks to whom), **Classes (UML)** (who inherits
 from whom, with fields and methods), **Environment** (the course figure of the
-whole verification environment, one role line per box) and **Tests** (one card
-per test with its plan: the stages, what the run is expected to show, the
-sequences and overrides it sets up).
+whole verification environment, one role line per box) and **Test plan** (the
+DUT features with their stimulus, checker, coverage and status on top, one card
+per test with its plan below: the stages, what the run is expected to show,
+the sequences and overrides it sets up, the plan items it verifies).
 
 Arrows are drawn orthogonally; in the Hierarchy and TLM views they start hidden and
 appear for the box under the pointer (the **Arrows** button shows them all). Boxes
@@ -213,7 +214,10 @@ yapp_project/                     the complete project — the source of truth
     router_mcsequencer.sv           the virtual (multichannel) sequencer
     mcseqs/                         router_mcseq_base, router_simple_mcseq
     tests/                          base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
-                                    reg_function_test, reg_function_check_test, reg_introspection_test
+                                    reg_function_test, reg_function_check_test, reg_introspection_test,
+                                    and the test-plan tests: router_disable_test, router_filter_test,
+                                    pkt_mem_test, reg_bit_walk_test, hbus_protocol_test,
+                                    backpressure_test, parity_error_test (+ error_pulse_checker)
     reg/                            the register model: one class per register / memory, yapp_regs_c, yapp_router_regs_t
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`

@@ -20,3 +20,8 @@
   border: 1px solid var(--md-default-fg-color--lightest); border-radius: 6px; overflow: hidden; }
 .pm-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .pm-link { font-size: 0.8rem; }
+
+/* test plan: the status of an item (docs/test-plan.md, generated) */
+.st { display: inline-block; font-size: .68rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+      padding: 0 .45em; border-radius: .6em; color: #fff; white-space: nowrap; }
+.st-covered { background: #10a37f; } .st-partial { background: #f59e0b; } .st-gap { background: #ef4444; } .st-excluded { background: #8e9aaf; }

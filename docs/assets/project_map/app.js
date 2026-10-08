@@ -14,8 +14,10 @@
   "use strict";
 
   const SVG_NS = "http://www.w3.org/2000/svg";
-  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)", env: "Environment", tests: "Tests" };
-  // colours of the stages of a test plan (the Tests view and the panel)
+  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)", env: "Environment", plan: "Test plan" };
+  // status of a test-plan item -> label (colours in app.css, .st-<status>)
+  const STATUS_LABEL = { covered: "covered", partial: "partial", gap: "gap", excluded: "excluded" };
+  // colours of the stages of a test plan (the Test plan view and the panel)
   const STAGE_KIND = { build: "build", config: "config", reset: "reset", program: "program", stimulus: "stimulus", check: "check", report: "report" };
 
   // ------------------------------------------------------------------ helpers
@@ -42,6 +44,7 @@
     return text.trim().split(/\n\s*\n/).map(p =>
       "<p>" + esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>") + "</p>").join("");
   }
+  function labTxt(n) { return n.lab === "TP" ? "Test plan" : `Lab ${n.lab}`; }
   function trunc(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
   function store(key, value) {
     try { if (value === null || value === undefined) localStorage.removeItem(key); else localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* no storage */ }
@@ -227,7 +230,7 @@
       r.innerHTML = "";
       // toolbar
       this.views = el("div", { class: "pm-views" });
-      ["hierarchy", "tlm", "classes", "env", "tests"].forEach(v => {
+      ["hierarchy", "tlm", "classes", "env", "plan"].forEach(v => {
         this.views.append(el("button", { "data-view": v, onclick: () => this.switchView(v) }, [VIEW_LABEL[v]]));
       });
       this.crumbs = el("nav", { class: "pm-crumbs" });
@@ -304,7 +307,7 @@
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd></td><td>back / forward through the views visited</td></tr>" +
           "<tr><td><kbd>h</kbd></td><td>home: the overview</td></tr>" +
-          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Tests</td></tr>" +
+          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
@@ -346,7 +349,7 @@
     }
     // ------------------------------------------------------------- arrows on / off, movable boxes
     arrowsOn(view) {
-      const dflt = { hierarchy: false, tlm: false, classes: true, env: false, tests: false };
+      const dflt = { hierarchy: false, tlm: false, classes: true, env: false, plan: false };
       const saved = load("pm-arrows", {});
       const v = view || this.state.view;
       return saved[v] === undefined ? dflt[v] : !!saved[v];
@@ -488,7 +491,7 @@
       if (view === "hierarchy") return this.state.lastHier || "h:root";
       if (view === "tlm") return this.state.variant ? "tlm:lab09d" : "tlm:main";
       if (view === "env") return "env:main";
-      if (view === "tests") return "tests:main";
+      if (view === "plan") return "plan:main";
       const g = this.state.group ? `uml:${this.state.group}` : "uml:all";
       return this.state.full && this.scenes[g + ":full"] ? g + ":full" : g;
     }
@@ -512,9 +515,9 @@
       const n = this.N[nid];
       if (!n) return false;
       let target = null;
-      if (n.scope === "cls" && n.kind === "test" && (view === "tests" || (!view && this.state.view === "tests"))) {
-        this.state.view = "tests";
-        this.show("tests:main", o);
+      if (n.scope === "cls" && n.kind === "test" && (view === "plan" || (!view && this.state.view === "plan"))) {
+        this.state.view = "plan";
+        this.show("plan:main", o);
         this.select(nid, o);
         return true;
       }
@@ -620,7 +623,7 @@
       this.hint.textContent = s.view === "hierarchy" ? "drag the background to pan · drag a box to move it · click to inspect · double-click a box to open it"
         : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box or a dashed frame to move it"
         : s.view === "env" ? "the whole environment on one page · click a box for its role and code · double-click to open it in the Hierarchy"
-        : s.view === "tests" ? "click a test for its plan, expected results and code · hover a stage for its detail · arrows: who extends whom"
+        : s.view === "plan" ? "top: the DUT features and what verifies them (click a chip for the item) · below: the tests · arrows: feature → test, who extends whom"
         : "click a class to see its file · Members shows fields and methods · drag a class to move it";
     }
     // a group frame (TLM) follows its members
@@ -770,6 +773,9 @@
       } else if (it.style === "test_card") {
         grp.classList.add("test-card");
         this.drawTestCard(grp, it);
+      } else if (it.style === "feature_card") {
+        grp.classList.add("test-card", "feature-card");
+        this.drawFeatureCard(grp, it);
       } else {
         grp.append(svg("rect", { class: "stripe", width: 5, height: it.h, rx: 2 }));
         const t = svg("text", { class: "label", x: 14, y: 19 }); t.textContent = it.label; grp.append(t);
@@ -790,7 +796,36 @@
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
       return grp;
     }
-    // A test in the Tests view: name, lab and base class, the purpose, the stages of the plan
+    // A feature group of the test plan: id and title, the page of the specification it comes
+    // from, the summary, then one chip per item coloured by its status (hover for the title,
+    // click for the item in the panel).
+    drawFeatureCard(grp, it) {
+      grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
+      const t = svg("text", { class: "label", x: 12, y: 24 }); t.textContent = it.label; grp.append(t);
+      if (it.sub) { const st = svg("text", { class: "sub", x: 12, y: 39 }); st.textContent = trunc(it.sub, 60); grp.append(st); }
+      let y = 44;
+      (it.lines || []).forEach(l => { y += 15; const lt = svg("text", { class: "purpose", x: 12, y: y - 3 }); lt.textContent = l; grp.append(lt); });
+      const items = it.plan_items || [];
+      if (items.length) {
+        y += 8;
+        const perRow = 2, cw = (it.w - 24 - 6 * (perRow - 1)) / perRow;
+        items.forEach((pi, i) => {
+          const c = i % perRow, r = Math.floor(i / perRow);
+          const x = 12 + c * (cw + 6), cy = y + r * 24;
+          const cg = svg("g", { class: `chip st-${pi.s}`, "data-item": pi.id });
+          cg.append(svg("rect", { x, y: cy, width: cw, height: 18, rx: 4 }));
+          const ct = svg("text", { x: x + 6, y: cy + 12.5 }); ct.textContent = trunc(`${pi.id} · ${pi.t}`, Math.floor(cw / 5.6)); cg.append(ct);
+          const tt = svg("title"); tt.textContent = `${pi.id} · ${pi.t} — ${STATUS_LABEL[pi.s] || pi.s}` + (pi.n ? ` (${pi.n} test${pi.n > 1 ? "s" : ""})` : ""); cg.append(tt);
+          cg.style.pointerEvents = "all";
+          cg.addEventListener("click", ev => { ev.stopPropagation(); this.select(it.id); this.scrollPanelTo(`pi-${pi.id}`); });
+          grp.append(cg);
+        });
+      }
+    }
+    scrollPanelTo(id) {
+      requestAnimationFrame(() => { const e = this.panel.querySelector(`#${CSS.escape(id)}`); if (e) { e.scrollIntoView({ block: "start" }); e.classList.add("flash"); setTimeout(() => e.classList.remove("flash"), 1200); } });
+    }
+    // A test in the Test plan view: name, lab and base class, the purpose, the stages of the plan
     // as a strip of coloured chips (hover a chip for its detail).
     drawTestCard(grp, it) {
       grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
@@ -1169,7 +1204,7 @@
         else if (k === "2") this.switchView("tlm");
         else if (k === "3") this.switchView("classes");
         else if (k === "4") this.switchView("env");
-        else if (k === "5") this.switchView("tests");
+        else if (k === "5") this.switchView("plan");
         else if (k === "Escape" || k === "Backspace") { e.preventDefault(); if (this.help.classList.contains("open")) this.help.classList.remove("open"); else this.up(); }
         else if (k === "f") this.fit();
         else if (k === "h") this.home();
@@ -1203,7 +1238,7 @@
       const n = this.N[id];
       const head = el("div", { class: "pm-panel-head" });
       head.append(el("span", { class: "pm-badge", style: `--kc: var(--k-${n.kind})` }, [n.kind_label || n.kind]));
-      if (n.lab) head.append(" ", el("span", { class: "lab", style: "margin-left:6px;font-size:11px" }, [`Lab ${n.lab}`]));
+      if (n.lab) head.append(" ", el("span", { class: "lab", style: "margin-left:6px;font-size:11px" }, [labTxt(n)]));
       head.append(el("h2", {}, [n.name]));
       if (n.scope === "cls") head.append(el("div", { class: "path" }, [n.file ? `${n.file}:${n.line}` : ""]));
       else head.append(el("div", { class: "path" }, [n.scope === "tb" && n.id !== "uvm_test_top" ? `uvm_test_top.${n.id}` : n.id, n.type && n.type !== n.name ? `  :  ${n.type}` : ""]));
@@ -1404,6 +1439,34 @@
       }
       add(`<p class="empty">Run it: <code>make run TEST=${esc(n.name)}</code></p>`);
     }
+    // A feature group of the test plan: where it comes from, then every item with its
+    // stimulus, check, coverage, the tests that cover it and its status.
+    renderFeature(body, n) {
+      const add = (h) => body.insertAdjacentHTML("beforeend", h);
+      if (n.spec) add(`<p class="pm-spec">Source: ${esc(n.spec)}</p>`);
+      const counts = {};
+      (n.items || []).forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
+      const sum = el("p", { class: "pm-counts" });
+      Object.keys(STATUS_LABEL).forEach(k => { if (counts[k]) sum.append(el("span", { class: `pm-status st-${k}` }, [`${counts[k]} ${STATUS_LABEL[k]}`]), " "); });
+      body.append(sum);
+      (n.items || []).forEach(it => {
+        const box = el("div", { class: `pm-item st-${it.status}`, id: `pi-${it.id}` });
+        box.append(el("div", { class: "head" }, [el("code", {}, [it.id]), " ", el("b", {}, [it.title]), " ", el("span", { class: `pm-status st-${it.status}` }, [STATUS_LABEL[it.status] || it.status])]));
+        const t = el("table", { class: "pm-item-t" });
+        const row = (k, v) => { const tr = el("tr"); tr.append(el("th", {}, [k]), el("td", {}, Array.isArray(v) ? v : [v])); t.append(tr); };
+        if (it.stimulus && it.stimulus !== "--") row("stimulus", it.stimulus);
+        if (it.check && it.check !== "--") row("check", it.check);
+        if (it.coverage) row("coverage", el("code", {}, [it.coverage]));
+        if (it.tests && it.tests.length) {
+          const span = el("span");
+          it.tests.forEach((tn, i) => { if (i) span.append(", "); span.append(this.N[`cls:${tn}`] ? this.nodeLink(`cls:${tn}`, tn) : el("code", {}, [tn])); });
+          row("tests", [span]);
+        }
+        box.append(t);
+        if (it.note) box.append(el("div", { class: "note" }, [it.note]));
+        body.append(box);
+      });
+    }
     renderOverview(body, n) {
       const add = (h) => body.insertAdjacentHTML("beforeend", h);
       if (n.summary) add(`<p><b>${esc(n.summary)}</b></p>`);
@@ -1420,7 +1483,7 @@
       if (n.chain && n.chain.length) row("base chain", el("code", {}, [n.chain.join(" → ")]));
       if (n.item_type) row("item type", [this.nodeLink(`cls:${n.item_type}`, n.item_type)]);
       if (n.parent && this.N[n.parent]) row("parent", [this.nodeLink(n.parent)]);
-      if (n.lab) { const lk = (n.docs || []).find(d => d.title.startsWith("Lab")); row("introduced", lk ? el("a", { href: this.docUrl(lk.url), target: "_top" }, [`Lab ${n.lab}`]) : `Lab ${n.lab}`); }
+      if (n.lab) { const lk = (n.docs || []).find(d => d.title.startsWith("Lab") || d.title === "Test plan"); row(n.lab === "TP" ? "belongs to" : "introduced", lk ? el("a", { href: this.docUrl(lk.url), target: "_top" }, [labTxt(n)]) : labTxt(n)); }
       if (n.file && n.scope !== "cls") row("source", el("code", {}, [`${n.file}:${n.line}`]));
       if (facts.children.length) { add("<h3>Facts</h3>"); body.append(facts); }
       if (n.alternatives && n.alternatives.length) {
@@ -1428,7 +1491,15 @@
         const ul = el("ul"); n.alternatives.forEach(t => ul.append(el("li", {}, [this.nodeLink(`cls:${t}`, t), " — ", el("span", { style: "color:var(--pm-muted)" }, [this.N[`cls:${t}`] ? this.N[`cls:${t}`].summary : ""])]))); body.append(ul);
       }
       if (n.values) { add("<h3>Values</h3>"); add(`<p><code>${n.values.map(esc).join("</code> <code>")}</code></p>`); }
+      if (n.kind === "feature") this.renderFeature(body, n);
       if (n.plan) this.renderPlan(body, n);
+      if (n.covers && n.covers.length) {
+        add("<h3>Test plan items this test verifies</h3>");
+        const ul = el("ul", { class: "pm-covers" });
+        n.covers.forEach(c => ul.append(el("li", {}, [el("span", { class: `pm-status st-${c.status}` }, [STATUS_LABEL[c.status] || c.status]), " ",
+          el("a", { class: "node", onclick: () => { this.gotoNode(c.group); this.scrollPanelTo(`pi-${c.id}`); } }, [c.id]), " — ", c.title])));
+        body.append(ul);
+      }
       // children
       const kids = (n.children || []).filter(c => !this.N[c].port);
       const ports = (n.children || []).filter(c => this.N[c].port);
@@ -1605,8 +1676,13 @@
         else if (s.node) { const n = this.N[s.node]; add(`<p><b>${esc(n.summary || "")}</b></p>` + md(n.description)); add('<p class="empty">Click a child for details; ports are the small circles (producers on the right, consumers on the left). Dashed boxes outside the frame are the far ends of connections leaving this level.</p>'); }
       } else if (s.view === "env") {
         add(md("The verification environment as the course draws it. **uvm_test_top** (the test chosen with `+UVM_TESTNAME`) builds **router_tb**; the testbench holds one env per interface UVC, each opened down to its **sequencer**, **driver** and **monitor**, plus the virtual sequencer, the router module UVC (reference model and scoreboard) and the register model with its adapter. Below, the hardware: the interface instances the drivers and monitors reach through the virtual interfaces, and the DUT with its pins and register map.\n\nEvery box carries a one-line role; click it for the full story and its code, double-click to open it in the Hierarchy view."));
-      } else if (s.view === "tests") {
-        add(md("Every test of the course, in the order the labs introduce them (the lab is on the card). All of them extend **base_test** and only change what runs: a factory override, a default sequence, or a hand-written `run_phase`. The chips are the stages of the test's plan, left to right; click a test for the plan with its expected results, the configuration it sets, and its code.\n\nRun one with `make run TEST=<name>` in `yapp_project/tb` (or the lab's `tb`)."));
+      } else if (s.view === "plan") {
+        const items = (this.m.plan || []).flatMap(g => g.items), counts = {};
+        items.forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
+        add(md(`The verification plan of the router, feature by feature, following the pages of the course's DUT description (packet format, input and output protocols, registers, drop rules, counters, memories, HBUS) plus the lab chapters that add requirements (scoreboard, coverage, register tests). **${(this.m.plan || []).length} feature groups, ${items.length} items.** Each item names its stimulus, its checker, its coverage and the tests that cover it; the chip colour is the status.\n\nBelow the features: every test, in the order the labs introduce them (the lab is on the card; the test-plan tests come last). All of them extend **base_test** and only change what runs. The chips are the stages of the test's plan; click a test for the plan with its expected results, the configuration it sets, the plan items it verifies, and its code. Run one with \`make run TEST=<name>\` in \`yapp_project/tb\`.`));
+        const sum = el("p", { class: "pm-counts" });
+        Object.keys(STATUS_LABEL).forEach(k => { if (counts[k]) sum.append(el("span", { class: `pm-status st-${k}` }, [`${counts[k]} ${STATUS_LABEL[k]}`]), " "); });
+        body.append(sum);
       } else if (s.view === "tlm") {
         add(md("Left to right: who controls whom and where the data goes. Sequences run on **sequencers**, items reach the **drivers** through `seq_item_port`, pins reach the DUT through the virtual interfaces, **monitors** publish on analysis ports, the **router module UVC** receives them through exports: the reference model filters, the scoreboard compares.\n\nClick a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the FIFO-based scoreboard."));
       } else {
@@ -1645,6 +1721,7 @@
         clock: "Shared clock / reset nets (not drawn in the picture to keep it readable).",
         flow: "Data or control flow inside the RTL.",
         inherits: "`extends`.",
+        covers: "A test named by one or more items of this feature group in the test plan (annotations.yaml: `plan`).",
         runs_on: "The sequence's item type matches this sequencer's parameter (or `p_sequencer` is declared).",
         uses: "A sub-sequence declared as a member and started with `uvm_do`.",
         starts: "A `default_sequence` set on this sequencer's `run_phase` through `uvm_config_wrapper`.",

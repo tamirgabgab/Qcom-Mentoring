@@ -242,6 +242,36 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - `test_model.py`: בדיקות לשתי הסצנות (17 כרטיסים עם plan+expected, 16 חיצי inherits; env מציג
      sequencer/driver/monitor, yapp_rm סגור, role לכל עלה). `export.mjs`: PNG גם ל-env ו-tests.
    - מקשים `4`/`5` לתצוגות החדשות; README ו-`docs/project-map.md` מתארים חמש תצוגות (אין יותר "▸ open corner").
+7. **סבב 4 של סשן 5 — Test plan (תמיר העלה שוב את ה-PDF; קראתי את עמודי המפרט 5–11 ואת לאבים 7, 9A, 10, 11C):**
+   - **`plan:` ב-`annotations.yaml`** — תוכנית אימות לפי features, עמוד-עמוד: 11 קבוצות (ROUTE, PKT, IN,
+     OUT, REG, DROP, CNT, MEM, HBUS, COV, TB), 56 פריטים; לכל פריט `id, title, stimulus, check, coverage,
+     tests, status (covered/partial/gap/excluded), note`. 53 covered, ROUTE-04 partial (מרווח מינימלי בין
+     פקטות), CNT-06 gap (גלישת counter — המפרט שותק), DROP-05 excluded (שינוי enable באמצע פקטה = undefined).
+   - **7 טסטים חדשים ב-`yapp_project/tb/tests/`** (לא בלאבים; lab pseudo "TP" דרך `lab_overrides` + `labs.test_plan`):
+     `router_disable_test` (DROP-02), `router_filter_test` (DROP-01/03/04, CNT-*; `yapp_boundary_seq`),
+     `pkt_mem_test` (MEM-01..03, REG-06; `yapp_pkt_seq`), `reg_bit_walk_test` (REG-02/03, walking ones/zeros),
+     `hbus_protocol_test` (HBUS-01..03, REG-05; raw sequences, tri-state, unmapped), `backpressure_test`
+     (IN-03, OUT-03/04; `channel_rx_slow_seq` delay 20..40), `parity_error_test` (PKT-05, IN-04; `error_pulse_checker`
+     subscriber שקורא `hw_top.error`/`hw_top.clock_period` היררכית — הפין היחיד מחוץ לכל ממשק). כולם
+     extend `reg_function_test`/`reg_access_test` ומממשים `access_checks()`. **לא רצו בסימולטור** (slang 18/18 ירוק, style OK).
+   - **באג שנמצא בכתיבת backpressure_test ותוקן ב-`yapp_if.sv`:** `wait_accept()` דגם `in_suspend` ב-negedge;
+     header שמוצע ל-FIFO מלא נדחה ב-posedge, ואם ה-receiver משחרר באותו posedge, `in_suspend` כבר נמוך
+     ב-negedge → ה-driver מתקדם וה-header אובד. עכשיו: `do @(posedge) while (in_suspend); @(negedge)` — כמו ה-DUT והמוניטור.
+     מתועד ב-`components/driver.md`, IN-03 note, `unverified.md` #1.
+   - **תצוגת Tests → Test plan** (`plan:main`, view `plan`, `PlanLayout`): למעלה כרטיס לכל feature group
+     (`style: feature_card`, chips לפי status, hover = title, click = בחירה + גלילה לפריט בפאנל), למטה
+     כרטיסי הטסטים (24; `base_test` לבד בשורה; טסטי ה-TP אחרונים, sub "test plan"); `split` בסצנה. קשתות
+     `covers` (feature→test, מקווקו, `--k-feature`) + `inherits`; Arrows כבוי כברירת מחדל. `model.py`:
+     `build_plan()` — nodes `plan:<ID>` kind `feature` (scope `plan`), `m["plan"]`, back links `covers` על
+     כל test node, שם טסט לא קיים → `unresolved`. פאנל: `renderFeature` (counts, פריטים עם stimulus/check/
+     coverage/tests/note, `#pi-<ID>` + flash), בטסט "Test plan items this test verifies". `labTxt()` מציג
+     "Test plan" במקום "Lab TP". deep link `#view=plan&node=plan:PKT`.
+   - **`docs/test-plan.md` נוצר מ-`build.py`** (`render_test_plan_md`, ב-`GENERATED` → map-check בודק staleness):
+     טבלה לכל קבוצה (Item+status | What is verified, and how | Tests), טבלת הטסטים (Lab/test plan, Purpose,
+     Verifies), checklist. סטטוס = `<span class="st st-covered">` (CSS ב-`docs/assets/extra.css`; אין pymdownx.emoji).
+   - `test_model.py`: בדיקות ל-`plan:main` (24 כרטיסי test ≥, 11 feature ≥, split, ≥50 covers) ולתוכנית
+     (ids ייחודיים, statuses, כל טסט שמוזכר קיים, **כל טסט מוזכר לפחות בפריט אחד**, note לכל לא-covered).
+   - README/index-tables/project-map.md עודכנו; `export/plan_main.*` במקום `tests_main.*`.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -250,7 +280,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 23 commits בסך הכול; האחרונים: (סשן 5) תצוגות Tests/Environment, `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
+- 25 commits בסך הכול; האחרונים: (סשן 5) Test plan + 7 טסטים, `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 
@@ -377,7 +407,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `.github/workflows/docs.yml` | mkdocs strict → GitHub Pages (על push ל-main) | — |
 | `yapp_project/rtl/{yapp_router,yapp_input_fsm,yapp_output_channel,yapp_fifo,yapp_hbus_regs,yapp_error_timer}.sv`, `yapp_router.f` | ה-DUT, מודול לקובץ | style pass |
 | `yapp_project/uvc/{yapp,hbus,channel,clock_and_reset,router}/` | ה-UVCs (מחלקה לקובץ, `seqs/`) | style pass; **`yapp/README.md` חדש**; כותרת `yapp_packet.sv` |
-| `yapp_project/tb/` | `tb_top.sv`, `hw_top.sv`, `router_tb.sv`, `router_mcsequencer.sv`, `tests/`, `mcseqs/`, `reg/`, `yapp_router_reg_pkg.sv`, `run.f`, `Makefile` | style pass |
+| `yapp_project/tb/` | `tb_top.sv`, `hw_top.sv`, `router_tb.sv`, `router_mcsequencer.sv`, `tests/` (+7 טסטי test plan ו-`error_pulse_checker.sv`), `mcseqs/`, `reg/`, `yapp_router_reg_pkg.sv`, `run.f`, `Makefile` | style pass; סבב 4 |
+| `docs/test-plan.md` | **נוצר** מ-`build.py` (`plan:` + `tests:` ב-annotations); לא לערוך ידנית | סבב 4 |
 | `yapp_project/tb/reg/yapp_regs_c.sv` | ה-RAL block עם `add_reg/add_mem` offsets — **נבדק מול regmap.yaml ב-CI** | — |
 | `labs/lab01_data … lab11c_rm_sim` | snapshots; 7+ קומפלים מ-`yapp_project`; 1–6 עם `sv/` משלהם | style pass |
 | `test_install/` | בדיקת התקנה | — |
@@ -437,6 +468,13 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - האם לרצות שהלאבים 1–6 יצביעו גם הם ל-`yapp_project/uvc/yapp` (היום עותקים).
 - האם רוצים `restyle`-כלי קבוע ל-uvm_do*/uvm_field_* (למקרה שסטודנטית כותבת עם מאקרו).
 
+- **7 טסטי ה-Test plan ו-3 הסיקוונסים החדשים מעולם לא רצו** (כמו כל השאר). נקודות שדורשות סימולציה כדי לוודא:
+  ה-wait loops (`wait_channels`/`wait_scoreboard`, polling עד 400–1000 מחזורים), `error_pulse_checker` (חישוב
+  מחזורים `($time - last_bad) / hw_top.clock_period`), `soft` constraints ב-`yapp_pkt_seq`, `localparam`
+  מערך במחלקה (`hbus_protocol_test::UNMAPPED`), `c_delay.constraint_mode(0)` ב-`channel_rx_slow_seq`.
+- ה-fix ב-`yapp_if.wait_accept()` (posedge sampling) משנה את ה-driver של **כל** הלאבים (קובץ משותף) — לאמת ב-sim שהלאבים 6–7 עדיין עוברים.
+- בתצוגת Test plan עם Arrows דלוק 67 חיצי covers חותכים כרטיסים (לכן כבוי; hover מציג רק את החיצים של הכרטיס).
+
 **באגים ידועים:** אין ידועים בקוד ה-Python/JS אחרי הבדיקות של הסשן. בקוד ה-SV — לא ידוע עד שירוץ.
 
 ---
@@ -458,9 +496,11 @@ push, ff main, לשלוח zip.
 2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
 3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
 4. ~~שיפורי UX קטנים~~ — שני סבבי UX בסשן 5 (סעיף 2, פריטים 4–5). פתוח: עקיפת מכשולים מלאה, מיקום תוויות.
-5. לבקש מתמיר פידבק על הסבבים האחרונים, ובמיוחד על **Tests** (האם הטקסטים של ה-plans מדויקים
-   מבחינתו מול ה-PDF שיש רק לו) ו-**Environment** (האם זה ציור הסביבה שהתכוון אליו) ולתקן לפי הצורך.
-6. רעיונות שתמיר העלה ולא נעשו: אין. חוב קטן: ב-Tests חיצי ה-inherits מסורבלים כש-Arrows דלוק (לכן כבוי).
+5. לבקש מתמיר פידבק על **Test plan** (סבב 4): האם רמת הפירוט/הפריטים נכונה, האם לממש את ה-gap
+   (CNT-06, גלישת counter) ואת ה-partial (ROUTE-04, packet_delay == 1 + coverpoint), ועל **Environment**.
+6. **כשתמיר ירוץ ב-Xcelium:** קודם 7 טסטי ה-TP (`make run-project TEST=backpressure_test` וכו') — הם
+   הכי "חדשים" ובודקים את ה-fix של `wait_accept`; ואז הלאבים 6–7 (אותו driver).
+7. רעיונות שתמיר העלה ולא נעשו: אין.
 
 **איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי
@@ -516,10 +556,11 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 - **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), ואחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml` — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
 - `build --check` לא כותב; `build` ואז `--check`. אל תעשה `| head` על ה-build.
 - אחרי שינוי ב-`app.js/app.css/sim.js/sim.css` — `make map` (ה-standalone inlines אותם, אחרת STALE) ו-`make map-export` (התמונות משתנות). בדיקה ויזואלית: סקריפט Playwright חד-פעמי ב-scratchpad (`check*.mjs` בסשן 5: צילומי מסך של סצנות, גרירה עם `page.mouse`, ה-resizer, הפאנל) ואז Read על ה-PNG.
+- **טסט חדש ב-`tb/tests`** דורש ב-`annotations.yaml`: שורה ב-`classes:`, plan ב-`tests:` (stages+expected), אזכור בפריט של `plan:` (אחרת map-check: "tests not named by any item"), ו-`lab_overrides` "TP" אם הוא לא בלאב; ואז `make map` (מייצר גם `docs/test-plan.md`).
 - כשמשנים התנהגות של ה-DUT: לעדכן ביחד `yapp_project/rtl`, `router_reference.sv`, הטסטים ב-`tb/tests` + `labs/lab11c`, `docs/dut/spec.md` ("Decisions"), ו-`sim.js` `RouterModel`. כשמשנים כתובת רגיסטר: `regmap.yaml`, `yapp_hbus_regs.sv` localparams, `yapp_regs_c.sv` offsets — CI ישווה.
 - הלאבים 1–6 הם עותקים; `labs/lab0{3,4,5,6}*/sv/yapp_tx_agent.sv` וכו' זהים לפרויקט רק אם לא נגעו. לפני עריכה גורפת — `diff` מול `yapp_project/uvc/yapp`.
 - `sv_style.py` טקסטואלי; קוד SV חדש "לא רגיל" (labels על begin, `case` כגוף של if, macros רב-שורתיים) — להריץ `--check --diff` ולקרוא לפני `--fix`. slang אחרי כל `--fix`.
 - מחלקות שנוצרות ממאקרו ו-`packet_compare.sv` (include בתוך מחלקה) הן חריגים מכוונים לסגנון extern.
 - המפה: ids של nodes = נתיבי מופעים (`tb.yapp.agent.monitor`), חומרה `hw_top.dut.u_regs`, מחלקות `cls:<name>`. Deep link: `#view=hierarchy|tlm|classes&node=<id>&scene=<id>&theme=dark`.
 - תמיר אוהב: צילומי מסך עם סימונים כשמסבירים UI, תשובות בעברית עם מזהים באנגלית, סיכום סופי לפי סעיפים, ושנשאל שאלות מנחות (AskUserQuestion) לפני שינויים גדולים.
-- ה-PDF וה-`uvm_course.md` של תמיר היו ב-`/root/.claude/uploads/...` של הסשן הראשון — **לא קיימים יותר** בקונטיינר חדש ולא בריפו. אם צריך פרט מהמפרט, הוא כבר ב-`docs/dut/spec.md`.
+- ה-PDF וה-`uvm_course.md` של תמיר היו ב-`/root/.claude/uploads/...` — **לא קיימים** בקונטיינר חדש ולא בריפו (תמיר העלה את ה-PDF שוב בסשן 5 סבב 4; `pdftotext -layout` עובד עליו). אם צריך פרט מהמפרט, הוא כבר ב-`docs/dut/spec.md`; עמודי ה-DUT ב-PDF הם 5–11.

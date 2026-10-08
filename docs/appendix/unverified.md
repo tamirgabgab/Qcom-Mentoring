@@ -10,7 +10,7 @@ proven by a run on Xcelium. Please report what you see.
 
 | # | Item | What to look at |
 |---|---|---|
-| 1 | **YAPP handshake under back-pressure** (`in_suspend`): driver holds, DUT accepts exactly once, monitor counts exactly the accepted bytes | `scoreboard_drop_test` or `coverage_test` with long packets and slow channels (`channel_rx_resp_seq` delays): scoreboard 0 mismatches, no `unexpected` packets |
+| 1 | **YAPP handshake under back-pressure** (`in_suspend`): driver holds, DUT accepts exactly once, monitor counts exactly the accepted bytes | `backpressure_test` (slow receivers, 40..63-byte packets): `in_suspend rose N times`, scoreboard 6 matched, 0 mismatched, no `unexpected` packets, no bad parity |
 | 2 | **Channel handshake**: the receiver's `suspend` timing vs the FIFO pop | channel monitor collects exactly `length + 2` bytes; address check never fires |
 | 3 | **HBUS read timing**: data sampled in the second cycle, tri-state release | `hbus_read_max_pkt_seq` reports 20 then 63; no `x`/`z` on `hdata_w` during reads |
 | 4 | **Reset sequencing at time 0**: `clk10_rst5_seq` asserts reset before any driver starts | first HBUS/YAPP activity after reset release; no packets lost at the start |

@@ -29,7 +29,8 @@
   --k-tlm_imp: #d84315;   --k-tlm_fifo: #a1887f;   --k-get_port: #bcaaa4;
   --k-seq_item_port: #26a69a; --k-reg_block: #ab47bc; --k-reg: #ba68c8;
   --k-mem: #ce93d8;       --k-reg_adapter: #8e24aa; --k-enum: #c0ca33;
-  --k-uvm_base: #b0bec5;
+  --k-uvm_base: #b0bec5;  --k-feature: #00897b;
+  --st-covered: #10a37f; --st-partial: #f59e0b; --st-gap: #ef4444; --st-excluded: #8e9aaf;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --pm-dark: 1; }
@@ -133,6 +134,21 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-node.test-card .chip:hover rect { fill: var(--sk, var(--pm-border)); fill-opacity: .18; }
 .k-build { --sk: #8e9aaf; } .k-config { --sk: #5b8def; } .k-reset { --sk: #6b7280; } .k-program { --sk: #a855f7; }
 .k-stimulus { --sk: #10a37f; } .k-check { --sk: #f59e0b; } .k-report { --sk: #ef4444; }
+.st-covered { --sk: var(--st-covered); } .st-partial { --sk: var(--st-partial); } .st-gap { --sk: var(--st-gap); } .st-excluded { --sk: var(--st-excluded); }
+.pm-node.feature-card .chip rect { fill: var(--sk, var(--pm-border)); fill-opacity: .12; stroke: var(--sk, var(--pm-border)); }
+.pm-node.feature-card .chip:hover rect { fill-opacity: .3; }
+.pm-node.feature-card .chip text { font-size: 10px; }
+.pm-edge.kind-covers path.line { stroke: var(--k-feature); marker-end: url(#pm-triangle); }
+.pm-status { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 0 6px; border-radius: 8px; color: #fff; background: var(--sk, var(--pm-muted)); vertical-align: middle; }
+.pm-panel-body .pm-counts { margin: 4px 0 8px; }
+.pm-panel-body .pm-spec { color: var(--pm-muted); font-size: 12px; margin: 0 0 4px; }
+.pm-panel-body .pm-item { border-left: 3px solid var(--sk, var(--pm-border)); padding: 4px 0 6px 10px; margin: 10px 0; scroll-margin-top: 8px; }
+.pm-panel-body .pm-item.flash { background: var(--pm-hl); }
+.pm-panel-body .pm-item .head { font-size: 13px; margin-bottom: 4px; }
+.pm-panel-body .pm-item .head code { font-size: 11px; color: var(--pm-muted); }
+.pm-panel-body table.pm-item-t th { width: 68px; font-weight: 600; color: var(--pm-muted); vertical-align: top; text-align: left; padding: 2px 6px 2px 0; }
+.pm-panel-body table.pm-item-t td { padding: 2px 0; }
+.pm-panel-body ul.pm-covers li { margin: 3px 0; }
 /* the plan in the panel */
 .pm-plan { display: block; max-width: 420px; margin: 4px 0 2px; }
 .pm-plan line.axis { stroke: var(--pm-border); stroke-width: 2; }

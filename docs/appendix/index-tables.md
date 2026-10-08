@@ -64,6 +64,13 @@ multichannel sequences and the register model is `yapp_project/tb/` (`tests/`, `
 | `reg_function_test` | 11C | enable bits + `yapp_012_seq` + counter checks |
 | `reg_function_check_test` | 11C opt. | check-on-read with `predict` |
 | `reg_introspection_test` | 11C opt. | RW / RO queues from the model |
+| `router_disable_test` | test plan | `router_en = 0`: nothing delivered, counted or stored; traffic resumes |
+| `router_filter_test` | test plan | `yapp_boundary_seq` around `maxpktsize`, address 3, every counter on and off |
+| `pkt_mem_test` | test plan | `yapp_pkt_mem` + `mem_size_reg` hold the last packet, read-only, even when dropped |
+| `reg_bit_walk_test` | test plan | walking ones / zeros through the RW registers, RO writes ignored |
+| `hbus_protocol_test` | test plan | raw HBUS cycles: write, read, tri-state, unmapped and RO addresses |
+| `backpressure_test` | test plan | `channel_rx_slow_seq` + 40..63-byte packets: `in_suspend`, no byte lost |
+| `parity_error_test` | test plan | bad parity: counter, `error` pulse timing (`error_pulse_checker`), packet delivered |
 
 ## Sequences
 
@@ -74,7 +81,9 @@ multichannel sequences and the register model is `yapp_project/tb/` (`tests/`, `
 | `yapp_rnd_seq`, `six_yapp_seq` | YAPP (optional) | 5 |
 | `yapp_88_packets_seq` | YAPP (optional) | 7 |
 | `yapp_coverage_seq` | YAPP | 10 |
+| `yapp_pkt_seq`, `yapp_boundary_seq` | YAPP (test plan) | — |
 | `channel_rx_resp_seq`, `channel_rx_fast_seq` | Channel | 7 |
+| `channel_rx_slow_seq` | Channel (test plan) | — |
 | `clk10_rst5_seq`, `clk_rst_rand_seq` | Clock & Reset | 7 |
 | `hbus_write_seq`, `hbus_read_seq`, `hbus_set_default_regs_seq`, `hbus_small_packet_seq`, `hbus_large_packet_seq`, `hbus_read_max_pkt_seq`, `hbus_router_disable_seq`, `hbus_router_enable_seq` | HBUS | 7–9 |
 | `router_simple_mcseq` | testbench | 8 |

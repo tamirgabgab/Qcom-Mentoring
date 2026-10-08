@@ -1289,13 +1289,36 @@ class EnvLayout(HierarchyLayout):
 
 
 # ----------------------------------------------------------------------------- Tests
-class TestsLayout(Layout):
-    """One card per test: name, lab, base class, purpose, the stages of its plan as a strip
-    of chips. Cards in a grid in course order; the inheritance arrows connect them."""
+class PlanLayout(Layout):
+    """The Test plan view. Top: one card per feature group of the verification plan, with its
+    items as status-coloured chips. Below: one card per test (name, lab, base class, purpose,
+    the stages of its plan as a strip of chips) in course order, the test-plan tests last.
+    Edges: "covers" from a feature group to every test its items name, "inherits" between
+    the tests."""
     CARD_W = 380
     COLS = 4
     CHIPS_PER_ROW = 3
+    ITEMS_PER_ROW = 2
     KINDS = ("build", "config", "reset", "program", "stimulus", "check", "report")
+
+    def feature_boxes(self):
+        boxes = {}
+        for g in self.m.get("plan", []):
+            n = self.N[g["node"]]
+            b = Box(n["id"], n, f"{g['id']} · {g['title']}", "", "feature", 0)
+            lines = wrap(g.get("summary", ""), 62)[:3]
+            items = [{"id": it["id"], "t": it["title"], "s": it.get("status", "covered"), "n": len(it.get("tests", []))}
+                     for it in g["items"]]
+            rows = math.ceil(len(items) / self.ITEMS_PER_ROW) if items else 0
+            counts = {}
+            for it in g["items"]:
+                counts[it.get("status", "covered")] = counts.get(it.get("status", "covered"), 0) + 1
+            b.w = self.CARD_W
+            b.h = 44 + 15 * len(lines) + (8 + 24 * rows if rows else 0) + 10
+            b.sub = g.get("spec", "")
+            b.extra = {"style": "feature_card", "lines": lines, "plan_items": items, "counts": counts}
+            boxes[n["id"]] = b
+        return boxes
 
     def scenes(self):
         tests = [n for n in self.N.values() if n.get("scope") == "cls" and n.get("kind") == "test"]
@@ -1305,6 +1328,7 @@ class TestsLayout(Layout):
         def key(n):
             return (0 if n["name"] == self.ann["root_test"] else 1, lab_order.get(str(n.get("lab")), 99), n["name"])
         tests.sort(key=key)
+        features = self.feature_boxes()
         boxes = {}
         for n in tests:
             plan = plans.get(n["name"]) or {}
@@ -1315,28 +1339,37 @@ class TestsLayout(Layout):
             rows = max(1, math.ceil(len(stages) / self.CHIPS_PER_ROW)) if stages else 0
             b.w = self.CARD_W
             b.h = 44 + 15 * len(lines) + (8 + 24 * rows if rows else 0) + 10
-            sub = f"Lab {n['lab']}" if n.get("lab") else ""
+            sub = "test plan" if n.get("lab") == "TP" else (f"Lab {n['lab']}" if n.get("lab") else "")
             if n.get("base"):
                 sub += ("  ·  " if sub else "") + f"extends {n['base']}"
             b.sub = sub
             b.extra = {"style": "test_card", "lab": n.get("lab"), "lines": lines, "stages": stages,
                        "base": n.get("base"), "nstages": len(plan.get("stages", []))}
             boxes[n["id"]] = b
-        # grid
+
+        def grid(order, y):
+            """Row-major grid of COLS cards starting at y; returns the y below the last row."""
+            for i, b in enumerate(order):
+                c = i % self.COLS
+                if c == 0 and i:
+                    y += max(ob.h for ob in order[i - self.COLS:i]) + GAP_Y
+                b.move(PAD + c * (self.CARD_W + GAP_X) - b.x, y - b.y)
+            return (max(b.y + b.h for b in order) if order else y) + GAP_Y
+
         x0, y0 = PAD, PAD + 10
-        col_h = [y0] * self.COLS
-        order = list(boxes.values())
-        # the root test alone on the first row, then the rest column by column, row-major
-        root = order[0]
-        root.move(x0 + ((self.CARD_W + GAP_X) * self.COLS - GAP_X - root.w) / 2 - root.x, y0 - root.y)
-        y = y0 + root.h + GAP_Y + 10
-        for i, b in enumerate(order[1:]):
-            c = i % self.COLS
-            if c == 0 and i:
-                y += max(ob.h for ob in order[1 + i - self.COLS:1 + i]) + GAP_Y
-            b.move(x0 + c * (self.CARD_W + GAP_X) - b.x, y - b.y)
         total_w = x0 + self.CARD_W * self.COLS + GAP_X * (self.COLS - 1) + PAD
-        total_h = max(b.y + b.h for b in order) + PAD
+        # 1. the feature groups
+        feats = list(features.values())
+        y = grid(feats, y0)
+        # 2. the tests: the root test alone on its own row, then the rest row-major
+        order = list(boxes.values())
+        root = order[0]
+        y += 30                                                   # air between the two halves
+        root.move(x0 + (total_w - 2 * PAD - root.w) / 2 - root.x, y - root.y)
+        y = y + root.h + GAP_Y + 10
+        grid(order[1:], y)
+        items = feats + order
+        total_h = max(b.y + b.h for b in items) + PAD
         edges = []
         for e in self.E:
             if e["kind"] == "inherits" and e["from"] in boxes and e["to"] in boxes:
@@ -1346,9 +1379,17 @@ class TestsLayout(Layout):
                 edges.append({"id": e["id"], "kind": "inherits", "from": e["from"], "to": e["to"],
                               "points": [[round(x, 1), round(y_, 1)] for x, y_ in pts], "label": "",
                               "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": False})
-        return [{"id": "tests:main", "view": "tests", "node": None, "title": "Tests",
+            elif e["kind"] == "covers" and e["from"] in features and e["to"] in boxes:
+                a, b = features[e["from"]], boxes[e["to"]]
+                pts = self.route((a.x + a.w / 2, a.y + a.h), (b.x + b.w / 2, b.y), "bottom", "top")
+                mid = self.bezier_mid(pts)
+                edges.append({"id": e["id"], "kind": "covers", "from": e["from"], "to": e["to"],
+                              "points": [[round(x, 1), round(y_, 1)] for x, y_ in pts], "label": "",
+                              "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": True})
+        return [{"id": "plan:main", "view": "plan", "node": None, "title": "Test plan",
                  "parent": None, "w": round(total_w, 1), "h": round(total_h, 1),
-                 "items": [b.to_dict() for b in order], "edges": edges, "stubs": []}]
+                 "items": [b.to_dict() for b in items], "edges": edges, "stubs": [],
+                 "split": round(feats[-1].y + feats[-1].h + 15, 1) if feats else 0}]
 
 
 def wrap(text, width):
@@ -1371,7 +1412,7 @@ def build_scenes(model, ann):
     scenes += TlmLayout(model, ann).scenes()
     scenes += UmlLayout(model, ann).scenes()
     scenes += EnvLayout(model, ann).scenes()
-    scenes += TestsLayout(model, ann).scenes()
+    scenes += PlanLayout(model, ann).scenes()
     # which hierarchy scene draws each node (for search / deep links)
     where = {}
     for s in scenes:

@@ -7,3 +7,4 @@
 `include "seqs/channel_rx_base_seq.sv"
 `include "seqs/channel_rx_resp_seq.sv"
 `include "seqs/channel_rx_fast_seq.sv"
+`include "seqs/channel_rx_slow_seq.sv"

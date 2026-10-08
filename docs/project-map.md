@@ -7,7 +7,7 @@ hide:
 
 One picture of the whole project that you can look into: **click** a box for its role, its file
 and its lab, **double-click** to open it. Five views: Hierarchy, TLM / data flow, Classes (UML),
-Environment, Tests. The **Source** column on the right shows the complete file of
+Environment, Test plan. The **Source** column on the right shows the complete file of
 whatever is selected (one class per file). Press ++question++ inside the map for the shortcuts.
 
 <style>.md-grid { max-width: none; }</style>
@@ -65,10 +65,16 @@ whatever is selected (one class per file). Press ++question++ inside the map for
 * **Environment** — the verification environment as the course draws it: the test, the testbench
   with every UVC opened down to sequencer, driver and monitor, the interfaces and the DUT, one
   role line per box. Double-click a box to open it in the Hierarchy view.
-* **Tests** — one card per test in course order (the lab is on the card), all of them extending
-  `base_test`. The chips are the stages of the test's plan; click a test for the plan as a
-  timeline with the detail of every stage, what the log and the waveform are expected to show,
-  and the default sequences, factory overrides and `start()` calls found in its code.
+* **Test plan** — the verification plan on one page. On top, one card per **feature group**
+  of the DUT (packet format, input and output protocols, registers, drop rules, counters,
+  memories, host port, coverage, testbench mechanics), each with its items as status-coloured
+  chips: click a chip for the item's stimulus, checker, coverage and the tests that cover it.
+  Below, one card per **test** in course order (the lab is on the card; the test-plan tests come
+  last), all of them extending `base_test`. The chips are the stages of the test's plan; click a
+  test for the plan as a timeline with the detail of every stage, what the log and the waveform
+  are expected to show, the plan items it verifies, and the default sequences, factory overrides
+  and `start()` calls found in its code. The same data generates the [test plan](test-plan.md)
+  page.
 
 **Arrows, moving boxes, column widths.** Arrows are orthogonal (horizontal and vertical runs,
 rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM

@@ -202,6 +202,8 @@ class ModelBuilder:
         meta = self.lab_pages.get(label)
         if not meta:
             return None
+        if label == "TP":
+            return {"title": meta["title"], "url": meta["page"]}
         return {"title": f"Lab {label} — {meta['title']}", "url": meta["page"]}
 
     def describe(self, name):
@@ -729,17 +731,51 @@ class ModelBuilder:
                         if ne["id"] not in eids:
                             stack.append((start, eids + [ne["id"]], ne["to"]))
 
+    # ------------------------------------------------------------- test plan
+    def build_plan(self):
+        """One node per feature group of the verification plan (annotations.yaml: plan),
+        kind "feature", with its items; a "covers" edge from the group to every test an item
+        names. Unknown test names are an error: the plan must follow the code."""
+        self.plan = []
+        for g in self.ann.get("plan") or []:
+            gid = f"plan:{g['id']}"
+            items = []
+            for it in g.get("items", []):
+                it = dict(it)
+                it["tests"] = list(it.get("tests") or [])
+                for t in it["tests"]:
+                    if f"cls:{t}" not in self.nodes or self.nodes[f"cls:{t}"].get("kind") != "test":
+                        self.unresolved.append(f"plan {it['id']}: unknown test {t}")
+                items.append(it)
+            self.add_node(gid, kind="feature", name=g["title"], type=g["id"], parent=None, scope="plan",
+                          summary=g.get("summary", ""), spec=g.get("spec", ""), doc=g.get("doc"),
+                          items=items, lab="TP")
+            for t in sorted({t for it in items for t in it["tests"]}):
+                if f"cls:{t}" in self.nodes:
+                    self.add_edge("covers", gid, f"cls:{t}")
+            self.plan.append({"id": g["id"], "node": gid, "title": g["title"], "spec": g.get("spec", ""),
+                              "doc": g.get("doc"), "summary": g.get("summary", ""), "items": items})
+        # back links: which plan items name each test
+        for g in self.plan:
+            for it in g["items"]:
+                for t in it["tests"]:
+                    n = self.nodes.get(f"cls:{t}")
+                    if n is not None:
+                        n.setdefault("covers", []).append({"id": it["id"], "title": it["title"], "group": g["node"], "status": it["status"]})
+
     def build(self):
         self.build_instances()
         self.build_hardware()
         self.build_edges()
         self.build_classes()
+        self.build_plan()
         self.finish()
         return {
             "meta": {"sources": [r["source"] for r in self.raws], "pyslang": __import__("pyslang").__version__},
             "kinds": self.ann["kinds"],
             "groups": self.ann["groups"],
             "labs": self.ann["labs"],
+            "plan": self.plan,
             "nodes": self.nodes,
             "files": {f: read_file(f) for f in sorted({n["file"] for n in self.nodes.values() if n.get("file")}) if read_file(f)},
             "edges": self.edges,

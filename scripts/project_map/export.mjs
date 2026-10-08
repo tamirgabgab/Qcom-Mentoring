@@ -29,7 +29,7 @@ async function loadPlaywright() {
 
 // which scenes get a PNG as well (the ones a slide deck needs; every scene gets an SVG)
 const PNG = new Set(["h:root", "h:tb", "h:tb.yapp.agent", "h:tb.router_module", "h:hw_top.dut", "tlm:main",
-  "uml:yapp_pkg", "uml:yapp_pkg:full", "env:main", "tests:main"]);
+  "uml:yapp_pkg", "uml:yapp_pkg:full", "env:main", "plan:main"]);
 
 const { chromium } = await loadPlaywright();
 fs.mkdirSync(outDir, { recursive: true });
