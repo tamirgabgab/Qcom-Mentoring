@@ -31,11 +31,21 @@ PORT_R = 5
 PORT_STEP = 20
 PIN_STEP = 18       # pins written inside a block diagram (the DUT)
 PIN_GAP = 10        # between pin groups
-PORT_SIDE = {       # which side of a box a port sits on
-    "tlm_port": "right", "get_port": "right", "seq_item_port": "right",
+PORT_SIDE = {       # which side of a box a port sits on: producers on the right, consumers on
+    "tlm_port": "right", "get_port": "right",     # the left; the driver's seq_item_port pulls
+    "seq_item_port": "left",                      # from the sequencer drawn on its left
     "tlm_imp": "left", "tlm_export": "left", "tlm_fifo": "left",
 }
 LEFT_KINDS = {"tlm_imp", "tlm_export", "tlm_fifo"}
+
+
+def port_on_left(node):
+    """Consumers sit on the left side of their box, producers on the right. The driver's
+    seq_item_port (a pull port) faces the sequencer drawn on its left; the sequencer's
+    seq_item_export (the pull imp, same kind) faces the driver on its right."""
+    if node["kind"] == "seq_item_port":
+        return "pull_imp" not in (node.get("type") or "")
+    return node["kind"] in LEFT_KINDS
 EDGE_KINDS_IN_SCENES = {"connect", "seq_item", "get", "handle", "reg_adapter", "backdoor", "vif", "port", "flow"}
 
 
@@ -133,8 +143,8 @@ class Layout:
             b.container = True
             b.children = [self.make_box(k, depth + 1, expand - 1, show_ports) for k in kids]
             ports = self.port_children(nid) if show_ports else []
-            left = [p for p in ports if self.N[p]["kind"] in LEFT_KINDS]
-            right = [p for p in ports if self.N[p]["kind"] not in LEFT_KINDS]
+            left = [p for p in ports if port_on_left(self.N[p])]
+            right = [p for p in ports if not port_on_left(self.N[p])]
             lm = max([tw(self.N[p]["name"], 11) for p in left] + [0]) + 24 if left else 0
             rm = max([tw(self.N[p]["name"], 11) for p in right] + [0]) + 24 if right else 0
             self.arrange(b, left_margin=lm, right_margin=rm)
@@ -153,8 +163,8 @@ class Layout:
     def size_leaf(self, b, show_ports):
         n = b.node
         ports = self.port_children(b.id) if show_ports else []
-        left = [p for p in ports if self.N[p]["kind"] in LEFT_KINDS]
-        right = [p for p in ports if self.N[p]["kind"] not in LEFT_KINDS]
+        left = [p for p in ports if port_on_left(self.N[p])]
+        right = [p for p in ports if not port_on_left(self.N[p])]
         text_w = max(tw(b.label, 14), tw(b.sub, 12) if b.sub else 0)
         port_w = 0
         if left or right:
@@ -793,8 +803,13 @@ class TlmLayout(Layout):
         for p in sorted(parts) + [dut_id]:
             b = self.make_box(p, 0, expand=0, show_ports=(p != dut_id))
             if p == dut_id:
-                b.w, b.h = 170, 120
+                # the DUT drawn compact: one pin per interface instead of the 19 signals
+                # (those are in the hierarchy view), stimulus side on the left, observation on
+                # the right -- see `dut_pins` below once the lanes are placed
+                b.w, b.h = 190, 120
                 b.label, b.sub = "dut", "yapp_router"
+                b.extra["style"] = "dut_tlm"
+                b.extra["title"] = "DUT"
             boxes[p] = b
         # order within lanes: stimulus lanes by UVC group order; analysis lanes by barycentre
         lanes = {}
@@ -841,6 +856,37 @@ class TlmLayout(Layout):
         if ys:
             dut.move(0, min(ys) - dut.y)
             dut.h = max(120, max(ye) - min(ys))
+        # interface pins of the DUT: a driver reaches its interface on the left side, a monitor
+        # observes it on the right side, each pin at the height of its driver / monitor so the
+        # virtual-interface arrows run straight. Pin ids are the interface instances (hw_top.in0 ...)
+        # suffixed with the side, so both sides of one interface stay distinct.
+        dut.extra["pins"] = []
+        pin_ids = {}
+        for e in self.E:
+            if e["kind"] != "vif" or e["from"] not in boxes:
+                continue
+            b = boxes[e["from"]]
+            k = self.N[e["from"]]["kind"]
+            side = "left" if k == "driver" else "right"
+            if_id = e["to"]
+            pid = f"{if_id}@{side}"
+            if pid in pin_ids:
+                continue
+            pin_ids[pid] = True
+            dut.extra["pins"].append({"id": pid, "node": if_id, "name": self.N[if_id]["name"], "type": self.N[if_id].get("type", ""),
+                                      "side": side, "dir": "in" if side == "left" else "out",
+                                      "y": round(b.y + b.h / 2 - dut.y, 1)})
+        dut.extra["pins"].sort(key=lambda pn: (pn["side"], pn["y"]))
+        # pins never overlap: a driver and a monitor of the same lane sit at distinct heights,
+        # but two pins on one side closer than a text line are pushed apart
+        for side in ("left", "right"):
+            prev = None
+            for pn in [x for x in dut.extra["pins"] if x["side"] == side]:
+                if prev is not None and pn["y"] - prev < PIN_STEP:
+                    pn["y"] = round(prev + PIN_STEP, 1)
+                prev = pn["y"]
+        pin_bottom = max([pn["y"] for pn in dut.extra["pins"]] + [0]) + PIN_STEP
+        dut.h = max(dut.h, pin_bottom)
         ports = {}
         for b in boxes.values():
             for p in b.ports:
@@ -867,7 +913,8 @@ class TlmLayout(Layout):
                                 "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": False})
                     continue
                 geo.append(g)
-        # vif edges driver -> dut and dut -> monitor (simplified: through the DUT box)
+        # vif edges: driver -> its pin on the left of the DUT, pin on the right -> monitor
+        pins_by_id = {pn["id"]: pn for pn in dut.extra["pins"]}
         for e in self.E:
             if e["kind"] != "vif":
                 continue
@@ -876,17 +923,20 @@ class TlmLayout(Layout):
                 continue
             b = boxes[o]
             k = self.N[o]["kind"]
+            side = "left" if k == "driver" else "right"
+            pn = pins_by_id.get(f"{e['to']}@{side}")
+            if pn is None:
+                continue
+            pin_pt = (dut.x + (0 if side == "left" else dut.w), dut.y + pn["y"])
             if k == "driver":
                 a_pt = (b.x + b.w, b.y + b.h / 2)
-                b_pt = self.anchor(dut, a_pt)
-                pts = self.route(a_pt, b_pt, "right", None)
+                pts = self.route(a_pt, pin_pt, "right", "left")
             else:
-                a_pt = (dut.x + dut.w, dut.y + dut.h / 2)
                 b_pt = (b.x, b.y + b.h / 2)
-                pts = self.route(a_pt, b_pt, "right", "left")
+                pts = self.route(pin_pt, b_pt, "right", "left")
             mid = self.bezier_mid(pts)
-            geo.append({"id": e["id"], "kind": "vif", "from": o if k == "driver" else dut_id,
-                        "to": dut_id if k == "driver" else o,
+            geo.append({"id": e["id"], "kind": "vif", "from": o if k == "driver" else pn["id"],
+                        "to": pn["id"] if k == "driver" else o,
                         "points": [[round(x, 1), round(y, 1)] for x, y in pts],
                         "label": e["label"].split("=")[-1].strip().replace("hw_top.", ""),
                         "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": True})

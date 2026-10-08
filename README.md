@@ -54,6 +54,10 @@ complete file of whatever is selected (one class per file). Three views:
 **Hierarchy** (who contains whom), **TLM / data flow** (who talks to whom) and
 **Classes (UML)** (who inherits from whom, with fields and methods).
 
+Arrows are drawn orthogonally; in the Hierarchy and TLM views they start hidden and
+appear for the box under the pointer (the **Arrows** button shows them all). Boxes
+can be dragged, the arrows follow, and the panel and source column can be resized.
+
 ![The project map: the UVM testbench above, the hardware below, the selected component's role and source on the right](docs/assets/readme/map_overview.png)
 
 The same map is one self-contained HTML file,
@@ -96,6 +100,10 @@ moves the counters according to the enable bits, fills `yapp_pkt_mem` and
 updates `mem_size_reg`, the way the router does at the end of a packet.
 
 ![The register simulator: an ignored write to a read-only counter, the register table with decoded bits, the two memories and the transaction log](docs/assets/readme/sim_registers.png)
+
+The value to write and every register with fields are shown as a bit-field
+diagram -- bit 7 (MSB) on the left, bit 0 (LSB) on the right, the field names
+underneath -- and a click on a bit flips it.
 
 Where to find it: on the
 [DUT specification](https://tamirgabgab.github.io/Qcom-Mentoring/dut/spec/#try-it-the-register-file)

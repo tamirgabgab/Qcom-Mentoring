@@ -57,9 +57,27 @@
 .yapp-sim table.ys-t td.mono, .yapp-sim .mono { font-family: var(--ys-mono); }
 .yapp-sim table.ys-t tr.changed td { background: color-mix(in srgb, var(--ys-accent) 12%, transparent); }
 .yapp-sim table.ys-t tr.hit td { background: color-mix(in srgb, var(--ys-warn) 14%, transparent); }
-.yapp-sim .ys-bits { display: inline-flex; flex-wrap: wrap; gap: 2px; font-family: var(--ys-mono); font-size: 10.5px; }
-.yapp-sim .ys-bits span { display: inline-block; min-width: 1.6em; text-align: center; border: 1px solid var(--ys-border); border-radius: 3px; padding: 0 2px; color: var(--ys-muted); }
-.yapp-sim .ys-bits span.one { color: var(--ys-fg); font-weight: 700; border-color: var(--ys-accent); }
+/* the bit-field diagram: MSB (bit 7) on the left, LSB (bit 0) on the right */
+.yapp-sim .ys-fd { display: grid; grid-template-columns: auto repeat(8, minmax(1.9em, 1fr)) auto; gap: 1px 2px; align-items: start; font-family: var(--ys-mono); font-size: 11px; margin: 4px 0 2px; max-width: 420px; }
+.yapp-sim .ys-fd .tag { font-size: 9px; color: var(--ys-muted); align-self: end; padding: 0 4px; letter-spacing: .04em; }
+.yapp-sim .ys-fd .idx { text-align: center; font-size: 10px; color: var(--ys-muted); }
+.yapp-sim .ys-fd .cell { display: block; text-align: center; border: 1px solid var(--ys-border); border-radius: 3px; padding: 1px 0; color: var(--ys-muted); background: var(--ys-bg); font: inherit; line-height: 1.5; }
+.yapp-sim .ys-fd .cell.one { color: var(--ys-fg); font-weight: 700; border-color: var(--ys-accent); background: color-mix(in srgb, var(--ys-accent) 14%, transparent); }
+.yapp-sim .ys-fd .cell.rsv { background: repeating-linear-gradient(135deg, transparent 0 3px, color-mix(in srgb, var(--ys-muted) 25%, transparent) 3px 4px); }
+.yapp-sim .ys-fd.editable .cell { cursor: pointer; }
+.yapp-sim .ys-fd.editable .cell:hover { border-color: var(--ys-accent); }
+.yapp-sim .ys-fd .fld { display: flex; flex-direction: column; align-items: center; min-width: 0; margin-top: 2px; }
+.yapp-sim .ys-fd .fld i { display: block; width: 100%; height: 6px; border: 1px solid var(--ys-muted); border-top: 0; border-radius: 0 0 3px 3px; }
+.yapp-sim .ys-fd .fld b { font-weight: 500; font-size: 10px; color: var(--ys-fg); writing-mode: vertical-rl; text-orientation: mixed; line-height: 1; padding-top: 3px; max-height: 12.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.yapp-sim .ys-fd .fld.wide b { writing-mode: horizontal-tb; padding-top: 2px; max-height: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.yapp-sim .ys-fd-legend { grid-column: 1 / -1; list-style: none; margin: 4px 0 0; padding: 0; font-family: inherit; font-size: 11.5px; }
+.yapp-sim .ys-fd-legend li { padding: 1px 0; }
+.yapp-sim .ys-fd-legend code { font-family: var(--ys-mono); font-size: 11px; background: var(--ys-soft); padding: 0 3px; border-radius: 3px; }
+.yapp-sim .ys-fd-legend .d { color: var(--ys-muted); }
+.yapp-sim .ys-bitbox { margin: 2px 0 8px; }
+.yapp-sim table.ys-t tr.ys-fd-row td { padding: 2px 4px 8px; }
+.yapp-sim table.ys-t tr.pick { cursor: pointer; }
+.yapp-sim table.ys-t tr.pick:hover td { background: color-mix(in srgb, var(--ys-accent) 8%, transparent); }
 .yapp-sim .ys-mem { display: grid; grid-template-columns: auto repeat(16, 1fr); gap: 2px 3px; font-family: var(--ys-mono); font-size: 11px; margin: 4px 0; }
 .yapp-sim .ys-mem .a { color: var(--ys-muted); padding-right: 6px; }
 .yapp-sim .ys-mem .b { text-align: center; border-radius: 3px; background: var(--ys-soft); padding: 1px 0; }

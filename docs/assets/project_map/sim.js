@@ -276,17 +276,59 @@
   // ------------------------------------------------------------------ widgets
   function policyBadge(d) { return el("span", { class: `ys-badge ${d.policy === "RW" ? "RW" : d.policy === "RO" ? "RO" : "none"}`, text: d.policy === "none" ? "unmapped" : d.policy }); }
 
-  function bitsView(r, model) {
-    const v = model.regs.get(r.addr);
-    const box = el("span", { class: "ys-bits" });
+  // The bit-field diagram of one 8-bit register, as in a datasheet: bit numbers on top
+  // (7 = MSB on the left, 0 = LSB on the right), one cell per bit, and below the cells a
+  // bracket per field with its name (vertical when the field is narrow). `fields` is the
+  // list of {name, bits, desc} from regmap.yaml (or none for a counter / a memory byte).
+  //   opts.onToggle(bit)  -> the cells are buttons that flip one bit (the write editor)
+  //   opts.legend         -> add the list "bit: name -- description" under the diagram
+  function fieldDiagram(value, fields, opts) {
+    opts = opts || {};
+    value &= 0xff;
+    const spans = parseFields(fields);
+    const box = el("div", { class: "ys-fd" + (opts.onToggle ? " editable" : "") });
+    const col = bit => (7 - bit) + 2;               // grid column of a bit (col 1 = MSB tag, col 10 = LSB tag)
+    box.append(el("span", { class: "tag", style: "grid-column:1;grid-row:1", text: "MSB" }));
+    box.append(el("span", { class: "tag", style: "grid-column:10;grid-row:1", text: "LSB" }));
     for (let i = 7; i >= 0; i--) {
-      const f = model.fieldsOf(r).find(x => i >= x.lo && i <= x.hi);
-      box.append(el("span", { class: (v >> i) & 1 ? "one" : "", text: String((v >> i) & 1), title: f ? `[${i}] ${f.name}: ${f.desc || ""}` : `[${i}]` }));
+      box.append(el("span", { class: "idx", style: `grid-column:${col(i)};grid-row:1`, text: String(i) }));
+      const f = spans.find(x => i >= x.lo && i <= x.hi);
+      const on = (value >> i) & 1;
+      const title = (f ? `bit ${i}: ${f.name}${f.desc ? " -- " + f.desc : ""}` : `bit ${i}`) + (opts.onToggle ? " (click to flip)" : "");
+      const attrs = { class: "cell" + (on ? " one" : "") + (f && f.name === "reserved" ? " rsv" : ""), style: `grid-column:${col(i)};grid-row:2`, text: String(on), title };
+      if (opts.onToggle) { attrs.type = "button"; attrs.onclick = () => opts.onToggle(i); }
+      const cell = el(opts.onToggle ? "button" : "span", attrs);
+      box.append(cell);
+    }
+    if (spans.length) {
+      spans.forEach(f => {
+        const wide = f.hi - f.lo + 1 >= 3;
+        const g = el("span", { class: "fld" + (wide ? " wide" : ""), style: `grid-column:${col(f.hi)} / ${col(f.lo) + 1};grid-row:3`, title: `${f.name} [${f.bits}]${f.desc ? ": " + f.desc : ""}` });
+        g.append(el("i"), el("b", { text: f.name }));
+        box.append(g);
+      });
+    } else {
+      box.append(el("span", { class: "fld wide", style: "grid-column:2 / 10;grid-row:3" }, [el("i"), el("b", { text: opts.single || "value [7:0]" })]));
+    }
+    if (opts.legend && spans.length) {
+      const ul = el("ul", { class: "ys-fd-legend" });
+      spans.forEach(f => {
+        const v = (value >> f.lo) & ((1 << (f.hi - f.lo + 1)) - 1);
+        ul.append(el("li", {}, [el("code", { text: `[${f.bits}]` }), " ", el("b", { text: f.name }), " = ", el("code", { text: f.hi === f.lo ? String(v) : `${v} (${hex(v)})` }), f.desc ? el("span", { class: "d", text: " -- " + f.desc }) : ""]));
+      });
+      box.append(ul);
     }
     return box;
   }
+  function parseFields(fields) {
+    return (fields || []).map(f => {
+      const m = String(f.bits).match(/^(\d+)(?::(\d+))?$/);
+      const hi = +m[1], lo = m[2] === undefined ? hi : +m[2];
+      return { ...f, hi, lo };
+    });
+  }
 
-  function registerTable(model, compact) {
+  function registerTable(model, compact, onPick) {
     const t = el("table", { class: "ys-t" });
     t.append(el("tr", {}, [el("th", { text: "addr" }), el("th", { text: "register" }), el("th", { text: "" }), el("th", { text: "value" }), compact ? "" : el("th", { text: "fields" })]));
     model.rm.registers.forEach(r => {
@@ -297,9 +339,15 @@
       else if (r.name === "en_reg") dec = model.fieldsOf(r).filter(f => f.value && f.name !== "reserved").map(f => f.name).join(", ") || "all off";
       else dec = `${v} (dec)`;
       tr.append(el("td", { class: "mono", text: hex(r.addr, 4) }), el("td", { class: "mono", text: r.name, title: r.desc || "" }), el("td", {}, [policyBadge(r)]),
-        el("td", { class: "mono" }, [hex(v), r.fields ? el("div", { style: "margin-top:2px" }, [bitsView(r, model)]) : ""]),
+        el("td", { class: "mono", text: hex(v) }),
         compact ? "" : el("td", { text: dec, title: r.desc || "" }));
+      if (onPick) { tr.classList.add("pick"); tr.title = "select this register in the HBUS access card"; tr.addEventListener("click", () => onPick(r.addr)); }
       t.append(tr);
+      if (r.fields) {
+        const fr = el("tr", { class: "ys-fd-row" + (model.changed.has(r.addr) ? " changed" : "") });
+        fr.append(el("td", { colspan: compact ? 4 : 5 }, [fieldDiagram(v, r.fields)]));
+        t.append(fr);
+      }
     });
     return t;
   }
@@ -341,7 +389,9 @@
   // -- the register / HBUS widget
   function mountRegs(host, model) {
     host.innerHTML = "";
-    const st = host.__ysRegs || (host.__ysRegs = { addr: model.rm.registers[0].addr, op: "write", data: 0x20, msg: null, pkt: { addr: 1, length: 4, bad: false }, memBase: 0 });
+    // the widget state (selected address, operation, data ...) lives on the model, so it survives
+    // a rebuild of the host (the map's panel re-renders on every tab or selection change)
+    const st = model.__ysRegs || (model.__ysRegs = { addr: model.rm.registers[0].addr, op: "write", data: 0x20, msg: null, pkt: { addr: 1, length: 4, bad: false }, memBase: 0 });
     const access = el("div", { class: "ys-card" });
     access.append(el("h4", { text: "HBUS access" }));
     const sel = el("select", { class: "wide", onchange: () => { st.addr = parseInt(sel.value, 10); hexIn.value = hex(st.addr, 4); refreshPolicy(); } });
@@ -350,15 +400,32 @@
     sel.append(el("option", { value: 0x1002, text: "0x1002  (unmapped)" }));
     const hexIn = el("input", { type: "text", class: "w6", value: hex(st.addr, 4), oninput: () => { const v = parseNum(hexIn.value); if (!isNaN(v)) { st.addr = v & 0xffff; refreshPolicy(); } } });
     const badge = el("span");
-    const dataIn = el("input", { type: "text", class: "w6", value: hex(st.data), oninput: () => { const v = parseNum(dataIn.value); if (!isNaN(v)) st.data = v & 0xff; } });
-    const opBox = radio([["read", "Read"], ["write", "Write"]], st.op, v => { st.op = v; dataIn.disabled = v === "read"; });
+    const dataIn = el("input", { type: "text", class: "w6", value: hex(st.data), oninput: () => { const v = parseNum(dataIn.value); if (!isNaN(v)) { st.data = v & 0xff; refreshBits(); } } });
+    const opBox = radio([["read", "Read"], ["write", "Write"]], st.op, v => { st.op = v; dataIn.disabled = v === "read"; refreshBits(); });
     dataIn.disabled = st.op === "read";
+    // the bits of the selected address: in write mode the value about to be written (click a bit
+    // to flip it), in read mode the current contents; the fields come from the register map
+    const bits = el("div", { class: "ys-bitbox" });
+    function refreshBits() {
+      const d = model.describe(st.addr);
+      const fields = d.kind === "reg" ? d.reg.fields : null;
+      const single = d.kind === "mem" ? `${d.name} [7:0]` : d.kind === "unmapped" ? "unmapped [7:0]" : `${d.name} [7:0]`;
+      bits.innerHTML = "";
+      if (st.op === "write") {
+        bits.append(el("div", { class: "ys-note", text: `data to write to ${d.name}${d.policy === "RO" ? " (read-only: the router will ignore it)" : d.kind === "unmapped" ? " (unmapped: ignored)" : ""} -- click a bit to flip it` }));
+        bits.append(fieldDiagram(st.data, fields, { single, legend: true, onToggle: bit => { st.data ^= 1 << bit; dataIn.value = hex(st.data); refreshBits(); } }));
+      } else {
+        bits.append(el("div", { class: "ys-note", text: `current contents of ${d.name}` }));
+        bits.append(fieldDiagram(model.peek(st.addr), fields, { single, legend: true }));
+      }
+    }
     function refreshPolicy() {
       const d = model.describe(st.addr);
       badge.innerHTML = "";
       badge.append(policyBadge(d), " ", el("span", { class: "ys-note", style: "display:inline", text: d.name }));
       const opt = Array.from(sel.options).find(o => parseInt(o.value, 10) === st.addr);
       if (opt) sel.value = opt.value;
+      refreshBits();
     }
     const exec = el("button", { type: "button", class: "primary", text: "Execute", onclick: () => {
       const r = st.op === "read" ? model.read(st.addr) : model.write(st.addr, st.data);
@@ -369,13 +436,14 @@
     const rst = el("button", { type: "button", text: "Reset", title: "assert reset: registers back to their reset values", onclick: () => { st.msg = null; model.reset(false); } });
     access.append(el("div", { class: "ys-row" }, [field("address", sel), field("or type it", hexIn), el("div", { style: "padding-bottom:5px" }, [badge])]));
     access.append(el("div", { class: "ys-row" }, [field("operation", opBox), field("data (hex)", dataIn), exec, rst]));
+    access.append(bits);
     if (st.msg) access.append(el("div", { class: `ys-msg ${st.msg.cls}`, text: st.msg.text }));
     access.append(el("div", { class: "ys-note", html: "A write to a <b>RO</b> register or to an unmapped address is ignored by the router; a read of an unmapped address returns 0x00." }));
     refreshPolicy();
     host.append(access);
 
     const regs = el("div", { class: "ys-card" });
-    regs.append(el("h4", { text: "Registers" }), registerTable(model, host.clientWidth > 0 && host.clientWidth < 520));
+    regs.append(el("h4", { text: "Registers" }), registerTable(model, host.clientWidth > 0 && host.clientWidth < 520, addr => { st.addr = addr; st.msg = null; render(); }));
     host.append(regs);
 
     const mems = el("div", { class: "ys-card" });

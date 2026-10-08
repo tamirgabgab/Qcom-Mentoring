@@ -57,10 +57,20 @@ whatever is selected (one class per file). Press ++question++ inside the map for
   virtual interfaces down to the hardware. Dashed boxes outside a frame are the far ends of
   connections leaving that level; click one to jump there.
 * **TLM / data flow** — sequencers → drivers → DUT → monitors → reference model → scoreboard;
-  click a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the
-  FIFO-based scoreboard.
+  click a port or an arrow to light up the complete path. The DUT is drawn compact here, one pin
+  per interface (stimulus enters on the left, observation leaves on the right); the 19 signals
+  are in the Hierarchy view. The **Lab 9D** button swaps in the FIFO-based scoreboard.
 * **Classes (UML)** — inheritance per package; **Members** shows fields (with `rand`), methods
   and constraints. Dashed arrows: *runs on*, *uses*, *starts* (default sequence), *overrides*.
+
+**Arrows, moving boxes, column widths.** Arrows are orthogonal (horizontal and vertical runs,
+rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM
+views the **Arrows** button (or ++a++) starts *off*: only the arrows of the box under the pointer
+(and of the selected one) are shown, which keeps a crowded view readable; switch it on to see
+them all. Any box can be **dragged** to a better place, the arrows follow; the layout is
+remembered in this browser per view, **Reset layout** puts everything back. The edges of the
+side panel and of the Source column can be dragged to resize them (double-click for the default
+width).
 
 The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
 introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
@@ -71,7 +81,9 @@ RTL block, the item's lines marked; it can be downloaded or opened on GitHub fro
 **Simulate.** The DUT is drawn as in the course figure, pins inside and the register map in a
 block; click that block (or the **Simulate** tab on the DUT, `u_regs`, `hbus0`, the register
 model or a packet class) for two small interactive models: HBUS reads and writes against the
-register file with its RW / RO policy, and a packet playground that builds or decodes a YAPP
+register file with its RW / RO policy (the value to write is shown as a bit-field diagram, MSB on
+the left, LSB on the right, with the field names from the register map -- click a bit to flip
+it), and a packet playground that builds or decodes a YAPP
 packet, computes the parity, lists the checks and sends the bytes through the router model so
 the counters and `yapp_pkt_mem` move. The same widgets are on the
 [DUT specification](dut/spec.md#try-it-the-register-file) and

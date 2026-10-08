@@ -160,7 +160,32 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    את `regmap.js`+`sim.js` ב-`node:vm` עם stub של `window/document` (אין תלות ב-DOM). `build.py:check()` מריץ
    אותו אחרי `test_model.run_all` כש-`node` ב-PATH (אחרת מדפיס skipped). תועד ב-README (עץ + For mentors)
    וב-`docs/getting-started.md`. אומת: lint 18/18, style OK, map-check OK (לא STALE), mkdocs strict OK.
-3. **לא** נשאל/נענה עדיין: תוצאות הרגרסיה ב-xrun (ראה סעיף 8).
+3. תמיר: אין לו מכונה עם Xcelium → הסימולציה נשארת לא-מאומתת בינתיים (סעיף 7).
+4. **סבב UX במפה ובסימולטור** (לפי 5 הבקשות של תמיר + 8 תשובות לשאלות מנחות):
+   - `sim.js`: מצב ה-widget של הרגיסטרים נשמר על המודל (`model.__ysRegs`) ולא על ה-host, כי הפאנל
+     נבנה מחדש בכל מעבר לשונית → הבחירה (en_reg וכו') נשמרת. **דיאגרמת שדות** (`fieldDiagram`):
+     מספרי ביטים 7..0 מעל, MSB משמאל / LSB מימין, תא לכל ביט, סוגריים עם שם השדה מתחת (אנכי לשדה
+     צר, אופקי לרחב), reserved מקווקו, מקרא `[bits] name = value -- desc`. בטבלת הרגיסטרים: שורת-משנה
+     עם הדיאגרמה לרגיסטרים עם שדות (ctrl_reg, en_reg); לחיצה על שורה בוחרת את הרגיסטר בכרטיס HBUS.
+     **עורך כתיבה**: מתחת ל-data (hex) הדיאגרמה של הכתובת הנבחרת; לחיצה על ביט הופכת אותו ומעדכנת
+     את ה-hex (ולהפך); במצב Read מציגה את הערך הנוכחי.
+   - `layout.py`: **DUT קומפקטי ב-TLM** (`style: dut_tlm`): 11 פינים של ממשקים (6 משמאל = drivers,
+     5 מימין = monitors), id = `hw_top.<if>@left|right`, בגובה ה-driver/monitor שלהם → חצי vif ישרים.
+     `port_on_left()`: ה-pull port של ה-driver משמאל, ה-pull imp של ה-sequencer מימין (שניהם kind
+     `seq_item_port`, מובחנים לפי type) → sequencer→driver קו ישר.
+   - `app.js`: **ניתוב אורתוגונלי ב-JS** (`orthoRoute`, `roundedPath`, `routeEdges`): החצים מחושבים
+     מגיאומטריית הקופסאות בדפדפן (ports, pins, anchors של dut_spec, צד נבחר ב-`pickSide`, פיזור
+     לאורך הצלע, offset ל-corridor משותף, ports של container שמתחברים פנימה מתהפכים, שני ports של
+     אותה קופסה = קו חוצה). ה-`points` של Python הם fallback בלבד. **גרירת קופסאות** (container
+     גורר את ילדיו, frames של TLM עוקבים) עם שמירה ב-`localStorage` (`pm-layout:<scene>`) וכפתור
+     **Reset layout**. **כפתור Arrows** (`a`): כבוי = רק חצי הקופסה שתחת העכבר/הנבחרת; ברירת מחדל כבוי
+     ב-Hierarchy/TLM, דלוק ב-Classes, נשמר (`pm-arrows`). **ידיות רוחב** (`.pm-resizer`) לפאנל
+     ולעמודת Source, נשמרות (`pm-w-panel`, `pm-w-code`), double-click מאפס. **טבלאות Fields/Methods**
+     (שם | סוג | שורה; לחיצה → `showCodeAt` מסמנת וגוללת לשורה בעמודת Source). ציור `drawDutTlm`.
+   - **באג ישן תוקן ב-`exportSvgString`**: ה-bg rect הוכנס לפני זיווג live/clone לפי אינדקס, כך שכל
+     ה-`g.pm-edge` נמחקו — **ה-SVG/PNG המיוצאים מעולם לא כללו חצים**. עכשיו כן, וגם כש-Arrows כבוי.
+   - `test_model.py`: pins נחשבים anchors; בדיקות ל-DUT ב-TLM (11 פינים, 6/5, כל vif נוגע בפין).
+   - תועד ב-`docs/project-map.md` וב-README. צילומי ה-README **לא** חודשו (בקשת תמיר); `export/` חודש.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -239,6 +264,12 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 
 **JS/CSS**
 - `textarea` לא מקבל `value` כ-attribute → ב-`sim.js` `el()` מטפל ב-`value` כ-property.
+- **ייצוא SVG**: `live.forEach((src,i) => copy[i])` מזווג לפי סדר מסמך — אסור להוסיף שום דבר ל-clone
+  (bg, title) לפני המעבר; מחיקת `hit` נעשית אחרי הלולאה (רשימת `drop`).
+- `pointerdown` על קופסה = גרירת קופסה; על port/pin/regmap/רקע = pan. tap נפתר ב-pointerup רק אם לא זז.
+- סטייל `.pm.arrows-off .pm-edge {opacity:0}` נכנס ל-computed style → בייצוא מסירים את המחלקה זמנית.
+- טקסט אנכי (`writing-mode: vertical-rl`) נשבר לעמודה שנייה בלי `white-space: nowrap`.
+- פורט "same kind" (`seq_item_port` ל-pull port וגם ל-pull imp) — הצד נקבע לפי ה-type, לא לפי kind.
 - בדוגמאות של ה-playground ה-parity חייב להיות נכון באמת (`11 de ad be ef 33`, לא `5a`).
 
 **סביבה**
@@ -262,7 +293,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `scripts/gen_waves.py` | SVG של waveforms + **`packet_structure()`** → `docs/assets/packet_structure.svg` | + figure |
 | `scripts/project_map/extract.py` | pyslang → מבנה גולמי (classes, methods incl. extern prototypes, modules, ports, connects, vif) | — |
 | `scripts/project_map/model.py` | מיזוג + annotations → nodes/edges/paths/files; `wire_module` לחיווט מודולים | — |
-| `scripts/project_map/layout.py` | גיאומטריית הסצנות; **`arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`** | כן |
+| `scripts/project_map/layout.py` | גיאומטריית הסצנות; `arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`; **סשן 5: `port_on_left()`, DUT `dut_tlm` עם `pins` ב-`TlmLayout.scene`** | כן (+סשן 5) |
 | `scripts/project_map/annotations.yaml` | החצי הידני: summaries, labs, layout hints; **`hw_top.columns`, `hw_top.dut.style: dut_spec`, `pin_groups`** | כן |
 | **`scripts/project_map/regmap.yaml`** | מפת הרגיסטרים כנתונים (registers, memories, fields, `figure_rows`) | **חדש** |
 | `scripts/project_map/build.py` | בונה model.json, **regmap.js**, standalone HTML (inlines app.css/js + **sim.css/js + regmap.js**); `--check` (test_model + **`check_sim()` → test_sim.mjs**); `GENERATED` dict | כן (+סשן 5) |
@@ -270,9 +301,9 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`scripts/project_map/test_sim.mjs`** | בדיקות התנהגות של `sim.js` (`RouterModel`, עוזרי פקטה) ב-node; רץ מ-`build --check` | **חדש (סשן 5)** |
 | `scripts/project_map/export.mjs` | Playwright → `export/*.svg|png`, PDF ל-`build/` | — |
 | `scripts/project_map/templates/standalone.html.j2` | שלד ה-HTML העצמאי | + sim/regmap |
-| `docs/assets/project_map/app.js` | אפליקציית המפה; **`drawDutSpec`, tap על `.pm-regmap`, `simKind`, `renderSim`, לשונית Simulate** | כן |
+| `docs/assets/project_map/app.js` | אפליקציית המפה; `drawDutSpec`, tap על `.pm-regmap`, `simKind`, `renderSim`, לשונית Simulate; **סשן 5: `orthoRoute/roundedPath/routeEdges/endpointOf` (ניתוב ב-JS), `drawDutTlm`, גרירה (`moveItem`, `applySavedLayout`, `resetLayout`), `toggleArrows/applyArrows`, `initResizers`, `showCodeAt/focusRow`, טבלאות members, תיקון `exportSvgString`** | כן (+סשן 5) |
 | `docs/assets/project_map/app.css` | עיצוב; **`.dut-spec`, `.pm-regmap`** | כן |
-| **`docs/assets/project_map/sim.js`** | `YappSim`: `RouterModel`, `encodePacket`, `checkPacket`, `mountRegs`, `mountPacket`, auto-mount של `.yapp-sim[data-sim]` | **חדש** |
+| **`docs/assets/project_map/sim.js`** | `YappSim`: `RouterModel`, `encodePacket`, `checkPacket`, `mountRegs`, `mountPacket`, auto-mount של `.yapp-sim[data-sim]`; **סשן 5: `fieldDiagram`/`parseFields`, עורך ביטים בכרטיס HBUS, מצב על `model.__ysRegs`** | חדש (+סשן 5) |
 | **`docs/assets/project_map/sim.css`** | עיצוב ה-widgets (tokens `--ys-*` נופלים ל-`--pm-*`/`--md-*`) | **חדש** |
 | **`docs/assets/project_map/regmap.js`** | **מיוצר** מ-regmap.yaml — לא לערוך ידנית | **חדש** |
 | `docs/assets/project_map/model.json`, `docs/downloads/yapp_project_map.html`, `docs/assets/project_map/export/` | artefacts מיוצרים ו-committed | חודשו |
@@ -306,13 +337,14 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 
 **DUT.** `yapp_router` מחווט: `u_input_fsm` (IDLE→PAYLOAD→PARITY; `hdr_drop = !router_en || len>maxpktsize || addr==3`; מדווח `pkt_done/pkt_addr/pkt_len/pkt_parity_err/pkt_oversized` ו-`pkt_mem_we/addr/wdata`), `g_ch[0..2].u_ch` (`yapp_output_channel` עם `u_fifo` 16×8, handshake `data_vld`/`suspend`), `u_regs` (`yapp_hbus_regs`: כל הרגיסטרים, זיכרונות, HBUS 1-cycle write / 2-cycle read, `INJECT_ERROR` הופך ביט 3 בקריאה מ-`yapp_mem[0x2a]`), `u_error_timer` (`start = pkt_done && pkt_parity_err`, delay 1..10). מפת כתובות: ראה `scripts/project_map/regmap.yaml` (0x1000 ctrl RW reset 0x3f, 0x1001 en RW reset 0x01, 0x1004/5/6/9/a/b RO counters, 0x100d mem_size RO, 0x1010–0x104f pkt_mem RO, 0x1100–0x11ff yapp_mem RW; לא ממופה → קורא 0x00, כתיבה נבלעת). כל כתובת = בית אחד.
 
-**צינור המפה.** `scripts/lint.py:compile_run_f` → `extract.py` (על 3 sources: `yapp_project/tb/run.f`, `labs/lab10_cov/tb/run.f`, `labs/lab09_sbd/tb/run.f`) → `model.py` (+`annotations.yaml`, סריקת לאבים, `files` = טקסט מלא של כל קובץ) → `layout.py` (39 scenes: `h:root`, `h:<node>`, `tlm:main`, `tlm:lab09d`, `uml:<group>[:full]`) → `build.py` כותב `model.json`, `regmap.js`, standalone HTML (template + app.css/js + sim.css/js + regmap.js inlined, `</` escaped). `app.js` מצייר SVG מהסצנות; הפאנל: Overview / Code / Links / **Simulate**; עמודת Source. `sim.js` עצמאי (אין תלות ב-app.js), מקבל `RouterModel` משותף אחד לכל מפה (`this.sim`) או לכל דף (`sharedModel()`). באתר: `mkdocs.yml` טוען `regmap.js`+`sim.js`+`sim.css`, ו-`<div class="yapp-sim" data-sim="regs|packet">` ממונט אוטומטית (גם ב-`document$` של Material).
+**צינור המפה.** `scripts/lint.py:compile_run_f` → `extract.py` (על 3 sources: `yapp_project/tb/run.f`, `labs/lab10_cov/tb/run.f`, `labs/lab09_sbd/tb/run.f`) → `model.py` (+`annotations.yaml`, סריקת לאבים, `files` = טקסט מלא של כל קובץ) → `layout.py` (39 scenes: `h:root`, `h:<node>`, `tlm:main`, `tlm:lab09d`, `uml:<group>[:full]`) → `build.py` כותב `model.json`, `regmap.js`, standalone HTML (template + app.css/js + sim.css/js + regmap.js inlined, `</` escaped). `app.js` מצייר SVG מהסצנות **ומנתב את החצים בעצמו** (`routeEdges`: endpoints מ-ports/pins/anchors/קופסאות → `orthoRoute` אורתוגונלי עם פינות מעוגלות; ה-`points` ש-Python כותב הם fallback בלבד, אבל `p0/p3` שלהם עדיין נבדקים ב-`test_model`); גרירה משנה `it.x/y` (+ports) בזיכרון ושומרת offsets ב-localStorage; הפאנל: Overview / Code / Links / **Simulate**; עמודת Source; ידיות רוחב. `sim.js` עצמאי (אין תלות ב-app.js), מקבל `RouterModel` משותף אחד לכל מפה (`this.sim`) או לכל דף (`sharedModel()`). באתר: `mkdocs.yml` טוען `regmap.js`+`sim.js`+`sim.css`, ו-`<div class="yapp-sim" data-sim="regs|packet">` ממונט אוטומטית (גם ב-`document$` של Material).
 
 **תלויות/גרסאות.** Python 3.12; pyslang 12.0.0 (pinned ב-CI); PyYAML 6, Jinja2 3.1; mkdocs 1.6.1, mkdocs-material 9.7.7; Node 22; Playwright ב-`/opt/node-tools` (רק לייצוא/בדיקות, לא ב-CI). Xcelium אצל תמיר (CDNS-1.1d/1.2). אין משתני סביבה/סודות. Mermaid נטען מ-unpkg CDN בזמן צפייה.
 
 **הנחות עבודה לא כתובות בקוד.**
 - המודל של `sim.js` **משכפל** את התנהגות ה-RTL ביד; שינוי ב-`yapp_input_fsm.sv`/`yapp_hbus_regs.sv` מחייב עדכון `RouterModel.send/write/read` **וגם `test_sim.mjs`** (הטסט מקבע את הכללים המתועדים; הוא לא קורא את ה-RTL — רק מפת הכתובות מושווית ל-RTL).
-- `test_model.py` קשיח על מספרים (10 connects ב-router_tb, 6 ב-router_module_env, 11 vif, 8 מופעים ב-hw_top, 19 פינים, 7 anchors…) — שינוי מבני דורש עדכון הציפיות.
+- `test_model.py` קשיח על מספרים (10 connects ב-router_tb, 6 ב-router_module_env, 11 vif, 8 מופעים ב-hw_top, 19 פינים, 7 anchors, 11 פיני DUT ב-TLM…) — שינוי מבני דורש עדכון הציפיות.
+- הניתוב ב-JS **לא עוקף מכשולים**: חץ אופקי בין שתי קופסאות רחוקות באותה שורה יעבור דרך קופסאות שביניהן (למשל vif מ-agent ל-stub של interface ב-`h:tb`). Arrows-off ברירת המחדל מסתיר את זה; פתרון אמיתי = routing עם מכשולים.
 - `annotations.yaml` `lab_overrides`/`labs` ממפים קבצים ללאב "שהציג אותם"; קובץ חדש ב-`yapp_project` בלי מקבילה בלאב ייפול ב-`expect(n.get("lab"))`.
 - הלאבים 1–6 הם snapshots עצמאיים; תיקון ב-`yapp_project/uvc/yapp` לא מתפשט אליהם אוטומטית (ולהפך).
 
@@ -333,7 +365,8 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - `hbus_slave_agent` הוא placeholder (ה-router הוא ה-slave היחיד).
 - Mermaid מ-CDN — האתר offline מאבד דיאגרמות (המפה והסימולטורים כן עובדים offline).
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
-- בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact" — אפשר לשפר UX.
+- ~~בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact"~~ — הפאנל ניתן להרחבה (סשן 5); הדיאגרמה בשורת-משנה.
+- תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה (ב-`h:tb.hbus` למשל); בסצנות צפופות הן ממילא מוסתרות עד hover.
 - ה-packet playground מציג `maxpktsize`/`router_en` מהמודל המשותף — אחרי שינוי ברגיסטרים הוא מתעדכן דרך `model.on`, אבל שני widgets על אותו דף מתרנדרים מחדש כולם בכל שינוי (עדיין מהיר).
 - ~~`test_model.py` לא בודק את `sim.js` עצמו~~ — **בוצע בסשן 5**: `test_sim.mjs` רץ ב-`map-check` כשיש node.
   מה שעדיין לא נבדק אוטומטית: ה-widgets עצמם (DOM) — רק דרך `readme_shots.mjs`/בדיקה ידנית.
@@ -366,7 +399,8 @@ push, ff main, לשלוח zip.
 1. לעבור על `docs/appendix/unverified.md` מול תוצאות הסימולציה ולסמן מה אומת.
 2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
 3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
-4. שיפורי UX קטנים אם יתבקשו (טבלת רגיסטרים בפאנל צר, חיצי vif שחוצים את ה-hw_top).
+4. ~~שיפורי UX קטנים~~ — בוצע סבב UX בסשן 5 (ראה סעיף 2). פתוח: routing עם מכשולים, מיקום תוויות.
+5. לבקש מתמיר פידבק על המפה החדשה (TLM קומפקטי, Arrows כבוי כברירת מחדל, גרירה) ולתקן לפי הצורך.
 
 **איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי
@@ -421,6 +455,7 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 - **הודעת ה-system reminder** של הסשן נותנת trailer עם session id חדש — להשתמש בו, לא בישן.
 - **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), ואחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml` — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
 - `build --check` לא כותב; `build` ואז `--check`. אל תעשה `| head` על ה-build.
+- אחרי שינוי ב-`app.js/app.css/sim.js/sim.css` — `make map` (ה-standalone inlines אותם, אחרת STALE) ו-`make map-export` (התמונות משתנות). בדיקה ויזואלית: סקריפט Playwright חד-פעמי ב-scratchpad (`check*.mjs` בסשן 5: צילומי מסך של סצנות, גרירה עם `page.mouse`, ה-resizer, הפאנל) ואז Read על ה-PNG.
 - כשמשנים התנהגות של ה-DUT: לעדכן ביחד `yapp_project/rtl`, `router_reference.sv`, הטסטים ב-`tb/tests` + `labs/lab11c`, `docs/dut/spec.md` ("Decisions"), ו-`sim.js` `RouterModel`. כשמשנים כתובת רגיסטר: `regmap.yaml`, `yapp_hbus_regs.sv` localparams, `yapp_regs_c.sv` offsets — CI ישווה.
 - הלאבים 1–6 הם עותקים; `labs/lab0{3,4,5,6}*/sv/yapp_tx_agent.sv` וכו' זהים לפרויקט רק אם לא נגעו. לפני עריכה גורפת — `diff` מול `yapp_project/uvc/yapp`.
 - `sv_style.py` טקסטואלי; קוד SV חדש "לא רגיל" (labels על begin, `case` כגוף של if, macros רב-שורתיים) — להריץ `--check --diff` ולקרוא לפני `--fix`. slang אחרי כל `--fix`.

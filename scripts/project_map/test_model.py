@@ -60,6 +60,7 @@ def run_all(m, model_json, html):
     for s in m["scenes"]:
         expect(s["w"] > 0 and s["h"] > 0, f"{s['id']}: empty scene")
         item_ids = {it["id"] for it in s["items"]} | {p["id"] for it in s["items"] for p in it.get("ports", [])} \
+            | {p["id"] for it in s["items"] for p in it.get("pins", []) if p.get("id")} \
             | {st["id"] for st in s.get("stubs", [])}
         def anchored(nid):
             while nid is not None:
@@ -69,6 +70,18 @@ def run_all(m, model_json, html):
             return False
         for e in s["edges"]:
             expect(anchored(e["from"]) and anchored(e["to"]), f"{s['id']}: edge {e['id']} floats")
+    # the DUT of the TLM view: one pin per (interface, side), vif arrows land on them
+    for sid in ("tlm:main", "tlm:lab09d"):
+        tlm = next((s for s in m["scenes"] if s["id"] == sid), None)
+        dut = next((it for it in tlm["items"] if it["id"] == "hw_top.dut"), None) if tlm else None
+        expect(dut is not None and dut.get("style") == "dut_tlm", f"{sid}: compact DUT")
+        if dut:
+            pins = dut.get("pins", [])
+            expect(len(pins) == kinds["vif"], f"{sid}: DUT pins {len(pins)} != vif edges {kinds['vif']}")
+            expect(len([p for p in pins if p["side"] == "left"]) == 6 and len([p for p in pins if p["side"] == "right"]) == 5, f"{sid}: 6 driver pins left, 5 monitor pins right")
+            pin_ids = {p["id"] for p in pins}
+            vifs = [e for e in tlm["edges"] if e["kind"] == "vif"]
+            expect(len(vifs) == kinds["vif"] and all(e["from"] in pin_ids or e["to"] in pin_ids for e in vifs), f"{sid}: every vif arrow touches a DUT pin")
     # the DUT block diagram in the root scene (pins + registers block) and the register map
     root = next(s for s in m["scenes"] if s["id"] == "h:root")
     dut = next((it for it in root["items"] if it["id"] == "hw_top.dut"), None)

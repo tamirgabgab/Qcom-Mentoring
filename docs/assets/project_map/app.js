@@ -41,6 +41,106 @@
       "<p>" + esc(p).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>") + "</p>").join("");
   }
   function trunc(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+  function store(key, value) {
+    try { if (value === null || value === undefined) localStorage.removeItem(key); else localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* no storage */ }
+  }
+  function load(key, fallback) {
+    try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch (e) { return fallback; }
+  }
+
+  // ------------------------------------------------------------------ orthogonal arrows
+  // Every arrow is routed here, in the browser, from the boxes' current geometry: horizontal
+  // and vertical segments only, rounded corners, a short straight stub perpendicular to the
+  // side it leaves / enters. The Python layout places the boxes; because the arrows are
+  // computed from the boxes, dragging a box simply re-routes everything attached to it.
+  const DIR = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+  const STUB = 18;             // perpendicular run before the first corner
+  const CHANNEL = 9;           // spacing between parallel arrows sharing a corridor
+  function pickSide(box, pt) {
+    const cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+    const dx = pt[0] - cx, dy = pt[1] - cy;
+    if (Math.abs(dy) / Math.max(box.h, 1) >= Math.abs(dx) / Math.max(box.w, 1)) return dy > 0 ? "bottom" : "top";
+    return dx > 0 ? "right" : "left";
+  }
+  function sidePoint(box, side, frac) {
+    if (side === "left" || side === "right") return [side === "left" ? box.x : box.x + box.w, box.y + box.h * frac];
+    return [box.x + box.w * frac, side === "top" ? box.y : box.y + box.h];
+  }
+  function dedupe(pts) {
+    const out = [];
+    pts.forEach(p => { const q = out[out.length - 1]; if (!q || Math.abs(q[0] - p[0]) > 0.01 || Math.abs(q[1] - p[1]) > 0.01) out.push(p); });
+    // drop middle points of straight runs
+    for (let i = 1; i < out.length - 1; i++) {
+      const a = out[i - 1], b = out[i], c = out[i + 1];
+      if ((Math.abs(a[0] - b[0]) < 0.01 && Math.abs(b[0] - c[0]) < 0.01) || (Math.abs(a[1] - b[1]) < 0.01 && Math.abs(b[1] - c[1]) < 0.01)) { out.splice(i, 1); i--; }
+    }
+    return out;
+  }
+  // a, b: {x, y, side, box}; off: corridor offset for the free middle segment
+  function orthoRoute(a, b, off) {
+    const da = DIR[a.side], db = DIR[b.side];
+    const A = [a.x + da[0] * STUB, a.y + da[1] * STUB], B = [b.x + db[0] * STUB, b.y + db[1] * STUB];
+    const ah = da[1] === 0, bh = db[1] === 0;
+    let pts;
+    if (ah && bh) {
+      const fwd = (b.x - a.x) * da[0] > 6 && (a.x - b.x) * db[0] > 6;            // a heads to b, b faces a
+      if (fwd) {
+        if (Math.abs(a.y - b.y) < 0.5) pts = [[a.x, a.y], [b.x, b.y]];
+        else {
+          const lo = Math.min(a.x, b.x) + 3, hi = Math.max(a.x, b.x) - 3;
+          const mx = Math.max(lo, Math.min(hi, (A[0] + B[0]) / 2 + off));
+          pts = [[a.x, a.y], [mx, a.y], [mx, b.y], [b.x, b.y]];
+        }
+      } else {
+        const top = Math.min(a.box.y, b.box.y) - 22 - Math.abs(off), bottom = Math.max(a.box.y + a.box.h, b.box.y + b.box.h) + 22 + Math.abs(off);
+        const my = ((a.y + b.y) / 2 - top) < (bottom - (a.y + b.y) / 2) ? top : bottom;
+        pts = [[a.x, a.y], [A[0], a.y], [A[0], my], [B[0], my], [B[0], b.y], [b.x, b.y]];
+      }
+    } else if (!ah && !bh) {
+      const fwd = (b.y - a.y) * da[1] > 6 && (a.y - b.y) * db[1] > 6;
+      if (fwd) {
+        if (Math.abs(a.x - b.x) < 0.5) pts = [[a.x, a.y], [b.x, b.y]];
+        else {
+          const lo = Math.min(a.y, b.y) + 3, hi = Math.max(a.y, b.y) - 3;
+          const my = Math.max(lo, Math.min(hi, (A[1] + B[1]) / 2 + off));
+          pts = [[a.x, a.y], [a.x, my], [b.x, my], [b.x, b.y]];
+        }
+      } else {
+        const left = Math.min(a.box.x, b.box.x) - 22 - Math.abs(off), right = Math.max(a.box.x + a.box.w, b.box.x + b.box.w) + 22 + Math.abs(off);
+        const mx = ((a.x + b.x) / 2 - left) < (right - (a.x + b.x) / 2) ? left : right;
+        pts = [[a.x, a.y], [a.x, A[1]], [mx, A[1]], [mx, B[1]], [b.x, B[1]], [b.x, b.y]];
+      }
+    } else {
+      // one horizontal, one vertical exit: an L through the corner when the corner lies past both stubs
+      const h = ah ? a : b, v = ah ? b : a, H = ah ? A : B, V = ah ? B : A;
+      const okH = (v.x - H[0]) * DIR[h.side][0] >= 0, okV = (h.y - V[1]) * DIR[v.side][1] >= 0;
+      if (okH && okV) pts = ah ? [[a.x, a.y], [b.x, a.y], [b.x, b.y]] : [[a.x, a.y], [a.x, b.y], [b.x, b.y]];
+      else if (okH) pts = ah ? [[a.x, a.y], [B[0] + off, a.y], [B[0] + off, B[1]], [b.x, b.y]] : [[a.x, a.y], [a.x, A[1]], [A[0] + off, A[1]], [A[0] + off, b.y], [b.x, b.y]];
+      else pts = ah ? [[a.x, a.y], [A[0], a.y], [A[0], B[1] + off], [b.x, B[1] + off], [b.x, b.y]] : [[a.x, a.y], [a.x, A[1] + off], [B[0], A[1] + off], [B[0], b.y], [b.x, b.y]];
+    }
+    return dedupe(pts);
+  }
+  function roundedPath(pts, r) {
+    r = r || 7;
+    if (pts.length < 3) return "M" + pts.map(p => p.join(",")).join(" L");
+    let d = `M${pts[0].join(",")}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const p = pts[i - 1], c = pts[i], n = pts[i + 1];
+      const l1 = Math.hypot(c[0] - p[0], c[1] - p[1]), l2 = Math.hypot(n[0] - c[0], n[1] - c[1]);
+      const rr = Math.min(r, l1 / 2, l2 / 2);
+      if (rr < 0.5) { d += ` L${c.join(",")}`; continue; }
+      const p1 = [c[0] + (p[0] - c[0]) / l1 * rr, c[1] + (p[1] - c[1]) / l1 * rr];
+      const p2 = [c[0] + (n[0] - c[0]) / l2 * rr, c[1] + (n[1] - c[1]) / l2 * rr];
+      d += ` L${p1.map(v => v.toFixed(1)).join(",")} Q${c.join(",")} ${p2.map(v => v.toFixed(1)).join(",")}`;
+    }
+    return d + ` L${pts[pts.length - 1].join(",")}`;
+  }
+  function longestMid(pts) {
+    let best = 0, bi = 0;
+    for (let i = 0; i < pts.length - 1; i++) { const l = Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]); if (l > best) { best = l; bi = i; } }
+    const a = pts[bi], b = pts[bi + 1];
+    return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  }
 
   // A small SystemVerilog highlighter: comments, strings, numbers, macros, system tasks, keywords.
   const SV_KW = new Set(("module endmodule interface endinterface class endclass extends virtual function endfunction task endtask " +
@@ -112,6 +212,8 @@
       this.btnUp = el("button", { title: "Up one level (Esc)", onclick: () => this.up() }, ["↑ Up"]);
       this.btnMembers = el("button", { title: "Show fields and methods", onclick: () => this.toggleFull() }, ["Members"]);
       this.btnLabels = el("button", { title: "Always show the labels of the arrows (l)", onclick: () => { this.state.labels = !this.state.labels; this.render(); } }, ["Labels"]);
+      this.btnArrows = el("button", { title: "Arrows: all of them, or only those of the box under the pointer / selected (a)", onclick: () => this.toggleArrows() }, ["Arrows"]);
+      this.btnReset = el("button", { title: "Put every box of this view back where the generator placed it", onclick: () => this.resetLayout() }, ["Reset layout"]);
       this.btnVariant = el("button", { title: "Lab 9D variant: analysis FIFOs instead of reference + scoreboard", onclick: () => this.toggleVariant() }, ["Lab 9D"]);
       this.selGroup = el("select", { title: "Class group", onchange: () => this.showGroup(this.selGroup.value) });
       this.selGroup.append(el("option", { value: "" }, ["All classes"]));
@@ -135,7 +237,7 @@
       this.btnPanel = el("button", { title: "Show / hide the panel (p)", onclick: () => { r.classList.toggle("panel-hidden"); this.fit(); } }, ["Panel"]);
       this.btnCode = el("button", { title: "Show / hide the source column (c)", onclick: () => this.toggleCode() }, ["</> Source"]);
       const btnHelp = el("button", { title: "Keyboard shortcuts (?)", onclick: () => this.help.classList.toggle("open") }, ["?"]);
-      this.tools.append(this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnLabels, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
+      this.tools.append(this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnArrows, this.btnLabels, this.btnReset, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
       if (this.opts.standaloneUrl) {
         this.tools.append(el("a", { href: this.opts.standaloneUrl, download: "", title: "Save this map as one HTML file that works offline" }, [el("button", {}, ["Download offline copy"])]));
       }
@@ -163,6 +265,9 @@
           "<tr><td><kbd>/</kbd></td><td>search</td></tr>" +
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
           "<tr><td><kbd>c</kbd></td><td>source column on / off</td></tr>" +
+          "<tr><td><kbd>a</kbd></td><td>arrows: all, or only those of the box under the pointer</td></tr>" +
+          "<tr><td>drag a box</td><td>move it (the arrows follow; the layout is remembered in this browser)</td></tr>" +
+          "<tr><td>drag the column edges</td><td>resize the panel and the source column (double-click: default width)</td></tr>" +
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
@@ -170,9 +275,89 @@
           "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr></table>" +
           "<p style='color:var(--pm-muted);font-size:12px'>Generated from the SystemVerilog source with pyslang; descriptions from <code>scripts/project_map/annotations.yaml</code>.</p>" }),
       ]);
-      r.append(el("div", { class: "pm-body" }, [this.canvas, this.panel, this.codePane, this.help]));
+      this.resPanel = el("div", { class: "pm-resizer r-panel", title: "drag to resize the panel, double-click for the default width" });
+      this.resCode = el("div", { class: "pm-resizer r-code", title: "drag to resize the source column, double-click for the default width" });
+      r.append(el("div", { class: "pm-body" }, [this.canvas, this.resPanel, this.panel, this.resCode, this.codePane, this.help]));
       this.initPanZoom();
       this.initKeys();
+      this.initResizers();
+    }
+    // ------------------------------------------------------------- resizable columns
+    initResizers() {
+      const setup = (handle, target, key) => {
+        const saved = load(key, null);
+        if (saved) { target.style.width = target.style.flexBasis = saved + "px"; }
+        let drag = null;
+        handle.addEventListener("pointerdown", e => {
+          if (e.button !== 0 && e.pointerType === "mouse") return;
+          drag = { x: e.clientX, w: target.getBoundingClientRect().width, id: e.pointerId };
+          handle.classList.add("active");
+          try { handle.setPointerCapture(e.pointerId); } catch (err) { /* released */ }
+          e.preventDefault();
+        });
+        handle.addEventListener("pointermove", e => {
+          if (!drag) return;
+          const w = Math.max(240, Math.min(window.innerWidth * 0.7, drag.w + (drag.x - e.clientX)));
+          target.style.width = target.style.flexBasis = w + "px";
+        });
+        const end = () => { if (!drag) return; drag = null; handle.classList.remove("active"); store(key, Math.round(target.getBoundingClientRect().width)); this.fit(); };
+        handle.addEventListener("pointerup", end);
+        handle.addEventListener("pointercancel", end);
+        handle.addEventListener("dblclick", () => { target.style.width = target.style.flexBasis = ""; store(key, null); this.fit(); });
+      };
+      setup(this.resPanel, this.panel, "pm-w-panel");
+      setup(this.resCode, this.codePane, "pm-w-code");
+    }
+    // ------------------------------------------------------------- arrows on / off, movable boxes
+    arrowsOn(view) {
+      const dflt = { hierarchy: false, tlm: false, classes: true };
+      const saved = load("pm-arrows", {});
+      const v = view || this.state.view;
+      return saved[v] === undefined ? dflt[v] : !!saved[v];
+    }
+    toggleArrows() {
+      const saved = load("pm-arrows", {});
+      saved[this.state.view] = !this.arrowsOn();
+      store("pm-arrows", saved);
+      this.applyArrows();
+    }
+    applyArrows() {
+      const on = this.arrowsOn();
+      this.root.classList.toggle("arrows-off", !on);
+      this.btnArrows.classList.toggle("on", on);
+    }
+    layoutKey(sid) { return "pm-layout:" + sid; }
+    // the saved offsets of a scene are applied once, when it is first shown
+    applySavedLayout(s) {
+      if (s._layoutApplied) return;
+      s._layoutApplied = true;
+      s._offsets = load(this.layoutKey(s.id), {});
+      Object.entries(s._offsets).forEach(([id, o]) => this.moveItem(s, id, o.dx, o.dy, false));
+    }
+    sceneItem(s, id) { return s.items.find(i => i.id === id) || (s.stubs || []).find(i => i.id === id); }
+    // move a box (and, for a container, everything drawn inside it) by (dx, dy)
+    moveItem(s, id, dx, dy, record) {
+      const it = this.sceneItem(s, id);
+      if (!it) return;
+      const movers = [it];
+      if (it.container) s.items.forEach(o => { if (o !== it && (o.id.startsWith(id + ".") || o.id.startsWith(id + "["))) movers.push(o); });
+      movers.forEach(o => { o.x += dx; o.y += dy; (o.ports || []).forEach(p => { p.x += dx; p.y += dy; }); });
+      if (record) {
+        s._offsets = s._offsets || {};
+        const o = s._offsets[id] || { dx: 0, dy: 0 };
+        o.dx += dx; o.dy += dy;
+        if (Math.abs(o.dx) < 0.5 && Math.abs(o.dy) < 0.5) delete s._offsets[id]; else s._offsets[id] = o;
+        store(this.layoutKey(s.id), Object.keys(s._offsets).length ? s._offsets : null);
+      }
+    }
+    resetLayout() {
+      const s = this.scenes[this.state.scene];
+      if (!s || !s._offsets) return;
+      Object.entries(s._offsets).forEach(([id, o]) => this.moveItem(s, id, -o.dx, -o.dy, false));
+      s._offsets = {};
+      store(this.layoutKey(s.id), null);
+      this.render();
+      this.select(this.state.selected, { silent: true, noPan: false });
     }
 
     // ------------------------------------------------------------- theme
@@ -302,6 +487,7 @@
     render() {
       const s = this.scenes[this.state.scene];
       const g = this.viewport;
+      this.applySavedLayout(s);
       g.innerHTML = "";
       // lanes / frames (TLM)
       (s.lanes || []).forEach(l => {
@@ -310,11 +496,14 @@
         const t = svg("text", { x: l.x + l.w / 2, y: 22, "text-anchor": "middle" }); t.textContent = l.label; lg.append(t);
         g.append(lg);
       });
+      this.frameEls = {};
       (s.frames || []).forEach(f => {
-        const fg = svg("g", { class: "pm-frame", style: `--kc: var(--k-${f.kind})` });
-        fg.append(svg("rect", { x: f.x, y: f.y, width: f.w, height: f.h }));
-        const t = svg("text", { x: f.x + 8, y: f.y + 15 }); t.textContent = f.label; fg.append(t);
+        const fg = svg("g", { class: "pm-frame", style: `--kc: var(--k-${f.kind})`, "data-id": f.id });
+        const r = svg("rect", this.frameRect(s, f));
+        fg.append(r);
+        const t = svg("text", { x: +r.getAttribute("x") + 8, y: +r.getAttribute("y") + 15 }); t.textContent = f.label; fg.append(t);
         g.append(fg);
+        this.frameEls[f.id] = { rect: r, text: t };
       });
       // items sorted: containers (shallow first) under leaves
       const items = [...s.items].sort((a, b) => (a.depth - b.depth) || (b.container - a.container));
@@ -322,8 +511,12 @@
       (s.stubs || []).forEach(st => g.append(this.drawItem(st, s)));
       // edges on top; in dense scenes labels appear only on hover / selection
       this.denseLabels = !this.state.labels && s.edges.length > 14;
-      s.edges.forEach(e => g.append(this.drawEdge(e)));
+      this.edgeLayer = svg("g", { class: "pm-edges" });
+      g.append(this.edgeLayer);
+      this.drawEdges(s);
       this.btnLabels.classList.toggle("on", !!this.state.labels);
+      this.btnReset.style.display = s._offsets && Object.keys(s._offsets).length ? "" : "none";
+      this.applyArrows();
       this.renderCrumbs(s);
       this.renderLegend(s);
       this.views.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.view === s.view));
@@ -334,8 +527,121 @@
       this.selGroup.value = this.state.group || "";
       this.btnVariant.style.display = s.view === "tlm" ? "" : "none";
       this.btnVariant.classList.toggle("on", !!this.state.variant);
-      this.hint.textContent = s.view === "hierarchy" ? "drag to pan · wheel to zoom · click to inspect · double-click a box to open it"
-        : s.view === "tlm" ? "click a port or an arrow to highlight the whole path" : "click a class to see its file · Members shows fields and methods";
+      this.hint.textContent = s.view === "hierarchy" ? "drag the background to pan · drag a box to move it · click to inspect · double-click a box to open it"
+        : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box to move it" : "click a class to see its file · Members shows fields and methods · drag a class to move it";
+    }
+    // a group frame (TLM) follows its members
+    frameRect(s, f) {
+      const members = s.items.filter(it => it.id.startsWith(f.id + ".") || it.id.startsWith(f.id + "["));
+      if (!members.length) return { x: f.x, y: f.y, width: f.w, height: f.h };
+      const x0 = Math.min(...members.map(m => m.x)), y0 = Math.min(...members.map(m => m.y));
+      const x1 = Math.max(...members.map(m => m.x + m.w)), y1 = Math.max(...members.map(m => m.y + m.h));
+      return { x: x0 - 10, y: y0 - 26, width: x1 - x0 + 20, height: y1 - y0 + 36 };
+    }
+    updateFrames(s) {
+      (s.frames || []).forEach(f => {
+        const fe = this.frameEls[f.id]; if (!fe) return;
+        const r = this.frameRect(s, f);
+        Object.entries(r).forEach(([k, v]) => fe.rect.setAttribute(k, v));
+        fe.text.setAttribute("x", r.x + 8); fe.text.setAttribute("y", r.y + 15);
+      });
+    }
+    // ---- arrows from the boxes' geometry
+    // The far end of an arrow: a port (small circle), a pin of a block diagram, or a box, whose
+    // side is picked from where the other end is (like the Python layout does for its own guess).
+    endpointOf(s, id, otherId, index) {
+      const port = index.ports[id];
+      if (port) return { kind: "port", x: port.p.x, y: port.p.y, side: port.p.side, box: port.it, id };
+      const pin = index.pins[id];
+      if (pin) return { kind: "pin", x: pin.it.x + (pin.p.side === "left" ? 0 : pin.it.w), y: pin.it.y + pin.p.y, side: pin.p.side, box: pin.it, id };
+      let cur = id;
+      while (cur && !index.items[cur]) cur = this.N[cur] ? this.N[cur].parent : null;
+      if (!cur) return null;
+      const it = index.items[cur];
+      // a block diagram (the DUT): the arrow of a far instance lands on its pin group
+      if (it.anchors) {
+        let far = otherId;
+        while (far && !it.anchors[far] && this.N[far]) far = this.N[far].parent;
+        const an = far ? it.anchors[far] : null;
+        if (an) return { kind: "pin", x: it.x + (an.side === "left" ? 0 : it.w), y: it.y + an.y, side: an.side, box: it, id: cur };
+      }
+      return { kind: "box", box: it, id: cur, stub: !!it.stub, stubSide: it.side };
+    }
+    sceneIndex(s) {
+      const index = { items: {}, ports: {}, pins: {} };
+      s.items.forEach(it => { index.items[it.id] = it; (it.ports || []).forEach(p => { index.ports[p.id] = { it, p }; }); (it.pins || []).forEach(p => { if (p.id) index.pins[p.id] = { it, p }; }); });
+      (s.stubs || []).forEach(it => { index.items[it.id] = it; });
+      return index;
+    }
+    routeEdges(s) {
+      const index = this.sceneIndex(s);
+      const center = e => e.kind === "box" ? [e.box.x + e.box.w / 2, e.box.y + e.box.h / 2] : [e.x, e.y];
+      const ends = [];
+      s.edges.forEach(e => {
+        const a = this.endpointOf(s, e.from, e.to, index), b = this.endpointOf(s, e.to, e.from, index);
+        if (!a || !b || (a.kind === "box" && b.kind === "box" && a.box === b.box)) { ends.push({ e, fallback: true }); return; }
+        // sides of the box ends: a stub leaves the scene horizontally, the box facing a stub uses the facing side
+        [[a, b], [b, a]].forEach(([me, other]) => {
+          if (me.kind === "port") {
+            // a port on the edge of a container that talks to something drawn inside it faces inward
+            const inside = me.box.container && other.box && other.box !== me.box && other.box.x >= me.box.x && other.box.x + other.box.w <= me.box.x + me.box.w && other.box.y >= me.box.y && other.box.y + other.box.h <= me.box.y + me.box.h;
+            if (inside) me.side = me.side === "left" ? "right" : "left";
+            return;
+          }
+          if (me.kind !== "box") return;
+          if (me.stub) me.side = me.stubSide === "left" ? "right" : "left";
+          else if (other.kind === "box" && other.stub) me.side = other.stubSide;
+          else me.side = pickSide(me.box, center(other));
+        });
+        // two ports of the same box (an analysis FIFO feeding its own get port): straight across the box
+        if (a.kind === "port" && b.kind === "port" && a.box === b.box && a.side !== b.side) {
+          a.side = a.x <= b.x ? "right" : "left"; b.side = a.x <= b.x ? "left" : "right";
+        }
+        ends.push({ e, a, b });
+      });
+      // spread the box ends sharing a side along it, ordered by where the other end is
+      const groups = {};
+      ends.forEach(x => { if (x.fallback) return; [[x.a, x.b], [x.b, x.a]].forEach(([me, other]) => { if (me.kind === "box") (groups[me.id + "|" + me.side] = groups[me.id + "|" + me.side] || []).push([me, center(other)]); }); });
+      Object.values(groups).forEach(lst => {
+        const horiz = lst[0][0].side === "top" || lst[0][0].side === "bottom";
+        lst.sort((p, q) => horiz ? p[1][0] - q[1][0] : p[1][1] - q[1][1]);
+        lst.forEach(([me], k) => { const n = lst.length, frac = n > 1 ? (horiz ? 0.12 + 0.76 * (k + 1) / (n + 1) : 0.15 + 0.7 * (k + 1) / (n + 1)) : 0.5; const pt = sidePoint(me.box, me.side, frac); me.x = pt[0]; me.y = pt[1]; });
+      });
+      // corridor offsets: arrows that share the same middle corridor are spaced out
+      const corr = {};
+      ends.forEach(x => {
+        if (x.fallback) return;
+        const { a, b } = x;
+        const ah = a.side === "left" || a.side === "right";
+        const key = ah ? `h|${Math.round((a.x + DIR[a.side][0] * STUB) / 50)}|${Math.round((b.x + DIR[b.side][0] * STUB) / 50)}` : `v|${Math.round((a.y + DIR[a.side][1] * STUB) / 50)}|${Math.round((b.y + DIR[b.side][1] * STUB) / 50)}`;
+        const straight = ah ? Math.abs(a.y - b.y) < 0.5 : Math.abs(a.x - b.x) < 0.5;
+        if (!straight) (corr[key] = corr[key] || []).push(x);
+      });
+      Object.values(corr).forEach(lst => {
+        lst.sort((p, q) => (p.a.y - q.a.y) || (p.a.x - q.a.x));
+        lst.forEach((x, k) => { x.off = (k - (lst.length - 1) / 2) * CHANNEL; });
+      });
+      const out = {};
+      ends.forEach(x => {
+        if (x.fallback) { out[x.e.id] = null; return; }
+        const pts = orthoRoute(x.a, x.b, x.off || 0);
+        out[x.e.id] = { pts, mid: longestMid(pts) };
+      });
+      return out;
+    }
+    drawEdges(s) {
+      const routes = this.routeEdges(s);
+      this.edgeLayer.innerHTML = "";
+      s.edges.forEach(e => this.edgeLayer.append(this.drawEdge(e, routes[e.id])));
+    }
+    redrawEdges() {
+      const s = this.scenes[this.state.scene];
+      this.drawEdges(s);
+      this.updateFrames(s);
+      // keep the selection highlight on the fresh arrows
+      const id = this.state.selected;
+      if (id && (this.E[id] || !this.N[id])) this.highlightPath(id);
+      else if (id) this.markIncident(id);
     }
     drawItem(it, s) {
       const n = this.N[it.id] || {};
@@ -364,6 +670,9 @@
       } else if (it.style === "dut_spec") {
         grp.classList.add("dut-spec");
         this.drawDutSpec(grp, it);
+      } else if (it.style === "dut_tlm") {
+        grp.classList.add("dut-spec", "dut-tlm");
+        this.drawDutTlm(grp, it);
       } else {
         grp.append(svg("rect", { class: "stripe", width: 5, height: it.h, rx: 2 }));
         const t = svg("text", { class: "label", x: 14, y: 19 }); t.textContent = it.label; grp.append(t);
@@ -392,6 +701,29 @@
       grp.addEventListener("mouseenter", () => this.hover(it.id, true));
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
       return grp;
+    }
+    // The DUT in the TLM view: one pin per interface, the arrow outside the box next to the
+    // pin, the interface name written inside. Stimulus enters on the left, observation leaves
+    // on the right.
+    drawDutTlm(grp, it) {
+      grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
+      const name = svg("text", { class: "label", x: 12, y: 22 }); name.textContent = it.label; grp.append(name);
+      if (it.sub) { const st = svg("text", { class: "sub", x: 14 + it.label.length * 8.2, y: 22 }); st.textContent = ": " + it.sub; grp.append(st); }
+      const big = svg("text", { class: "dut-title", x: it.w / 2, y: it.h / 2 + 8, "text-anchor": "middle" }); big.textContent = it.title || "DUT"; grp.append(big);
+      (it.pins || []).forEach(p => {
+        const left = p.side === "left";
+        const x0 = left ? 0 : it.w, dir = left ? 1 : -1;            // dir: into the box
+        const pg = svg("g", { class: `pm-pin pin ${p.dir}`, "data-id": p.id, "data-node": p.node });
+        pg.append(svg("line", { x1: x0 - dir * 22, y1: p.y, x2: x0, y2: p.y }));
+        const head = (tipX, sign) => svg("path", { class: "arrow", d: `M${tipX},${p.y} l${-sign * 7},-3.5 v7 z` });
+        if (p.dir === "in") pg.append(head(x0, dir)); else pg.append(head(x0 - dir * 22, -dir));
+        const t = svg("text", { class: "pin", x: x0 + dir * 8, y: p.y + 4, "text-anchor": left ? "start" : "end" }); t.textContent = p.name; pg.append(t);
+        const tt = svg("title"); tt.textContent = `${p.node} : ${p.type}${left ? " -- driven through the virtual interface" : " -- observed through the virtual interface"}`; pg.append(tt);
+        pg.style.pointerEvents = "all";
+        pg.addEventListener("mouseenter", () => this.hover(p.id, true));
+        pg.addEventListener("mouseleave", () => this.hover(p.id, false));
+        grp.append(pg);
+      });
     }
     // The DUT as a block diagram (course figure): pins with their direction and bus width
     // written inside the box, the module name, and the registers block with the address map.
@@ -435,16 +767,22 @@
         grp.append(rg);
       }
     }
-    drawEdge(e) {
+    drawEdge(e, route) {
       const g = svg("g", { class: `pm-edge kind-${e.kind}` + (e.dashed ? " dashed" : "") + (e.bidir ? " bidir" : ""), "data-id": e.id, "data-from": e.from, "data-to": e.to });
-      const pts = e.points;
-      let d;
-      if (pts.length === 4 && !e.poly) d = `M${pts[0]} C${pts[1]} ${pts[2]} ${pts[3]}`;
-      else d = "M" + pts.map(p => p.join(",")).join(" L");
+      let d, lx, ly;
+      if (route) {
+        d = roundedPath(route.pts);
+        lx = route.mid[0]; ly = route.mid[1];
+      } else {
+        // no geometry for an end (should not happen): the generator's curve
+        const pts = e.points;
+        d = pts.length === 4 ? `M${pts[0]} C${pts[1]} ${pts[2]} ${pts[3]}` : "M" + pts.map(p => p.join(",")).join(" L");
+        lx = e.lx; ly = e.ly;
+      }
       g.append(svg("path", { class: "hit", d }));
       g.append(svg("path", { class: "line", d }));
       if (e.label) {
-        const t = svg("text", { x: e.lx, y: e.ly - 5, "text-anchor": "middle" });
+        const t = svg("text", { x: lx, y: ly - 5, "text-anchor": "middle" });
         t.textContent = trunc(e.label, 48); g.append(t);
       }
       if (this.denseLabels) g.classList.add("quiet");
@@ -496,15 +834,7 @@
           this.highlightPath(id);
         } else {
           this.viewport.querySelectorAll(`[data-id="${CSS.escape(id)}"]`).forEach(x => x.classList.add("selected"));
-          // dim unrelated edges when a port or a component with ports is selected
-          const n = this.N[id];
-          if (n && (n.port || (n.edges && n.edges.length))) {
-            const mine = new Set(this.incidentEdges(id));
-            if (mine.size) {
-              this.viewport.querySelectorAll(".pm-edge").forEach(g => g.classList.toggle("dim", !mine.has(g.dataset.id)));
-              mine.forEach(eid => this.viewport.querySelectorAll(`.pm-edge[data-id="${CSS.escape(eid)}"]`).forEach(g => g.classList.add("path")));
-            }
-          }
+          this.markIncident(id);
           if (!(o && o.noPan === false) && !(o && o.silent)) this.ensureVisible(id);
         }
       }
@@ -512,13 +842,27 @@
       this.renderCodePane();
       if (!(o && o.silent)) this.updateHash();
     }
+    // the ids an arrow may use to touch this node: itself, its ports, the pins drawn on it
+    idsOf(nid) {
+      const n = this.N[nid];
+      const set = new Set([nid, ...(n && n.children ? n.children : [])]);
+      const s = this.scenes[this.state.scene];
+      const it = s && this.sceneItem(s, nid);
+      if (it && it.pins) it.pins.forEach(p => { if (p.id) set.add(p.id); });
+      return set;
+    }
     incidentEdges(nid) {
       // edges touching the node or any of its ports / descendants shown in this scene
       const ids = [];
-      const n = this.N[nid];
-      const set = new Set([nid, ...(n && n.children ? n.children : [])]);
+      const set = this.idsOf(nid);
       this.scenes[this.state.scene].edges.forEach(e => { if (set.has(e.from) || set.has(e.to)) ids.push(e.id); });
       return ids;
+    }
+    // dim the arrows that do not touch the selected node, light the ones that do
+    markIncident(id) {
+      const mine = new Set(this.incidentEdges(id));
+      if (!mine.size) return;
+      this.viewport.querySelectorAll(".pm-edge").forEach(g => { g.classList.toggle("dim", !mine.has(g.dataset.id)); g.classList.toggle("path", mine.has(g.dataset.id)); });
     }
     highlightPath(eid) {
       const base = eid.replace(/b$/, "");
@@ -534,7 +878,7 @@
     }
     hover(id, on) {
       this.viewport.querySelectorAll(`[data-id="${CSS.escape(id)}"]`).forEach(x => x.classList.toggle("hover", on));
-      const set = new Set([id, ...((this.N[id] && this.N[id].children) || [])]);
+      const set = this.idsOf(id);
       this.viewport.querySelectorAll(".pm-edge").forEach(g => { if (set.has(g.dataset.from) || set.has(g.dataset.to)) g.classList.toggle("hover", on); });
     }
     hoverEdge(eid, on) {
@@ -563,6 +907,10 @@
           pointers.forEach((_, id) => { try { c.setPointerCapture(id); } catch (err) { /* released */ } });
         } else {
           drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false, target: e.target, id: e.pointerId };
+          // a drag that starts on a box moves the box; on a port, a pin or the background it pans
+          const nodeEl = e.target.closest && e.target.closest(".pm-node");
+          const onWidget = e.target.closest && (e.target.closest(".pm-port") || e.target.closest(".pm-pin") || e.target.closest(".pm-regmap"));
+          if (nodeEl && !onWidget && nodeEl.__item) drag.item = nodeEl.__item;
         }
         // NB: no pointer capture here -- a captured pointer makes the browser retarget the click
         // to the canvas, so the boxes would never receive it. Capture starts with the drag.
@@ -587,6 +935,17 @@
             try { c.setPointerCapture(drag.id); } catch (err) { /* released */ }
           }
           if (!drag.moved) return;
+          if (drag.item) {
+            // move the box by the pointer delta in scene units; the arrows follow
+            const s = this.scenes[this.state.scene];
+            const want = { dx: dx / this.vp.k, dy: dy / this.vp.k };
+            const done = drag.done || { dx: 0, dy: 0 };
+            this.moveItem(s, drag.item.id, want.dx - done.dx, want.dy - done.dy, false);
+            drag.done = want;
+            this.viewport.querySelectorAll(".pm-node").forEach(g => { if (g.__item) g.setAttribute("transform", `translate(${g.__item.x},${g.__item.y})`); });
+            if (!drag.raf) drag.raf = requestAnimationFrame(() => { drag.raf = null; this.redrawEdges(); });
+            return;
+          }
           this.vp.x = drag.vx + dx; this.vp.y = drag.vy + dy;
           this.applyVp();
         }
@@ -595,6 +954,18 @@
         pointers.delete(e.pointerId);
         if (pointers.size < 2) pinch = null;
         if (drag && !drag.moved && e.type === "pointerup") this.tap(drag.target, drag.x, drag.y);
+        if (drag && drag.moved && drag.item && drag.done) {
+          const s = this.scenes[this.state.scene];
+          this.moveItem(s, drag.item.id, 0, 0, false);
+          s._offsets = s._offsets || {};
+          const o = s._offsets[drag.item.id] || { dx: 0, dy: 0 };
+          o.dx += drag.done.dx; o.dy += drag.done.dy;
+          if (Math.abs(o.dx) < 0.5 && Math.abs(o.dy) < 0.5) delete s._offsets[drag.item.id]; else s._offsets[drag.item.id] = o;
+          store(this.layoutKey(s.id), Object.keys(s._offsets).length ? s._offsets : null);
+          if (drag.raf) cancelAnimationFrame(drag.raf);
+          this.redrawEdges();
+          this.btnReset.style.display = Object.keys(s._offsets).length ? "" : "none";
+        }
         drag = null;
         c.classList.remove("dragging");
       };
@@ -616,8 +987,9 @@
       // hit area of an arrow drawn on top of it
       const stack = (document.elementsFromPoint ? document.elementsFromPoint(x, y) : [target]).filter(e => this.svg.contains(e));
       const pick = sel => { for (const e of stack) { const hit = e.closest && e.closest(sel); if (hit) return hit; } return null; };
-      const port = pick(".pm-port"), more = pick("text.more"), regmap = pick(".pm-regmap");
+      const port = pick(".pm-port"), more = pick("text.more"), regmap = pick(".pm-regmap"), pin = pick(".pm-pin");
       if (regmap) { this.state.tab = "sim"; this.select(regmap.closest(".pm-node").dataset.id); return; }
+      if (pin && pin.dataset.node) { this.select(pin.dataset.node); return; }
       const closest = sel => (target && target.closest) ? target.closest(sel) : null;
       const edge = port || more ? null : closest(".pm-edge");
       const node = port ? null : (more ? more.closest(".pm-node") : (edge ? null : (closest(".pm-node") || pick(".pm-node"))));
@@ -681,6 +1053,7 @@
         else if (k === "-") this.zoomBy(0.8);
         else if (k === "m") this.toggleFull();
         else if (k === "l") { this.state.labels = !this.state.labels; this.render(); }
+        else if (k === "a") this.toggleArrows();
         else if (k === "p") { this.root.classList.toggle("panel-hidden"); this.fit(); }
         else if (k === "c") this.toggleCode();
         else if (k === "?") this.help.classList.toggle("open");
@@ -785,6 +1158,23 @@
       if (window.matchMedia("(min-width: 1100px)").matches) this.toggleCode(true);
       else { this.state.tab = "code"; this.renderPanel(); }
     }
+    // bring one line of the item's file into view (a member clicked in the panel)
+    showCodeAt(n, line) {
+      this.focusLine = line;
+      if (window.matchMedia("(min-width: 1100px)").matches) { if (!this.state.code) this.toggleCode(true); else this.renderCodePane(); }
+      else { this.state.tab = "code"; this.renderPanel(); }
+    }
+    // after a code table is built: mark the focused line and scroll it into view
+    focusRow(table, scroller, offset) {
+      const line = this.focusLine;
+      this.focusLine = null;
+      if (!line) return null;
+      const row = table.rows[line - 1];
+      if (!row) return null;
+      row.classList.add("focus");
+      requestAnimationFrame(() => { scroller.scrollTop = Math.max(0, row.offsetTop - (offset || 0) - 60); });
+      return row;
+    }
     codeRows(text, a, b) {
       // escape first, then colour (the regex works on the escaped text; entities contain no SV tokens of interest)
       const html = highlightSV(text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
@@ -834,7 +1224,8 @@
       const table = this.codeRows(text, whole ? 0 : a, b);
       box.append(table);
       cp.append(box);
-      // bring the item's first line near the top of the column
+      // bring the item's first line (or the member just clicked) near the top of the column
+      if (this.focusRow(table, box, 0)) return;
       const row = table.rows[Math.max(0, a - 3)];
       if (row && !whole) requestAnimationFrame(() => { box.scrollTop = row.offsetTop; });
     }
@@ -901,15 +1292,22 @@
       }
       // fields / methods / constraints
       const fields = (n.fields || []).filter(f => f.role !== "port" || n.scope === "cls");
+      const lineCell = line => line ? `<td class="ln">L${line}</td>` : "<td></td>";
+      const jump = (tr, line) => { if (!line) return; tr.classList.add("jump"); tr.title = "show this line in the source"; tr.addEventListener("click", () => this.showCodeAt(n, line)); };
       if (fields.length) {
         add("<h3>Fields</h3>");
-        const t = el("table"); t.innerHTML = "<tr><th>name</th><th>type</th><th>role</th></tr>";
-        fields.forEach(f => { const tr = el("tr"); tr.innerHTML = `<td><code>${esc(f.name)}</code></td><td><code>${esc((f.rand ? "rand " : "") + f.type)}</code></td><td class="role">${esc(f.role)}</td>`; t.append(tr); });
+        const t = el("table", { class: "members" }); t.innerHTML = "<tr><th>name</th><th>type</th><th>role</th><th></th></tr>";
+        fields.forEach(f => { const tr = el("tr"); tr.innerHTML = `<td><code>${esc(f.name)}</code></td><td><code>${esc((f.rand ? "rand " : "") + f.type)}</code></td><td class="role">${esc(f.role)}</td>${lineCell(f.line)}`; jump(tr, f.line); t.append(tr); });
         body.append(t);
       }
       if (n.methods && n.methods.length) {
         add("<h3>Methods</h3>");
-        add("<p>" + n.methods.map(m => `<code>${esc(m.name)}()</code><span class="role"> ${m.kind}${m.virtual ? " virtual" : ""}</span>`).join(" · ") + "</p>");
+        const t = el("table", { class: "members" }); t.innerHTML = "<tr><th>name</th><th>kind</th><th></th></tr>";
+        n.methods.forEach(m => {
+          const kind = m.ctor ? "constructor" : (m.static ? "static " : "") + (m.virtual ? "virtual " : "") + m.kind;
+          const tr = el("tr"); tr.innerHTML = `<td><code>${esc(m.name)}()</code></td><td class="role">${esc(kind)}</td>${lineCell(m.line)}`; jump(tr, m.line); t.append(tr);
+        });
+        body.append(t);
       }
       if (n.constraints && n.constraints.length) {
         add("<h3>Constraints</h3>");
@@ -989,6 +1387,7 @@
       const table = this.codeRows(text, a > 1 || b < total ? a : 0, b);
       box.append(table);
       body.append(box);
+      if (this.focusRow(table, body, body.offsetTop - box.offsetTop)) return;
       const row = table.rows[Math.max(0, a - 3)];
       if (row && a > 1) requestAnimationFrame(() => { body.scrollTop = row.offsetTop + box.offsetTop - body.offsetTop; });
     }
@@ -1087,25 +1486,32 @@
     // ------------------------------------------------------------- export
     exportSvgString() {
       const s = this.scenes[this.state.scene];
+      // the picture is exported with every arrow visible, whatever the Arrows button says
+      const arrowsOff = this.root.classList.contains("arrows-off");
+      if (arrowsOff) this.root.classList.remove("arrows-off");
       const clone = this.svg.cloneNode(true);
       const vp = clone.querySelector(".pm-viewport");
       vp.setAttribute("transform", "translate(10,10)");
       clone.setAttribute("width", Math.ceil(s.w + 20));
       clone.setAttribute("height", Math.ceil(s.h + 20));
       clone.setAttribute("viewBox", `0 0 ${Math.ceil(s.w + 20)} ${Math.ceil(s.h + 20)}`);
-      const bg = svg("rect", { width: "100%", height: "100%", fill: getComputedStyle(this.canvas).backgroundColor || "#fff" });
-      clone.insertBefore(bg, clone.firstChild);
-      // inline the computed styles (the exported file has no CSS)
+      // inline the computed styles (the exported file has no CSS); live and clone are paired by
+      // document order, so nothing may be added to the clone before this pass
       const props = ["fill", "fill-opacity", "stroke", "stroke-width", "stroke-dasharray", "stroke-linejoin", "opacity", "font-family", "font-size", "font-weight", "text-anchor", "paint-order", "letter-spacing", "text-transform"];
       const live = this.svg.querySelectorAll("*"), copy = clone.querySelectorAll("*");
+      const drop = [];
       live.forEach((src, i) => {
         const dst = copy[i]; if (!dst || dst.tagName === "defs" || dst.closest("defs")) return;
         const cs = getComputedStyle(src);
         props.forEach(pr => { const v = cs.getPropertyValue(pr); if (v) dst.style.setProperty(pr, v); });
-        if (src.classList.contains("hit")) dst.remove();
+        if (src.classList.contains("hit")) drop.push(dst);
       });
+      drop.forEach(d => d.remove());
+      if (arrowsOff) this.root.classList.add("arrows-off");
       // markers keep their CSS-driven colours
       clone.querySelectorAll("marker path").forEach(mp => { mp.style.fill = getComputedStyle(this.svg.querySelector("#pm-arrow path")).fill; });
+      const bg = svg("rect", { width: "100%", height: "100%", fill: getComputedStyle(this.canvas).backgroundColor || "#fff" });
+      clone.insertBefore(bg, clone.firstChild);
       const title = svg("title"); title.textContent = s.title; clone.insertBefore(title, clone.firstChild);
       return '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(clone);
     }
