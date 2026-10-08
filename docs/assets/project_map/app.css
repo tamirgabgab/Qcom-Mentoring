@@ -106,6 +106,12 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
   background-image: radial-gradient(var(--pm-grid) 1px, transparent 1px); background-size: 22px 22px; cursor: grab;
   user-select: none; -webkit-user-select: none; }
 .pm-canvas.dragging { cursor: grabbing; }
+.pm-canvas.pan-mode, .pm-canvas.pan-mode .pm-node, .pm-canvas.pan-mode .pm-frame, .pm-canvas.pan-mode .pm-node.container > rect.title { cursor: grab; }
+.pm-canvas.pan-mode.dragging, .pm-canvas.pan-mode.dragging .pm-node { cursor: grabbing; }
+.pm-node.container { cursor: grab; }
+.pm-node.container > rect.title, .pm-node.container > text.label, .pm-node.container > text.sub { cursor: move; }
+.pm-frame { cursor: grab; }
+.pm-frame text { cursor: move; }
 .pm-canvas svg { width: 100%; height: 100%; display: block; touch-action: none; }
 .pm-legend { position: absolute; left: 10px; bottom: 10px; background: var(--pm-panel); border: 1px solid var(--pm-border);
   border-radius: 6px; padding: 6px 10px; font-size: 12px; box-shadow: var(--pm-shadow); max-width: 320px; }

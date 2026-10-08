@@ -302,7 +302,8 @@
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
           "<tr><td><kbd>c</kbd></td><td>source column on / off</td></tr>" +
           "<tr><td><kbd>a</kbd></td><td>arrows: all, or only those of the box under the pointer</td></tr>" +
-          "<tr><td>drag a box</td><td>move it (the arrows follow; the layout is remembered in this browser)</td></tr>" +
+          "<tr><td>drag a box</td><td>move it (the arrows follow; the layout is remembered in this browser). A frame moves by its title bar; its inside pans like the background</td></tr>" +
+          "<tr><td>middle button, or <kbd>Space</kbd> + drag</td><td>pan from anywhere, even over a box</td></tr>" +
           "<tr><td>drag the column edges</td><td>resize the panel and the source column (double-click: default width)</td></tr>" +
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd></td><td>back / forward through the views visited</td></tr>" +
@@ -318,6 +319,7 @@
       this.resCode = el("div", { class: "pm-resizer r-code", title: "drag to resize the source column, double-click for the default width" });
       r.append(el("div", { class: "pm-body" }, [this.canvas, this.resPanel, this.panel, this.resCode, this.codePane, this.help]));
       this.initPanZoom();
+      this.initSpacePan();
       this.initKeys();
       this.initResizers();
     }
@@ -620,8 +622,8 @@
       this.selGroup.value = this.state.group || "";
       this.btnVariant.style.display = s.view === "tlm" ? "" : "none";
       this.btnVariant.classList.toggle("on", !!this.state.variant);
-      this.hint.textContent = s.view === "hierarchy" ? "drag the background to pan · drag a box to move it · click to inspect · double-click a box to open it"
-        : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box or a dashed frame to move it"
+      this.hint.textContent = s.view === "hierarchy" ? "drag the background or the inside of a frame to pan · drag a box, or a frame by its title bar, to move it · click to inspect · double-click a box to open it"
+        : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box, or a dashed frame by its label, to move it"
         : s.view === "env" ? "the whole environment on one page · click a box for its role and code · double-click to open it in the Hierarchy"
         : s.view === "plan" ? "top: the DUT features and what verifies them (click a chip for the item) · below: the tests · arrows: feature → test, who extends whom"
         : "click a class to see its file · Members shows fields and methods · drag a class to move it";
@@ -1047,7 +1049,8 @@
       let drag = null, pinch = null;
       const pointers = new Map();
       c.addEventListener("pointerdown", e => {
-        if (e.button !== 0 && e.pointerType === "mouse") return;
+        if (e.button !== 0 && e.button !== 1 && e.pointerType === "mouse") return;
+        if (e.button === 1) e.preventDefault();                       // no autoscroll on the middle button
         pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         if (pointers.size === 2) {
           const [a, b] = [...pointers.values()];
@@ -1055,13 +1058,20 @@
           drag = null;
           pointers.forEach((_, id) => { try { c.setPointerCapture(id); } catch (err) { /* released */ } });
         } else {
-          drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false, target: e.target, id: e.pointerId };
-          // a drag that starts on a box moves the box; on a port, a pin or the background it pans
+          drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false, target: e.target, id: e.pointerId, pan: e.button === 1 || this.spaceHeld };
+          // A drag that starts on a leaf box moves the box. A container (a frame with children)
+          // and a dashed group frame move only by their title bar: their body pans the view, like
+          // the background. The middle button, or Space held down, pans from anywhere.
           const nodeEl = e.target.closest && e.target.closest(".pm-node");
           const frameEl = e.target.closest && e.target.closest(".pm-frame");
           const onWidget = e.target.closest && (e.target.closest(".pm-port") || e.target.closest(".pm-pin") || e.target.closest(".pm-regmap"));
-          if (nodeEl && !onWidget && nodeEl.__item) drag.item = nodeEl.__item;
-          else if (frameEl && frameEl.__frame) drag.item = frameEl.__frame;     // a dashed group frame moves its members
+          if (!drag.pan) {
+            if (nodeEl && !onWidget && nodeEl.__item) {
+              if (!nodeEl.__item.container || this.inTitleBar(nodeEl.__item, e)) drag.item = nodeEl.__item;
+            } else if (frameEl && frameEl.__frame && this.inFrameTitle(frameEl, e)) {
+              drag.item = frameEl.__frame;     // a dashed group frame moves its members
+            }
+          }
         }
         // NB: no pointer capture here -- a captured pointer makes the browser retarget the click
         // to the canvas, so the boxes would never receive it. Capture starts with the drag.
@@ -1104,7 +1114,7 @@
       const end = e => {
         pointers.delete(e.pointerId);
         if (pointers.size < 2) pinch = null;
-        if (drag && !drag.moved && e.type === "pointerup") this.tap(drag.target, drag.x, drag.y);
+        if (drag && !drag.moved && e.type === "pointerup" && e.button !== 1) this.tap(drag.target, drag.x, drag.y);
         if (drag && drag.moved && drag.item && drag.done) {
           const s = this.scenes[this.state.scene];
           this.moveItem(s, drag.item.id, 0, 0, false);
@@ -1153,6 +1163,34 @@
       const it = node.__item || {};
       if (more || it.stub || dbl) this.open(id, it);
       else this.select(id);
+    }
+    // scene coordinates of a pointer event
+    scenePoint(e) {
+      const rect = this.canvas.getBoundingClientRect();
+      return { x: (e.clientX - rect.left - this.vp.x) / this.vp.k, y: (e.clientY - rect.top - this.vp.y) / this.vp.k };
+    }
+    // the title bar of a container: its top 30 px (the coloured strip with the name)
+    inTitleBar(it, e) { const p = this.scenePoint(e); return p.y - it.y <= 30; }
+    // the title band of a dashed group frame: the 24 px under its top edge, where the label sits
+    inFrameTitle(frameEl, e) {
+      const r = frameEl.querySelector("rect");
+      if (!r) return true;
+      const p = this.scenePoint(e);
+      return p.y - (+r.getAttribute("y")) <= 24;
+    }
+    // Space held down: every drag pans (the cursor shows it)
+    initSpacePan() {
+      this.spaceHeld = false;
+      const inField = e => e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable);
+      document.addEventListener("keydown", e => {
+        if (e.key !== " " || inField(e) || e.repeat) return;
+        e.preventDefault();
+        this.spaceHeld = true;
+        this.canvas.classList.add("pan-mode");
+      });
+      const release = () => { this.spaceHeld = false; this.canvas.classList.remove("pan-mode"); };
+      document.addEventListener("keyup", e => { if (e.key === " ") release(); });
+      window.addEventListener("blur", release);
     }
     applyVp() { this.viewport.setAttribute("transform", `translate(${this.vp.x},${this.vp.y}) scale(${this.vp.k})`); }
     zoomAt(f, px, py) {

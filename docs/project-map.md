@@ -84,7 +84,10 @@ them all. An arrow between two neighbours runs straight: a port sits on the side
 that faces the box it talks to, and the far ends of connections leaving a level (the dashed
 boxes) sit next to the box they talk to. An arrow that would cut through a box takes a detour
 above or below it. Any box can be **dragged** to a better place, the arrows follow; the layout is
-remembered in this browser per view, **Reset layout** puts everything back. The edges of the
+remembered in this browser per view, **Reset layout** puts everything back. A frame (a box with
+children, or a dashed group) moves by its **title bar**; dragging its inside pans the view, like
+the background, so a big hierarchy stays easy to move around in. The **middle mouse button**, or
+++space++ held down, pans from anywhere, even over a box. The edges of the
 side panel and of the Source column can be dragged to resize them (double-click for the default
 width).
 

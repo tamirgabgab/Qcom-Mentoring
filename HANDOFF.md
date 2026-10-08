@@ -277,6 +277,14 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - `test_model.py`: בדיקות ל-`plan:main` (24 כרטיסי test ≥, 11 feature ≥, split, ≥50 covers) ולתוכנית
      (ids ייחודיים, statuses, כל טסט שמוזכר קיים, **כל טסט מוזכר לפחות בפריט אחד**, note לכל לא-covered).
    - README/index-tables/project-map.md עודכנו; `export/plan_main.*` במקום `tests_main.*`.
+8. **סבב 5 של סשן 5 — ניווט בתוך מסגרות (תמיר: "כשאני גורר בתוך המלבן של yapp הוא זז במקום המסך"):**
+   אחרי דיון (5 אפשרויות) תמיר בחר 1+2: **container ו-frame מקווקו זזים רק מפס הכותרת** (30px עליונים
+   של container, 24px של frame; `inTitleBar`/`inFrameTitle` + `scenePoint`), הגוף שלהם מזיז את המסך
+   כמו הרקע; עלים נגררים כרגיל. **כפתור אמצעי** (`e.button === 1`, בלי tap ב-pointerup) ו-**Space לחוץ**
+   (`initSpacePan`, class `pan-mode` על ה-canvas, cursor grab) = pan מכל מקום. CSS: container/frame
+   cursor grab, כותרת cursor move. hints, help, project-map.md, README עודכנו. נבדק ב-Playwright
+   (`drag7.mjs` ב-scratchpad): גוף/כותרת/אמצעי/Space/עלה/לחיצה/frame. לא נבחר (אופציה 4): גלגלת=גלילה
+   במקום זום — תמיר העדיף להשאיר זום בגלגלת.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -285,7 +293,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 25 commits בסך הכול; האחרונים: (סשן 5) Test plan + 7 טסטים, `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
+- 27 commits בסך הכול; האחרונים: (סשן 5) גרירה מפס הכותרת + pan באמצעי/Space, `7dc58f6` (CLAUDE.md), `f3b3556` (Test plan + 7 טסטים), `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 

@@ -60,7 +60,8 @@ the sequences and overrides it sets up, the plan items it verifies).
 
 Arrows are drawn orthogonally; in the Hierarchy and TLM views they start hidden and
 appear for the box under the pointer (the **Arrows** button shows them all). Boxes
-can be dragged, the arrows follow, and the panel and source column can be resized.
+can be dragged (a frame by its title bar; its inside pans), the arrows follow, and the
+panel and source column can be resized.
 ⌂ returns to the overview, ◀ ▶ walk back and forward through the views visited.
 
 ![The project map: the UVM testbench above, the hardware below, the selected component's role and source on the right](docs/assets/readme/map_overview.png)
