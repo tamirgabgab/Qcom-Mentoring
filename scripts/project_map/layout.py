@@ -23,7 +23,7 @@ import re
 
 # ----------------------------------------------------------------------------- metrics
 CHAR_W = {11: 6.8, 12: 7.0, 13: 7.4, 14: 8.0, 15: 8.5}
-PAD = 14            # inner padding of containers
+PAD = 20            # inner padding of containers
 TITLE_H = 30        # container title bar
 GAP_X = 36          # gap between sibling boxes
 GAP_Y = 34
@@ -31,6 +31,7 @@ PORT_R = 5
 PORT_STEP = 20
 PIN_STEP = 18       # pins written inside a block diagram (the DUT)
 PIN_GAP = 10        # between pin groups
+PIN_OUT = 24        # the pin arrows of a block diagram, drawn outside the box
 PORT_SIDE = {       # which side of a box a port sits on: producers on the right, consumers on
     "tlm_port": "right", "get_port": "right",     # the left; the driver's seq_item_port pulls
     "seq_item_port": "left",                      # from the sequencer drawn on its left
@@ -174,6 +175,8 @@ class Layout:
         w = max(text_w + 28, port_w + 24, 120)
         header = 30 if b.sub else 24
         h = header + 10 + max(len(left), len(right)) * PORT_STEP
+        if ports and n.get("children"):
+            h += 14                      # the "open" marker sits below the last port
         if n["kind"] in ("module", "interface", "rtl_block") and n.get("signals") and not ports:
             h = max(h, 54)
         b.w, b.h = w, max(h, 44)
@@ -213,7 +216,7 @@ class Layout:
             cols[g["side"]].append(g)
         pin_h = {side: sum(len(g["pins"]) for g in gs) * PIN_STEP + max(0, len(gs) - 1) * PIN_GAP
                  for side, gs in cols.items()}
-        label_w = {side: max([tw(p, 11) for g in gs for p in g["pins"]] + [0]) + 44 for side, gs in cols.items()}
+        label_w = {side: max([tw(p, 11) for g in gs for p in g["pins"]] + [0]) + 20 for side, gs in cols.items()}
         regmap = (self.m.get("meta") or {}).get("regmap") or {}
         rows = regmap.get("figure_rows", [])
         col_w = [max([tw(r[i], 11) for r in rows] + [0]) for i in range(3)] if rows else [0, 0, 0]
@@ -237,8 +240,14 @@ class Layout:
         if rows:
             reg = {"x": round((b.w - reg_w) / 2, 1), "y": round(b.h - PAD - reg_h, 1), "w": round(reg_w, 1), "h": reg_h,
                    "title": "registers (HBUS)", "rows": rows, "cols": [round(c, 1) for c in col_w], "node": "hw_top.dut.u_regs"}
-        b.extra.update({"style": "dut_spec", "pins": pins, "anchors": anchors, "regmap": reg,
+        b.extra.update({"style": "dut_spec", "pins": pins, "anchors": anchors, "regmap": reg, "margin": PIN_OUT + 4,
                         "title": "DUT", "title_y": round((title_h + (reg["y"] if reg else b.h)) / 2, 1)})
+
+    @staticmethod
+    def margin_of(c):
+        """Clearance a box needs around itself beyond the usual gap (a block diagram draws
+        its pin arrows outside its frame)."""
+        return float(c.extra.get("margin", 0))
 
     def arrange_columns(self, b, columns, left_margin=0.0, right_margin=0.0):
         """Children stacked in the given columns (left to right), each column vertically centred."""
@@ -259,11 +268,13 @@ class Layout:
         x = PAD + left_margin
         for cs, h in zip(cols, heights):
             w = max(c.w for c in cs)
+            mx = max(self.margin_of(c) for c in cs)
+            x += mx
             y = TITLE_H + PAD + (total_h - h) / 2
             for c in cs:
                 c.move(x + (w - c.w) / 2 - c.x, y - c.y)
                 y += c.h + gap_y
-            x += w + GAP_X
+            x += w + mx + GAP_X
         title_w = tw(b.label, 14) + tw(b.sub, 12) + 40
         b.w = max(x - GAP_X + PAD + right_margin, title_w, 160)
         b.h = TITLE_H + PAD + total_h + PAD
@@ -299,8 +310,9 @@ class Layout:
             x = PAD + left_margin
             row_h = max(c.h for c in r)
             for c in r:
+                x += self.margin_of(c)
                 c.move(x - c.x, y - c.y)
-                x += c.w + GAP_X
+                x += c.w + self.margin_of(c) + GAP_X
             row_w = x - GAP_X + PAD + right_margin
             total_w = max(total_w, row_w)
             row_geo.append((r, row_h))
@@ -308,13 +320,63 @@ class Layout:
         # centre each row inside the usable width
         usable = total_w - 2 * PAD - left_margin - right_margin
         for r, row_h in row_geo:
-            row_w = sum(c.w for c in r) + GAP_X * (len(r) - 1)
+            row_w = sum(c.w + 2 * self.margin_of(c) for c in r) + GAP_X * (len(r) - 1)
             dx = (usable - row_w) / 2
             for c in r:
                 c.move(dx, 0)
         title_w = tw(b.label, 14) + tw(b.sub, 12) + 40
         b.w = max(total_w, title_w, 160)
         b.h = y - GAP_Y + PAD
+
+    def visible_owner(self, nid, boxes):
+        cur = nid
+        while cur is not None and cur not in boxes:
+            cur = self.N[cur].get("parent") if cur in self.N else None
+        return cur
+
+    def face_partners(self, boxes, ports):
+        """A port sits on the side of its box that faces the box it talks to, so an arrow
+        between two neighbours runs straight instead of looping around them: the output of a
+        box on the left leaves from its right edge, the input of the box on its right enters
+        on its left edge. The generator's guess (producers right, consumers left) stays when
+        the partner is above / below, not in the scene, or a frame around the box."""
+        for b in boxes.values():
+            if not b.ports:
+                continue
+            wish = {}
+            for p in b.ports:
+                xs = []
+                for e in self.edges_by_node.get(p["id"], []):
+                    if e["kind"] not in EDGE_KINDS_IN_SCENES or e.get("variant"):
+                        continue
+                    other = e["to"] if e["from"] == p["id"] else e["from"]
+                    ob = self.visible_owner(other, boxes)
+                    if ob is None or ob == b.id:
+                        continue
+                    o = boxes[ob]
+                    if (o.x <= b.x and o.x + o.w >= b.x + b.w) or (b.x <= o.x and b.x + b.w >= o.x + o.w):
+                        continue
+                    op = ports.get(other)
+                    xs.append(op["x"] if op else o.x + o.w / 2)
+                if xs and all(x > b.x + b.w for x in xs):
+                    wish[p["id"]] = "right"
+                elif xs and all(x < b.x for x in xs):
+                    wish[p["id"]] = "left"
+            if not any(wish.get(p["id"], p["side"]) != p["side"] for p in b.ports):
+                continue
+            # labels on both sides must fit next to each other
+            lw = {side: max([tw(p["label"], 11) for p in b.ports if wish.get(p["id"], p["side"]) == side] + [0])
+                  for side in ("left", "right")}
+            if lw["left"] and lw["right"] and lw["left"] + lw["right"] + 4 * PORT_R + 24 > b.w and not b.container:
+                continue
+            y_top = min(p["y"] for p in b.ports)
+            count = {"left": 0, "right": 0}
+            for p in b.ports:
+                p["side"] = wish.get(p["id"], p["side"])
+                p["x"] = b.x if p["side"] == "left" else b.x + b.w
+                p["y"] = y_top + count[p["side"]] * PORT_STEP
+                count[p["side"]] += 1
+            b.h = max(b.h, y_top - b.y + max(count.values()) * PORT_STEP + PAD)
 
     # ------------------------------------------------------------- edge routing
     @staticmethod
@@ -432,6 +494,7 @@ class HierarchyLayout(Layout):
         for b in boxes.values():
             for p in b.ports:
                 ports[p["id"]] = p
+        self.face_partners(boxes, ports)
         edges = []
         stubs = self.add_stubs(box, boxes, ports, edges, nid)       # may shift the boxes right
         edges = self.scene_edges(boxes, ports, kinds=EDGE_KINDS_IN_SCENES, scene_root=nid) + edges
@@ -522,7 +585,7 @@ class HierarchyLayout(Layout):
                     an = anchors[other["id"]]
                     bx = me["box"]
                     me["side"] = an["side"]
-                    me["pt"] = (bx.x + (0 if an["side"] == "left" else bx.w), bx.y + an["y"])
+                    me["pt"] = (bx.x + (-PIN_OUT if an["side"] == "left" else bx.w + PIN_OUT), bx.y + an["y"])
                     me["pinned"] = True
                     sp["label"] = None          # the pins carry the signal names
             ends.append((sp, a, b))
@@ -570,12 +633,6 @@ class HierarchyLayout(Layout):
             out.append(g)
         return out
 
-    def visible_owner(self, nid, boxes):
-        cur = nid
-        while cur is not None and cur not in boxes:
-            cur = self.N[cur].get("parent") if cur in self.N else None
-        return cur
-
     def scene_edges(self, boxes, ports, kinds, scene_root=None, collapse_vif=False):
         """Edges with both ends inside the scene."""
         specs = []
@@ -613,9 +670,13 @@ class HierarchyLayout(Layout):
 
     def add_stubs(self, root_box, boxes, ports, edges, scene_root):
         """Edges leaving the scene: a small stub box outside the container stands for the far end.
-        Producers feeding the scene sit on the left, everything the scene talks to on the right."""
+        A stub sits on the side of the container nearer to the box it talks to, at its height
+        when possible, so the arrow between them is short and straight; a stub talking to the
+        container itself follows the data: producers feeding the scene on the left, everything
+        the scene talks to on the right."""
         specs = []
         stubs = {}
+        partners = {}                      # stub id -> in-scene boxes it talks to
         # a far end that also reaches a child of the container: the arrow to the frame itself is
         # the coarse version of that connection, so it is left out (module scenes)
         detailed = set()
@@ -636,6 +697,12 @@ class HierarchyLayout(Layout):
             if near == scene_root and e["kind"] == "port" and far in detailed:
                 continue
             incoming = e["from"] == far
+            near_box = boxes[self.visible_owner(near, boxes)]
+            if near_box is not root_box:
+                partners.setdefault(far, []).append((near_box.x, near_box.x + near_box.w, near_box.y + near_box.h / 2))
+            elif near in ports:
+                pp = ports[near]
+                partners.setdefault(far, []).append((pp["x"], pp["x"], pp["y"]))
             if far not in stubs:
                 owner_far = far if not self.is_port(far) else self.N[far]["parent"]
                 label = self.N[far]["name"] if not self.is_port(far) else f"{self.N[owner_far]['name']}.{self.N[far]['name']}"
@@ -645,29 +712,53 @@ class HierarchyLayout(Layout):
                 sb.w, sb.h = max(tw(label, 12) + 24, tw(far, 11) + 24, 120), 40
                 sb.extra = {"stub": True, "side": side, "scene": self.scene_for(far), "sub": far}
                 stubs[far] = sb
-            specs.append({"edge": e, "from": e["from"], "to": e["to"], "stub": True,
-                          "fixed": {far: "right" if stubs[far].extra["side"] == "left" else "left"},
-                          "stub_side": stubs[far].extra["side"],
+            specs.append({"edge": e, "from": e["from"], "to": e["to"], "stub": True, "_far": far,
                           "label_t": 0.62 if incoming else 0.38})
+        # the side nearer to the partner boxes wins over the data-direction guess; a partner
+        # spanning the middle of the container (the DUT) decides nothing
+        root_cx = root_box.x + root_box.w / 2
+        for far, pts in partners.items():
+            if all(x1 < root_cx for x0, x1, _ in pts):
+                stubs[far].extra["side"] = "left"
+            elif all(x0 > root_cx for x0, x1, _ in pts):
+                stubs[far].extra["side"] = "right"
+        for sp in specs:
+            far = sp["_far"]
+            sp["fixed"] = {far: "right" if stubs[far].extra["side"] == "left" else "left"}
+            sp["stub_side"] = stubs[far].extra["side"]
+            del sp["_far"]
         if not stubs:
             return []
         # place the stub columns
         left = [b for b in stubs.values() if b.extra["side"] == "left"]
         right = [b for b in stubs.values() if b.extra["side"] == "right"]
         left_w = max([b.w for b in left] + [0])
-        shift = left_w + GAP_X * 1.5 if left else 0
+        # room between a stub and the container for the label of the arrow between them
+        gap = max(GAP_X * 1.5, min(110.0, max([tw(sp["edge"].get("label") or "", 11) for sp in specs] + [0]) + 24))
+        shift = left_w + gap if left else 0
         if shift:
             for b in list(boxes.values()):
                 if b.depth == 0:
                     b.move(shift, 0)
-        y = root_box.y + TITLE_H
-        for b in left:
-            b.move(PAD - b.x, y - b.y)
-            y += b.h + 12
-        y = root_box.y + TITLE_H
-        for b in right:
-            b.move(root_box.x + root_box.w + GAP_X * 1.5 - b.x, y - b.y)
-            y += b.h + 12
+        # top to bottom in the order of their partners, each at the height of its partner when
+        # the one above leaves room
+        def wanted_y(b):
+            pts = partners.get(b.id)
+            if not pts:
+                return None
+            return sum(cy for _, _, cy in pts) / len(pts) - b.h / 2
+
+        def stack(col, x):
+            col.sort(key=lambda b: (wanted_y(b) if wanted_y(b) is not None else 1e9, b.id))
+            y = root_box.y + TITLE_H
+            for b in col:
+                w = wanted_y(b)
+                if w is not None:
+                    y = max(y, w)
+                b.move(x - b.x, y - b.y)
+                y += b.h + 12
+        stack(left, PAD)
+        stack(right, root_box.x + root_box.w + gap)
         all_boxes = dict(boxes)
         all_boxes.update(stubs)
         # the in-scene edges were planned before the shift: recompute everything together
@@ -891,6 +982,7 @@ class TlmLayout(Layout):
         for b in boxes.values():
             for p in b.ports:
                 ports[p["id"]] = p
+        self.face_partners(boxes, ports)
         geo = []
         for e in edges:
             g = self.edge_geometry(e, boxes, ports)

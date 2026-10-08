@@ -56,6 +56,7 @@
   const DIR = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
   const STUB = 18;             // perpendicular run before the first corner
   const CHANNEL = 9;           // spacing between parallel arrows sharing a corridor
+  const PIN_OUT = 24;          // the pin arrows of a block diagram (the DUT), drawn outside its box
   function pickSide(box, pt) {
     const cx = box.x + box.w / 2, cy = box.y + box.h / 2;
     const dx = pt[0] - cx, dy = pt[1] - cy;
@@ -76,8 +77,23 @@
     }
     return out;
   }
-  // a, b: {x, y, side, box}; off: corridor offset for the free middle segment
-  function orthoRoute(a, b, off) {
+  // how many of the boxes `obs` a polyline cuts through (touching an edge does not count)
+  function crossings(pts, obs) {
+    let n = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const [x1, y1] = pts[i - 1], [x2, y2] = pts[i];
+      const lo = Math.min(x1, x2), hi = Math.max(x1, x2), tlo = Math.min(y1, y2), thi = Math.max(y1, y2);
+      obs.forEach(o => {
+        if (Math.abs(y1 - y2) < 1) { if (y1 > o.y + 2 && y1 < o.y + o.h - 2 && hi > o.x + 2 && lo < o.x + o.w - 2) n++; }
+        else if (Math.abs(x1 - x2) < 1) { if (x1 > o.x + 2 && x1 < o.x + o.w - 2 && thi > o.y + 2 && tlo < o.y + o.h - 2) n++; }
+      });
+    }
+    return n;
+  }
+  // a, b: {x, y, side, box}; off: corridor offset for the free middle segment; obs: boxes the
+  // arrow should not cut through (a Z between two boxes facing each other takes a detour
+  // above or below the boxes in its way when that costs fewer crossings)
+  function orthoRoute(a, b, off, obs) {
     const da = DIR[a.side], db = DIR[b.side];
     const A = [a.x + da[0] * STUB, a.y + da[1] * STUB], B = [b.x + db[0] * STUB, b.y + db[1] * STUB];
     const ah = da[1] === 0, bh = db[1] === 0;
@@ -90,6 +106,17 @@
           const lo = Math.min(a.x, b.x) + 3, hi = Math.max(a.x, b.x) - 3;
           const mx = Math.max(lo, Math.min(hi, (A[0] + B[0]) / 2 + off));
           pts = [[a.x, a.y], [mx, a.y], [mx, b.y], [b.x, b.y]];
+        }
+        {
+          const n0 = obs && obs.length ? crossings(pts, obs) : 0;
+          if (n0) {
+            const hit = obs.filter(o => crossings(pts, [o]));
+            const top = Math.min(...hit.map(o => o.y)) - 16 - Math.abs(off), bottom = Math.max(...hit.map(o => o.y + o.h)) + 16 + Math.abs(off);
+            const cands = [top, bottom].map(my => [[a.x, a.y], [A[0], a.y], [A[0], my], [B[0], my], [B[0], b.y], [b.x, b.y]]);
+            const cost = cands.map((c, i) => crossings(c, obs) * 1000 + Math.abs((a.y + b.y) / 2 - [top, bottom][i]));
+            const best = cost[0] <= cost[1] ? 0 : 1;
+            if (crossings(cands[best], obs) < n0) pts = cands[best];
+          }
         }
       } else {
         const top = Math.min(a.box.y, b.box.y) - 22 - Math.abs(off), bottom = Math.max(a.box.y + a.box.h, b.box.y + b.box.h) + 22 + Math.abs(off);
@@ -182,6 +209,7 @@
       this.initTheme();
       this.root.classList.toggle("code-hidden", !this.state.code);
       this.applyHash(location.hash) || this.show("h:root");
+      this.pushHist();
       window.addEventListener("hashchange", () => this.applyHash(location.hash));
       window.addEventListener("resize", () => this.fit());
       window.addEventListener("message", ev => {
@@ -209,6 +237,9 @@
       this.search.addEventListener("change", () => this.gotoSearch(this.search.value));
       this.search.addEventListener("keydown", e => { if (e.key === "Enter") this.gotoSearch(this.search.value); if (e.key === "Escape") this.search.blur(); });
       this.tools = el("div", { class: "pm-tools" });
+      this.btnHome = el("button", { title: "Home: the overview, nothing selected (h)", onclick: () => this.home() }, ["⌂"]);
+      this.btnBack = el("button", { title: "Back to the previous view (Alt+←)", onclick: () => this.back() }, ["◀"]);
+      this.btnFwd = el("button", { title: "Forward again (Alt+→)", onclick: () => this.forward() }, ["▶"]);
       this.btnUp = el("button", { title: "Up one level (Esc)", onclick: () => this.up() }, ["↑ Up"]);
       this.btnMembers = el("button", { title: "Show fields and methods", onclick: () => this.toggleFull() }, ["Members"]);
       this.btnLabels = el("button", { title: "Always show the labels of the arrows (l)", onclick: () => { this.state.labels = !this.state.labels; this.render(); } }, ["Labels"]);
@@ -237,7 +268,7 @@
       this.btnPanel = el("button", { title: "Show / hide the panel (p)", onclick: () => { r.classList.toggle("panel-hidden"); this.fit(); } }, ["Panel"]);
       this.btnCode = el("button", { title: "Show / hide the source column (c)", onclick: () => this.toggleCode() }, ["</> Source"]);
       const btnHelp = el("button", { title: "Keyboard shortcuts (?)", onclick: () => this.help.classList.toggle("open") }, ["?"]);
-      this.tools.append(this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnArrows, this.btnLabels, this.btnReset, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
+      this.tools.append(el("div", { class: "grp" }, [this.btnHome, this.btnBack, this.btnFwd]), this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnArrows, this.btnLabels, this.btnReset, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
       if (this.opts.standaloneUrl) {
         this.tools.append(el("a", { href: this.opts.standaloneUrl, download: "", title: "Save this map as one HTML file that works offline" }, [el("button", {}, ["Download offline copy"])]));
       }
@@ -269,6 +300,8 @@
           "<tr><td>drag a box</td><td>move it (the arrows follow; the layout is remembered in this browser)</td></tr>" +
           "<tr><td>drag the column edges</td><td>resize the panel and the source column (double-click: default width)</td></tr>" +
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
+          "<tr><td><kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd></td><td>back / forward through the views visited</td></tr>" +
+          "<tr><td><kbd>h</kbd></td><td>home: the overview</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
@@ -403,6 +436,43 @@
       const h = "#" + p.toString().replace(/%3A/g, ":").replace(/%5B/g, "[").replace(/%5D/g, "]").replace(/%2F/g, "/");
       if (location.hash !== h) history.replaceState(null, "", h);
       if (window.parent !== window) { try { window.parent.postMessage({ pmHash: h }, "*"); } catch (e) { /* ignore */ } }
+      if (!this._restoring) this.pushHist();
+    }
+    // ---- back / forward over the views visited: a step is a scene plus the item selected in it
+    pushHist() {
+      const cur = { scene: this.state.scene, node: this.state.selected || null };
+      const h = this.hist || (this.hist = []);
+      if (this.histPos === undefined) this.histPos = -1;
+      const top = h[this.histPos];
+      if (top && top.scene === cur.scene && top.node === cur.node) return;
+      // a new selection in the same scene replaces the step of the previous selection there
+      if (top && top.scene === cur.scene && cur.node && top.node) { h[this.histPos] = cur; this.updateHistButtons(); return; }
+      h.splice(this.histPos + 1);
+      h.push(cur);
+      if (h.length > 200) h.shift();
+      this.histPos = h.length - 1;
+      this.updateHistButtons();
+    }
+    updateHistButtons() {
+      if (!this.btnBack) return;
+      this.btnBack.disabled = !(this.hist && this.histPos > 0);
+      this.btnFwd.disabled = !(this.hist && this.histPos < this.hist.length - 1);
+    }
+    restoreHist(step) {
+      if (!step || !this.scenes[step.scene]) return;
+      this._restoring = true;
+      try {
+        this.show(step.scene);
+        if (step.node) this.select(step.node);
+      } finally { this._restoring = false; }
+      this.updateHistButtons();
+    }
+    back() { if (this.hist && this.histPos > 0) { this.histPos--; this.restoreHist(this.hist[this.histPos]); } }
+    forward() { if (this.hist && this.histPos < this.hist.length - 1) { this.histPos++; this.restoreHist(this.hist[this.histPos]); } }
+    // the overview: hierarchy root, nothing selected, fitted to the window
+    home() {
+      this.state.lastHier = "h:root";
+      this.show("h:root");
     }
     sceneFor(view) {
       if (view === "hierarchy") return this.state.lastHier || "h:root";
@@ -563,7 +633,7 @@
         let far = otherId;
         while (far && !it.anchors[far] && this.N[far]) far = this.N[far].parent;
         const an = far ? it.anchors[far] : null;
-        if (an) return { kind: "pin", x: it.x + (an.side === "left" ? 0 : it.w), y: it.y + an.y, side: an.side, box: it, id: cur };
+        if (an) return { kind: "pin", x: it.x + (an.side === "left" ? -PIN_OUT : it.w + PIN_OUT), y: it.y + an.y, side: an.side, box: it, id: cur };
       }
       return { kind: "box", box: it, id: cur, stub: !!it.stub, stubSide: it.side };
     }
@@ -622,9 +692,10 @@
         lst.forEach((x, k) => { x.off = (k - (lst.length - 1) / 2) * CHANNEL; });
       });
       const out = {};
+      const boxes = s.items.filter(it => !it.container).concat(s.stubs || []);
       ends.forEach(x => {
         if (x.fallback) { out[x.e.id] = null; return; }
-        const pts = orthoRoute(x.a, x.b, x.off || 0);
+        const pts = orthoRoute(x.a, x.b, x.off || 0, boxes.filter(o => o !== x.a.box && o !== x.b.box));
         out[x.e.id] = { pts, mid: longestMid(pts) };
       });
       return out;
@@ -735,18 +806,19 @@
       (it.pins || []).forEach(p => {
         const left = p.side === "left";
         const x0 = left ? 0 : it.w, dir = left ? 1 : -1;           // dir: into the box
+        const xo = x0 - dir * PIN_OUT;                              // outer end of the pin arrow
         const pg = svg("g", { class: `pin ${p.dir}` });
-        pg.append(svg("line", { x1: x0, y1: p.y, x2: x0 + dir * 22, y2: p.y }));
-        // arrow head(s): in -> points into the box, out -> points out, inout -> both
+        pg.append(svg("line", { x1: xo, y1: p.y, x2: x0, y2: p.y }));
+        // arrow head(s) outside the box: in -> points at the box, out -> points away, inout -> both
         const head = (tipX, sign) => svg("path", { class: "arrow", d: `M${tipX},${p.y} l${-sign * 7},-3.5 v7 z` });
-        if (p.dir === "in" || p.dir === "inout") pg.append(head(x0 + dir * 22, dir));
-        if (p.dir === "out" || p.dir === "inout") pg.append(head(x0, -dir));
+        if (p.dir === "in" || p.dir === "inout") pg.append(head(x0, dir));
+        if (p.dir === "out" || p.dir === "inout") pg.append(head(xo, -dir));
         if (p.width > 1) {
-          const sx = x0 + dir * 12;
+          const sx = x0 - dir * 13;
           pg.append(svg("line", { class: "bus", x1: sx - 3, y1: p.y + 4, x2: sx + 3, y2: p.y - 4 }));
           const bw = svg("text", { class: "bus", x: sx + 1, y: p.y - 5, "text-anchor": "middle" }); bw.textContent = p.width; pg.append(bw);
         }
-        const t = svg("text", { class: "pin", x: x0 + dir * 28, y: p.y + 4, "text-anchor": left ? "start" : "end" }); t.textContent = p.name; pg.append(t);
+        const t = svg("text", { class: "pin", x: x0 + dir * 8, y: p.y + 4, "text-anchor": left ? "start" : "end" }); t.textContent = p.name; pg.append(t);
         grp.append(pg);
       });
       const r = it.regmap;
@@ -1041,6 +1113,11 @@
     initKeys() {
       document.addEventListener("keydown", e => {
         if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA")) return;
+        if (e.altKey && !e.ctrlKey && !e.metaKey && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
+          e.preventDefault();
+          if (e.key === "ArrowLeft") this.back(); else this.forward();
+          return;
+        }
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const k = e.key;
         if (k === "/") { e.preventDefault(); this.search.focus(); this.search.select(); }
@@ -1049,6 +1126,7 @@
         else if (k === "3") this.switchView("classes");
         else if (k === "Escape" || k === "Backspace") { e.preventDefault(); if (this.help.classList.contains("open")) this.help.classList.remove("open"); else this.up(); }
         else if (k === "f") this.fit();
+        else if (k === "h") this.home();
         else if (k === "+" || k === "=") this.zoomBy(1.25);
         else if (k === "-") this.zoomBy(0.8);
         else if (k === "m") this.toggleFull();

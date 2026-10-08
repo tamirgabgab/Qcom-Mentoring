@@ -66,11 +66,8 @@
 .yapp-sim .ys-fd .cell.rsv { background: repeating-linear-gradient(135deg, transparent 0 3px, color-mix(in srgb, var(--ys-muted) 25%, transparent) 3px 4px); }
 .yapp-sim .ys-fd.editable .cell { cursor: pointer; }
 .yapp-sim .ys-fd.editable .cell:hover { border-color: var(--ys-accent); }
-.yapp-sim .ys-fd .fld { display: flex; flex-direction: column; align-items: center; min-width: 0; margin-top: 2px; }
-.yapp-sim .ys-fd .fld i { display: block; width: 100%; height: 6px; border: 1px solid var(--ys-muted); border-top: 0; border-radius: 0 0 3px 3px; }
-.yapp-sim .ys-fd .fld b { font-weight: 500; font-size: 10px; color: var(--ys-fg); writing-mode: vertical-rl; text-orientation: mixed; line-height: 1; padding-top: 3px; max-height: 12.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.yapp-sim .ys-fd .fld.wide b { writing-mode: horizontal-tb; padding-top: 2px; max-height: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-.yapp-sim .ys-fd-legend { grid-column: 1 / -1; list-style: none; margin: 4px 0 0; padding: 0; font-family: inherit; font-size: 11.5px; }
+.yapp-sim .ys-fd-legend { grid-column: 1 / -1; list-style: none; margin: 5px 0 0; padding: 0; font-family: inherit; font-size: 11.5px; line-height: 1.35; }
+.yapp-sim table.ys-t .ys-fd-legend { font-size: 11px; }
 .yapp-sim .ys-fd-legend li { padding: 1px 0; }
 .yapp-sim .ys-fd-legend code { font-family: var(--ys-mono); font-size: 11px; background: var(--ys-soft); padding: 0 3px; border-radius: 3px; }
 .yapp-sim .ys-fd-legend .d { color: var(--ys-muted); }

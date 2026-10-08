@@ -67,10 +67,17 @@ whatever is selected (one class per file). Press ++question++ inside the map for
 rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM
 views the **Arrows** button (or ++a++) starts *off*: only the arrows of the box under the pointer
 (and of the selected one) are shown, which keeps a crowded view readable; switch it on to see
-them all. Any box can be **dragged** to a better place, the arrows follow; the layout is
+them all. An arrow between two neighbours runs straight: a port sits on the side of its box
+that faces the box it talks to, and the far ends of connections leaving a level (the dashed
+boxes) sit next to the box they talk to. An arrow that would cut through a box takes a detour
+above or below it. Any box can be **dragged** to a better place, the arrows follow; the layout is
 remembered in this browser per view, **Reset layout** puts everything back. The edges of the
 side panel and of the Source column can be dragged to resize them (double-click for the default
 width).
+
+**Getting around.** ⌂ (or ++h++) is home: the overview, nothing selected. ◀ and ▶ (or
+++alt+left++ / ++alt+right++) walk back and forward through the views visited, like a browser;
+**↑ Up** (++esc++) goes one level out.
 
 The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
 introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
@@ -82,8 +89,8 @@ RTL block, the item's lines marked; it can be downloaded or opened on GitHub fro
 block; click that block (or the **Simulate** tab on the DUT, `u_regs`, `hbus0`, the register
 model or a packet class) for two small interactive models: HBUS reads and writes against the
 register file with its RW / RO policy (the value to write is shown as a bit-field diagram, MSB on
-the left, LSB on the right, with the field names from the register map -- click a bit to flip
-it), and a packet playground that builds or decodes a YAPP
+the left, LSB on the right, one line per field underneath with its bits, name, value and meaning
+from the register map -- click a bit to flip it), and a packet playground that builds or decodes a YAPP
 packet, computes the parity, lists the checks and sends the bytes through the router model so
 the counters and `yapp_pkt_mem` move. The same widgets are on the
 [DUT specification](dut/spec.md#try-it-the-register-file) and

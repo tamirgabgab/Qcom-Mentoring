@@ -201,7 +201,7 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 /* the draggable edges of the panel and the source column */
 .pm-resizer { flex: 0 0 6px; width: 6px; cursor: col-resize; background: transparent; margin: 0 -3px; z-index: 5; position: relative; touch-action: none; }
 .pm-resizer:hover, .pm-resizer.active { background: var(--pm-accent); opacity: .55; }
-.pm.panel-hidden .pm-resizer.r-panel, .pm.panel-hidden .pm-resizer.r-code, .pm.code-hidden .pm-resizer.r-code { display: none; }
+.pm.panel-hidden .pm-resizer.r-panel, .pm.code-hidden .pm-resizer.r-code { display: none; }
 .pm:not(.code-hidden) .pm-panel { width: 360px; flex-basis: 360px; }
 
 /* source column: the selected item's whole file (one class per file), its lines marked */

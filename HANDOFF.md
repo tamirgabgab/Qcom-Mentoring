@@ -186,6 +186,35 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      ה-`g.pm-edge` נמחקו — **ה-SVG/PNG המיוצאים מעולם לא כללו חצים**. עכשיו כן, וגם כש-Arrows כבוי.
    - `test_model.py`: pins נחשבים anchors; בדיקות ל-DUT ב-TLM (11 פינים, 6/5, כל vif נוגע בפין).
    - תועד ב-`docs/project-map.md` וב-README. צילומי ה-README **לא** חודשו (בקשת תמיר); `export/` חודש.
+5. **סבב UX שני במפה** (7 בקשות של תמיר עם צילומים + 4 תשובות לשאלות מנחות):
+   - `layout.py`: `PAD` 14→20 (ה-containers מרווחים יותר). **`face_partners()`** (בסיס `Layout`, רץ
+     בסצנות היררכיה ו-TLM אחרי הסידור): port עובר לצד של הקופסה שפונה לקופסה שהוא מדבר איתה —
+     רק כשכל השותפים באותו צד, לא כשהשותף הוא frame סביבו, ורק אם יש רוחב לתוויות בשני הצדדים;
+     ה-ports נערמים מחדש והקופסה גדלה אם צריך. כך driver→sequencer ישר בכל סצנה (לא לולאה סביב ה-agent).
+     **`add_stubs()`**: stub (הקצה הרחוק של חיבור שיוצא מהרמה) יושב בצד של הקופסה שהוא מדבר איתה
+     (כל השותפים משמאל ל-root_cx → שמאל, כולם מימין → ימין, אחרת כלל הכיוון הישן), ממוין לפי גובה
+     השותף ומיושר אליו כשיש מקום (`wanted_y`; שותף = קופסה בסצנה או port על ה-root). הרווח בין stub
+     ל-container = max(54, min(110, רוחב התווית+24)). ב-`h:hw_top` המוניטורים של chan0..2 מימין ליד ch0..2.
+     **DUT (`dut_spec`)**: החצים של הפינים **מחוץ** לקופסה (`PIN_OUT = 24`), השמות בפנים; `label_w`
+     קטן ב-24; `extra["margin"] = PIN_OUT+4` ו-`margin_of()` ב-`arrange`/`arrange_columns` משאירים
+     מקום; ה-anchors של הסצנה נוחתים בקצה החיצוני של חץ הפין (גם ב-Python וגם ב-JS `endpointOf`).
+     `size_leaf`: +14px גובה לקופסה עם ports וגם סמן "open" (לא חופפים יותר).
+   - `app.js`: **היסטוריית ניווט** (`pushHist/back/forward/restoreHist`): צעד = סצנה + פריט נבחר;
+     נרשם ב-`updateHash()` (לא בזמן שחזור, `_restoring`); בחירה חדשה באותה סצנה מחליפה את הצעד של
+     הבחירה הקודמת; כפתורים ◀ ▶ בסרגל + `Alt+←/→`; **⌂ Home** (`h`) = `h:root`, בלי בחירה, Fit.
+     **`drawDutSpec`** כמו `drawDutTlm` (חץ בחוץ, שם בפנים, רוחב bus בחוץ). **עקיפת מכשולים
+     ב-`orthoRoute`**: ל-Z/קו ישר בין שתי קופסאות שפונות זו לזו, אם המסלול חותך קופסת עלה/stub
+     (`crossings()`, סגמנט נחשב אופקי/אנכי עד 1px), מנסים מעקף מעל/מתחת למכשולים ולוקחים אותו אם
+     הוא חותך פחות (`routeEdges` מעביר את רשימת הקופסאות בלי שתי הקצוות). פתר את router_module
+     (chan exports מתחת ל-reference), hbus (vif מעל ה-monitor), root (chan0→hbus סביב router_module).
+   - `app.css`: **תיקון באג** — ידית הרוחב של Source הוסתרה כשהפאנל מוסתר (`.panel-hidden .r-code`),
+     לכן לא ניתן היה לשנות רוחב עם Source בלבד. הכלל הוסר.
+   - `sim.js`/`sim.css`: **דיאגרמת הביטים בלי שמות השדות** (הסוגריים האנכיים הוסרו); מתחת לכל
+     דיאגרמה — גם בכרטיס HBUS וגם בטבלת REGISTERS — שורה לכל שדה `[bits] name = value -- desc`
+     (אותו פורמט לכולם, גם ctrl_reg; רגיסטר בלי שדות = שורה אחת `[7:0] name = v -- desc`, לא ממופה =
+     הסבר). `opts.legend` הוסר, נוסף `opts.singleDesc`.
+   - תועד ב-`docs/project-map.md` (פסקה "Getting around") וב-README. `export/` חודש (50 קבצים).
+     צילומי ה-README לא חודשו.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -194,7 +223,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 20 commits בסך הכול; האחרונים: (סשן 5) test_sim.mjs + HANDOFF, `79b5fd4` (HANDOFF), `c98a036` (README),
+- 22 commits בסך הכול; האחרונים: (סשן 5) סבב UX שני, `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 
@@ -366,7 +395,9 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - Mermaid מ-CDN — האתר offline מאבד דיאגרמות (המפה והסימולטורים כן עובדים offline).
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
 - ~~בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact"~~ — הפאנל ניתן להרחבה (סשן 5); הדיאגרמה בשורת-משנה.
-- תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה (ב-`h:tb.hbus` למשל); בסצנות צפופות הן ממילא מוסתרות עד hover.
+- תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה; בסצנות צפופות הן ממילא מוסתרות עד hover.
+- עקיפת מכשולים (סשן 5, פריט 5) מכסה רק חץ בין שתי קופסאות שפונות זו לזו (Z או קו ישר) ורק מעקף אחד מעל/מתחת; מסלולי U/L וחצים אנכיים עדיין יכולים לחתוך קופסאות (ב-`h:tb` עם Arrows דלוק). ב-`h:hw_top` ה-backdoor של yapp_rm עובר בין clk_rst_if ל-clkgen.
+- הסרגל נשבר לשתי שורות ברוחב 1600px בתצוגת TLM (כותרת ארוכה + 3 כפתורי ניווט); ב-1900+ שורה אחת.
 - ה-packet playground מציג `maxpktsize`/`router_en` מהמודל המשותף — אחרי שינוי ברגיסטרים הוא מתעדכן דרך `model.on`, אבל שני widgets על אותו דף מתרנדרים מחדש כולם בכל שינוי (עדיין מהיר).
 - ~~`test_model.py` לא בודק את `sim.js` עצמו~~ — **בוצע בסשן 5**: `test_sim.mjs` רץ ב-`map-check` כשיש node.
   מה שעדיין לא נבדק אוטומטית: ה-widgets עצמם (DOM) — רק דרך `readme_shots.mjs`/בדיקה ידנית.
@@ -399,8 +430,9 @@ push, ff main, לשלוח zip.
 1. לעבור על `docs/appendix/unverified.md` מול תוצאות הסימולציה ולסמן מה אומת.
 2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
 3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
-4. ~~שיפורי UX קטנים~~ — בוצע סבב UX בסשן 5 (ראה סעיף 2). פתוח: routing עם מכשולים, מיקום תוויות.
-5. לבקש מתמיר פידבק על המפה החדשה (TLM קומפקטי, Arrows כבוי כברירת מחדל, גרירה) ולתקן לפי הצורך.
+4. ~~שיפורי UX קטנים~~ — שני סבבי UX בסשן 5 (סעיף 2, פריטים 4–5). פתוח: עקיפת מכשולים מלאה, מיקום תוויות.
+5. לבקש מתמיר פידבק על הסבב השני (ports פונים לשותף, stubs ליד השותף, DUT עם חצים בחוץ, Home/Back/Forward,
+   שורות ביטים) ולתקן לפי הצורך.
 
 **איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי

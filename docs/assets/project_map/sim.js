@@ -281,7 +281,8 @@
   // bracket per field with its name (vertical when the field is narrow). `fields` is the
   // list of {name, bits, desc} from regmap.yaml (or none for a counter / a memory byte).
   //   opts.onToggle(bit)  -> the cells are buttons that flip one bit (the write editor)
-  //   opts.legend         -> add the list "bit: name -- description" under the diagram
+  //   opts.single         -> the name written for a register without fields (one line for [7:0])
+  //   opts.singleDesc     -> its description
   function fieldDiagram(value, fields, opts) {
     opts = opts || {};
     value &= 0xff;
@@ -300,24 +301,15 @@
       const cell = el(opts.onToggle ? "button" : "span", attrs);
       box.append(cell);
     }
-    if (spans.length) {
-      spans.forEach(f => {
-        const wide = f.hi - f.lo + 1 >= 3;
-        const g = el("span", { class: "fld" + (wide ? " wide" : ""), style: `grid-column:${col(f.hi)} / ${col(f.lo) + 1};grid-row:3`, title: `${f.name} [${f.bits}]${f.desc ? ": " + f.desc : ""}` });
-        g.append(el("i"), el("b", { text: f.name }));
-        box.append(g);
-      });
-    } else {
-      box.append(el("span", { class: "fld wide", style: "grid-column:2 / 10;grid-row:3" }, [el("i"), el("b", { text: opts.single || "value [7:0]" })]));
-    }
-    if (opts.legend && spans.length) {
-      const ul = el("ul", { class: "ys-fd-legend" });
-      spans.forEach(f => {
-        const v = (value >> f.lo) & ((1 << (f.hi - f.lo + 1)) - 1);
-        ul.append(el("li", {}, [el("code", { text: `[${f.bits}]` }), " ", el("b", { text: f.name }), " = ", el("code", { text: f.hi === f.lo ? String(v) : `${v} (${hex(v)})` }), f.desc ? el("span", { class: "d", text: " -- " + f.desc }) : ""]));
-      });
-      box.append(ul);
-    }
+    // one line per field under the bits: "[bits] name = value -- description"; a register
+    // without fields (a counter, a memory byte) is one line for the whole byte
+    const ul = el("ul", { class: "ys-fd-legend" });
+    const lines = spans.length ? spans : [{ bits: "7:0", hi: 7, lo: 0, name: (opts.single || "value [7:0]").replace(/ \[7:0\]$/, ""), desc: opts.singleDesc || "" }];
+    lines.forEach(f => {
+      const v = (value >> f.lo) & ((1 << (f.hi - f.lo + 1)) - 1);
+      ul.append(el("li", {}, [el("code", { text: `[${f.bits}]` }), " ", el("b", { text: f.name }), " = ", el("code", { text: f.hi === f.lo ? String(v) : `${v} (${hex(v)})` }), f.desc ? el("span", { class: "d", text: " -- " + f.desc }) : ""]));
+    });
+    box.append(ul);
     return box;
   }
   function parseFields(fields) {
@@ -410,13 +402,14 @@
       const d = model.describe(st.addr);
       const fields = d.kind === "reg" ? d.reg.fields : null;
       const single = d.kind === "mem" ? `${d.name} [7:0]` : d.kind === "unmapped" ? "unmapped [7:0]" : `${d.name} [7:0]`;
+      const singleDesc = d.kind === "unmapped" ? "no register here: a read returns 0x00, a write is ignored" : (d.reg && d.reg.desc) || (d.mem && d.mem.desc) || "";
       bits.innerHTML = "";
       if (st.op === "write") {
         bits.append(el("div", { class: "ys-note", text: `data to write to ${d.name}${d.policy === "RO" ? " (read-only: the router will ignore it)" : d.kind === "unmapped" ? " (unmapped: ignored)" : ""} -- click a bit to flip it` }));
-        bits.append(fieldDiagram(st.data, fields, { single, legend: true, onToggle: bit => { st.data ^= 1 << bit; dataIn.value = hex(st.data); refreshBits(); } }));
+        bits.append(fieldDiagram(st.data, fields, { single, singleDesc, onToggle: bit => { st.data ^= 1 << bit; dataIn.value = hex(st.data); refreshBits(); } }));
       } else {
         bits.append(el("div", { class: "ys-note", text: `current contents of ${d.name}` }));
-        bits.append(fieldDiagram(model.peek(st.addr), fields, { single, legend: true }));
+        bits.append(fieldDiagram(model.peek(st.addr), fields, { single, singleDesc }));
       }
     }
     function refreshPolicy() {
