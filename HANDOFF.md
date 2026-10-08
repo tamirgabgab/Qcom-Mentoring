@@ -1,8 +1,10 @@
 # HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
 
-> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר.
+> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן לאורך הסשן החמישי (2026-10-08, שישה סבבים; הסיכום האחרון
+> בסוף סבב 6). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
 > HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
-> CI (lint + docs) ירוק על `79b5fd4` (אומת בסשן 5 דרך GitHub Actions API). האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
+> CI (lint + docs) ירוק על `3687ecb` (אומת דרך GitHub Actions API). האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
+> **לאן ממשיכים:** סעיף 8 (סדר העדיפויות שתמיר קבע בסוף סשן 5): Xcelium ← השלמת ה-Test plan ← UX במפה.
 
 ---
 
@@ -81,16 +83,20 @@
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
 - `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
-- `make map && make map-check` — 217 nodes, 188 edges, 39 scenes; `test_model.py` עובר
-  (כולל הבדיקות החדשות: pins/regmap ב-root scene, regmap.yaml ⇔ localparams ב-RTL ⇔ offsets ב-RAL)
-  **+ `test_sim.mjs` (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**.
+- `make map && make map-check` — 245 nodes, 279 edges, 41 scenes (5 תצוגות: Hierarchy, TLM, Classes,
+  Environment, Test plan); `test_model.py` עובר (pins/regmap ב-root scene, regmap.yaml ⇔ localparams
+  ב-RTL ⇔ offsets ב-RAL, סצנות env/plan, עקביות ה-Test plan מול המחלקות) **+ `test_sim.mjs`
+  (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**. `docs/test-plan.md`
+  נוצר מ-`build.py` ונבדק staleness.
+- הטסטים: 24 מחלקות test במודל (17 של הקורס + 7 של ה-Test plan ב-`yapp_project/tb/tests`), לכל אחת plan
+  (stages + expected) ולפחות פריט אחד ב-`plan:` שמזכיר אותה. 56 פריטי תוכנית: 53 covered, 1 partial, 1 gap, 1 excluded.
 - `mkdocs build --strict` — 0 אזהרות (רק INFO על anchors של deep links — צפוי).
 - בדיקת דפדפן (Playwright, סקריפט חד-פעמי ב-scratchpad, לא בריפו): המפה נטענת בבהיר/כהה,
   ה-DUT מצויר עם 19 פינים ובלוק רגיסטרים, קליק על הבלוק פותח את לשונית Simulate, כתיבה דרך ה-UI
   ל-en_reg, כתיבה ל-RO נדחית, ו-10 assertions על `RouterModel` (reset, good packet, bad parity,
   addr 3, oversized, router disabled, unmapped, warm reset, checkPacket) — הכול עבר.
 - CI ב-GitHub: workflow `lint` (slang + style-check + map-check) ו-`docs` (mkdocs → GitHub Pages)
-  ירוקים על `79b5fd4` (נבדק בסשן 5). ה-runner של GitHub (ubuntu-latest) כולל node, ולכן `map-check`
+  ירוקים על כל commit של סשן 5 עד `3687ecb` (נבדק דרך ה-API). ה-runner של GitHub (ubuntu-latest) כולל node, ולכן `map-check`
   ב-CI מריץ גם את `test_sim.mjs`.
 - GitHub Pages פעיל (Source = GitHub Actions), האתר חי, המפה ב-`/project-map/` והקובץ העצמאי
   ב-`/downloads/yapp_project_map.html`.
@@ -285,6 +291,13 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    cursor grab, כותרת cursor move. hints, help, project-map.md, README עודכנו. נבדק ב-Playwright
    (`drag7.mjs` ב-scratchpad): גוף/כותרת/אמצעי/Space/עלה/לחיצה/frame. לא נבחר (אופציה 4): גלגלת=גלילה
    במקום זום — תמיר העדיף להשאיר זום בגלגלת.
+9. **סבב 6 של סשן 5 — סיכום ורענון (תמיר: "נסכם את ההתקדמות, עדכן HANDOFF ו-README"; 4 תשובות לשאלות מנחות:
+   לרענן סעיפים ולא לכתוב מחדש; עדיפויות: Xcelium → Test plan → UX; לצלם מחדש את כל צילומי ה-README;
+   סיכום בצ'אט + HANDOFF):** README עם סעיף "The test plan" וצילום חמישי `map_testplan.png`
+   (`readme_shots.mjs` מצלם 5), עץ הקבצים (סיקוונסים חדשים, `test-plan.md` GENERATED, `CLAUDE.md`),
+   Quick start עם `make run-project`, "What has not been verified" מזכיר את 7 הטסטים ואת תיקון ה-handshake;
+   כל 5 הצילומים חודשו (`make readme-shots`). HANDOFF: כותרת, מצב נוכחי, סעיף 8 לפי העדיפויות החדשות.
+   **הכלל הישן "לא לצלם מחדש את צילומי ה-README" בוטל** — מעכשיו מצלמים מחדש אחרי שינוי בממשק.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -293,7 +306,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 27 commits בסך הכול; האחרונים: (סשן 5) גרירה מפס הכותרת + pan באמצעי/Space, `7dc58f6` (CLAUDE.md), `f3b3556` (Test plan + 7 טסטים), `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
+- 28 commits בסך הכול; האחרונים: (סשן 5, סבב 6) README/HANDOFF/צילומים, `3687ecb` (גרירה מפס הכותרת + pan באמצעי/Space), `7dc58f6` (CLAUDE.md), `f3b3556` (Test plan + 7 טסטים), `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 
@@ -494,26 +507,33 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 
 ## 8. הצעד הבא
 
-**ראשון, קונקרטי:** ~~לבדוק ב-GitHub Actions שה-workflows ירוקים~~ (בוצע בסשן 5: ירוק גם על `98565ae`).
-~~לשאול את תמיר אם הריץ רגרסיה ב-xrun~~ — **נדחה לבקשת תמיר (אין סימולטור), ראה סעיף 7.** הצעד הבא
-נקבע לפי מה שתמיר יבקש; אם לא יבקש כלום, לפי רשימת העדיפות למטה (3, 4). הסעיף הישן נשמר כאן להקשר:
-לשאול את תמיר אם הריץ רגרסיה ב-xrun אחרי `4948f7f`
-(`cd yapp_project/tb && make run TEST=reg_function_test`, `router_simple_mcseq_test`,
-`reg_access_test`, `uvm_mem_walk_test`, ו-`labs/lab09_sbd` `scoreboard_drop_test`) ולבקש את
-`UVM Report Summary` + שגיאות קומפילציה. אם יש שגיאות — לתקן אותן קודם לכל דבר אחר (קטנות, מקומיות),
-להריץ `make lint && make style-check && make map && make map-check && mkdocs build --strict`, commit,
-push, ff main, לשלוח zip.
+**סדר העדיפויות שתמיר קבע בסוף סשן 5 (סבב 6).** כל פריט עומד בפני עצמו; לפני כל אחד — לשאול שאלות מנחות.
 
-**אחר כך, לפי עדיפות (אם תמיר לא מבקש משהו אחר):**
-1. לעבור על `docs/appendix/unverified.md` מול תוצאות הסימולציה ולסמן מה אומת.
-2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
-3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
-4. ~~שיפורי UX קטנים~~ — שני סבבי UX בסשן 5 (סעיף 2, פריטים 4–5). פתוח: עקיפת מכשולים מלאה, מיקום תוויות.
-5. לבקש מתמיר פידבק על **Test plan** (סבב 4): האם רמת הפירוט/הפריטים נכונה, האם לממש את ה-gap
-   (CNT-06, גלישת counter) ואת ה-partial (ROUTE-04, packet_delay == 1 + coverpoint), ועל **Environment**.
-6. **כשתמיר ירוץ ב-Xcelium:** קודם 7 טסטי ה-TP (`make run-project TEST=backpressure_test` וכו') — הם
-   הכי "חדשים" ובודקים את ה-fix של `wait_accept`; ואז הלאבים 6–7 (אותו driver).
-7. רעיונות שתמיר העלה ולא נעשו: אין.
+**1. הרצה ב-Xcelium ותיקונים (הדבר הכי חשוב; דורש את המכונה של תמיר).**
+- קודם 7 טסטי ה-Test plan, כי הם הקוד החדש ביותר ובודקים את תיקון `wait_accept`:
+  `make run-project TEST=backpressure_test`, `parity_error_test`, `router_filter_test`, `router_disable_test`,
+  `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`. אחר כך הלאבים 6–7 (אותו driver), ואז הכול:
+  `reg_function_test`, `router_simple_mcseq_test`, `uvm_mem_walk_test`, `labs/lab09_sbd scoreboard_drop_test`, `coverage_test`.
+- לבקש מתמיר `UVM Report Summary` + שגיאות קומפילציה של כל ריצה. נקודות חשודות מראש: סעיף 7 ("7 טסטי ה-Test plan
+  ... מעולם לא רצו"), ו-`docs/appendix/unverified.md` (11 פריטים).
+- לתקן, להריץ `make lint && make style-check && make map && make map-check && mkdocs build --strict`, commit, push, ff main, zip.
+- אחרי שעובר: לסמן ב-`unverified.md` מה אומת, ולעדכן את ה-`expected` ב-`annotations.yaml` (tests:) לפי הלוגים האמיתיים.
+
+**2. השלמת ה-Test plan.**
+- לממש את ה-gap **CNT-06** (גלישת counter אחרי 255 פקטות): קודם להחליט עם תמיר מה ההתנהגות הרצויה (ה-RTL עוטף ל-0;
+  המפרט שותק) ואז טסט שמשלח 256 פקטות לכתובת אחת ובודק. לממש את ה-partial **ROUTE-04**: constraint `packet_delay == 1`
+  (ב-`yapp_pkt_seq` או סיקוונס חדש) + coverpoint על `packet_delay` ב-`yapp_pkt_cg`.
+- לעבור עם תמיר על הטקסטים של `plan:` ו-`tests:` מול ה-PDF (רק אצלו) ולתקן ניסוחים/פריטים חסרים.
+- כל שינוי: `annotations.yaml` → `make map` (מייצר גם `docs/test-plan.md`); `test_model.py` ייכשל אם טסט לא מוזכר.
+
+**3. עוד שיפורי UX במפה (לפי מה שתמיר ימצא בשימוש).** פתוח מסעיף 7: עקיפת מכשולים מלאה לחצים (מסלולי U/L,
+חצים אנכיים), מיקום תוויות, הסרגל שנשבר ב-1600px בתצוגת TLM, חיצי covers ב-Test plan כש-Arrows דלוק.
+לא נבחר בסבב 5: גלגלת = גלילה (תמיר מעדיף זום בגלגלת).
+
+**4. תוכן לאתר וללימוד** (לא נבחר כעדיפות, אבל נשאר רלוונטי): דפי הלאבים, שאלות checkpoint, הסברי UVM.
+
+**דברים ישנים שנסגרו:** GitHub Actions ירוק (סשן 5); `test_sim.mjs` (סשן 5); בדיקת האתר החי (תמיר רואה; מהקונטיינר אין
+גישה ל-github.io); שלושה סבבי UX, Test plan, גרירה (סעיף 2, פריטים 4–8).
 
 **איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי
@@ -531,7 +551,7 @@ make map && make map-check                  # לבנות ולבדוק את המ�
 mkdocs build --strict                       # האתר ל-site/ (gitignored)
 python3 scripts/gen_waves.py                # waveforms + packet_structure.svg
 make map-export                             # SVG/PNG ל-docs/assets/project_map/export/ (ל-commit), PDF ל-build/
-make readme-shots                           # בונה את האתר ומצלם מחדש את 4 תמונות ה-README ל-docs/assets/readme/
+make readme-shots                           # בונה את האתר ומצלם מחדש את 5 תמונות ה-README ל-docs/assets/readme/ (PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers בקונטיינר)
 
 # בדיקות נקודתיות
 python3 scripts/sv_style.py --check --diff path/to/file.sv
@@ -568,6 +588,8 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 - **הודעת ה-system reminder** של הסשן נותנת trailer עם session id חדש — להשתמש בו, לא בישן.
 - **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), ואחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml` — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
 - `build --check` לא כותב; `build` ואז `--check`. אל תעשה `| head` על ה-build.
+- **צילומי ה-README** (`docs/assets/readme/`, 5 תמונות): לצלם מחדש עם `make readme-shots` אחרי כל שינוי שנראה בממשק
+  (תמיר ביטל בסבב 6 את הבקשה הישנה "לא לצלם מחדש"). לבדוק את ה-PNG ב-Read לפני commit.
 - אחרי שינוי ב-`app.js/app.css/sim.js/sim.css` — `make map` (ה-standalone inlines אותם, אחרת STALE) ו-`make map-export` (התמונות משתנות). בדיקה ויזואלית: סקריפט Playwright חד-פעמי ב-scratchpad (`check*.mjs` בסשן 5: צילומי מסך של סצנות, גרירה עם `page.mouse`, ה-resizer, הפאנל) ואז Read על ה-PNG.
 - **טסט חדש ב-`tb/tests`** דורש ב-`annotations.yaml`: שורה ב-`classes:`, plan ב-`tests:` (stages+expected), אזכור בפריט של `plan:` (אחרת map-check: "tests not named by any item"), ו-`lab_overrides` "TP" אם הוא לא בלאב; ואז `make map` (מייצר גם `docs/test-plan.md`).
 - כשמשנים התנהגות של ה-DUT: לעדכן ביחד `yapp_project/rtl`, `router_reference.sv`, הטסטים ב-`tb/tests` + `labs/lab11c`, `docs/dut/spec.md` ("Decisions"), ו-`sim.js` `RouterModel`. כשמשנים כתובת רגיסטר: `regmap.yaml`, `yapp_hbus_regs.sv` localparams, `yapp_regs_c.sv` offsets — CI ישווה.

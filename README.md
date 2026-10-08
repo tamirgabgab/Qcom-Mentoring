@@ -25,6 +25,7 @@ generated and checked from the same source code.
    - [The DUT and its registers](#the-dut-and-its-registers)
    - [Try it: the register simulator](#try-it-the-register-simulator)
    - [Try it: the packet playground](#try-it-the-packet-playground)
+   - [The test plan](#the-test-plan)
    - [The labs](#the-labs)
 2. [Quick start](#quick-start)
 3. [Repository layout](#repository-layout)
@@ -60,9 +61,10 @@ the sequences and overrides it sets up, the plan items it verifies).
 
 Arrows are drawn orthogonally; in the Hierarchy and TLM views they start hidden and
 appear for the box under the pointer (the **Arrows** button shows them all). Boxes
-can be dragged (a frame by its title bar; its inside pans), the arrows follow, and the
-panel and source column can be resized.
-⌂ returns to the overview, ◀ ▶ walk back and forward through the views visited.
+can be dragged and the arrows follow: a leaf from anywhere, a frame by its title bar
+(dragging inside a frame pans the view, and so do the middle mouse button or
+Space + drag from any point). ⌂ returns to the overview, ◀ ▶ walk back and
+forward through the views visited, and the panel and source column can be resized.
 
 ![The project map: the UVM testbench above, the hardware below, the selected component's role and source on the right](docs/assets/readme/map_overview.png)
 
@@ -135,6 +137,31 @@ the YAPP interface and the input FSM. The packet structure itself is drawn in
 [`docs/assets/packet_structure.svg`](docs/assets/packet_structure.svg) and
 explained next to the code in [`yapp_project/uvc/yapp/README.md`](yapp_project/uvc/yapp/README.md).
 
+### The test plan
+
+The [test plan](https://tamirgabgab.github.io/Qcom-Mentoring/test-plan/) follows the
+pages of the course's DUT description: packet format, input and output protocols,
+registers, drop rules, counters, memories, the HBUS host port, plus the requirements the
+labs add (scoreboard, functional coverage, register tests). It is written as data
+(`scripts/project_map/annotations.yaml`, section `plan`): **11 feature groups, 56 items**,
+each with its stimulus, its checker, its coverage, the tests that cover it and a status.
+The same data draws the **Test plan** view of the map and generates the site page, so the
+three never disagree.
+
+![The Test plan view: the feature groups with their status chips on top, the tests below, one feature open in the panel with every item](docs/assets/readme/map_testplan.png)
+
+Seven tests exist only for the plan, in `yapp_project/tb/tests/`, for the features the
+course's own tests never checked: `router_disable_test` (a disabled router drops and
+counts nothing), `router_filter_test` (lengths around `maxpktsize`, the illegal address,
+every counter with its enable on and off), `pkt_mem_test` (`yapp_pkt_mem` and
+`mem_size_reg` hold the last packet byte by byte, even a dropped one),
+`reg_bit_walk_test` (walking ones and zeros through every RW bit, writes ignored by every
+RO register), `hbus_protocol_test` (raw bus cycles, tri-state after a read, unmapped
+addresses), `backpressure_test` (slow receivers fill the channel FIFOs, `in_suspend`
+stalls the input, no byte is lost) and `parity_error_test` (the counter, the `error`
+pulse within 1..10 cycles, the packet still delivered). Writing `backpressure_test`
+found a real bug in the YAPP driver's handshake, fixed in `yapp_if.sv`.
+
 ### The labs
 
 | Session | Labs | Theme | You end up with |
@@ -164,6 +191,7 @@ cd test_install && xrun -f run.f
 
 # run the complete project (any test of yapp_project/tb/tests)
 cd yapp_project/tb && make run TEST=reg_function_test
+make run-project TEST=backpressure_test     # the same from the root; the test-plan tests start here
 
 # run a lab
 cd labs/lab07_integ/tb && make run TEST=simple_test
@@ -198,12 +226,13 @@ yapp_project/                     the complete project — the source of truth
     yapp_router.f                   file list, used as `-F ../rtl/yapp_router.f`
   uvc/                            the verification components, one class per file
     yapp/                           YAPP input UVC: yapp_packet, driver, monitor (+ coverage), sequencer, agent, env, yapp_if
-      seqs/                           the sequence library (yapp_base_seq, yapp_012_seq, yapp_coverage_seq, …)
+      seqs/                           the sequence library (yapp_base_seq, yapp_012_seq, yapp_coverage_seq, …,
+                                      yapp_pkt_seq and yapp_boundary_seq for the test plan)
       README.md                       the packet structure, next to the code
     hbus/                           HBUS UVC: transaction, master agent, monitor, env, hbus_if, hbus_reg_adapter (RAL)
       seqs/                           write / read / set-default / small / large / enable / disable sequences
     channel/                        Channel UVC: channel_packet, rx agent (driver, monitor, sequencer), env, channel_if
-      seqs/                           channel_rx_resp_seq, channel_rx_fast_seq
+      seqs/                           channel_rx_resp_seq, channel_rx_fast_seq, channel_rx_slow_seq (test plan)
     clock_and_reset/                Clock & Reset UVC: transaction, driver, agent, env, interface, clkgen module
       seqs/                           clk10_rst5_seq, clk_rst_rand_seq
     router/                         router module UVC: router_scoreboard, router_reference, router_module_env,
@@ -233,7 +262,8 @@ docs/                             the course site (MkDocs Material) — see mkdo
   uvm/                              the big picture, architecture, phases, factory & config, TLM
   components/                       one guide per component (packet.md hosts the packet playground)
   labs/                             one page per lab + the session plan
-  test-plan.md, appendix/           test plan; index tables, concept map, pitfalls, xrun options, unverified items
+  test-plan.md                      GENERATED from annotations.yaml (plan + tests): the feature matrix and the tests
+  appendix/                         index tables, concept map, pitfalls, xrun options, unverified items
   assets/
     wave_*.svg                      protocol waveforms (generated by scripts/gen_waves.py)
     packet_structure.svg            the YAPP packet layout (generated)
@@ -258,7 +288,7 @@ scripts/
     build.py                        writes model.json, regmap.js and the standalone HTML (`make map`, `--check`)
     test_model.py                   consistency checks, incl. regmap.yaml ⇔ RTL ⇔ register model
     test_sim.mjs                    behavioural checks of sim.js (RouterModel) with node (`make map-check`)
-    annotations.yaml                the hand-written half: roles, labs, layout hints
+    annotations.yaml                the hand-written half: roles, labs, layout hints, the test plans and the feature plan
     regmap.yaml                     the register map as data (picture, simulator, checks)
     export.mjs                      renders every view to SVG / PNG / PDF (`make map-export`)
 common/
@@ -269,7 +299,8 @@ test_install/                     the UVM installation check
   lint.yml                          style check, slang lint of every run.f, project-map staleness check
   docs.yml                          builds the site and deploys it to GitHub Pages
 Makefile                          lint · style · run · run-project · docs · serve · map · map-check · map-export · readme-shots
-HANDOFF.md                        working notes for continuing the development
+HANDOFF.md                        working notes for continuing the development (state, decisions, next steps)
+CLAUDE.md                         the conventions an AI assistant follows in this repository (points to HANDOFF.md)
 ```
 
 Files marked GENERATED are committed so that the site and the offline map
@@ -316,8 +347,9 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 * **The project map** is generated from the SystemVerilog:
   `make map` (pyslang reads the classes, ports, `connect()` calls and the
   module tree; `annotations.yaml` adds the prose and the layout hints) and
-  `make map-check` fails when the committed `model.json`, `regmap.js` or
-  standalone HTML no longer match the code — so the map never drifts. After
+  `make map-check` fails when the committed `model.json`, `regmap.js`,
+  standalone HTML or `docs/test-plan.md` no longer match the code — so the map and
+  the test plan never drift. After
   changing any `.sv` file, `app.js`, `sim.js` or `regmap.yaml`: `make map` and
   commit the results; `make map-export` refreshes the pictures.
 * **The register map** lives once, in `scripts/project_map/regmap.yaml`. It
@@ -335,7 +367,12 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 * **CI.** `lint.yml` runs on every push: style check → slang lint → map
   staleness check (incl. `test_model.py` and `test_sim.mjs`). `docs.yml` builds the site with `mkdocs build --strict`
   and deploys it to GitHub Pages from `main`.
-* **Screenshots.** `make readme-shots` rebuilds the site and retakes the
+* **The test plan** is data too: `annotations.yaml` holds every feature item and every
+  test's plan, `model.py` turns them into feature nodes with *covers* edges to the tests,
+  `test_model.py` checks that every test named exists and every test is named by at least
+  one item, and `build.py` writes `docs/test-plan.md`. A new test needs a summary, a plan
+  and a plan item in the YAML, then `make map`.
+* **Screenshots.** `make readme-shots` rebuilds the site and retakes the five
   pictures of this README with headless Chromium (Playwright).
 
 ### What has not been verified
@@ -346,7 +383,9 @@ register model follow the specification carefully, and the corner cases the
 specification leaves open are documented and implemented consistently (see
 "Decisions" on the DUT page), but
 [`docs/appendix/unverified.md`](docs/appendix/unverified.md) lists what only a
-run on Xcelium can confirm. Please report what you see.
+run on Xcelium can confirm. The seven test-plan tests are the newest code and the first
+to run: they also exercise the corrected `in_suspend` handshake of `yapp_if.sv`, which
+every lab from 6 on shares. Please report what you see.
 
 No Cadence material is included: the DUT, the "provided" UVCs, the interfaces,
 the register model and every figure were written for this repository.

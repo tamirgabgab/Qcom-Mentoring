@@ -8,6 +8,7 @@
 //   map_dut.png           the hardware side: the DUT block diagram with pins and register map
 //   sim_registers.png     the register simulator on the DUT specification page
 //   sim_packet.png        the packet playground on the packet page, after "Send to router"
+//   map_testplan.png      the Test plan view: feature cards with status chips, a feature open in the panel
 import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "node:child_process";
@@ -39,6 +40,12 @@ await page.waitForFunction(() => window.projectMap && window.projectMap.sceneIds
 await page.evaluate(() => { const m = window.projectMap; m.show("h:root"); m.select("tb"); m.fit(); });
 await page.waitForTimeout(400);
 await shot("map_overview.png");
+
+// the Test plan view with one feature group open in the panel (source column hidden)
+await page.evaluate(() => { const m = window.projectMap; document.querySelector(".pm").classList.add("code-hidden"); m.switchView("plan"); m.select("plan:PKT"); m.fit(); });
+await page.waitForTimeout(400);
+await shot("map_testplan.png");
+await page.evaluate(() => { document.querySelector(".pm").classList.remove("code-hidden"); });
 
 // zoom on hw_top: hide the side panels, fit the hardware frame to the canvas
 await page.evaluate(() => {
@@ -83,4 +90,4 @@ await page.waitForTimeout(200);
 await page.locator(".yapp-sim").first().screenshot({ path: path.join(out, "sim_packet.png") });
 
 await browser.close();
-console.log("wrote 4 screenshots ->", path.relative(root, out));
+console.log("wrote 5 screenshots ->", path.relative(root, out));
