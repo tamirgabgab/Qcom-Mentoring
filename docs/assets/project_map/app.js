@@ -14,7 +14,9 @@
   "use strict";
 
   const SVG_NS = "http://www.w3.org/2000/svg";
-  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)" };
+  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)", env: "Environment", tests: "Tests" };
+  // colours of the stages of a test plan (the Tests view and the panel)
+  const STAGE_KIND = { build: "build", config: "config", reset: "reset", program: "program", stimulus: "stimulus", check: "check", report: "report" };
 
   // ------------------------------------------------------------------ helpers
   function el(tag, attrs, children) {
@@ -225,7 +227,7 @@
       r.innerHTML = "";
       // toolbar
       this.views = el("div", { class: "pm-views" });
-      ["hierarchy", "tlm", "classes"].forEach(v => {
+      ["hierarchy", "tlm", "classes", "env", "tests"].forEach(v => {
         this.views.append(el("button", { "data-view": v, onclick: () => this.switchView(v) }, [VIEW_LABEL[v]]));
       });
       this.crumbs = el("nav", { class: "pm-crumbs" });
@@ -302,6 +304,7 @@
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd></td><td>back / forward through the views visited</td></tr>" +
           "<tr><td><kbd>h</kbd></td><td>home: the overview</td></tr>" +
+          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Tests</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
@@ -343,7 +346,7 @@
     }
     // ------------------------------------------------------------- arrows on / off, movable boxes
     arrowsOn(view) {
-      const dflt = { hierarchy: false, tlm: false, classes: true };
+      const dflt = { hierarchy: false, tlm: false, classes: true, env: false, tests: false };
       const saved = load("pm-arrows", {});
       const v = view || this.state.view;
       return saved[v] === undefined ? dflt[v] : !!saved[v];
@@ -370,10 +373,17 @@
     sceneItem(s, id) { return s.items.find(i => i.id === id) || (s.stubs || []).find(i => i.id === id); }
     // move a box (and, for a container, everything drawn inside it) by (dx, dy)
     moveItem(s, id, dx, dy, record) {
-      const it = this.sceneItem(s, id);
+      const it = this.sceneItem(s, id) || (s.frames || []).find(f => f.id === id);
       if (!it) return;
-      const movers = [it];
-      if (it.container) s.items.forEach(o => { if (o !== it && (o.id.startsWith(id + ".") || o.id.startsWith(id + "["))) movers.push(o); });
+      const isFrame = !this.sceneItem(s, id);
+      const movers = isFrame ? [] : [it];
+      const under = oid => {
+        if (oid.startsWith(id + ".") || oid.startsWith(id + "[")) return true;
+        let cur = this.N[oid] ? this.N[oid].parent : null;
+        while (cur) { if (cur === id) return true; cur = this.N[cur] ? this.N[cur].parent : null; }
+        return false;
+      };
+      if (it.container || isFrame) s.items.forEach(o => { if (o !== it && under(o.id)) movers.push(o); });
       movers.forEach(o => { o.x += dx; o.y += dy; (o.ports || []).forEach(p => { p.x += dx; p.y += dy; }); });
       if (record) {
         s._offsets = s._offsets || {};
@@ -477,6 +487,8 @@
     sceneFor(view) {
       if (view === "hierarchy") return this.state.lastHier || "h:root";
       if (view === "tlm") return this.state.variant ? "tlm:lab09d" : "tlm:main";
+      if (view === "env") return "env:main";
+      if (view === "tests") return "tests:main";
       const g = this.state.group ? `uml:${this.state.group}` : "uml:all";
       return this.state.full && this.scenes[g + ":full"] ? g + ":full" : g;
     }
@@ -500,6 +512,12 @@
       const n = this.N[nid];
       if (!n) return false;
       let target = null;
+      if (n.scope === "cls" && n.kind === "test" && (view === "tests" || (!view && this.state.view === "tests"))) {
+        this.state.view = "tests";
+        this.show("tests:main", o);
+        this.select(nid, o);
+        return true;
+      }
       if (n.scope === "cls" || (view === "classes")) {
         const cls = n.scope === "cls" ? nid : n.cls;
         const cn = this.N[cls];
@@ -572,6 +590,8 @@
         const r = svg("rect", this.frameRect(s, f));
         fg.append(r);
         const t = svg("text", { x: +r.getAttribute("x") + 8, y: +r.getAttribute("y") + 15 }); t.textContent = f.label; fg.append(t);
+        fg.__frame = f;
+        fg.style.pointerEvents = "all";
         g.append(fg);
         this.frameEls[f.id] = { rect: r, text: t };
       });
@@ -598,7 +618,10 @@
       this.btnVariant.style.display = s.view === "tlm" ? "" : "none";
       this.btnVariant.classList.toggle("on", !!this.state.variant);
       this.hint.textContent = s.view === "hierarchy" ? "drag the background to pan · drag a box to move it · click to inspect · double-click a box to open it"
-        : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box to move it" : "click a class to see its file · Members shows fields and methods · drag a class to move it";
+        : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box or a dashed frame to move it"
+        : s.view === "env" ? "the whole environment on one page · click a box for its role and code · double-click to open it in the Hierarchy"
+        : s.view === "tests" ? "click a test for its plan, expected results and code · hover a stage for its detail · arrows: who extends whom"
+        : "click a class to see its file · Members shows fields and methods · drag a class to move it";
     }
     // a group frame (TLM) follows its members
     frameRect(s, f) {
@@ -744,20 +767,14 @@
       } else if (it.style === "dut_tlm") {
         grp.classList.add("dut-spec", "dut-tlm");
         this.drawDutTlm(grp, it);
+      } else if (it.style === "test_card") {
+        grp.classList.add("test-card");
+        this.drawTestCard(grp, it);
       } else {
         grp.append(svg("rect", { class: "stripe", width: 5, height: it.h, rx: 2 }));
         const t = svg("text", { class: "label", x: 14, y: 19 }); t.textContent = it.label; grp.append(t);
         if (it.sub) { const st = svg("text", { class: "sub", x: 14, y: 33 }); st.textContent = it.sub; grp.append(st); }
-        if (it.children && !it.container && !it.stub) {
-          const more = svg("text", { class: "more", x: it.w - 8, y: it.h - 7, "text-anchor": "end" });
-          more.textContent = "▸ open";
-          const tt = svg("title"); tt.textContent = "open this component"; more.append(tt);
-          more.style.pointerEvents = "all";
-          grp.append(more);
-        }
-        if (it.stub) {
-          const more = svg("text", { class: "more", x: it.w - 8, y: 15, "text-anchor": "end" }); more.textContent = "↗"; grp.append(more);
-        }
+        if (it.role) { const rt = svg("text", { class: "role", x: 14, y: it.sub ? 47 : 33 }); rt.textContent = it.role; grp.append(rt); }
       }
       (it.ports || []).forEach(p => {
         const pg = svg("g", { class: `pm-port ${p.kind}`, "data-id": p.id, style: `--kc: var(--k-${p.kind})` });
@@ -772,6 +789,31 @@
       grp.addEventListener("mouseenter", () => this.hover(it.id, true));
       grp.addEventListener("mouseleave", () => this.hover(it.id, false));
       return grp;
+    }
+    // A test in the Tests view: name, lab and base class, the purpose, the stages of the plan
+    // as a strip of coloured chips (hover a chip for its detail).
+    drawTestCard(grp, it) {
+      grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
+      const t = svg("text", { class: "label", x: 12, y: 24 }); t.textContent = it.label; grp.append(t);
+      if (it.sub) { const st = svg("text", { class: "sub", x: 12, y: 39 }); st.textContent = it.sub; grp.append(st); }
+      let y = 44;
+      (it.lines || []).forEach(l => { y += 15; const lt = svg("text", { class: "purpose", x: 12, y: y - 3 }); lt.textContent = l; grp.append(lt); });
+      const stages = it.stages || [];
+      if (stages.length) {
+        y += 8;
+        const n = this.N[it.id], plan = n && n.plan ? n.plan.stages || [] : [];
+        const perRow = 3, cw = (it.w - 24 - 6 * (perRow - 1)) / perRow;
+        stages.forEach((st, i) => {
+          const c = i % perRow, r = Math.floor(i / perRow);
+          const x = 12 + c * (cw + 6), cy = y + r * 24;
+          const cg = svg("g", { class: `chip k-${STAGE_KIND[st.k] || "stimulus"}` });
+          cg.append(svg("rect", { x, y: cy, width: cw, height: 18, rx: 4 }));
+          const ct = svg("text", { x: x + cw / 2, y: cy + 12.5, "text-anchor": "middle" }); ct.textContent = trunc(`${i + 1} · ${st.t}`, Math.floor(cw / 6)); cg.append(ct);
+          const tt = svg("title"); tt.textContent = `${i + 1}. ${st.t}${plan[i] && plan[i].d ? " -- " + plan[i].d : ""}`; cg.append(tt);
+          cg.style.pointerEvents = "all";
+          grp.append(cg);
+        });
+      }
     }
     // The DUT in the TLM view: one pin per interface, the arrow outside the box next to the
     // pin, the interface name written inside. Stimulus enters on the left, observation leaves
@@ -981,8 +1023,10 @@
           drag = { x: e.clientX, y: e.clientY, vx: this.vp.x, vy: this.vp.y, moved: false, target: e.target, id: e.pointerId };
           // a drag that starts on a box moves the box; on a port, a pin or the background it pans
           const nodeEl = e.target.closest && e.target.closest(".pm-node");
+          const frameEl = e.target.closest && e.target.closest(".pm-frame");
           const onWidget = e.target.closest && (e.target.closest(".pm-port") || e.target.closest(".pm-pin") || e.target.closest(".pm-regmap"));
           if (nodeEl && !onWidget && nodeEl.__item) drag.item = nodeEl.__item;
+          else if (frameEl && frameEl.__frame) drag.item = frameEl.__frame;     // a dashed group frame moves its members
         }
         // NB: no pointer capture here -- a captured pointer makes the browser retarget the click
         // to the canvas, so the boxes would never receive it. Capture starts with the drag.
@@ -1059,7 +1103,7 @@
       // hit area of an arrow drawn on top of it
       const stack = (document.elementsFromPoint ? document.elementsFromPoint(x, y) : [target]).filter(e => this.svg.contains(e));
       const pick = sel => { for (const e of stack) { const hit = e.closest && e.closest(sel); if (hit) return hit; } return null; };
-      const port = pick(".pm-port"), more = pick("text.more"), regmap = pick(".pm-regmap"), pin = pick(".pm-pin");
+      const port = pick(".pm-port"), more = null, regmap = pick(".pm-regmap"), pin = pick(".pm-pin");
       if (regmap) { this.state.tab = "sim"; this.select(regmap.closest(".pm-node").dataset.id); return; }
       if (pin && pin.dataset.node) { this.select(pin.dataset.node); return; }
       const closest = sel => (target && target.closest) ? target.closest(sel) : null;
@@ -1124,6 +1168,8 @@
         else if (k === "1") this.switchView("hierarchy");
         else if (k === "2") this.switchView("tlm");
         else if (k === "3") this.switchView("classes");
+        else if (k === "4") this.switchView("env");
+        else if (k === "5") this.switchView("tests");
         else if (k === "Escape" || k === "Backspace") { e.preventDefault(); if (this.help.classList.contains("open")) this.help.classList.remove("open"); else this.up(); }
         else if (k === "f") this.fit();
         else if (k === "h") this.home();
@@ -1312,6 +1358,52 @@
       if (!n) return el("code", {}, [text || id]);
       return el("a", { class: "node", onclick: () => this.gotoNode(id) }, [text || (n.scope === "cls" ? n.name : n.id)]);
     }
+    // The plan of a test: the stages as a timeline, each with its detail, then what the run is
+    // expected to show, then the stimulus the code sets up (default sequences, overrides, starts).
+    renderPlan(body, n) {
+      const add = (h) => body.insertAdjacentHTML("beforeend", h);
+      const plan = n.plan, stages = plan.stages || [];
+      if (plan.purpose) add(`<p>${esc(plan.purpose)}</p>`);
+      if (stages.length) {
+        add("<h3>Test plan</h3>");
+        const W = 320, rowH = 30, left = 10;
+        const sv = svg("svg", { class: "pm-plan", viewBox: `0 0 ${W} ${stages.length * rowH + 10}`, width: "100%" });
+        sv.append(svg("line", { class: "axis", x1: left + 9, y1: 6, x2: left + 9, y2: stages.length * rowH + 2 }));
+        stages.forEach((st, i) => {
+          const y = 6 + i * rowH;
+          const g = svg("g", { class: `k-${STAGE_KIND[st.k] || "stimulus"}` });
+          g.append(svg("circle", { cx: left + 9, cy: y + 10, r: 7 }));
+          const num = svg("text", { class: "n", x: left + 9, y: y + 13.5, "text-anchor": "middle" }); num.textContent = i + 1; g.append(num);
+          g.append(svg("rect", { x: left + 24, y, width: W - left - 30, height: 20, rx: 4 }));
+          const t = svg("text", { class: "t", x: left + 32, y: y + 14 }); t.textContent = trunc(st.t, 40); g.append(t);
+          const k = svg("text", { class: "k", x: W - 12, y: y + 14, "text-anchor": "end" }); k.textContent = st.k; g.append(k);
+          sv.append(g);
+        });
+        body.append(sv);
+        const ol = el("ol", { class: "pm-stages" });
+        stages.forEach(st => ol.append(el("li", {}, [el("b", {}, [st.t]), st.d ? " — " + st.d : ""])));
+        body.append(ol);
+      }
+      if (plan.expected && plan.expected.length) {
+        add("<h3>Expected</h3>");
+        const ul = el("ul", { class: "pm-expected" });
+        plan.expected.forEach(x => ul.append(el("li", {}, [])));
+        plan.expected.forEach((x, i) => { ul.children[i].innerHTML = md(x).replace(/^<p>|<\/p>$/g, ""); });
+        body.append(ul);
+      }
+      const seqs = (n.config_sets || []).filter(c => c.field === "default_sequence");
+      const starts = (n.notable_calls || []).filter(c => c.call === "start");
+      if (seqs.length || starts.length || (n.overrides || []).length) {
+        add("<h3>Stimulus set up by the code</h3>");
+        const ul = el("ul");
+        seqs.forEach(c => ul.append(el("li", {}, [el("code", {}, [c.value.replace("::get_type()", "")]), " on ", el("code", {}, [c.inst.replace(/\.run_phase$/, "")])])));
+        starts.forEach(c => ul.append(el("li", {}, [el("code", {}, [c.text]), ` in ${c.method} (line ${c.line})`])));
+        (n.overrides || []).forEach(o => ul.append(el("li", {}, ["override ", el("code", {}, [o.args.join(" → ")])])));
+        if (!seqs.length && n.base && this.N[`cls:${n.base}`]) ul.append(el("li", {}, ["default sequences inherited from ", this.nodeLink(`cls:${n.base}`, n.base)]));
+        body.append(ul);
+      }
+      add(`<p class="empty">Run it: <code>make run TEST=${esc(n.name)}</code></p>`);
+    }
     renderOverview(body, n) {
       const add = (h) => body.insertAdjacentHTML("beforeend", h);
       if (n.summary) add(`<p><b>${esc(n.summary)}</b></p>`);
@@ -1336,6 +1428,7 @@
         const ul = el("ul"); n.alternatives.forEach(t => ul.append(el("li", {}, [this.nodeLink(`cls:${t}`, t), " — ", el("span", { style: "color:var(--pm-muted)" }, [this.N[`cls:${t}`] ? this.N[`cls:${t}`].summary : ""])]))); body.append(ul);
       }
       if (n.values) { add("<h3>Values</h3>"); add(`<p><code>${n.values.map(esc).join("</code> <code>")}</code></p>`); }
+      if (n.plan) this.renderPlan(body, n);
       // children
       const kids = (n.children || []).filter(c => !this.N[c].port);
       const ports = (n.children || []).filter(c => this.N[c].port);
@@ -1510,6 +1603,10 @@
       if (s.view === "hierarchy") {
         if (s.id === "h:root") add(md("The whole testbench on one page. **tb_top** is the UVM side: the test builds **router_tb**, which holds one env per interface UVC, the virtual sequencer, the router module UVC (reference model + scoreboard) and the register model. **hw_top** holds the DUT, the clock generator and the interface instances; dotted lines are the virtual interfaces that connect the two worlds.\n\nDouble-click any box to open it. Click a box for its role, code and links."));
         else if (s.node) { const n = this.N[s.node]; add(`<p><b>${esc(n.summary || "")}</b></p>` + md(n.description)); add('<p class="empty">Click a child for details; ports are the small circles (producers on the right, consumers on the left). Dashed boxes outside the frame are the far ends of connections leaving this level.</p>'); }
+      } else if (s.view === "env") {
+        add(md("The verification environment as the course draws it. **uvm_test_top** (the test chosen with `+UVM_TESTNAME`) builds **router_tb**; the testbench holds one env per interface UVC, each opened down to its **sequencer**, **driver** and **monitor**, plus the virtual sequencer, the router module UVC (reference model and scoreboard) and the register model with its adapter. Below, the hardware: the interface instances the drivers and monitors reach through the virtual interfaces, and the DUT with its pins and register map.\n\nEvery box carries a one-line role; click it for the full story and its code, double-click to open it in the Hierarchy view."));
+      } else if (s.view === "tests") {
+        add(md("Every test of the course, in the order the labs introduce them (the lab is on the card). All of them extend **base_test** and only change what runs: a factory override, a default sequence, or a hand-written `run_phase`. The chips are the stages of the test's plan, left to right; click a test for the plan with its expected results, the configuration it sets, and its code.\n\nRun one with `make run TEST=<name>` in `yapp_project/tb` (or the lab's `tb`)."));
       } else if (s.view === "tlm") {
         add(md("Left to right: who controls whom and where the data goes. Sequences run on **sequencers**, items reach the **drivers** through `seq_item_port`, pins reach the DUT through the virtual interfaces, **monitors** publish on analysis ports, the **router module UVC** receives them through exports: the reference model filters, the scoreboard compares.\n\nClick a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the FIFO-based scoreboard."));
       } else {

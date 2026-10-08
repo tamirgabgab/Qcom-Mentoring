@@ -603,6 +603,7 @@ class ModelBuilder:
                 overrides=cls.get("overrides", []), config_sets=cls.get("config_sets", []),
                 notable_calls=cls.get("notable_calls", []),
                 source=self.class_variant.get(name),
+                plan=(self.ann.get("tests") or {}).get(name) if kind == "test" else None,
             )
             # inheritance
             if cls["base_name"]:

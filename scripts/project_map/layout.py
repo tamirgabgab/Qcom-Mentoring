@@ -32,6 +32,7 @@ PORT_STEP = 20
 PIN_STEP = 18       # pins written inside a block diagram (the DUT)
 PIN_GAP = 10        # between pin groups
 PIN_OUT = 24        # the pin arrows of a block diagram, drawn outside the box
+FRAME_GAP = 18      # extra air between two dashed group frames (TLM view)
 PORT_SIDE = {       # which side of a box a port sits on: producers on the right, consumers on
     "tlm_port": "right", "get_port": "right",     # the left; the driver's seq_item_port pulls
     "seq_item_port": "left",                      # from the sequencer drawn on its left
@@ -126,6 +127,18 @@ class Layout:
         n = self.N[nid]
         return n["parent"] if n.get("port") else nid
 
+    def role_of(self, nid):
+        """One short line on what a component does (the Environment view)."""
+        n = self.N[nid]
+        text = (n.get("summary") or "").strip()
+        if not text and n.get("cls") and n["cls"] in self.N:
+            text = (self.N[n["cls"]].get("summary") or "").strip()
+        text = text.split(" -- ")[0].split(". ")[0].rstrip(".")
+        if len(text) > 46:
+            cut = text[:46].rsplit(" ", 1)[0]
+            text = cut + "…"
+        return text
+
     def label_of(self, nid):
         n = self.N[nid]
         if n["kind"] in ("module", "interface"):
@@ -146,8 +159,9 @@ class Layout:
             ports = self.port_children(nid) if show_ports else []
             left = [p for p in ports if port_on_left(self.N[p])]
             right = [p for p in ports if not port_on_left(self.N[p])]
-            lm = max([tw(self.N[p]["name"], 11) for p in left] + [0]) + 24 if left else 0
-            rm = max([tw(self.N[p]["name"], 11) for p in right] + [0]) + 24 if right else 0
+            # room for the port labels on both sides: a port faces the box it talks to, so it
+            # may end up on either side (face_partners)
+            lm = rm = max([tw(self.N[p]["name"], 11) for p in ports] + [0]) + 24 if ports else 0
             self.arrange(b, left_margin=lm, right_margin=rm)
             y0 = TITLE_H + 14 + PORT_R
             for i, p in enumerate(left):
@@ -175,14 +189,14 @@ class Layout:
         w = max(text_w + 28, port_w + 24, 120)
         header = 30 if b.sub else 24
         h = header + 10 + max(len(left), len(right)) * PORT_STEP
-        if ports and n.get("children"):
-            h += 14                      # the "open" marker sits below the last port
         if n["kind"] in ("module", "interface", "rtl_block") and n.get("signals") and not ports:
             h = max(h, 54)
+        role = self.role_of(nid=b.id) if getattr(self, "roles", False) else ""
+        if role:
+            b.extra["role"] = role
+            w = max(w, tw(role, 11) + 28)
+            h = max(h, header + 14 + 8 + max(len(left), len(right)) * PORT_STEP)
         b.w, b.h = w, max(h, 44)
-        if n.get("children") and not b.container:
-            b.w = max(b.w, text_w + 48)    # room for the drill-down marker
-            b.h = max(b.h, 56)
         if (self.hints.get(b.id) or {}).get("style") == "dut_spec":
             self.size_dut_spec(b)
         # ports
@@ -463,8 +477,8 @@ class HierarchyLayout(Layout):
             out.append(self.container_scene(nid))
         return out
 
-    def root_scene(self):
-        tb = self.make_box("tb_top", 0, expand=3, show_ports=False)      # tb_top > uvm_test_top > tb > UVCs
+    def root_scene(self, expand_tb=3, sid=None, view="hierarchy", title="YAPP router testbench — overview"):
+        tb = self.make_box("tb_top", 0, expand=expand_tb, show_ports=False)   # tb_top > uvm_test_top > tb > UVCs
         hw = self.make_box("hw_top", 0, expand=1, show_ports=False)
         # stack: UVM side above the hardware
         tb.move(PAD - tb.x, PAD - tb.y)
@@ -477,7 +491,7 @@ class HierarchyLayout(Layout):
             boxes[b.id] = b
         edges = self.scene_edges(boxes, {}, kinds={"vif", "port", "handle", "reg_adapter", "backdoor"},
                                  collapse_vif=True)
-        return {"id": self.ROOT_ID, "view": "hierarchy", "node": None, "title": "YAPP router testbench — overview",
+        return {"id": sid or self.ROOT_ID, "view": view, "node": None, "title": title,
                 "parent": None, "w": round(width, 1), "h": round(hw.y + hw.h + PAD, 1),
                 "items": [b.to_dict() for b in boxes.values()], "edges": edges, "stubs": []}
 
@@ -934,8 +948,13 @@ class TlmLayout(Layout):
                     return sum(ps) / len(ps) if ps else 1e9
                 items.sort(key=lambda p: (bary(p), p))
             y = PAD + 40
+            prev_group = None
             for p in items:
                 b = boxes[p]
+                g = self.group_of(p)
+                if prev_group is not None and g != prev_group:
+                    y += FRAME_GAP            # air between two dashed frames
+                prev_group = g
                 b.move(lane_x[l] + (col_w[l] - b.w) / 2 - b.x, y - b.y)
                 pos_y[p] = y + b.h / 2
                 y += b.h + GAP_Y
@@ -1246,11 +1265,113 @@ class UmlLayout(Layout):
 
 
 # ----------------------------------------------------------------------------- entry
+# ----------------------------------------------------------------------------- Environment
+class EnvLayout(HierarchyLayout):
+    """The course figure of the verification environment: the test, the testbench with every
+    UVC opened down to sequencer / driver / monitor, the interfaces and the DUT, one role
+    line per box. Same machinery as the overview, deeper, with its own row hints."""
+    def __init__(self, model, ann):
+        super().__init__(model, ann)
+        env_hints = (ann.get("layout") or {}).get("env", {})
+        merged = dict(self.hints)
+        merged.update(env_hints)
+        self.hints = merged
+        self.roles = True
+        self.leaf_ids = {"tb.yapp_rm"}           # the register model stays one box (its registers are in the Hierarchy)
+
+    def make_box(self, nid, depth, expand, show_ports=True):
+        if nid in self.leaf_ids:
+            expand = 0
+        return super().make_box(nid, depth, expand, show_ports)
+
+    def scenes(self):
+        return [self.root_scene(expand_tb=6, sid="env:main", view="env", title="Verification environment")]
+
+
+# ----------------------------------------------------------------------------- Tests
+class TestsLayout(Layout):
+    """One card per test: name, lab, base class, purpose, the stages of its plan as a strip
+    of chips. Cards in a grid in course order; the inheritance arrows connect them."""
+    CARD_W = 380
+    COLS = 4
+    CHIPS_PER_ROW = 3
+    KINDS = ("build", "config", "reset", "program", "stimulus", "check", "report")
+
+    def scenes(self):
+        tests = [n for n in self.N.values() if n.get("scope") == "cls" and n.get("kind") == "test"]
+        lab_order = {m["label"]: i for i, m in enumerate(self.ann["labs"].values())}
+        plans = self.ann.get("tests") or {}
+
+        def key(n):
+            return (0 if n["name"] == self.ann["root_test"] else 1, lab_order.get(str(n.get("lab")), 99), n["name"])
+        tests.sort(key=key)
+        boxes = {}
+        for n in tests:
+            plan = plans.get(n["name"]) or {}
+            b = Box(n["id"], n, n["name"], "", n["kind"], 0)
+            purpose = plan.get("purpose") or n.get("summary") or ""
+            lines = wrap(purpose, 62)[:3]
+            stages = [{"k": st.get("k", "stimulus"), "t": st.get("t", "")} for st in plan.get("stages", [])]
+            rows = max(1, math.ceil(len(stages) / self.CHIPS_PER_ROW)) if stages else 0
+            b.w = self.CARD_W
+            b.h = 44 + 15 * len(lines) + (8 + 24 * rows if rows else 0) + 10
+            sub = f"Lab {n['lab']}" if n.get("lab") else ""
+            if n.get("base"):
+                sub += ("  ·  " if sub else "") + f"extends {n['base']}"
+            b.sub = sub
+            b.extra = {"style": "test_card", "lab": n.get("lab"), "lines": lines, "stages": stages,
+                       "base": n.get("base"), "nstages": len(plan.get("stages", []))}
+            boxes[n["id"]] = b
+        # grid
+        x0, y0 = PAD, PAD + 10
+        col_h = [y0] * self.COLS
+        order = list(boxes.values())
+        # the root test alone on the first row, then the rest column by column, row-major
+        root = order[0]
+        root.move(x0 + ((self.CARD_W + GAP_X) * self.COLS - GAP_X - root.w) / 2 - root.x, y0 - root.y)
+        y = y0 + root.h + GAP_Y + 10
+        for i, b in enumerate(order[1:]):
+            c = i % self.COLS
+            if c == 0 and i:
+                y += max(ob.h for ob in order[1 + i - self.COLS:1 + i]) + GAP_Y
+            b.move(x0 + c * (self.CARD_W + GAP_X) - b.x, y - b.y)
+        total_w = x0 + self.CARD_W * self.COLS + GAP_X * (self.COLS - 1) + PAD
+        total_h = max(b.y + b.h for b in order) + PAD
+        edges = []
+        for e in self.E:
+            if e["kind"] == "inherits" and e["from"] in boxes and e["to"] in boxes:
+                a, b = boxes[e["from"]], boxes[e["to"]]
+                pts = self.route((a.x + a.w / 2, a.y), (b.x + b.w / 2, b.y + b.h), "top", "bottom")
+                mid = self.bezier_mid(pts)
+                edges.append({"id": e["id"], "kind": "inherits", "from": e["from"], "to": e["to"],
+                              "points": [[round(x, 1), round(y_, 1)] for x, y_ in pts], "label": "",
+                              "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": False})
+        return [{"id": "tests:main", "view": "tests", "node": None, "title": "Tests",
+                 "parent": None, "w": round(total_w, 1), "h": round(total_h, 1),
+                 "items": [b.to_dict() for b in order], "edges": edges, "stubs": []}]
+
+
+def wrap(text, width):
+    """Greedy word wrap for the card texts."""
+    words, lines, cur = text.split(), [], ""
+    for w in words:
+        if cur and len(cur) + 1 + len(w) > width:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = (cur + " " + w).strip()
+    if cur:
+        lines.append(cur)
+    return lines
+
+
 def build_scenes(model, ann):
     scenes = []
     scenes += HierarchyLayout(model, ann).scenes()
     scenes += TlmLayout(model, ann).scenes()
     scenes += UmlLayout(model, ann).scenes()
+    scenes += EnvLayout(model, ann).scenes()
+    scenes += TestsLayout(model, ann).scenes()
     # which hierarchy scene draws each node (for search / deep links)
     where = {}
     for s in scenes:

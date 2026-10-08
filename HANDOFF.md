@@ -215,6 +215,33 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      הסבר). `opts.legend` הוסר, נוסף `opts.singleDesc`.
    - תועד ב-`docs/project-map.md` (פסקה "Getting around") וב-README. `export/` חודש (50 קבצים).
      צילומי ה-README לא חודשו.
+6. **סבב UX שלישי + שתי תצוגות חדשות** (5 בקשות של תמיר + 4 תשובות לשאלות מנחות):
+   - `app.js` **גרירת container**: `moveItem` אוסף את הצאצאים לפי שרשרת ה-parent ב-`N` (לא רק לפי
+     prefix של ה-id, כי `tb`/`uvm_test_top` לא מקבלים prefix) → גרירת `uvm_test_top` או `tb_top` לוקחת
+     את כל מה שבפנים. **ה-frames המקווקווים ב-TLM נגררים** (`fg.__frame`, `drag.item` = ה-frame,
+     `moveItem` מזיז את החברים לפי prefix; נשמר תחת id ה-frame). `layout.py`: `FRAME_GAP = 18` בין
+     קבוצות עוקבות באותו lane.
+   - **סמני `▸ open` ו-`↗` הוסרו** מכל הקופסאות (`drawItem`, `tap`), והמקום שנשמר להם ב-`size_leaf`.
+   - **containers רחבים יותר**: `make_box` שומר שוליים לתוויות של ports **בשני** הצדדים (port יכול
+     לעבור צד ב-`face_partners`), כך `chan1_export`/`chan2_export` של router_module ב-`h:tb` לא
+     נוחתים על ה-scoreboard.
+   - **תצוגת Tests** (`tests:main`, `TestsLayout`): כרטיס לכל מחלקת test במודל (17: גם הטסטים של
+     לאבים 4–6 אחרי הוספת `labs/lab06_vif/tb/run.f` כמקור רביעי ב-`annotations.yaml`), בסדר הלאבים,
+     `base_test` למעלה; בכרטיס: שם, Lab + extends, מטרה (עד 3 שורות), chips של שלבי התוכנית (3 בשורה,
+     צבע לפי סוג: build/config/reset/program/stimulus/check/report, hover = פירוט). חיצי `inherits`
+     (Arrows כבוי כברירת מחדל). **`tests:` ב-annotations.yaml**: לכל טסט purpose, stages
+     (`{k, t, d}`), expected — כתבתי מהקוד ומדפי הלאבים (אין גישה ל-PDF בקונטיינר; תמונות ה-PDF
+     אסורות ממילא). `model.py` מצרף `plan` לכל node מסוג test. בפאנל (`renderPlan`): ציר זמן SVG
+     ממוספר, רשימת השלבים עם הפירוט, Expected, "Stimulus set up by the code" (default_sequence
+     מ-config_sets, `start()` מ-notable_calls, overrides) ו-`make run TEST=`. חיפוש של test כש-Tests
+     פתוח נשאר ב-Tests (`gotoNode`).
+   - **תצוגת Environment** (`env:main`, `EnvLayout(HierarchyLayout)`): `root_scene` עם
+     `expand_tb=6`, hints מ-`layout.env` (עמודה אחת per agent: sequencer/driver/monitor), `yapp_rm`
+     נשאר קופסה אחת (`leaf_ids`), **שורת role** לכל עלה (`role_of`: summary של ה-node/המחלקה, עד 46
+     תווים, `size_leaf` מוסיף גובה/רוחב). double-click פותח ב-Hierarchy.
+   - `test_model.py`: בדיקות לשתי הסצנות (17 כרטיסים עם plan+expected, 16 חיצי inherits; env מציג
+     sequencer/driver/monitor, yapp_rm סגור, role לכל עלה). `export.mjs`: PNG גם ל-env ו-tests.
+   - מקשים `4`/`5` לתצוגות החדשות; README ו-`docs/project-map.md` מתארים חמש תצוגות (אין יותר "▸ open corner").
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -223,7 +250,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 22 commits בסך הכול; האחרונים: (סשן 5) סבב UX שני, `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
+- 23 commits בסך הכול; האחרונים: (סשן 5) תצוגות Tests/Environment, `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 
@@ -431,8 +458,9 @@ push, ff main, לשלוח zip.
 2. ~~`scripts/project_map/test_sim.mjs`~~ — **בוצע בסשן 5.**
 3. לבדוק את האתר החי אחרי deploy (תמיר רואה; מהקונטיינר אין גישה ל-github.io): `dut/spec/` ו-`components/packet/` עם ה-widgets, המפה עם ה-DUT החדש.
 4. ~~שיפורי UX קטנים~~ — שני סבבי UX בסשן 5 (סעיף 2, פריטים 4–5). פתוח: עקיפת מכשולים מלאה, מיקום תוויות.
-5. לבקש מתמיר פידבק על הסבב השני (ports פונים לשותף, stubs ליד השותף, DUT עם חצים בחוץ, Home/Back/Forward,
-   שורות ביטים) ולתקן לפי הצורך.
+5. לבקש מתמיר פידבק על הסבבים האחרונים, ובמיוחד על **Tests** (האם הטקסטים של ה-plans מדויקים
+   מבחינתו מול ה-PDF שיש רק לו) ו-**Environment** (האם זה ציור הסביבה שהתכוון אליו) ולתקן לפי הצורך.
+6. רעיונות שתמיר העלה ולא נעשו: אין. חוב קטן: ב-Tests חיצי ה-inherits מסורבלים כש-Arrows דלוק (לכן כבוי).
 
 **איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי

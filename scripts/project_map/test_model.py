@@ -82,6 +82,25 @@ def run_all(m, model_json, html):
             pin_ids = {p["id"] for p in pins}
             vifs = [e for e in tlm["edges"] if e["kind"] == "vif"]
             expect(len(vifs) == kinds["vif"] and all(e["from"] in pin_ids or e["to"] in pin_ids for e in vifs), f"{sid}: every vif arrow touches a DUT pin")
+    # the Tests view: one card per test class, with its plan; the Environment view: every
+    # sequencer / driver / monitor of the testbench on one page, one role line per leaf
+    tests = next((s for s in m["scenes"] if s["id"] == "tests:main"), None)
+    test_nodes = [n for n in N.values() if n.get("scope") == "cls" and n.get("kind") == "test"]
+    expect(tests is not None and len(tests["items"]) == len(test_nodes) >= 17, f"tests scene: {len(tests['items']) if tests else 0} cards for {len(test_nodes)} tests")
+    if tests:
+        expect(all(it.get("style") == "test_card" and it.get("stages") for it in tests["items"]), "every test card has a plan with stages")
+        expect(all(N[it["id"]].get("plan") and N[it["id"]]["plan"].get("expected") for it in tests["items"]), "every test node carries its plan (annotations.yaml: tests)")
+        expect(len(tests["edges"]) == len(tests["items"]) - 1 and all(e["kind"] == "inherits" for e in tests["edges"]), "tests scene: one inherits arrow per derived test")
+    env = next((s for s in m["scenes"] if s["id"] == "env:main"), None)
+    expect(env is not None and env["view"] == "env", "env scene exists")
+    if env:
+        ids = {it["id"] for it in env["items"]}
+        for want in ("tb.yapp.agent.sequencer", "tb.yapp.agent.driver", "tb.yapp.agent.monitor", "tb.chan2.rx_agent.monitor",
+                     "tb.hbus.masters[0].driver", "tb.clk_rst.agent.driver", "tb.router_module.scoreboard", "hw_top.dut", "hw_top.ch2"):
+            expect(want in ids, f"env scene shows {want}")
+        expect("tb.yapp_rm.router_yapp_regs" not in ids, "env scene keeps the register model as one box")
+        leaves = [it for it in env["items"] if not it.get("container") and it["id"].startswith("tb.")]
+        expect(all(it.get("role") for it in leaves), "every leaf of the env scene has a role line")
     # the DUT block diagram in the root scene (pins + registers block) and the register map
     root = next(s for s in m["scenes"] if s["id"] == "h:root")
     dut = next((it for it in root["items"] if it["id"] == "hw_top.dut"), None)

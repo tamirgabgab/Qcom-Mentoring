@@ -125,7 +125,25 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-node text.label { font-size: 14px; font-weight: 600; }
 .pm-node text.sub { font-size: 12px; fill: var(--pm-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .pm-node text.kind { font-size: 10px; fill: var(--pm-muted); text-transform: uppercase; letter-spacing: .04em; }
-.pm-node text.more { font-size: 11px; fill: var(--pm-accent); }
+.pm-node text.role { font-size: 11px; fill: var(--pm-muted); }
+/* the Tests view: one card per test, the stages of its plan as chips */
+.pm-node.test-card text.purpose { font-size: 11.5px; fill: var(--pm-fg); }
+.pm-node.test-card .chip rect { fill: var(--pm-bg); stroke: var(--sk, var(--pm-border)); stroke-width: 1.1; }
+.pm-node.test-card .chip text { font-size: 10px; fill: var(--pm-fg); pointer-events: none; }
+.pm-node.test-card .chip:hover rect { fill: var(--sk, var(--pm-border)); fill-opacity: .18; }
+.k-build { --sk: #8e9aaf; } .k-config { --sk: #5b8def; } .k-reset { --sk: #6b7280; } .k-program { --sk: #a855f7; }
+.k-stimulus { --sk: #10a37f; } .k-check { --sk: #f59e0b; } .k-report { --sk: #ef4444; }
+/* the plan in the panel */
+.pm-plan { display: block; max-width: 420px; margin: 4px 0 2px; }
+.pm-plan line.axis { stroke: var(--pm-border); stroke-width: 2; }
+.pm-plan circle { fill: var(--sk, var(--pm-border)); }
+.pm-plan text.n { font-size: 9px; font-weight: 700; fill: #fff; }
+.pm-plan rect { fill: var(--pm-bg); stroke: var(--sk, var(--pm-border)); }
+.pm-plan text.t { font-size: 11px; fill: var(--pm-fg); }
+.pm-plan text.k { font-size: 9px; fill: var(--sk, var(--pm-muted)); text-transform: uppercase; letter-spacing: .06em; }
+.pm-panel-body ol.pm-stages { padding-left: 20px; margin: 4px 0 8px; font-size: 12.5px; }
+.pm-panel-body ol.pm-stages li { margin: 2px 0; }
+.pm-panel-body ul.pm-expected li { margin: 3px 0; }
 .pm-node text.member { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .pm-node line.sep { stroke: var(--pm-border); }
 .pm-node:hover rect.box, .pm-node.hover rect.box { stroke: var(--pm-accent); stroke-width: 2; }

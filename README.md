@@ -48,11 +48,14 @@ the expected results and checkpoint questions.
 
 The [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
 is one picture of the whole project that you can look into. Click a box for
-its role, its file and the lab that introduces it; double-click (or the
-`▸ open` corner) to drill down; the **Source** column on the right shows the
-complete file of whatever is selected (one class per file). Three views:
-**Hierarchy** (who contains whom), **TLM / data flow** (who talks to whom) and
-**Classes (UML)** (who inherits from whom, with fields and methods).
+its role, its file and the lab that introduces it; double-click to drill
+down; the **Source** column on the right shows the complete file of whatever
+is selected (one class per file). Five views: **Hierarchy** (who contains
+whom), **TLM / data flow** (who talks to whom), **Classes (UML)** (who inherits
+from whom, with fields and methods), **Environment** (the course figure of the
+whole verification environment, one role line per box) and **Tests** (one card
+per test with its plan: the stages, what the run is expected to show, the
+sequences and overrides it sets up).
 
 Arrows are drawn orthogonally; in the Hierarchy and TLM views they start hidden and
 appear for the box under the pointer (the **Arrows** button shows them all). Boxes

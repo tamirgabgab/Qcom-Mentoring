@@ -24,6 +24,7 @@ sources:
   - yapp_project/tb/run.f            # the complete project: RAL, mcseqr, module UVC with exports
   - labs/lab10_cov/tb/run.f          # pre-RAL tests (simple, mcseq, integration, coverage)
   - labs/lab09_sbd/tb/run.f          # fifo_sb variant of the testbench + scoreboard_drop_test
+  - labs/lab06_vif/tb/run.f          # the Lab 4-6 tests (factory override, config, sequences, first DUT packets)
 
 groups:
   yapp_pkg:            {label: "YAPP UVC",          color: yapp}
@@ -252,6 +253,11 @@ classes:
     description: |
       Every other test extends it. `configure_sequences()` is the hook the tests override;
       `end_of_elaboration_phase` prints the topology; `check_phase` runs `check_config_usage()`.
+  short_packet_test: {summary: "Lab 4: factory override yapp_packet -> short_yapp_packet; the sequence is unchanged."}
+  set_config_test: {summary: "Lab 4: tb.yapp.agent made passive through uvm_config_int; no sequence configured."}
+  incr_payload_test: {summary: "Lab 5: yapp_incr_payload_seq -- one short packet with payload 0 1 2 3 ..."}
+  exhaustive_seq_test: {summary: "Lab 5: yapp_exhaustive_seq runs every sequence of the library once."}
+  yapp_012_test: {summary: "Lab 6: one packet per channel into the real DUT -- watch in0 against data_0/1/2."}
   simple_test: {summary: "Default sequences only: yapp_012_seq on the YAPP sequencer."}
   test_uvc_integration: {summary: "Lab 7: hbus_small_packet_seq + yapp_012_seq -- all UVCs talking to the DUT."}
   router_simple_mcseq_test: {summary: "Runs router_simple_mcseq on the virtual sequencer."}
@@ -335,6 +341,193 @@ extra_flows:        # connections made by assign statements inside yapp_router (
   - ["hw_top.dut.g_ch[1].u_ch", hw_top.ch1, "data_1 / data_vld_1 <- suspend_1", true]
   - ["hw_top.dut.g_ch[2].u_ch", hw_top.ch2, "data_2 / data_vld_2 <- suspend_2", true]
 
+# ----------------------------------------------------------------------------- tests
+# The plan of every test for the Tests view: what runs, in order, and what the log and
+# the waveform are expected to show. Stage kinds: build, config, reset, program, stimulus,
+# check, report (they colour the timeline). Everything else about a test (default sequences,
+# factory overrides, notable calls, file, lines) is extracted from the code.
+tests:
+  base_test:
+    purpose: "The skeleton every test extends: builds router_tb, keeps the run alive 200 ns after the last objection, reports unused settings."
+    stages:
+      - {k: build,  t: "build_phase",  d: "recording_detail = 1 for every component; configure_sequences() hook (empty here); router_tb created"}
+      - {k: report, t: "topology",     d: "print_topology() at end_of_elaboration"}
+      - {k: stimulus, t: "run_phase",  d: "no stimulus of its own; drain time 200 ns after the last objection drops"}
+      - {k: check,  t: "check_phase",  d: "check_config_usage(): every setting nobody read"}
+    expected:
+      - "The topology report lists uvm_test_top : base_test with the whole router_tb below it."
+      - "No sequence runs, so the DUT sees no clock and no packet; the run ends after the drain time with UVM_ERROR : 0."
+      - "Every other test extends it and only changes what runs (configure_sequences, build_phase, run_phase)."
+  short_packet_test:
+    purpose: "Lab 4: the factory override in action -- the sequence asks for yapp_packet and gets short_yapp_packet."
+    stages:
+      - {k: build,    t: "factory override", d: "set_type_override_by_type(yapp_packet, short_yapp_packet) before the testbench is built"}
+      - {k: config,   t: "default sequence", d: "inherited from the Lab 4-6 base_test: yapp_5_packets on tb.yapp.agent.sequencer"}
+      - {k: stimulus, t: "5 packets",        d: "the driver prints every packet it receives"}
+    expected:
+      - "Each `Packet is` table starts with short_yapp_packet, length < 15, never addr 2 (the subclass constraints)."
+      - "Nothing in the sequence changed: the override happened in the factory."
+  set_config_test:
+    purpose: "Lab 4: a passive agent through the configuration database -- and why the sequence setting lives in a virtual function."
+    stages:
+      - {k: build,  t: "config_db",            d: "uvm_config_int::set(tb.yapp.agent, is_active, UVM_PASSIVE) before super.build_phase"}
+      - {k: config, t: "configure_sequences()", d: "overridden with an empty body: there is no sequencer to configure"}
+      - {k: stimulus, t: "run_phase",          d: "nothing drives; the agent only has a monitor"}
+    expected:
+      - "print_topology shows tb.yapp.agent with is_active = UVM_PASSIVE and only a monitor below it."
+      - "No `configuration never used` report at the end -- the reason the default sequence is set from a virtual function the test can override."
+  incr_payload_test:
+    purpose: "Lab 5: a sequence that shapes the payload after randomisation."
+    stages:
+      - {k: build,    t: "factory override", d: "yapp_packet -> short_yapp_packet"}
+      - {k: config,   t: "default sequence", d: "yapp_incr_payload_seq on tb.yapp.agent.sequencer"}
+      - {k: stimulus, t: "one packet",       d: "post_randomize() rewrites the payload to 0 1 2 3 ..."}
+    expected:
+      - "One short packet whose payload reads 0 1 2 3 ..."
+      - "At UVM_FULL: `Starting default sequence yapp_incr_payload_seq`."
+  exhaustive_seq_test:
+    purpose: "Lab 5: one sequence that runs every sequence of the library once (sequences starting sub-sequences)."
+    stages:
+      - {k: build,    t: "factory override",      d: "yapp_packet -> short_yapp_packet"}
+      - {k: config,   t: "default sequence",      d: "yapp_exhaustive_seq on tb.yapp.agent.sequencer"}
+      - {k: stimulus, t: "every sequence once",   d: "yapp_1_seq, yapp_012_seq, yapp_3_seq, yapp_incr_payload_seq, yapp_rnd_seq, yapp_6_seq ... as sub-sequences"}
+    expected:
+      - "One `Executing ...` line per sub-sequence and 1 + 3 + 3 + 2 + 1 + count + 6 packets, no warnings."
+  yapp_012_test:
+    purpose: "Lab 6: the first packets into the real DUT -- one per channel, so the connection is easy to check in the waveform."
+    stages:
+      - {k: config,   t: "default sequence", d: "yapp_012_seq on tb.yapp.agent.sequencer"}
+      - {k: stimulus, t: "3 packets",        d: "addr 0, 1, 2 -- through the virtual interface into in0"}
+      - {k: check,    t: "waveform",         d: "in0.in_data against dut.data_0 / data_1 / data_2"}
+    expected:
+      - "Each packet comes out on the channel its address names: data_0, data_1, data_2 in turn."
+      - "No channel UVC yet: the output side is only watched in the waveform."
+  simple_test:
+    purpose: "Lab 7: every UVC talking to the DUT with the default sequences only."
+    stages:
+      - {k: build,    t: "factory override",  d: "yapp_packet -> short_yapp_packet"}
+      - {k: config,   t: "default sequences", d: "yapp_012_seq on YAPP; clk10_rst5_seq on clk_rst; channel_rx_resp_seq on chan0..2 (set_clock_and_channel_sequences)"}
+      - {k: reset,    t: "clk10_rst5_seq",    d: "clock period 10 ns, reset held 5 cycles"}
+      - {k: stimulus, t: "3 short packets",   d: "one per channel; the HBUS stays idle (reset values: maxpktsize 63, router enabled)"}
+      - {k: stimulus, t: "channel response",  d: "channel_rx_resp_seq answers suspend on every channel and the monitors collect"}
+      - {k: report,   t: "channel reports",   d: "each channel monitor reports what it collected"}
+    expected:
+      - "Each channel monitor prints exactly one `Channel N collected packet` whose fields equal the YAPP packet with addr == N."
+      - "The channel reports say `1 packets collected` each."
+  test_uvc_integration:
+    purpose: "Lab 7: 88 packets of every length and address against a router programmed for small packets."
+    stages:
+      - {k: config,   t: "default sequences", d: "yapp_88_packets_seq on YAPP, hbus_small_packet_seq on hbus.masters[0], clock and channel sequences"}
+      - {k: reset,    t: "clk10_rst5_seq",    d: "clock and 5 cycles of reset"}
+      - {k: program,  t: "hbus_small_packet_seq", d: "WRITE 0x1000 = 0x14 (maxpktsize 20), WRITE 0x1001 = 0x01 (router on)"}
+      - {k: stimulus, t: "88 packets",        d: "lengths 1..22, all four addresses, 20 % bad parity"}
+      - {k: check,    t: "router drops",      d: "length > 20 dropped, address 3 dropped, error pulse after a bad-parity packet"}
+    expected:
+      - "HBUS `WRITE addr=0x1000 data=0x14` and `0x1001 data=0x01` in the HBUS monitor log."
+      - "`ROUTER DROPS PACKET ... length > maxpktsize` for lengths 21 and 22, `... illegal address` for every address-3 packet."
+      - "`error` pulses in the waveform after bad-parity packets; the channel monitors together collect 3 x 20 = 60 packets."
+  router_simple_mcseq_test:
+    purpose: "Lab 8: one multichannel sequence on the virtual sequencer programs the router and sends the packets in order."
+    stages:
+      - {k: build,    t: "factory override",     d: "yapp_packet -> short_yapp_packet"}
+      - {k: config,   t: "default sequences",    d: "router_simple_mcseq on tb.mcseqr; clock and channel sequences"}
+      - {k: reset,    t: "clk10_rst5_seq",       d: "clock and 5 cycles of reset"}
+      - {k: program,  t: "hbus_small_packet_seq", d: "maxpktsize = 20, router enabled; hbus_read_max_pkt_seq reads it back"}
+      - {k: stimulus, t: "6 packets",            d: "yapp_012_seq twice: addresses 0, 1, 2, 0, 1, 2"}
+      - {k: program,  t: "hbus_large_packet_seq", d: "maxpktsize = 63; read back"}
+      - {k: stimulus, t: "6 random packets",     d: "yapp_rnd_seq with count = 6"}
+      - {k: check,    t: "scoreboard (Lab 9)",   d: "every packet the reference model forwards is compared with what the channel monitor saw"}
+    expected:
+      - "The log shows the sequences in this order: hbus_small_packet_seq, hbus_read_max_pkt_seq, yapp_012_seq x2, hbus_large_packet_seq, hbus_read_max_pkt_seq, yapp_rnd_seq."
+      - "From Lab 9 on, the scoreboard report: packets received 12, matched 12, mismatched 0, unexpected 0, left in queue 0 / 0 / 0."
+  scoreboard_drop_test:
+    purpose: "Lab 9A: the negative check -- full-size packets while maxpktsize is 20, so the router drops some and the scoreboard must notice."
+    stages:
+      - {k: build,    t: "no override",          d: "build_phase calls base_test::build_phase directly, skipping the short-packet override"}
+      - {k: config,   t: "default sequences",    d: "same as router_simple_mcseq_test"}
+      - {k: reset,    t: "clk10_rst5_seq",       d: "clock and reset"}
+      - {k: stimulus, t: "first 6 packets",      d: "random lengths up to 63 while maxpktsize = 20"}
+      - {k: check,    t: "router drops",         d: "every packet longer than 20 is dropped"}
+      - {k: check,    t: "scoreboard compare",   d: "the next packet on that channel is compared with the dropped one and mismatches"}
+      - {k: report,   t: "scoreboard report",    d: "received == matched + mismatched + left in queues"}
+    expected:
+      - "`ROUTER DROPS PACKET ... length > maxpktsize` for every packet longer than 20."
+      - "`UVM_ERROR ... [PKT_COMPARE] Length mismatch` / `... MISMATCH` when the next packet on that channel is compared with the dropped one -- expected errors, this is a negative test."
+      - "At the end: packets received == matched + mismatched + left in queues."
+  coverage_test:
+    purpose: "Lab 10: stimulus written to close the functional coverage model of the YAPP monitor."
+    stages:
+      - {k: config,   t: "default sequences",   d: "yapp_coverage_seq on YAPP, clock and channel sequences; no HBUS traffic, maxpktsize stays 63"}
+      - {k: reset,    t: "clk10_rst5_seq",      d: "clock and reset"}
+      - {k: stimulus, t: "yapp_coverage_seq",   d: "every length bin to every address, with and without parity errors"}
+      - {k: check,    t: "router drops",        d: "only the address-3 packets are dropped (the reference model expects that)"}
+      - {k: report,   t: "yapp_pkt_cg",         d: "the covergroup in yapp_tx_monitor; the monitor report prints the percentage"}
+    expected:
+      - "All 5 length bins, all 4 address bins, both parity values and all 15 cross bins are hit: 100 %."
+      - "router_simple_mcseq_test (short packets) leaves LARGE, MAX and illegal_addr empty; this test closes them."
+  uvm_reset_test:
+    purpose: "Lab 11B: the built-in register sequence that reads every register after reset."
+    stages:
+      - {k: config,   t: "default sequences",     d: "clock and channel sequences; the YAPP sequencer stays idle"}
+      - {k: reset,    t: "clk10_rst5_seq",        d: "clock and reset"}
+      - {k: stimulus, t: "uvm_reg_hw_reset_seq",  d: "model = tb.yapp_rm, start(null): a front-door read of every register through reg2hbus"}
+      - {k: check,    t: "built-in compare",      d: "each value read is compared with the reset value in the model"}
+    expected:
+      - "The HBUS monitor logs one READ per register (0x1000, 0x1001, 0x1004 ... 0x100d)."
+      - "The topology shows yapp_rm under tb (router_tb::do_print). UVM_ERROR : 0."
+  uvm_mem_walk_test:
+    purpose: "Lab 11B: the built-in memory sequence walks yapp_mem; the RO yapp_pkt_mem is skipped."
+    stages:
+      - {k: config,   t: "default sequences",  d: "clock and channel sequences"}
+      - {k: reset,    t: "clk10_rst5_seq",     d: "clock and reset"}
+      - {k: stimulus, t: "uvm_mem_walk_seq",   d: "model = tb.yapp_rm: writes a pattern through yapp_mem and reads it back"}
+      - {k: check,    t: "built-in compare",   d: "every read compared with what was written; yapp_pkt_mem (RO) is skipped"}
+    expected:
+      - "HBUS traffic over 0x1100..0x11ff only; the HBUS report says 511 writes, 255 reads."
+      - "With `-define INJECT_ERROR`: `UVM_ERROR ... [uvm_mem_walk_seq] Memory ... read back as ... instead of ...` at 0x112a."
+  reg_access_test:
+    purpose: "Lab 11C: hand-written front-door and backdoor checks on one RW and one RO register."
+    stages:
+      - {k: config,   t: "default sequences",  d: "clock and channel sequences; regs = tb.yapp_rm.router_yapp_regs in connect_phase"}
+      - {k: reset,    t: "clk10_rst5_seq",     d: "clock and reset"}
+      - {k: check,    t: "RW: ctrl_reg",       d: "write 0x25 (front door) -> peek == 0x25; poke 0x1a -> read == 0x1a"}
+      - {k: check,    t: "RO: addr0_cnt_reg",  d: "poke 0x5a -> read == 0x5a; write 0x33 (front door, ignored) -> peek still 0x5a"}
+    expected:
+      - "Eight [REG_ACCESS] lines; the RO write produces an HBUS `WRITE addr=0x1009` in the monitor log but the following peek still returns 0x5a."
+      - "UVM_ERROR : 0."
+  reg_function_test:
+    purpose: "Lab 11C: do the enable bits and the counters behave? Packets in, counters read through the model."
+    stages:
+      - {k: config,   t: "default sequences",  d: "as reg_access_test; yapp_seqr = tb.yapp.agent.sequencer by hierarchical handle"}
+      - {k: reset,    t: "clk10_rst5_seq",     d: "clock and reset"}
+      - {k: program,  t: "en_reg = 0x01",      d: "router on, every counter off"}
+      - {k: stimulus, t: "yapp_012_seq",       d: "3 packets, addresses 0, 1, 2"}
+      - {k: check,    t: "counters stay 0",    d: "addr0..3_cnt_reg all read 0"}
+      - {k: program,  t: "en_reg = 0xff",      d: "every counter on"}
+      - {k: stimulus, t: "yapp_012_seq x2",    d: "6 packets, 2 per address"}
+      - {k: check,    t: "counters",           d: "addr0/1/2 == 2, addr3 == 0, parity_err_cnt == bad-parity packets the monitor saw, oversized == 0 (maxpktsize 63)"}
+    expected:
+      - "`addr*_cnt_reg reads 0 as expected` x4, then addr0/1/2_cnt_reg read 2, addr3_cnt_reg reads 0, parity_err_cnt_reg reads N, oversized_pkt_cnt_reg reads 0."
+  reg_function_check_test:
+    purpose: "Lab 11C (optional): the same test with the model checking every read itself."
+    stages:
+      - {k: config,   t: "set_check_on_read(1)", d: "on default_map at the start of run_phase"}
+      - {k: stimulus, t: "reg_function_test",    d: "the same two steps: en_reg = 0x01, 3 packets; en_reg = 0xff, 6 packets"}
+      - {k: check,    t: "predict + read",       d: "check_counter() loads the mirror with predict(expected), then read() compares the DUT value with it"}
+    expected:
+      - "Same values as reg_function_test, 0 errors."
+      - "Comment out predict() to see the check-on-read errors: RO counters move without bus traffic, so the mirror is stale."
+  reg_introspection_test:
+    purpose: "Lab 11C (optional): the model tells the test which registers are RW and which are RO, then every one is checked."
+    stages:
+      - {k: config,   t: "default sequences",  d: "as reg_access_test"}
+      - {k: reset,    t: "clk10_rst5_seq",     d: "clock and reset"}
+      - {k: build,    t: "introspection",      d: "get_registers(all_q); find() with get_rights() == RW / RO"}
+      - {k: check,    t: "RW checks",          d: "check_rw_register on ctrl_reg and en_reg"}
+      - {k: check,    t: "RO checks",          d: "check_ro_register on the six counters and mem_size_reg"}
+    expected:
+      - "`RW register: ctrl_reg @ 0x1000`, `RW register: en_reg @ 0x1001`, seven `RO register:` lines, then the access checks for all nine registers, 0 errors."
+
 layout:
   hierarchy:
     root:
@@ -380,3 +573,31 @@ layout:
       rows: [["masters[0]", monitor]]
     tb.router_module:
       rows: [[reference, scoreboard]]
+  # the Environment view (course figure): the test, the testbench with every UVC opened down to
+  # sequencer / driver / monitor, the interfaces and the DUT; one role line per box
+  env:
+    tb:
+      rows:
+        - [yapp, hbus, chan0, chan1, chan2, clk_rst]
+        - [mcseqr, router_module, yapp_rm, reg2hbus]
+    tb.yapp.agent:
+      rows: [[sequencer], [driver], [monitor]]
+    tb.hbus:
+      rows: [["masters[0]"], [monitor]]
+    tb.hbus.masters[0]:
+      rows: [[sequencer], [driver]]
+    tb.chan0.rx_agent:
+      rows: [[sequencer], [driver], [monitor]]
+    tb.chan1.rx_agent:
+      rows: [[sequencer], [driver], [monitor]]
+    tb.chan2.rx_agent:
+      rows: [[sequencer], [driver], [monitor]]
+    tb.clk_rst.agent:
+      rows: [[sequencer], [driver]]
+    tb.router_module:
+      rows: [[reference], [scoreboard]]
+    hw_top:
+      columns:
+        - [in0, clk_rst_if, clkgen, hbus0]
+        - [dut]
+        - [ch0, ch1, ch2]
