@@ -371,6 +371,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      `--only` עם מפתח מדויק בוחר רק אותו (ה-matrix ב-CI לא מריץ פעמיים).
    - `yapp_coverage_seq` / `yapp_88_packets_seq`: create → start_item → randomize → finish_item.
    - תיעוד: driver.md (פסקת "The gap between packets"), monitor.md, lab11b.md, verilator.md, unverified.md, spec.md, test-plan (נוצר).
+   - אימות: slang 18/18, style OK, map-check OK, mkdocs strict OK, **`make regress SEEDS=2`: 156/156 PASS** (counter_wrap 255→0→1,
+     back_to_back: 5/6/6/6 כמתוכנן, INJECT_ERROR: שגיאה אחת על `yapp_mem[42]`, coverage_test עדיין 100%). commit `77bae40`.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
