@@ -352,13 +352,15 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - תיעוד: `docs/components/random.md` (חדש, בניווט ובטבלת components), `packet.md`, `lab01.md`, getting-started, README.
    - **שני באגים חדשים של Verilator 5.052** (מתועדים ב-`verilator.md`): השמת מערך דינמי למערך בגודל קבוע לא מתקמפלת;
      בתוך מתודה של class, `if (v inside {[-5:5]})` שקרי ל-`v` שלילי (טווח עם גבול שלילי). הקוד שלנו לא משתמש בזה.
+   - אימות: slang 18/18, `sv_style --check` OK, map-check OK, mkdocs strict OK, **`make regress SEEDS=2`: 150/150 PASS**
+     (coverage_test 100%, parity_error_test 12/12 פולסים). commit `62c6e7f` + commit ה-HANDOFF.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
 
 ### סטטוס git
 - ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main` אחרי ff בסוף הסשן). commits: `63b94b9` (flow + תיקונים),
-  `05d4e2c` (Lab 9), ואחריו commit התיעוד/HANDOFF.
+  `05d4e2c` (Lab 9), `2af0853` (תיעוד/HANDOFF), `62c6e7f` (סבב 2: `rnd::` + begin/end), ואחריו commit ה-HANDOFF.
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
