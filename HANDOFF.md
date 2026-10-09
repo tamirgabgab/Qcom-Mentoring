@@ -4,8 +4,10 @@
 > ב-Verilator). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
 > HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
 > CI (lint + sim + docs) — ראה סעיף 2. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
-> **לאן ממשיכים:** סעיף 8: ה-Test plan **הושלם** (55 covered + 1 excluded) ← מעבר עם תמיר על הניסוחים מול ה-PDF ← UX במפה. הקוד **רץ** עכשיו ב-Verilator
-> (`make sim` / `make regress`, Codespaces, workflow `sim`); Xcelium עדיין לא.
+> **לאן ממשיכים:** סעיף 8. מצב בסוף סשן 6: ה-Test plan **הושלם** (55 covered + 1 excluded), ספריית `rnd::` בכל הקוד,
+> שני סבבי UX במפה **הושלמו** (9 מ-10 ההצעות; תמיר ויתר על עקיפת מכשולים מלאה לחצים). הקוד **רץ** ב-Verilator
+> (`make sim` / `make regress` 156/156, Codespaces, workflow `sim`); Xcelium עדיין לא. מה שנשאר פתוח תלוי בתמיר:
+> מעבר על ניסוחי ה-Test plan מול ה-PDF (רק אצלו), הרצה ב-Xcelium אם ישיג גישה, ותוכן לימודי לאתר.
 
 ---
 
@@ -96,8 +98,10 @@
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
 - `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
-- `make map && make map-check` — 245 nodes, 279 edges, 41 scenes (5 תצוגות: Hierarchy, TLM, Classes,
-  Environment, Test plan); `test_model.py` עובר (pins/regmap ב-root scene, regmap.yaml ⇔ localparams
+- `make map && make map-check` — 249 nodes, 284 edges, 41 scenes (5 תצוגות: Hierarchy, TLM, Classes,
+  Environment, Test plan). ממשק (סשן 6 סבבים 4–5): עמודת Source מתקפלת, שורת סטטוס עם מסלול, Fit width/all,
+  חיפוש מדורג, רשימת פריטים מקובצת עם סינון, לשוניות package, רמת פירוט לפי זום, חצים עמומים ב-Test plan,
+  מיני-מפה; `docs/test-plan.md` עם מטריצת כיסוי. `test_model.py` עובר (pins/regmap ב-root scene, regmap.yaml ⇔ localparams
   ב-RTL ⇔ offsets ב-RAL, סצנות env/plan, עקביות ה-Test plan מול המחלקות) **+ `test_sim.mjs`
   (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**. `docs/test-plan.md`
   נוצר מ-`build.py` ונבדק staleness.
@@ -415,8 +419,9 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - כלום פתוח בקוד. סבבים 4–5 (UX) נדחפו; מה שנשאר מרשימת ה-UX — סעיף 8 פריט 3.
 
 ### סטטוס git
-- ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main` אחרי ff בסוף הסשן). commits: `63b94b9` (flow + תיקונים),
-  `05d4e2c` (Lab 9), `2af0853` (תיעוד/HANDOFF), `62c6e7f` (סבב 2: `rnd::` + begin/end), ואחריו commit ה-HANDOFF.
+- ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main`, ff אחרי כל push). commits: `63b94b9` (flow + תיקונים),
+  `05d4e2c` (Lab 9), `2af0853` (תיעוד/HANDOFF), `62c6e7f` + `4de60f4` (סבב 2: `rnd::` + begin/end), `77bae40` +
+  `7984a96` (סבב 3: Test plan הושלם), `f1bd720` (סבב 4: UX), `a2b4b0b` (סבב 5: UX המשך), ואחריו commit ה-HANDOFF/README.
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
@@ -623,8 +628,8 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
 - ~~בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact"~~ — הפאנל ניתן להרחבה (סשן 5); הדיאגרמה בשורת-משנה.
 - תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה; בסצנות צפופות הן ממילא מוסתרות עד hover.
-- עקיפת מכשולים (סשן 5, פריט 5) מכסה רק חץ בין שתי קופסאות שפונות זו לזו (Z או קו ישר) ורק מעקף אחד מעל/מתחת; מסלולי U/L וחצים אנכיים עדיין יכולים לחתוך קופסאות (ב-`h:tb` עם Arrows דלוק). ב-`h:hw_top` ה-backdoor של yapp_rm עובר בין clk_rst_if ל-clkgen.
-- הסרגל נשבר לשתי שורות ברוחב 1600px בתצוגת TLM (כותרת ארוכה + 3 כפתורי ניווט); ב-1900+ שורה אחת.
+- עקיפת מכשולים (סשן 5, פריט 5) מכסה רק חץ בין שתי קופסאות שפונות זו לזו (Z או קו ישר) ורק מעקף אחד מעל/מתחת; מסלולי U/L וחצים אנכיים עדיין יכולים לחתוך קופסאות (ב-`h:tb` עם Arrows דלוק). ב-`h:hw_top` ה-backdoor של yapp_rm עובר בין clk_rst_if ל-clkgen. **החלטת תמיר (סשן 6, סבב 5): לוותר** — Arrows כבוי כברירת מחדל, ועם בחירה רואים רק את החצים של הפריט.
+- הסרגל הוא שתי שורות ב-1600px (תצוגות + crumbs + חיפוש / כפתורים) — מצב קבוע ועקבי אחרי סבב 4, לא באג.
 - ה-packet playground מציג `maxpktsize`/`router_en` מהמודל המשותף — אחרי שינוי ברגיסטרים הוא מתעדכן דרך `model.on`, אבל שני widgets על אותו דף מתרנדרים מחדש כולם בכל שינוי (עדיין מהיר).
 - ~~`test_model.py` לא בודק את `sim.js` עצמו~~ — **בוצע בסשן 5**: `test_sim.mjs` רץ ב-`map-check` כשיש node.
   מה שעדיין לא נבדק אוטומטית: ה-widgets עצמם (DOM) — רק דרך `readme_shots.mjs`/בדיקה ידנית.
@@ -637,12 +642,8 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - האם לרצות שהלאבים 1–6 יצביעו גם הם ל-`yapp_project/uvc/yapp` (היום עותקים).
 - האם רוצים `restyle`-כלי קבוע ל-uvm_do*/uvm_field_* (למקרה שסטודנטית כותבת עם מאקרו).
 
-- **7 טסטי ה-Test plan ו-3 הסיקוונסים החדשים מעולם לא רצו** (כמו כל השאר). נקודות שדורשות סימולציה כדי לוודא:
-  ה-wait loops (`wait_channels`/`wait_scoreboard`, polling עד 400–1000 מחזורים), `error_pulse_checker` (חישוב
-  מחזורים `($time - last_bad) / hw_top.clock_period`), `soft` constraints ב-`yapp_pkt_seq`, `localparam`
-  מערך במחלקה (`hbus_protocol_test::UNMAPPED`), `c_delay.constraint_mode(0)` ב-`channel_rx_slow_seq`.
-- ה-fix ב-`yapp_if.wait_accept()` (posedge sampling) משנה את ה-driver של **כל** הלאבים (קובץ משותף) — לאמת ב-sim שהלאבים 6–7 עדיין עוברים.
-- בתצוגת Test plan עם Arrows דלוק 67 חיצי covers חותכים כרטיסים (לכן כבוי; hover מציג רק את החיצים של הכרטיס).
+- ~~7 טסטי ה-Test plan והסיקוונסים החדשים מעולם לא רצו~~ — **רצים ב-Verilator מסשן 6** (156/156 ברגרסיה, כולל 9 טסטי ה-Test plan והלאבים 6–7 עם ה-driver המתוקן).
+- ~~בתצוגת Test plan עם Arrows דלוק 67 חיצי covers חותכים כרטיסים~~ — סבב 5: החצים עמומים עד שבוחרים כרטיס, ואז רק שלו.
 
 **באגים ידועים:** אין. בסשן 6 נמצאו ותוקנו `set_parity` ו-`scoreboard_drop_test` (סעיף 2).
 - ~~חוב קטן: randomize לפני start_item ב-`yapp_coverage_seq`/`yapp_88_packets_seq`~~ — תוקן בסבב 3 של סשן 6.
@@ -653,7 +654,19 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 
 ## 8. הצעד הבא
 
-**סדר העדיפויות שתמיר קבע בסוף סשן 5 (סבב 6).** כל פריט עומד בפני עצמו; לפני כל אחד — לשאול שאלות מנחות.
+**מצב בסוף סשן 6 (2026-10-09).** מה שתמיר ביקש בסשן 6 הושלם ונדחף: סימולציה ב-Verilator + CI, ספריית `rnd::` +
+begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצעות; על ה-10 — עקיפת מכשולים מלאה — תמיר ויתר).
+**אין משימה פתוחה שאפשר להתחיל בלי תמיר.** מה שנשאר, לפי סדר:
+
+1. **מעבר על ניסוחי ה-Test plan מול ה-PDF** (`annotations.yaml` `plan:`/`tests:`) — ה-PDF רק אצל תמיר; לבקש ממנו
+   להצביע על פריטים לא מדויקים או חסרים, לתקן, `make map` (מייצר גם `docs/test-plan.md` עם המטריצה), map-check.
+2. **Xcelium** — אם תמיר ישיג גישה: להריץ את הרגרסיה (`make run-project TEST=...`), לסמן ב-`unverified.md` מה אומת
+   (four-state, UVM 1.1d, IMC coverage), ולעדכן `expected` ב-`tests:` לפי הלוגים האמיתיים.
+3. **תוכן לימודי לאתר** (פריט 4 למטה) — לא נבחר עדיין; לשאול את תמיר מה חסר לסטודנטיות.
+4. **רעיונות UX שלא נדרשו**: מטריצת הכיסוי גם בתוך המפה (היום באתר + קישור מהפאנל); כיוון הספים `FIT_MIN_K` (0.5)
+   ו-`LOD_FAR_K` (0.45) ב-`app.js` לפי תחושת תמיר; גלגלת = גלילה (נדחה בסבב 5 של סשן 5).
+
+הטקסט ההיסטורי של העדיפויות מסשן 5 נשמר למטה. לפני כל פריט — לשאול שאלות מנחות.
 
 **0. (סשן 6) סימולציה — בוצע ב-Verilator.** כל טסט חדש: להוסיף ל-`scripts/regress.yaml`, להריץ
 `make sim TEST=...` ואז `make regress ONLY=<dir>`; ה-workflow `sim` חייב להיות ירוק. מה שנשאר ל-Xcelium (אם תמיר
@@ -753,6 +766,12 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 - **צילומי ה-README** (`docs/assets/readme/`, 5 תמונות): לצלם מחדש עם `make readme-shots` אחרי כל שינוי שנראה בממשק
   (תמיר ביטל בסבב 6 את הבקשה הישנה "לא לצלם מחדש"). לבדוק את ה-PNG ב-Read לפני commit.
 - אחרי שינוי ב-`app.js/app.css/sim.js/sim.css` — `make map` (ה-standalone inlines אותם, אחרת STALE) ו-`make map-export` (התמונות משתנות). בדיקה ויזואלית: סקריפט Playwright חד-פעמי ב-scratchpad (`check*.mjs` בסשן 5: צילומי מסך של סצנות, גרירה עם `page.mouse`, ה-resizer, הפאנל) ואז Read על ה-PNG.
+- **בדיקות ממשק של המפה (סשן 6):** אין טסט DOM בריפו (CI בלי Playwright). השיטה: סקריפט `check.mjs`/`check2.mjs` ב-scratchpad
+  (`/opt/node22/bin/node`, Playwright מ-`/opt/node-tools`, `permissions: ["clipboard-write"]`), שטוען את
+  `docs/downloads/yapp_project_map.html`, מפעיל `window.projectMap.*` (`switchView/show/select/fit("width"|"all")/zoomBy/
+  toggleCode/copyLink`), בודק classes על `.pm` (`code-collapsed`, `lod-far`, `has-sel`, `arrows-off`, `data-view`) ומצלם
+  ב-1600 וב-1280; ואז Read על ה-PNG. שימו לב: `afterResize()` מריץ Fit/ensureVisible שוב אחרי 240ms — בסקריפט לחכות
+  לפני שמציבים `vp` ידנית (ראה `readme_shots.mjs`).
 - **טסט חדש ב-`tb/tests`** דורש ב-`annotations.yaml`: שורה ב-`classes:`, plan ב-`tests:` (stages+expected), אזכור בפריט של `plan:` (אחרת map-check: "tests not named by any item"), ו-`lab_overrides` "TP" אם הוא לא בלאב; ואז `make map` (מייצר גם `docs/test-plan.md`).
 - כשמשנים התנהגות של ה-DUT: לעדכן ביחד `yapp_project/rtl`, `router_reference.sv`, הטסטים ב-`tb/tests` + `labs/lab11c`, `docs/dut/spec.md` ("Decisions"), ו-`sim.js` `RouterModel`. כשמשנים כתובת רגיסטר: `regmap.yaml`, `yapp_hbus_regs.sv` localparams, `yapp_regs_c.sv` offsets — CI ישווה.
 - הלאבים 1–6 הם עותקים; `labs/lab0{3,4,5,6}*/sv/yapp_tx_agent.sv` וכו' זהים לפרויקט רק אם לא נגעו. לפני עריכה גורפת — `diff` מול `yapp_project/uvc/yapp`.

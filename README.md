@@ -160,7 +160,7 @@ three never disagree.
 
 ![The Test plan view: the feature groups with their status chips on top, the tests below, one feature open in the panel with every item](docs/assets/readme/map_testplan.png)
 
-Seven tests exist only for the plan, in `yapp_project/tb/tests/`, for the features the
+Nine tests exist only for the plan, in `yapp_project/tb/tests/`, for the features the
 course's own tests never checked: `router_disable_test` (a disabled router drops and
 counts nothing), `router_filter_test` (lengths around `maxpktsize`, the illegal address,
 every counter with its enable on and off), `pkt_mem_test` (`yapp_pkt_mem` and
@@ -168,9 +168,15 @@ every counter with its enable on and off), `pkt_mem_test` (`yapp_pkt_mem` and
 `reg_bit_walk_test` (walking ones and zeros through every RW bit, writes ignored by every
 RO register), `hbus_protocol_test` (raw bus cycles, tri-state after a read, unmapped
 addresses), `backpressure_test` (slow receivers fill the channel FIFOs, `in_suspend`
-stalls the input, no byte is lost) and `parity_error_test` (the counter, the `error`
-pulse within 1..10 cycles, the packet still delivered). Writing `backpressure_test`
-found a real bug in the YAPP driver's handshake, fixed in `yapp_if.sv`.
+stalls the input, no byte is lost), `parity_error_test` (the counter, the `error`
+pulse within 1..10 cycles, the packet still delivered), `counter_wrap_test` (an 8-bit
+counter wraps from 255 to 0 and keeps counting) and `back_to_back_test` (packets with
+0, 1, 2 and 3 idle cycles between them, measured by the monitor and covered by
+`yapp_gap_cg`). Writing `backpressure_test` found a real bug in the YAPP driver's
+handshake, fixed in `yapp_if.sv`; writing `back_to_back_test` found that the driver
+could never send the minimum gap, so `packet_delay` now means the exact number of idle
+cycles. The site page ends with a **coverage matrix**: every item against every test,
+a dot in the colour of the item's status where the test covers it.
 
 ### The labs
 
@@ -416,7 +422,8 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Verification status
 
-Every lab and every test **runs on Verilator 5.052** and passes (`make regress`;
+Every lab and every test **runs on Verilator 5.052** and passes: 26 test classes
+over 18 benches plus one `INJECT_ERROR` build, 156 runs with two seeds (`make regress`;
 the **sim** workflow repeats it on every push, one job per lab). The first runs
 found two real bugs that slang could not see -- `set_parity()` left about half of
 the "bad parity" packets correct, and an explicit grandparent call in Lab 9's
