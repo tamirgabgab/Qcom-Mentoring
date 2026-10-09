@@ -180,4 +180,5 @@ and the register tests in this repository all follow the same choices:
 | What happens when `router_en = 0`? | The input is "deaf": the FSM tracks the bytes to stay in sync, but nothing is forwarded, counted or stored. |
 | An oversized packet to address 3? | Counts in **both** `oversized_pkt_cnt_reg` and `addr3_cnt_reg` (each condition is evaluated independently). |
 | Do the address counters count dropped packets? | **Yes** — `addrN_cnt_reg` counts every packet received *with* address N while the router is enabled. |
+| A counter at 255 counts once more? | It **wraps to 0** (8-bit `+ 1`, no saturation); `counter_wrap_test` checks it. |
 | Writing to a read-only register over the HBUS? | Ignored. Writes to `ctrl_reg[7:6]` and `en_reg[3]` are stored and read back (they are declared RW). |

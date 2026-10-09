@@ -3,8 +3,8 @@
 sim.py -- compile and run the labs and the project with Verilator (free, open
 source), from the same xrun-style `run.f` command files that `make run` uses.
 
-    python3 scripts/sim.py compile  [DIR]                  verilate DIR/run.f
-    python3 scripts/sim.py run      [DIR] [-t TEST] [--seed N] [--waves]
+    python3 scripts/sim.py compile  [DIR] [-D NAME]        verilate DIR/run.f
+    python3 scripts/sim.py run      [DIR] [-t TEST] [--seed N] [--waves] [-D NAME]
     python3 scripts/sim.py waves    [DIR] [-t TEST]        open the last waves
     python3 scripts/sim.py regress  [--only PATTERN] [--seeds N]
 
@@ -82,8 +82,10 @@ def sim_dir(path):
     return d
 
 
-def build_dir(d):
-    return os.path.join(BUILD, os.path.relpath(d, ROOT).replace(os.sep, "_"))
+def build_dir(d, defines=()):
+    """build/sim/<dir>, or build/sim/<dir>__<DEFINE>... for a build with extra defines."""
+    name = os.path.relpath(d, ROOT).replace(os.sep, "_")
+    return os.path.join(BUILD, name + "".join("__" + x for x in defines))
 
 
 def run_f_tokens(run_f, seen=None):
@@ -118,12 +120,12 @@ def runtime_plusargs(d):
     return keep
 
 
-def exe_path(d):
-    return os.path.join(build_dir(d), "obj", "Vsim")
+def exe_path(d, defines=()):
+    return os.path.join(build_dir(d, defines), "obj", "Vsim")
 
 
 # ------------------------------------------------------------------ compile
-def compile_dir(d, quiet=False):
+def compile_dir(d, quiet=False, defines=()):
     if not os.path.isdir(UVM_SRC):
         die(f"UVM source not found in {UVM_SRC}: run scripts/get_uvm.sh (or `make uvm-src`)")
     args = []
@@ -141,8 +143,9 @@ def compile_dir(d, quiet=False):
             vl_args += ["--top-module", next(it)]
         else:
             vl_args.append(a)
+    vl_args += ["+define+" + x for x in defines]
     dpi = uvm_dpi_dir()
-    obj = os.path.join(build_dir(d), "obj")
+    obj = os.path.join(build_dir(d, defines), "obj")
     os.makedirs(obj, exist_ok=True)
     cmd = [verilator(), "--binary", "--timing", "--trace-fst", "--vpi",
            "-j", str(os.cpu_count() or 2), "--Mdir", obj, "--prefix", "Vsim",
@@ -153,8 +156,8 @@ def compile_dir(d, quiet=False):
            "+incdir+" + os.path.join(ROOT, "common"),
            os.path.join(VL_DIR, "public.vlt"), os.path.join(VL_DIR, "vl_waves.sv"),
            "-CFLAGS", "-I" + dpi, os.path.join(dpi, "uvm_dpi.cc")] + vl_args
-    log = os.path.join(build_dir(d), "compile.log")
-    rel = os.path.relpath(d, ROOT)
+    log = os.path.join(build_dir(d, defines), "compile.log")
+    rel = os.path.relpath(d, ROOT) + "".join(" +define+" + x for x in defines)
     if not quiet:
         print(f"==> compile {rel}  (log: {os.path.relpath(log, ROOT)})", flush=True)
     t0 = time.time()
@@ -164,7 +167,7 @@ def compile_dir(d, quiet=False):
         rc = subprocess.call(cmd, cwd=d, stdout=fh, stderr=subprocess.STDOUT)
     text = open(log, errors="replace").read()
     errors = [ln for ln in text.splitlines() if ln.startswith("%Error")]
-    if rc != 0 or not os.path.isfile(exe_path(d)):
+    if rc != 0 or not os.path.isfile(exe_path(d, defines)):
         print(f"    COMPILE FAILED ({time.time() - t0:.0f}s):")
         for ln in (errors or text.splitlines()[-15:])[:15]:
             print("    " + ln)
@@ -194,11 +197,11 @@ def summarize(text, rc):
     return not reason, n_err, n_fat, sim_time, reason
 
 
-def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True):
-    exe = exe_path(d)
+def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True, defines=()):
+    exe = exe_path(d, defines)
     if not os.path.isfile(exe):
         die(f"{os.path.relpath(d, ROOT)} is not compiled: run `make compile` there first")
-    bd = build_dir(d)
+    bd = build_dir(d, defines)
     name = test or "default"
     os.makedirs(os.path.join(bd, "logs"), exist_ok=True)
     log = os.path.join(bd, "logs", f"{name}_s{seed}.log")
@@ -231,7 +234,7 @@ def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True):
     if rc == -1:
         reason = f"timeout ({TIMEOUT}s)"
         ok = False
-    return {"dir": os.path.relpath(d, ROOT), "test": name, "seed": seed, "ok": ok, "rc": rc, "errors": n_err,
+    return {"dir": os.path.relpath(d, ROOT) + "".join(" +define+" + x for x in defines), "test": name, "seed": seed, "ok": ok, "rc": rc, "errors": n_err,
             "fatals": n_fat, "sim_time": sim_time, "wall": time.time() - t0, "reason": reason,
             "log": os.path.relpath(log, ROOT)}
 
@@ -251,11 +254,16 @@ def regress(only=None, seeds=None, report=None):
     seeds = seeds or int(cfg.get("seeds", 1))
     results, broken = [], []
     t0 = time.time()
+    keys = list(cfg["benches"])
     for rel, tests in cfg["benches"].items():
-        if only and not any(o in rel for o in only):
+        # an exact key selects that bench only; otherwise any key that contains it
+        if only and not any(o == rel or (o not in keys and o in rel) for o in only):
             continue
-        d = os.path.join(ROOT, rel)
-        if not compile_dir(d):
+        # "<dir> +define+NAME ...": the same directory, built with extra defines
+        path, *extra = rel.split()
+        defines = [x[len("+define+"):] for x in extra if x.startswith("+define+")]
+        d = os.path.join(ROOT, path)
+        if not compile_dir(d, defines=defines):
             broken.append(rel)
             continue
         for entry in tests:
@@ -263,7 +271,7 @@ def regress(only=None, seeds=None, report=None):
             # point is that the checker fires (the run must then report UVM_ERROR)
             test, expect = (entry["test"], entry.get("expect")) if isinstance(entry, dict) else (entry, None)
             for seed in range(1, seeds + 1):
-                r = run_one(d, None if test == "default" else test, seed, echo=False)
+                r = run_one(d, None if test == "default" else test, seed, echo=False, defines=defines)
                 if expect == "errors":
                     if r["rc"] == 0 and r["errors"] and not r["fatals"] and r["sim_time"] != "?":
                         r["ok"], r["reason"] = True, f"expected: {r['errors']} UVM_ERROR"
@@ -300,8 +308,8 @@ def regress(only=None, seeds=None, report=None):
 
 
 # ------------------------------------------------------------------ waves
-def open_waves(d, test):
-    wdir = os.path.join(build_dir(d), "waves")
+def open_waves(d, test, defines=()):
+    wdir = os.path.join(build_dir(d, defines), "waves")
     files = sorted(glob.glob(os.path.join(wdir, f"{test or '*'}.fst")), key=os.path.getmtime)
     if not files:
         die(f"no waves in {os.path.relpath(wdir, ROOT)}: run `make sim TEST=<test> WAVES=1` first")
@@ -321,15 +329,18 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("compile", help="verilate DIR/run.f")
     c.add_argument("dir", nargs="?")
+    c.add_argument("-D", "--define", action="append", default=[], help="extra `define, e.g. INJECT_ERROR (own build)")
     r = sub.add_parser("run", help="compile if needed, then run one test")
     r.add_argument("dir", nargs="?")
     r.add_argument("-t", "--test", help="UVM test (default: +UVM_TESTNAME of run.f)")
     r.add_argument("--seed", default="1", help="seed number or 'random' (default 1)")
     r.add_argument("--waves", action="store_true", help="record waves/<test>.fst")
+    r.add_argument("-D", "--define", action="append", default=[], help="extra `define, e.g. INJECT_ERROR (own build)")
     r.add_argument("plusargs", nargs="*", help="extra +plusargs, e.g. +UVM_VERBOSITY=UVM_HIGH")
     w = sub.add_parser("waves", help="open the waves of the last run")
     w.add_argument("dir", nargs="?")
     w.add_argument("-t", "--test")
+    w.add_argument("-D", "--define", action="append", default=[], help="the build made with these defines")
     g = sub.add_parser("regress", help="every bench and test of scripts/regress.yaml")
     g.add_argument("--only", action="append", help="benches whose path contains this (repeatable)")
     g.add_argument("--seeds", type=int, help="runs per test (default: seeds: in regress.yaml)")
@@ -337,20 +348,20 @@ def main():
     ns = ap.parse_args()
 
     if ns.cmd == "compile":
-        sys.exit(0 if compile_dir(sim_dir(ns.dir)) else 1)
+        sys.exit(0 if compile_dir(sim_dir(ns.dir), defines=ns.define) else 1)
     if ns.cmd == "run":
         d = sim_dir(ns.dir)
-        if not compile_dir(d):
+        if not compile_dir(d, defines=ns.define):
             sys.exit(1)
         seed = random.randint(1, 2**31 - 1) if ns.seed == "random" else int(ns.seed)
-        res = run_one(d, ns.test, seed, ns.waves, ns.plusargs)
+        res = run_one(d, ns.test, seed, ns.waves, ns.plusargs, defines=ns.define)
         print(f"\n{'PASS' if res['ok'] else 'FAIL'}: {res['test']} seed {seed}, sim time {res['sim_time']}"
               + (f" -- {res['reason']}" if res["reason"] else "") + f"\nlog: {res['log']}")
         if ns.waves:
-            print(f"waves: {os.path.relpath(os.path.join(build_dir(d), 'waves', res['test'] + '.fst'), ROOT)}")
+            print(f"waves: {os.path.relpath(os.path.join(build_dir(d, ns.define), 'waves', res['test'] + '.fst'), ROOT)}")
         sys.exit(0 if res["ok"] else 1)
     if ns.cmd == "waves":
-        open_waves(sim_dir(ns.dir), ns.test)
+        open_waves(sim_dir(ns.dir), ns.test, ns.define)
         return
     if ns.cmd == "regress":
         sys.exit(0 if regress(ns.only, ns.seeds, ns.report) else 1)

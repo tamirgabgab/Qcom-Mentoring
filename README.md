@@ -145,7 +145,9 @@ pages of the course's DUT description: packet format, input and output protocols
 registers, drop rules, counters, memories, the HBUS host port, plus the requirements the
 labs add (scoreboard, functional coverage, register tests). It is written as data
 (`scripts/project_map/annotations.yaml`, section `plan`): **11 feature groups, 56 items**,
-each with its stimulus, its checker, its coverage, the tests that cover it and a status.
+each with its stimulus, its checker, its coverage, the tests that cover it and a status
+(55 covered; one excluded on purpose, a change of `router_en` in the middle of a packet,
+which the specification leaves undefined).
 The same data draws the **Test plan** view of the map and generates the site page, so the
 three never disagree.
 
@@ -236,7 +238,7 @@ yapp_project/                     the complete project — the source of truth
   uvc/                            the verification components, one class per file
     yapp/                           YAPP input UVC: yapp_packet, driver, monitor (+ coverage), sequencer, agent, env, yapp_if
       seqs/                           the sequence library (yapp_base_seq, yapp_012_seq, yapp_coverage_seq, …,
-                                      yapp_pkt_seq and yapp_boundary_seq for the test plan)
+                                      yapp_pkt_seq, yapp_boundary_seq and yapp_gap_seq for the test plan)
       README.md                       the packet structure, next to the code
     hbus/                           HBUS UVC: transaction, master agent, monitor, env, hbus_if, hbus_reg_adapter (RAL)
       seqs/                           write / read / set-default / small / large / enable / disable sequences
@@ -256,7 +258,8 @@ yapp_project/                     the complete project — the source of truth
                                     reg_function_test, reg_function_check_test, reg_introspection_test,
                                     and the test-plan tests: router_disable_test, router_filter_test,
                                     pkt_mem_test, reg_bit_walk_test, hbus_protocol_test,
-                                    backpressure_test, parity_error_test (+ error_pulse_checker)
+                                    backpressure_test, parity_error_test (+ error_pulse_checker),
+                                    counter_wrap_test, back_to_back_test
     reg/                            the register model: one class per register / memory, yapp_regs_c, yapp_router_regs_t
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`

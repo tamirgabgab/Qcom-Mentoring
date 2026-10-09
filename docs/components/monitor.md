@@ -20,9 +20,9 @@ flowchart LR
 
 | Job | Code | Lab |
 |---|---|---|
-| **collect** | `vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity)` on the rising edge; a byte counts when `in_data_vld && !in_suspend` | 6 |
+| **collect** | `vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles)` on the rising edge; a byte counts when `in_data_vld && !in_suspend`; `idle_cycles` is the gap before the header | 6 (gap: test plan) |
 | **publish** | `uvm_analysis_port #(yapp_packet) item_collected_port;` constructed in `new()`, `write(pkt)` after each packet | 9A |
-| **cover** | `covergroup yapp_pkt_cg with function sample(...)`, created with `new()` in the constructor, sampled after each packet | 10 |
+| **cover** | `covergroup yapp_pkt_cg with function sample(...)`, created with `new()` in the constructor, sampled after each packet; `yapp_gap_cg` covers the gap (0, 1, 2, 3+ idle cycles) | 10 (gap: test plan) |
 
 ## The reference implementation
 

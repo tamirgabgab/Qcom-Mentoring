@@ -18,7 +18,7 @@ what the Verilator runs proved and what only Xcelium can.
 | 5 | **`error` pulse** 1..10 cycles after a bad-parity packet | `parity_error_test`: 12 bad packets, 12 pulses, 2..10 cycles after the packet |
 | 6 | **Register model backdoor paths** (`hw_top.dut.u_regs.*`) | `reg_access_test` peek/poke through `uvm_hdl_*` (VPI) |
 | 7 | **`uvm_reg_hw_reset_seq` on counters** | `uvm_reset_test`: 0 errors |
-| 8 | **`uvm_mem_walk_seq`** | `uvm_mem_walk_test`: 0 errors (the `INJECT_ERROR` build is not in the regression) |
+| 8 | **`uvm_mem_walk_seq`** | `uvm_mem_walk_test`: 0 errors; with `INJECT_ERROR` exactly one, at `yapp_mem[42]` (both builds in the regression) |
 | 10 | **Coverage closure** with `coverage_test` | `yapp_pkt_cg` at 100% (Verilator's coverage, see the differences below) |
 
 The first runs also found what slang could not: `set_parity()` left about half

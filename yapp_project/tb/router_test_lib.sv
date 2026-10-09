@@ -28,3 +28,5 @@
 `include "tests/backpressure_test.sv"
 `include "tests/error_pulse_checker.sv"
 `include "tests/parity_error_test.sv"
+`include "tests/counter_wrap_test.sv"
+`include "tests/back_to_back_test.sv"

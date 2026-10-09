@@ -35,12 +35,12 @@ task yapp_coverage_seq::body();
         req = yapp_packet::type_id::create("req");
         req.c_addr_legal.constraint_mode(0);
         req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
+        start_item(req);
         if (!req.randomize() with { req.addr == a;
                                     req.length == lengths[i];
                                     req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); }) begin
-          `uvm_error(get_type_name(), "Randomization failed")
+          `uvm_error(get_type_name(), "req.randomize() failed")
         end
-        start_item(req);
         finish_item(req);
       end
     end

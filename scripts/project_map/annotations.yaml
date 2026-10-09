@@ -73,10 +73,14 @@ lab_overrides:
   error_pulse_checker: "TP"
   yapp_pkt_seq: "TP"
   yapp_boundary_seq: "TP"
+  yapp_gap_seq: "TP"
   channel_rx_slow_seq: "TP"
+  counter_wrap_test: "TP"
+  back_to_back_test: "TP"
   # ports and members added later than their class
   tb.yapp.agent.monitor.item_collected_port: "9A"
   yapp_tx_monitor.yapp_pkt_cg: "10"
+  yapp_tx_monitor.yapp_gap_cg: "TP"
   # provided UVCs appear with the integration lab
   hbus_slave_agent: "7"
   # DUT and interfaces
@@ -191,6 +195,7 @@ classes:
   yapp_88_packets_seq: {summary: "88 packets -- enough to fill a 16-byte channel FIFO and exercise in_suspend."}
   yapp_pkt_seq:        {summary: "One packet whose address, length and parity the test chooses (soft constraints); the packet stays in req."}
   yapp_boundary_seq:   {summary: "Lengths maxpktsize-1, maxpktsize, maxpktsize+1 and 63 to every address incl. 3; counts what it sent."}
+  yapp_gap_seq:        {summary: "Short packets with gaps 0, 1, 2, 3 in turn (packet_delay = idle cycles); counts the gaps it asked for."}
   # ---------------------------------------------------------------- HBUS UVC
   hbus_transaction: {summary: "One HBUS access: haddr, hdata, hwr_rd (HBUS_READ / HBUS_WRITE)."}
   hbus_master_driver:
@@ -296,6 +301,8 @@ classes:
   backpressure_test:   {summary: "Test plan: slow receivers fill the channel FIFOs; in_suspend stalls the input and no byte is lost."}
   error_pulse_checker: {summary: "Subscriber of the YAPP monitor: one error pulse per bad-parity packet, 1..10 cycles after it."}
   parity_error_test:   {summary: "Test plan: bad parity -- counted when enabled, error pulses on time, packet still delivered."}
+  counter_wrap_test:   {summary: "Test plan: 257 packets to address 0 -- addr0_cnt_reg reads 255, then wraps to 0, then 1."}
+  back_to_back_test:   {summary: "Test plan: packets with gaps 0..3 -- the monitor measures exactly the planned gaps, nothing lost."}
   # ---------------------------------------------------------- Register model
   yapp_router_regs_t: {summary: "Top register block: default_map with the yapp_regs sub-block at 0x1000."}
   yapp_regs_c: {summary: "The register file: ctrl_reg, en_reg, six RO counters, mem_size_reg, two memories."}
@@ -645,6 +652,27 @@ tests:
     expected:
       - "`error pulse K cycles after the bad packet` twelve times with K in 1..10; `parity_err_cnt_reg reads 8 as expected` twice."
       - "The channel monitors print the packets with `parity_type CHANNEL_BAD_PARITY` -- the router forwards them; `UVM_ERROR : 0`."
+  counter_wrap_test:
+    purpose: "Test plan: an 8-bit counter wraps from 255 to 0 -- the specification is silent, the Decisions of dut/spec.md fix the choice."
+    stages:
+      - {k: program,  t: "en_reg = 0xff",       d: "router and every counter on"}
+      - {k: stimulus, t: "255 packets",         d: "yapp_pkt_seq, one byte each, all to address 0"}
+      - {k: check,    t: "255",                 d: "addr0_cnt_reg reads 255"}
+      - {k: stimulus, t: "1 packet",            d: "the 256th"}
+      - {k: check,    t: "wrapped",             d: "addr0_cnt_reg reads 0, not 255"}
+      - {k: stimulus, t: "1 packet",            d: "the 257th"}
+      - {k: check,    t: "counts on",           d: "addr0_cnt_reg reads 1; the other counters 0; scoreboard matched 257"}
+    expected:
+      - "`addr0_cnt_reg reads 255 as expected`, `addr0_cnt_reg reads 0 as expected`, `addr0_cnt_reg reads 1 as expected`; scoreboard `packets matched : 257`."
+  back_to_back_test:
+    purpose: "Test plan: the input port with the shortest gap -- a header in the cycle right after the parity byte -- and gaps of 1, 2 and 3 cycles."
+    stages:
+      - {k: stimulus, t: "yapp_gap_seq",        d: "24 short packets to random legal addresses, gaps 3, then 1, 2, 3, 0 in turn (packet_delay = idle cycles)"}
+      - {k: check,    t: "measured gaps",       d: "the YAPP monitor's idle-cycle count per class (0, 1, 2, 3+) equals what the sequence asked for"}
+      - {k: check,    t: "gap coverage",        d: "yapp_gap_cg (gap_cp: back_to_back, one, two, longer) at 100 %"}
+      - {k: check,    t: "scoreboard",          d: "24 matched, 0 unexpected"}
+    expected:
+      - "`gap class 0: 5 packets, as planned` and likewise 6, 6, 6 for classes 1..3; monitor report `YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer (gap coverage 100.0%)`."
 
 # ---------------------------------------------------------------------------
 # The verification plan, feature by feature, page by page of the course's DUT
@@ -686,11 +714,11 @@ plan:
         status: covered
       - id: ROUTE-04
         title: "Packets back to back with the minimum gap"
-        stimulus: "packet_delay is randomised 1..20 in every packet; nothing forces a run of packets with the gap of one cycle."
-        check: "Scoreboard as above."
-        tests: [coverage_test, scoreboard_drop_test]
-        status: partial
-        note: "Add a sequence (or a constraint `packet_delay == 1` in yapp_pkt_seq) and a coverpoint on packet_delay to prove the one-cycle gap was hit."
+        stimulus: "yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; packet_delay is the number of idle cycles. Random traffic keeps 1..20."
+        check: "The YAPP monitor counts the idle cycles before every packet; the test compares them with the gaps the sequence asked for. Scoreboard: every packet delivered."
+        coverage: "gap_cp (yapp_gap_cg): back_to_back, one, two, longer"
+        tests: [back_to_back_test, coverage_test, scoreboard_drop_test]
+        status: covered
   - id: PKT
     title: "Packet format"
     spec: "Project Overview p. 6 -- Packet Data Specification"
@@ -921,11 +949,11 @@ plan:
         status: covered
       - id: CNT-06
         title: "Counter overflow after 255 packets"
-        stimulus: "--"
-        check: "--"
-        tests: []
-        status: gap
-        note: "The specification does not say whether a counter saturates or wraps; the RTL wraps to 0. A test would send 256 packets to one address and read 0 (wrap) -- decide the intended behaviour first."
+        stimulus: "257 one-byte packets to address 0 with every counter enabled."
+        check: "addr0_cnt_reg reads 255 after 255 packets, 0 after the 256th (it wraps, it does not saturate), 1 after the 257th."
+        tests: [counter_wrap_test]
+        status: covered
+        note: "The specification is silent; wrapping is the decision recorded in dut/spec.md. Every counter is the same `+ 8'd1` in yapp_hbus_regs, so one counter stands for all six."
   - id: MEM
     title: "Memories"
     spec: "Project Overview p. 10, Lab 11 p. 50 -- Router Memories"
@@ -953,7 +981,7 @@ plan:
       - id: MEM-04
         title: "yapp_mem: every byte can be written and read back"
         stimulus: "uvm_mem_walk_seq: writes and reads the 256 bytes with a walking pattern; with +define+INJECT_ERROR the RTL flips bit 3 of address 0x2a."
-        check: "The built-in sequence compares; 0 errors without the define, one UVM_ERROR with it."
+        check: "The built-in sequence compares; 0 errors without the define, one UVM_ERROR with it (yapp_mem[42]). The regression runs both builds; the second one passes only if the error is reported."
         tests: [uvm_mem_walk_test]
         status: covered
   - id: HBUS

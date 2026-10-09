@@ -4,7 +4,7 @@
 > ב-Verilator). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
 > HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
 > CI (lint + sim + docs) — ראה סעיף 2. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
-> **לאן ממשיכים:** סעיף 8: השלמת ה-Test plan (CNT-06, ROUTE-04) ← UX במפה. הקוד **רץ** עכשיו ב-Verilator
+> **לאן ממשיכים:** סעיף 8: ה-Test plan **הושלם** (55 covered + 1 excluded) ← מעבר עם תמיר על הניסוחים מול ה-PDF ← UX במפה. הקוד **רץ** עכשיו ב-Verilator
 > (`make sim` / `make regress`, Codespaces, workflow `sim`); Xcelium עדיין לא.
 
 ---
@@ -89,7 +89,7 @@
 ## 2. מצב נוכחי
 
 ### מה עובד היום ונבדק (בקונטיינר)
-- **סימולציה (סשן 6):** `make regress` = 18 ספריות סימולציה (`scripts/regress.yaml`), 61 טסטים — **כולם PASS**
+- **סימולציה (סשן 6):** `make regress` = 18 ספריות סימולציה + build אחד עם `INJECT_ERROR` (`scripts/regress.yaml`), 64 טסטים — **כולם PASS**
   ב-Verilator 5.052 (מקומית ב-seed 1–2 וב-CI ב-2 seeds). `coverage_test` סוגר `yapp_pkt_cg` ב-100%,
   `backpressure_test`: in_suspend עלה 7 פעמים, 6/6 matched; `parity_error_test`: 12 פולסים ל-12 פקטות, 2..10 מחזורים.
   workflow `sim` ב-GitHub: job לכל ספרייה, ~3–4 דקות בסך הכול.
@@ -101,8 +101,8 @@
   ב-RTL ⇔ offsets ב-RAL, סצנות env/plan, עקביות ה-Test plan מול המחלקות) **+ `test_sim.mjs`
   (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**. `docs/test-plan.md`
   נוצר מ-`build.py` ונבדק staleness.
-- הטסטים: 24 מחלקות test במודל (17 של הקורס + 7 של ה-Test plan ב-`yapp_project/tb/tests`), לכל אחת plan
-  (stages + expected) ולפחות פריט אחד ב-`plan:` שמזכיר אותה. 56 פריטי תוכנית: 53 covered, 1 partial, 1 gap, 1 excluded.
+- הטסטים: 26 מחלקות test במודל (17 של הקורס + 9 של ה-Test plan ב-`yapp_project/tb/tests`), לכל אחת plan
+  (stages + expected) ולפחות פריט אחד ב-`plan:` שמזכיר אותה. 56 פריטי תוכנית: **55 covered, 1 excluded** (סשן 6 סבב 3).
 - `mkdocs build --strict` — 0 אזהרות (רק INFO על anchors של deep links — צפוי).
 - בדיקת דפדפן (Playwright, סקריפט חד-פעמי ב-scratchpad, לא בריפו): המפה נטענת בבהיר/כהה,
   ה-DUT מצויר עם 19 פינים ובלוק רגיסטרים, קליק על הבלוק פותח את לשונית Simulate, כתיבה דרך ה-UI
@@ -354,6 +354,23 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      בתוך מתודה של class, `if (v inside {[-5:5]})` שקרי ל-`v` שלילי (טווח עם גבול שלילי). הקוד שלנו לא משתמש בזה.
    - אימות: slang 18/18, `sv_style --check` OK, map-check OK, mkdocs strict OK, **`make regress SEEDS=2`: 150/150 PASS**
      (coverage_test 100%, parity_error_test 12/12 פולסים). commit `62c6e7f` + commit ה-HANDOFF.
+6. **סבב 3 — השלמת ה-Test plan** (תשובות תמיר: counter **עוטף ל-0**; ROUTE-04 = מרווח 0 + מדידה ב-monitor +
+   coverpoint; גם INJECT_ERROR ברגרסיה ותיקון randomize לפני start_item). התוכנית: **55 covered, 1 excluded**, 0 partial/gap.
+   - **CNT-06** → `counter_wrap_test` (TP): 255 פקטות של בית אחד לכתובת 0 → `addr0_cnt_reg` 255, עוד אחת → 0, עוד → 1;
+     scoreboard 257. ההחלטה ב-`docs/dut/spec.md` "Decisions". sim.js כבר עוטף (`& 0xff`).
+   - **ROUTE-04** → מצאתי שה-driver **לא יכול** היה לייצר את המרווח המינימלי: ה-FSM מקבל header במחזור שאחרי ה-parity
+     (0 מחזורים ריקים), אבל `send_to_dut` הוסיף `@(negedge)` לפני ה-header ו-`c_delay` 1..20 → מינימום 2 מחזורים ריקים.
+     עכשיו `packet_delay` = **מספר המחזורים הריקים בדיוק**: `yapp_if` שומר `last_end` (זמן סוף הפקטה); אם ה-driver קיבל
+     את הפקטה הבאה באותו time step הוא כבר על ה-negedge הנכון, ו-0 → header מיד. (כל פקטה רנדומלית קצרה במחזור אחד ממה
+     שהייתה.) `collect_packets` מחזיר `idle_cycles`; ה-monitor: `last_gap`, `num_gap[4]` (0/1/2/3+; לא סופר את הפקטה
+     הראשונה אחרי reset), `yapp_gap_cg` (נפרד מ-`yapp_pkt_cg` כדי לא לשנות את ה-% של Lab 10). `yapp_gap_seq` (TP;
+     מכבה `c_delay`; פערים 3, ואז 1,2,3,0...; `planned_gap` בלי הפקטה הראשונה) + `back_to_back_test` (TP; משווה
+     `num_gap` ל-`planned_gap`, gap coverage 100%, scoreboard 24).
+   - **INJECT_ERROR**: מפתח `"<dir> +define+NAME"` ב-regress.yaml → build נפרד `build/sim/<dir>__NAME/`; `sim.py -D NAME`,
+     `make sim DEFINES=INJECT_ERROR`. `uvm_mem_walk_test` עם ה-define: UVM_ERROR אחד על `yapp_mem[42]` = PASS (expect errors).
+     `--only` עם מפתח מדויק בוחר רק אותו (ה-matrix ב-CI לא מריץ פעמיים).
+   - `yapp_coverage_seq` / `yapp_88_packets_seq`: create → start_item → randomize → finish_item.
+   - תיעוד: driver.md (פסקת "The gap between packets"), monitor.md, lab11b.md, verilator.md, unverified.md, spec.md, test-plan (נוצר).
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -589,10 +606,9 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - בתצוגת Test plan עם Arrows דלוק 67 חיצי covers חותכים כרטיסים (לכן כבוי; hover מציג רק את החיצים של הכרטיס).
 
 **באגים ידועים:** אין. בסשן 6 נמצאו ותוקנו `set_parity` ו-`scoreboard_drop_test` (סעיף 2).
-- **חוב קטן (סשן 6):** `yapp_coverage_seq` ו-`yapp_88_packets_seq` עושים `randomize()` לפני `start_item` (סטייה מכלל
-  הסגנון create → start_item → randomize). לא תוקן — לא היה בבקשה.
+- ~~חוב קטן: randomize לפני start_item ב-`yapp_coverage_seq`/`yapp_88_packets_seq`~~ — תוקן בסבב 3 של סשן 6.
 - Codespaces עם `hostRequirements.cpus: 4` צורך את המכסה החינמית פי 2 (לתמיר: לעצור את ה-codespace בסוף).
-- ה-INJECT_ERROR build של Lab 11B לא ברגרסיה (צריך `+define+INJECT_ERROR` — אפשר להוסיף כספרייה נפרדת).
+- ~~ה-INJECT_ERROR build לא ברגרסיה~~ — נוסף בסבב 3 (`"labs/lab11b_rm_integ/tb +define+INJECT_ERROR"` ב-regress.yaml).
 
 ---
 
@@ -614,7 +630,8 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - לתקן, להריץ `make lint && make style-check && make map && make map-check && mkdocs build --strict`, commit, push, ff main, zip.
 - אחרי שעובר: לסמן ב-`unverified.md` מה אומת, ולעדכן את ה-`expected` ב-`annotations.yaml` (tests:) לפי הלוגים האמיתיים.
 
-**2. השלמת ה-Test plan.**
+**2. השלמת ה-Test plan.** ✅ CNT-06, ROUTE-04, INJECT_ERROR — בוצעו בסשן 6 סבב 3 (סעיף 2, פריט 6). נשאר רק הסעיף
+  של מעבר על הניסוחים מול ה-PDF. הטקסט ההיסטורי:
 - לממש את ה-gap **CNT-06** (גלישת counter אחרי 255 פקטות): קודם להחליט עם תמיר מה ההתנהגות הרצויה (ה-RTL עוטף ל-0;
   המפרט שותק) ואז טסט שמשלח 256 פקטות לכתובת אחת ובודק. לממש את ה-partial **ROUTE-04**: constraint `packet_delay == 1`
   (ב-`yapp_pkt_seq` או סיקוונס חדש) + coverpoint על `packet_delay` ב-`yapp_pkt_cg`.

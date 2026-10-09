@@ -91,6 +91,10 @@ make run TEST=uvm_mem_walk_test
 make run TEST=uvm_mem_walk_test XRUN_OPTS="-define INJECT_ERROR"
 ```
 
+With Verilator: `make sim TEST=uvm_mem_walk_test DEFINES=INJECT_ERROR` (a separate
+build in `build/sim/<dir>__INJECT_ERROR/`). `make regress` runs that build too and
+counts it as passed only when the walk reports the error.
+
 **Expected:**
 
 * `uvm_reset_test`: the topology shows `yapp_rm` under `tb` (`router_tb::do_print`

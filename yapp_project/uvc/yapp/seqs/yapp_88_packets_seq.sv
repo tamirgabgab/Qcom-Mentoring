@@ -34,12 +34,12 @@ task yapp_88_packets_seq::body();
       req = yapp_packet::type_id::create("req");
       req.c_addr_legal.constraint_mode(0);
       req.c_parity_dist.constraint_mode(0);   // the inline dist below replaces it
+      start_item(req);
       if (!req.randomize() with { req.addr == a;
                                   req.length == l;
                                   req.parity_type dist { GOOD_PARITY := 4, BAD_PARITY := 1 }; }) begin
-        `uvm_error(get_type_name(), "Randomization failed")
+        `uvm_error(get_type_name(), "req.randomize() failed")
       end
-      start_item(req);
       finish_item(req);
     end
   end

@@ -8,6 +8,8 @@
 # A run passes when it ends normally with no UVM_ERROR / UVM_FATAL report. A
 # test written as {test: <name>, expect: errors} is a negative check: its lab
 # wants the checker to fire, so it passes only when it reports UVM_ERROR.
+# A key "<dir> +define+NAME" builds the same directory again with that define
+# (in build/sim/<dir>__NAME/).
 
 seeds: 1          # runs per test (seed 1, 2, ...); `make regress SEEDS=3`
 
@@ -35,10 +37,13 @@ benches:
   labs/lab10_cov/tb:          [base_test, router_simple_mcseq_test, test_uvc_integration, coverage_test]
   labs/lab11a_rm_gen:         [default]
   labs/lab11b_rm_integ/tb:    [base_test, router_simple_mcseq_test, uvm_reset_test, uvm_mem_walk_test]
+  # the same lab built with the memory error of step 11B: the walk must catch it
+  labs/lab11b_rm_integ/tb +define+INJECT_ERROR:
+                              [{test: uvm_mem_walk_test, expect: errors}]
   labs/lab11c_rm_sim/tb:      [base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
                                reg_function_test, reg_function_check_test, reg_introspection_test]
   yapp_project/tb:            [base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
                                reg_function_test, reg_function_check_test, reg_introspection_test,
                                router_disable_test, router_filter_test, pkt_mem_test,
                                reg_bit_walk_test, hbus_protocol_test, backpressure_test,
-                               parity_error_test]
+                               parity_error_test, counter_wrap_test, back_to_back_test]

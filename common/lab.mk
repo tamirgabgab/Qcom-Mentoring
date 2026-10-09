@@ -12,6 +12,7 @@
 #   make compile                                             build the simulation (build/sim/<dir>/)
 #   make sim  [TEST=<test>] [WAVES=1] [SEED=<n>|random]       run one test, PASS/FAIL at the end
 #   make waves [TEST=<test>]                                 open the waves of the last WAVES=1 run
+#   DEFINES="INJECT_ERROR" with compile / sim / waves: a separate build with these `defines
 XRUN      ?= xrun
 TEST      ?= base_test
 XRUN_OPTS ?=
@@ -21,6 +22,8 @@ SIM       := python3 $(ROOT)/scripts/sim.py
 WAVES     ?=
 SEED      ?= 1
 SIM_OPTS  ?=
+DEFINES   ?=
+SIM_DEFS  := $(foreach d,$(DEFINES),-D $(d))
 
 .PHONY: run gui lint clean compile sim waves
 
@@ -34,13 +37,13 @@ lint:
 	$(LINT) run.f
 
 compile:
-	$(SIM) compile .
+	$(SIM) compile . $(SIM_DEFS)
 
 sim:
-	$(SIM) run . -t $(TEST) --seed $(SEED) $(if $(WAVES),--waves) $(SIM_OPTS)
+	$(SIM) run . -t $(TEST) --seed $(SEED) $(if $(WAVES),--waves) $(SIM_DEFS) $(SIM_OPTS)
 
 waves:
-	$(SIM) waves . -t $(TEST)
+	$(SIM) waves . -t $(TEST) $(SIM_DEFS)
 
 clean:
 	rm -rf xcelium.d INCA_libs xrun.log xrun.history *.shm cov_work .simvision *.key *.err

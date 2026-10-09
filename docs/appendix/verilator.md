@@ -50,6 +50,7 @@ cd yapp_project/tb
 make compile                                   # once; about 2.5 minutes with UVM
 make sim TEST=reg_function_test                # PASS / FAIL at the end
 make sim TEST=backpressure_test WAVES=1 SEED=7 # record waves, another seed
+make sim TEST=uvm_mem_walk_test DEFINES=INJECT_ERROR   # a build with a `define (own directory)
 make waves TEST=backpressure_test              # open the waves
 ```
 

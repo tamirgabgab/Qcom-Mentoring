@@ -17,6 +17,12 @@ class yapp_tx_monitor extends uvm_monitor;
   int num_pkt_col;
   int num_bad_parity;   // packets seen with a wrong parity byte (Lab 11C uses it)
 
+  // Gap before each packet: idle cycles since the previous packet's parity
+  // byte (test plan ROUTE-04). num_gap[0..2] count gaps of 0, 1 and 2 cycles,
+  // num_gap[3] the longer ones; the first packet after reset is not counted.
+  int last_gap = -1;
+  int num_gap[4];
+
   //--------------------------------------------------------------------------
   // Functional coverage (Lab 10)
   //   REQ1 all packet lengths, bucketed
@@ -58,6 +64,17 @@ class yapp_tx_monitor extends uvm_monitor;
 `endif
   endgroup : yapp_pkt_cg
 
+  // ROUTE-04: packets back to back (gap 0) and with short gaps
+  covergroup yapp_gap_cg with function sample(int gap);
+    option.per_instance = 1;
+    gap_cp : coverpoint gap {
+      bins back_to_back = {0};
+      bins one          = {1};
+      bins two          = {2};
+      bins longer       = {[3:$]};
+    }
+  endgroup : yapp_gap_cg
+
   `uvm_component_utils(yapp_tx_monitor)
 
   // The fields are printed by do_print() below:
@@ -81,6 +98,7 @@ function yapp_tx_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
   item_collected_port = new("item_collected_port", this);
   yapp_pkt_cg = new();   // a covergroup inside a class is created with new()
+  yapp_gap_cg = new();
 endfunction : new
 
 //------------------------------------------------------------------------------
@@ -99,6 +117,8 @@ endtask : run_phase
 //------------------------------------------------------------------------------
 task yapp_tx_monitor::collect_packets();
   yapp_packet pkt;
+  int idle_cycles;
+  bit first = 1'b1;
   // Nothing to observe while reset is active
   @(posedge vif.clock);
   wait (vif.reset === 1'b0);
@@ -106,7 +126,13 @@ task yapp_tx_monitor::collect_packets();
     // A NEW object per packet: subscribers keep the handle (analysis FIFOs
     // do not clone), so re-using one object would corrupt earlier packets.
     pkt = yapp_packet::type_id::create("pkt", this);
-    vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity);
+    vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles);
+    if (!first) begin
+      last_gap = idle_cycles;
+      num_gap[(idle_cycles > 3) ? 3 : idle_cycles]++;
+      yapp_gap_cg.sample(idle_cycles);
+    end
+    first = 1'b0;
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
     pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
     num_pkt_col++;
@@ -125,6 +151,9 @@ function void yapp_tx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
             $sformatf("YAPP monitor report: %0d packets collected, coverage %.1f%%",
                       num_pkt_col, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
+  `uvm_info(get_type_name(),
+            $sformatf("YAPP gaps: %0d back to back, %0d of 1 cycle, %0d of 2, %0d longer (gap coverage %.1f%%)",
+                      num_gap[0], num_gap[1], num_gap[2], num_gap[3], yapp_gap_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------

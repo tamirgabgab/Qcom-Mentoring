@@ -23,6 +23,11 @@ interface yapp_if (input logic clock, input logic reset);
   logic       in_data_vld;
   logic       in_suspend;
 
+  // When the last packet ended (its parity byte accepted): a packet that the
+  // driver gets in that same time step may follow with no idle cycle at all
+  time last_end;
+  bit  last_end_valid;
+
   //--------------------------------------------------------------------------
   // Driver side
   //--------------------------------------------------------------------------
@@ -48,13 +53,18 @@ interface yapp_if (input logic clock, input logic reset);
                              input bit [7:0] payload[],
                              input bit [7:0] parity,
                              input int       packet_delay);
-    // Inter-packet gap
+    // Inter-packet gap: packet_delay idle cycles (rising edges without
+    // in_data_vld). Right after a packet the driver already stands on the
+    // falling edge where the next byte may go out, so packet_delay == 0 sends
+    // the header in the very next cycle (the DUT accepts it there).
+    if (!(last_end_valid && $time == last_end)) begin
+      @(negedge clock);
+    end
     repeat (packet_delay) begin
       @(negedge clock);
     end
 
     // Header: {length, addr} together with in_data_vld
-    @(negedge clock);
     in_data_vld <= 1'b1;
     in_data     <= {length, addr};
 
@@ -72,6 +82,8 @@ interface yapp_if (input logic clock, input logic reset);
     // Make sure the parity byte was accepted before returning to idle
     wait_accept();
     in_data <= 8'h00;
+    last_end       = $time;
+    last_end_valid = 1'b1;
   endtask : send_to_dut
 
   //--------------------------------------------------------------------------
@@ -81,9 +93,18 @@ interface yapp_if (input logic clock, input logic reset);
   task automatic collect_packets(output bit [1:0] addr,
                                  output bit [5:0] length,
                                  output bit [7:0] payload[],
-                                 output bit [7:0] parity);
-    // Wait for an accepted header
-    do @(posedge clock); while (!(in_data_vld && !in_suspend));
+                                 output bit [7:0] parity,
+                                 output int       idle_cycles);
+    // Wait for an accepted header, counting the idle cycles (rising edges
+    // without in_data_vld) since the call: right after a packet this is the
+    // gap between the two packets
+    idle_cycles = 0;
+    do begin
+      @(posedge clock);
+      if (!in_data_vld) begin
+        idle_cycles++;
+      end
+    end while (!(in_data_vld && !in_suspend));
     length = in_data[7:2];
     addr   = in_data[1:0];
     payload = new[length];

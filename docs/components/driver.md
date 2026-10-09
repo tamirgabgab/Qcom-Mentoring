@@ -54,6 +54,15 @@ same edge `in_suspend` is already low again at the falling edge, so the driver
 would move on and the header would be lost. The `backpressure_test` of the
 [test plan](../test-plan.md) exercises exactly this path.
 
+**The gap between packets.** `packet_delay` is the number of idle cycles (rising
+edges without `in_data_vld`) before the header. When the driver gets the next
+packet in the same time step in which the previous one ended (`last_end`), it
+already stands on the falling edge where a byte may go out, so
+`packet_delay == 0` puts the header in the cycle right after the parity byte --
+the shortest gap the DUT accepts. The random packets keep `c_delay` (1..20);
+`yapp_gap_seq` switches it off to send gaps of 0..3, and `back_to_back_test`
+checks them against the monitor's measurement (ROUTE-04).
+
 ## The reference implementation
 
 ```systemverilog
