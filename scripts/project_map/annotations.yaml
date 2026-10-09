@@ -470,7 +470,7 @@ tests:
   scoreboard_drop_test:
     purpose: "Lab 9A: the negative check -- full-size packets while maxpktsize is 20, so the router drops some and the scoreboard must notice."
     stages:
-      - {k: build,    t: "no override",          d: "build_phase calls base_test::build_phase directly, skipping the short-packet override"}
+      - {k: build,    t: "no override",          d: "new() clears short_packets, so router_simple_mcseq_test::build_phase skips the short-packet override"}
       - {k: config,   t: "default sequences",    d: "same as router_simple_mcseq_test"}
       - {k: reset,    t: "clk10_rst5_seq",       d: "clock and reset"}
       - {k: stimulus, t: "first 6 packets",      d: "random lengths up to 63 while maxpktsize = 20"}
