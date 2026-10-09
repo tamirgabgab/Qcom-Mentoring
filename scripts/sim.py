@@ -231,7 +231,7 @@ def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True):
     if rc == -1:
         reason = f"timeout ({TIMEOUT}s)"
         ok = False
-    return {"dir": os.path.relpath(d, ROOT), "test": name, "seed": seed, "ok": ok, "errors": n_err,
+    return {"dir": os.path.relpath(d, ROOT), "test": name, "seed": seed, "ok": ok, "rc": rc, "errors": n_err,
             "fatals": n_fat, "sim_time": sim_time, "wall": time.time() - t0, "reason": reason,
             "log": os.path.relpath(log, ROOT)}
 
@@ -258,9 +258,17 @@ def regress(only=None, seeds=None, report=None):
         if not compile_dir(d):
             broken.append(rel)
             continue
-        for test in tests:
+        for entry in tests:
+            # a test is a name, or {test: <name>, expect: errors} for a lab whose
+            # point is that the checker fires (the run must then report UVM_ERROR)
+            test, expect = (entry["test"], entry.get("expect")) if isinstance(entry, dict) else (entry, None)
             for seed in range(1, seeds + 1):
                 r = run_one(d, None if test == "default" else test, seed, echo=False)
+                if expect == "errors":
+                    if r["rc"] == 0 and r["errors"] and not r["fatals"] and r["sim_time"] != "?":
+                        r["ok"], r["reason"] = True, f"expected: {r['errors']} UVM_ERROR"
+                    elif r["ok"]:
+                        r["ok"], r["reason"] = False, "expected UVM_ERROR, got none"
                 results.append(r)
                 mark = "PASS" if r["ok"] else "FAIL"
                 print(f"    {mark}  {r['test']:<26} seed {seed}  sim {r['sim_time']:>8}  "

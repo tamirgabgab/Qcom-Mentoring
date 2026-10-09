@@ -1,10 +1,11 @@
 # HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
 
-> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן לאורך הסשן החמישי (2026-10-08, שישה סבבים; הסיכום האחרון
-> בסוף סבב 6). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
+> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08) ובסשן השישי (2026-10-09: סימולציה
+> ב-Verilator). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
 > HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
-> CI (lint + docs) ירוק על `3687ecb` (אומת דרך GitHub Actions API). האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
-> **לאן ממשיכים:** סעיף 8 (סדר העדיפויות שתמיר קבע בסוף סשן 5): Xcelium ← השלמת ה-Test plan ← UX במפה.
+> CI (lint + sim + docs) — ראה סעיף 2. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
+> **לאן ממשיכים:** סעיף 8: השלמת ה-Test plan (CNT-06, ROUTE-04) ← UX במפה. הקוד **רץ** עכשיו ב-Verilator
+> (`make sim` / `make regress`, Codespaces, workflow `sim`); Xcelium עדיין לא.
 
 ---
 
@@ -24,9 +25,12 @@
 - `yapp_project/` כ"מקור האמת": הפרויקט המלא כאילו נכתב מאפס (rtl / uvc / tb).
 
 **אילוצים.**
-- סימולטור יעד: Cadence Xcelium (`xrun -uvmhome CDNS-1.1d`, גם CDNS-1.2 דרך shim).
-- **אין סימולטור בקונטיינר.** האימות היחיד הוא slang (pyslang 12.0.0) מול מקור UVM של
-  Accellera — elaboration בלבד. **הקוד מעולם לא הורץ ב-xrun.** תמיר צריך להריץ רגרסיה אצלו.
+- סימולטור יעד של הקורס: Cadence Xcelium (`xrun -uvmhome CDNS-1.1d`, גם CDNS-1.2 דרך shim).
+- **לתמיר אין שום סימולטור/קומפיילר SV במחשב** (סשן 6). לכן נבנה flow חינמי עם **Verilator 5.052**
+  (`scripts/sim.py`, `make sim` / `make regress`), שרץ אצלי בקונטיינר, אצל תמיר ב-GitHub Codespaces
+  (`.devcontainer/`) וב-CI (`.github/workflows/sim.yml`). **כל הלאבים וכל הטסטים עוברים ב-Verilator**;
+  ב-Xcelium הקוד עדיין לא רץ (four-state, UVM 1.1d, IMC — `docs/appendix/unverified.md`).
+- slang (pyslang 12.0.0) מול מקור UVM של Accellera נשאר בדיקת ה-elaboration המהירה (`make lint`).
 - **אסור להכניס לריפו** את ה-PDF של Cadence (`UVMA_1_2_6.secured.lab.pdf`, מסומן "Do not
   distribute") או את `uvm_course.md` (הסיכום שתמיר העלה). `.gitignore` חוסם `*.pdf`. איור מבנה
   הפקטה צויר מחדש כ-SVG שלנו במקום צילום מה-PDF — בכוונה.
@@ -59,13 +63,13 @@
 - **ה-DUT מפוצל למודול בכל קובץ לפי הארכיטקטורה** (`yapp_project/rtl/`), נטען עם
   `-F ../rtl/yapp_router.f`.
 - **Git**: לפתח על ענף ה-`claude/...` שהסשן קיבל (סשן 1–4: `claude/hopeful-meitner-r5epiu`; סשן 5:
-  `claude/confident-rubin-m1zkvc`), לדחוף, ואז **fast-forward של `main`** לאותו
+  `claude/confident-rubin-m1zkvc`; סשן 6: `claude/hopeful-gates-acsuwt`), לדחוף, ואז **fast-forward של `main`** לאותו
   commit אחרי כל push (תמיר רוצה ש-`main` וה-Pages יישאו הכול). כל הודעת commit מסתיימת ב:
   ```
-  Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-  Claude-Session: https://claude.ai/code/session_019YD6YiAr5HMbC8uqHiEF7E
+  Co-Authored-By: Claude <model> <noreply@anthropic.com>
+  Claude-Session: https://claude.ai/code/session_<id>
   ```
-  (זה ה-session id של הסשנים עד כה; סשן חדש מקבל id חדש — להשתמש במה שה-system reminder נותן.)
+  (המודל וה-session id משתנים בין סשנים — תמיד להעתיק את ה-trailer שה-system reminder נותן.)
   **אין מזהי מודל** (Claude/Fable וכו') בשום artifact שנדחף (קוד, הערות, PR body) מלבד ה-trailer.
 - **מסירה**: אחרי כל סבב — `QcommMentoring.zip` של הריפו (בלי `.git`, `site`, `build`,
   `__pycache__`, `scripts/uvm_src`) + `yapp_project_map.html` העצמאי נשלחים לתמיר דרך
@@ -80,6 +84,10 @@
 ## 2. מצב נוכחי
 
 ### מה עובד היום ונבדק (בקונטיינר)
+- **סימולציה (סשן 6):** `make regress` = 18 ספריות סימולציה (`scripts/regress.yaml`), 61 טסטים — **כולם PASS**
+  ב-Verilator 5.052 (מקומית ב-seed 1–2 וב-CI ב-2 seeds). `coverage_test` סוגר `yapp_pkt_cg` ב-100%,
+  `backpressure_test`: in_suspend עלה 7 פעמים, 6/6 matched; `parity_error_test`: 12 פולסים ל-12 פקטות, 2..10 מחזורים.
+  workflow `sim` ב-GitHub: job לכל ספרייה, ~3–4 דקות בסך הכול.
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
 - `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
@@ -299,10 +307,38 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    כל 5 הצילומים חודשו (`make readme-shots`). HANDOFF: כותרת, מצב נוכחי, סעיף 8 לפי העדיפויות החדשות.
    **הכלל הישן "לא לצלם מחדש את צילומי ה-README" בוטל** — מעכשיו מצלמים מחדש אחרי שינוי בממשק.
 
+**סשן 6 (2026-10-09) — סימולציה ב-Verilator:**
+1. תמיר שאל Fable מול Opus 5.5 (מכסה: Fable שבועי 25%); המלצתי Opus לרוב, Fable לבאגים קשים. תמיר עבר ל-Opus 5.5.
+2. הסברתי לפרטים את 3 המשימות (Xcelium / Test plan / UX). **תמיר: אין לו קומפיילר SV בכלל.** ביקש דרך פשוטה
+   שגם הוא וגם אני נריץ: קומפילציה, טסט, רגרסיה, גלים. בדקתי את Verilator 5.052 (משחרר "UVM 2020-3.2 supported")
+   — בניתי מהמקור ב-scratchpad, הפרויקט התקמפל מהפעם הראשונה (2.5 דק'), ואז מצאתי ותיקנתי (תשובות תמיר: לתקן
+   בכל העותקים; cross עם ifdef; make + Codespaces + רגרסיה על כל הלאבים):
+   - **באג אמיתי** `yapp_packet::set_parity()`: שתי קריאות `$urandom_range` → ~44% מפקטות ה-bad parity יצאו תקינות.
+     עכשיו `parity ^= 8'h01 << $urandom_range(7, 0);` (פרויקט + לאבים 1–6, 7 עותקים זהים).
+   - Verilator: `payload.size() == length` לא מתקיים תחת `randomize() with` → `post_randomize()` מקצה payload לפי length.
+   - Verilator: `dist` + שוויון ב-`with` → UNSAT אקראי → `c_parity_dist.constraint_mode(0)` ב-4 סיקוונסים שבוחרים parity
+     (`yapp_pkt_seq`, `yapp_coverage_seq`, `yapp_boundary_seq`, `yapp_88_packets_seq`).
+   - Verilator דו-מצבי: `hbus_protocol_test` תחת `` `ifdef VERILATOR `` בודק `hdata_oe` של ה-master וה-DUT במקום `'z`.
+   - coverage: `parity_cp` עם bins מפורשים (Verilator עושה bins לפי טווח ל-enum); תחת `` `ifdef VERILATOR `` ה-cross
+     בנוי מ-`legal_addr_cp` × `bad_parity_cp` (Verilator מתעלם מ-`ignore_bins ... binsof/intersect`). Xcelium רואה את המקורי.
+   - **Lab 9** `scoreboard_drop_test::build_phase` קרא `base_test::build_phase(phase)` — Verilator עושה dispatch וירטואלי
+     → רקורסיה אינסופית → segfault. עכשיו `router_simple_mcseq_test.short_packets` (knob) ש-`scoreboard_drop_test::new` מאפס.
+3. **ה-flow:** `scripts/sim.py` (compile/run/waves/regress, קורא את ה-run.f דרך `lint.parse_run_f`), `scripts/regress.yaml`
+   (ספרייה → טסטים; `{test: X, expect: errors}` לבדיקה שלילית — רק `lab09_sba/scoreboard_drop_test`), `scripts/setup_sim.sh`
+   (apt + בניית Verilator אם חסר + העתקת `test_regress/t/uvm/v2020_3_1/dpi` ל-`$VERILATOR_ROOT/uvm-dpi/`), `common/verilator/`
+   (`public.vlt` = public רק ל-`yapp_hbus_regs` בשביל ה-backdoor; `vl_waves.sv` = `$dumpfile` כש-`+waves=<f>.fst`),
+   `make compile|sim|waves` ב-`common/lab.mk`, `make regress|sim|sim-project|setup-sim` בשורש. `get_uvm.sh` ננעל על
+   tag `2020.3.1`. `lint.py` מייבא pyslang בעצלות. `.devcontainer/` (FROM `verilator/verilator:v5.052` + setup_sim.sh,
+   הרחבות VaporView ו-veriloghdl, 4 ליבות), `.github/workflows/sim.yml` (job `benches` קורא את regress.yaml → matrix).
+4. תיעוד: `docs/appendix/verilator.md` (חדש, בניווט), `unverified.md` → "Verification status", getting-started, README
+   (badge `sim`, Quick start, עץ, Tooling, Verification status), `coverage.md`, `lab01.md`, `lab10.md`, `index.md`.
+
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
 
 ### סטטוס git
+- ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main` אחרי ff בסוף הסשן). commits: `63b94b9` (flow + תיקונים),
+  `05d4e2c` (Lab 9), ואחריו commit התיעוד/HANDOFF.
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
@@ -337,6 +373,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `regmap.yaml` מקור יחיד; CI משווה ל-RTL ול-RAL | מניעת drift בין איור/סימולטור/RTL/RAL | לקרוא מה-RTL ישירות | סופי |
 | `sv_style.py` טקסטואלי (regex) ולא pyslang | פשוט, מהיר, בלי UVM src; slang הוא רשת הביטחון | pyslang rewriting | סופי |
 | `main` תמיד fast-forward ל-feature branch | תמיר ראה `main` ריק ורוצה את הכול שם | PRs | סופי (אין PRs) |
+| סימולציה חינמית ב-**Verilator 5.052** מאותם `run.f`, לצד xrun (לא במקומו) | לתמיר אין סימולטור; Verilator תומך ב-UVM 2020-3.x; אני יכול להריץ בקונטיינר | Questa Starter (רק אצל תמיר), EDA Playground, Vivado xsim | סופי (סשן 6) |
+| עקיפות Verilator **ניידות** (עובדות גם ב-Xcelium); `` `ifdef VERILATOR `` רק ל-Z ב-HBUS ול-cross של Lab 10 | קוד אחד; קוד הלימוד של הקורס נשאר ב-`else` | שתי גרסאות קוד | סופי (תשובות תמיר) |
+| Codespaces (`.devcontainer`, image רשמי `verilator/verilator:v5.052`) + workflow `sim` עם matrix לכל ספרייה | תמיר רץ בדפדפן בלי התקנה; CI מקביל ~3 דק' | בנייה מהמקור ב-Codespace (~20 דק') | סופי |
+| UVM ל-lint ול-sim = Accellera **2020.3.1** (tag נעול) + קוד ה-DPI של Verilator (`uvm_hdl_verilator.c`) | ה-DPI של Verilator נבנה לגרסה הזו; backdoor דרך VPI | DPI של uvm-core (אין backend ל-Verilator) / `UVM_NO_DPI` (אין `+UVM_TESTNAME`) | סופי |
 
 ---
 
@@ -383,6 +423,18 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - טקסט אנכי (`writing-mode: vertical-rl`) נשבר לעמודה שנייה בלי `white-space: nowrap`.
 - פורט "same kind" (`seq_item_port` ל-pull port וגם ל-pull imp) — הצד נקבע לפי ה-type, לא לפי kind.
 - בדוגמאות של ה-playground ה-parity חייב להיות נכון באמת (`11 de ad be ef 33`, לא `5a`).
+
+**Verilator (סשן 6)**
+- `UVM_NO_DPI` → `+UVM_TESTNAME` לא נקרא (רץ base_test). חובה DPI: `--vpi` + `uvm_dpi.cc` של Verilator (מ-`test_regress/t/uvm/v2020_3_1/dpi`, לא של uvm-core).
+- `--public-flat-rw` על הכול → שגיאת C++ (`uvm_config_object_wrapper::clone` מתנגש). public רק ל-`yapp_hbus_regs` דרך `common/verilator/public.vlt`.
+- **הערה שמתחילה ב-`// Verilator ...`** = pragma → `BADVLTPRAGMA`. לנסח אחרת ("Some solvers (Verilator 5.052)").
+- includes יחסיים (`reg/x.sv`, `router_tb.sv`) נמצאים רק כש-verilator רץ מתוך ספריית ה-run.f (`cwd=d` ב-sim.py).
+- FST צריך `liblz4-dev`; constraints צריכים `z3`. ה-image הרשמי חסר את שניהם → setup_sim.sh מוסיף.
+- קריאה מפורשת `grandparent::method()` → dispatch וירטואלי → רקורסיה (segfault בלי פלט, הלוג ריק). לא לכתוב כך.
+- `randomize() with {...}` לא משנה גודל מערך דינמי; `dist` + שוויון ב-`with` נכשל אקראית; enum coverpoint בלי bins → bins לפי טווח; `ignore_bins binsof/intersect` מתעלם; `get_coverage()` (type) מחזיר 0 — להשתמש ב-`get_inst_coverage()`.
+- Lab 1 נגמר ב-"Verilator: end at" ולא ב-`$finish` (אין run_test) — sim.py מקבל את שניהם.
+- `make -j` של Verilator עם UVM: ~2.5 דק' לבנייה, 4 ליבות; בלי שינוי מקור `make sim` לא בונה מחדש (<1 שנ').
+- GitHub job logs דרך MCP: ה-tail מכיל רק cleanup — לקרוא את ה-artifact או להריץ מקומית.
 
 **סביבה**
 - `github.io` לא נגיש מהקונטיינר (curl 000) → לאמת deploy דרך GitHub Actions API (`mcp__github__actions_list`), לא דרך fetch.
@@ -438,6 +490,13 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `yapp_project/tb/reg/yapp_regs_c.sv` | ה-RAL block עם `add_reg/add_mem` offsets — **נבדק מול regmap.yaml ב-CI** | — |
 | `labs/lab01_data … lab11c_rm_sim` | snapshots; 7+ קומפלים מ-`yapp_project`; 1–6 עם `sv/` משלהם | style pass |
 | `test_install/` | בדיקת התקנה | — |
+| **`scripts/sim.py`** | Verilator: `compile/run/waves/regress` מ-run.f; לוגים/גלים ב-`build/sim/<dir>/` | **חדש (סשן 6)** |
+| **`scripts/regress.yaml`** | ספרייה → טסטים לרגרסיה; `{test, expect: errors}` | **חדש (סשן 6)** |
+| **`scripts/setup_sim.sh`** | התקנת Verilator 5.052 + UVM DPI ל-Verilator + UVM src | **חדש (סשן 6)** |
+| **`common/verilator/`** | `public.vlt` (backdoor), `vl_waves.sv` (FST) | **חדש (סשן 6)** |
+| **`.devcontainer/`** | Codespaces: Dockerfile + devcontainer.json | **חדש (סשן 6)** |
+| **`.github/workflows/sim.yml`** | רגרסיית Verilator, matrix לכל ספרייה | **חדש (סשן 6)** |
+| **`docs/appendix/verilator.md`** | איך להריץ, Codespaces, הבדלים מ-Xcelium | **חדש (סשן 6)** |
 | **`HANDOFF.md`** | המסמך הזה (ב-commit) | חדש |
 
 קבצים שנמחקו בעבר: `router_rtl/` (עבר ל-`yapp_project/rtl/`), `<uvc>/sv/` (עברו ל-`yapp_project/uvc/`). קבצים חד-פעמיים שאינם בריפו: `restyle.py`, `split_classes.py`, `sim_test.mjs`, `shot.mjs` (scratchpad של הסשנים). `readme_shots.mjs` לעומתם **כן** בריפו.
@@ -465,7 +524,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 
 ## 7. בעיות פתוחות
 
-**הכי חשוב — אף פעם לא רץ בסימולטור.** כל הקוד (DUT, UVCs, RAL, 240 קבצים אחרי style pass)
+**עודכן בסשן 6: הכול רץ ועובר ב-Verilator** (`make regress`, workflow `sim`). מה שנשאר ל-Xcelium:
+four-state (Z ב-HBUS, X לפני reset), תאימות UVM 1.1d, מספרי coverage של IMC, מרווחי race — ראה
+`docs/appendix/unverified.md` ("Verification status"). הטקסט הבא הוא ההיסטוריה של סשן 5:
+**(היסטוריה) אף פעם לא רץ בסימולטור.** כל הקוד (DUT, UVCs, RAL, 240 קבצים אחרי style pass)
 אומת ב-slang בלבד. ראה `docs/appendix/unverified.md` (11 פריטים: back-pressure, channel handshake,
 HBUS read timing, reset ב-t=0, error pulse, backdoor paths `hw_top.dut.u_regs.*`, reset seq על
 counters לא volatile, mem walk 511/255, תאימות 1.1d של `set_drain_time`/`compare_field_int`/`find() with`,
@@ -501,7 +563,11 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - ה-fix ב-`yapp_if.wait_accept()` (posedge sampling) משנה את ה-driver של **כל** הלאבים (קובץ משותף) — לאמת ב-sim שהלאבים 6–7 עדיין עוברים.
 - בתצוגת Test plan עם Arrows דלוק 67 חיצי covers חותכים כרטיסים (לכן כבוי; hover מציג רק את החיצים של הכרטיס).
 
-**באגים ידועים:** אין ידועים בקוד ה-Python/JS אחרי הבדיקות של הסשן. בקוד ה-SV — לא ידוע עד שירוץ.
+**באגים ידועים:** אין. בסשן 6 נמצאו ותוקנו `set_parity` ו-`scoreboard_drop_test` (סעיף 2).
+- **חוב קטן (סשן 6):** `yapp_coverage_seq` ו-`yapp_88_packets_seq` עושים `randomize()` לפני `start_item` (סטייה מכלל
+  הסגנון create → start_item → randomize). לא תוקן — לא היה בבקשה.
+- Codespaces עם `hostRequirements.cpus: 4` צורך את המכסה החינמית פי 2 (לתמיר: לעצור את ה-codespace בסוף).
+- ה-INJECT_ERROR build של Lab 11B לא ברגרסיה (צריך `+define+INJECT_ERROR` — אפשר להוסיף כספרייה נפרדת).
 
 ---
 
@@ -509,7 +575,11 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 
 **סדר העדיפויות שתמיר קבע בסוף סשן 5 (סבב 6).** כל פריט עומד בפני עצמו; לפני כל אחד — לשאול שאלות מנחות.
 
-**1. הרצה ב-Xcelium ותיקונים (הדבר הכי חשוב; דורש את המכונה של תמיר).**
+**0. (סשן 6) סימולציה — בוצע ב-Verilator.** כל טסט חדש: להוסיף ל-`scripts/regress.yaml`, להריץ
+`make sim TEST=...` ואז `make regress ONLY=<dir>`; ה-workflow `sim` חייב להיות ירוק. מה שנשאר ל-Xcelium (אם תמיר
+ישיג גישה): ראה `unverified.md`.
+
+**1. (היסטורי — לתמיר אין Xcelium) הרצה ב-Xcelium ותיקונים.**
 - קודם 7 טסטי ה-Test plan, כי הם הקוד החדש ביותר ובודקים את תיקון `wait_accept`:
   `make run-project TEST=backpressure_test`, `parity_error_test`, `router_filter_test`, `router_disable_test`,
   `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`. אחר כך הלאבים 6–7 (אותו driver), ואז הכול:
@@ -535,7 +605,7 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 **דברים ישנים שנסגרו:** GitHub Actions ירוק (סשן 5); `test_sim.mjs` (סשן 5); בדיקת האתר החי (תמיר רואה; מהקונטיינר אין
 גישה ל-github.io); שלושה סבבי UX, Test plan, גרירה (סעיף 2, פריטים 4–8).
 
-**איך לוודא שהצעד הושלם:** `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
+**איך לוודא שהצעד הושלם:** `make regress` → "N of N runs passed" (או ה-workflow `sim` ירוק); `make lint` → "All 18 command file(s) passed lint"; `make style-check` →
 `sv_style: OK`; `make map-check` → "project map checks: OK" בלי "STALE"; `mkdocs build --strict` → בלי
 WARNING; ב-GitHub Actions שני ה-workflows ירוקים על ה-commit החדש.
 
@@ -559,7 +629,13 @@ python3 scripts/lint.py labs/lab05_seq/tb/run.f
 python3 -m pytest scripts/project_map/test_model.py
 node scripts/project_map/test_sim.mjs       # בדיקות ה-RouterModel לבד (536 assertions, ~0.1s)
 
-# סימולציה (אצל תמיר, Xcelium)
+# סימולציה חינמית (Verilator; בקונטיינר: PATH של Verilator — ראה למטה)
+bash scripts/setup_sim.sh                   # פעם אחת (בקונטיינר חדש: ~15 דק' בנייה; או PREFIX=...)
+cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1 SEED=3
+make regress [SEEDS=2] [ONLY=lab09]         # מהשורש; טבלה ב-build/sim/regress.md
+python3 scripts/sim.py run labs/lab07_integ/tb -t simple_test
+
+# סימולציה (Xcelium — אם תמיר ישיג גישה)
 cd yapp_project/tb && make run TEST=reg_function_test
 make run-project TEST=router_simple_mcseq_test        # מהשורש
 cd labs/lab07_integ/tb && make run TEST=simple_test
@@ -582,6 +658,9 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 
 ## 10. הערות לסשן הבא
 
+- **Verilator בקונטיינר חדש:** `bash scripts/setup_sim.sh` (apt + בנייה ~15 דק' ב-4 ליבות, אפשר ברקע). בסשן 6
+  נבנה ב-scratchpad (`PATH=<scratchpad>/vl/inst/bin:$PATH`) — לא שורד סשן. בדיקה מהירה בלי לבנות: לדחוף ולקרוא את
+  workflow `sim` (job לכל ספרייה, ~3–4 דק').
 - **לפני שמתחילים:** `git fetch && git status`; לוודא ש-`main` == הענף של הסשן הקודם (סשן 5:
   `claude/confident-rubin-m1zkvc`). סשן חדש מקבל שם ענף חדש מה-system prompt — לפתוח אותו מ-`origin/main`
   ולעבוד עליו; `main` מקבל ff אחרי כל push.

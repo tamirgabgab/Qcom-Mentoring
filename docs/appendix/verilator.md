@@ -102,4 +102,4 @@ through virtual interfaces, `disable fork`, `process::kill()`.
 
 **What still needs Xcelium:** four-state behaviour (`x` propagation, the real
 `'z` on HBUS), coverage numbers that match IMC, and the Cadence-specific steps
-(SimVision, IMC, `reg_verifier`). See [Known-unverified items](unverified.md).
+(SimVision, IMC, `reg_verifier`). See [Verification status](unverified.md).

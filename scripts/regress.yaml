@@ -5,7 +5,9 @@
 # executable with +UVM_TESTNAME=<test>. `default` runs the test the run.f names
 # itself (a top module without run_test(), or run_test("<name>") in the code).
 #
-# A run passes when it ends normally with no UVM_ERROR / UVM_FATAL report.
+# A run passes when it ends normally with no UVM_ERROR / UVM_FATAL report. A
+# test written as {test: <name>, expect: errors} is a negative check: its lab
+# wants the checker to fire, so it passes only when it reports UVM_ERROR.
 
 seeds: 1          # runs per test (seed 1, 2, ...); `make regress SEEDS=3`
 
@@ -21,8 +23,9 @@ benches:
                                incr_payload_test, exhaustive_seq_test, yapp_012_test]
   labs/lab07_integ/tb:        [base_test, simple_test, test_uvc_integration]
   labs/lab08_mcseq/tb:        [base_test, simple_test, test_uvc_integration, router_simple_mcseq_test]
-  labs/lab09_sba/tb:          [base_test, simple_test, test_uvc_integration,
-                               router_simple_mcseq_test, scoreboard_drop_test]
+  labs/lab09_sba/tb:          [base_test, simple_test, test_uvc_integration, router_simple_mcseq_test,
+                               # 9A: no reference model yet -> the dropped packets mismatch (step 7)
+                               {test: scoreboard_drop_test, expect: errors}]
   labs/lab09_sbb/tb:          [base_test, simple_test, test_uvc_integration,
                                router_simple_mcseq_test, scoreboard_drop_test]
   labs/lab09_sbc/tb:          [base_test, simple_test, test_uvc_integration,

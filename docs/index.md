@@ -81,8 +81,8 @@ one idea per class, comments that say *why*.
     * `labs/<lab>/` is a complete snapshot of the code at the end of that lab.
       `diff -r labs/lab04_factory labs/lab05_seq` shows exactly what a lab adds.
     * The [test plan](test-plan.md) maps DUT features to tests and checkers, and
-      the [unverified items](appendix/unverified.md) page lists what still needs
-      a run on a real simulator.
+      the [verification status](appendix/unverified.md) page lists what the
+      Verilator runs proved and what still needs Xcelium.
 
 ## Course roadmap
 
