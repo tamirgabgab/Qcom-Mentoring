@@ -3,6 +3,7 @@
 -timescale 1ns/1ns
 
 -incdir ../../../common
+../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
 -incdir ../sv                 // router_scoreboard.sv, packet_compare.sv
 
 // YAPP UVC

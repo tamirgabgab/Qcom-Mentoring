@@ -89,8 +89,10 @@ macro, constraints and `extern` prototypes. The method bodies follow `endclass` 
 `task yapp_012_seq::body();`, each body preceded by a `//-----` delimiter line. Read the
 prototypes to learn what a class does, scroll down to see how. Two more conventions hold
 everywhere: a function declares its locals at its top (never in a bare `begin … end` in the middle
-of the body), and the body of an `if` / `else` / `for` / `foreach` / `while` / `repeat` that sits
-on its own line is always wrapped in `begin … end`. `make style-check` (`scripts/sv_style.py`)
+of the body), and the body of an `if` / `else` / `for` / `foreach` / `while` / `repeat` is always
+wrapped in `begin … end`, even a single statement. Random values that are not fields of a
+randomized object come from the common library `rnd::` ([Random values](components/random.md)),
+not from `$urandom`. `make style-check` (`scripts/sv_style.py`)
 enforces all of this in CI, and `make style` reformats a file you wrote.
 
 The classes also do without the shortcut macros of the course material: no `uvm_do*`

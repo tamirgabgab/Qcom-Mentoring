@@ -34,7 +34,9 @@ function void channel_env::build_phase(uvm_phase phase);
   uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
-  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
+    channel_id = cfg_channel_id;
+  end
   uvm_config_int::set(this, "rx_agent", "channel_id", channel_id);
   rx_agent = channel_rx_agent::type_id::create("rx_agent", this);
 endfunction : build_phase

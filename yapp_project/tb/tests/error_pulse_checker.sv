@@ -38,7 +38,9 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void error_pulse_checker::write(yapp_packet t);
-  if (t.parity_type != BAD_PARITY || !router_en) return;
+  if (t.parity_type != BAD_PARITY || !router_en) begin
+    return;
+  end
   if (pending) begin
     `uvm_error("ERR_PULSE", "a bad-parity packet ended and the pulse of the previous one is still missing")
   end

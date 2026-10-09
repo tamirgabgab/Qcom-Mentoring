@@ -77,16 +77,20 @@ endfunction : new
 //------------------------------------------------------------------------------
 function bit [7:0] yapp_packet::calc_parity();
   calc_parity = {length, addr};
-  foreach (payload[i]) calc_parity ^= payload[i];
+  foreach (payload[i]) begin
+    calc_parity ^= payload[i];
+  end
 endfunction : calc_parity
 
 //------------------------------------------------------------------------------
 function void yapp_packet::set_parity();
+  int unsigned bad_bit;
   parity = calc_parity();
   if (parity_type == BAD_PARITY) begin
-    // one $urandom_range only: two calls would pick two different bits and
-    // leave the parity correct about half of the time
-    parity ^= 8'h01 << $urandom_range(7, 0);
+    // draw the bit once and flip it: two draws would pick two different bits
+    // and leave the parity correct about half of the time
+    bad_bit = rnd::get_index(8, {get_full_name(), ".bad_parity_bit"});
+    parity[bad_bit] = ~parity[bad_bit];
   end
 endfunction : set_parity
 
@@ -96,8 +100,7 @@ function void yapp_packet::post_randomize();
   // called with an inline `with {...}`. Size it here: no sequence constrains
   // the payload bytes, so nothing is lost.
   if (payload.size() != length) begin
-    payload = new[length];
-    foreach (payload[i]) payload[i] = $urandom;
+    payload = rnd::get_bytes(length, {get_full_name(), ".payload"});
   end
   set_parity();
 endfunction : post_randomize

@@ -3,6 +3,7 @@
 -timescale 1ns/1ns            // avoids timescale errors between files
 
 -incdir ../../../common
+../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
 -incdir ../sv
 ../sv/yapp_pkg.sv
 ../sv/yapp_if.sv              // interfaces are COMPILED, never `included

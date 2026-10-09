@@ -146,7 +146,9 @@ module yapp_hbus_regs (
     if (haddr >= ADDR_MEM_BASE && haddr <= ADDR_MEM_BASE + 16'h00ff) begin
       rd_mux = yapp_mem[haddr[7:0]];
 `ifdef INJECT_ERROR
-      if (haddr[7:0] == 8'h2a) rd_mux[3] = ~rd_mux[3];
+      if (haddr[7:0] == 8'h2a) begin
+        rd_mux[3] = ~rd_mux[3];
+      end
 `endif
     end else if (haddr >= ADDR_PKT_MEM_BASE && haddr <= ADDR_PKT_MEM_BASE + 16'h003f) begin
       rd_mux = yapp_pkt_mem[haddr[6:0] - 7'h10];   // 0x1010..0x104f -> 0..63
@@ -183,11 +185,13 @@ module yapp_hbus_regs (
       if (hen && hwr_rd) begin
         if (haddr >= ADDR_MEM_BASE && haddr <= ADDR_MEM_BASE + 16'h00ff) begin
           yapp_mem[haddr[7:0]] <= hdata;
-        end else case (haddr)
-          ADDR_CTRL_REG: ctrl_reg <= hdata;
-          ADDR_EN_REG:   en_reg   <= hdata;
-          default: ;   // read-only registers and memories ignore writes
-        endcase
+        end else begin
+          case (haddr)
+            ADDR_CTRL_REG: ctrl_reg <= hdata;
+            ADDR_EN_REG:   en_reg   <= hdata;
+            default: ;   // read-only registers and memories ignore writes
+          endcase
+        end
       end
     end
   end

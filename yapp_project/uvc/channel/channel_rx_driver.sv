@@ -27,7 +27,9 @@ function void channel_rx_driver::build_phase(uvm_phase phase);
   uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
-  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
+    channel_id = cfg_channel_id;
+  end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------

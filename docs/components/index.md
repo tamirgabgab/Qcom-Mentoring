@@ -18,6 +18,7 @@ look at the reference implementation and the mistakes people make.
 | [Reference model and module UVC](reference-model.md) | `yapp_project/uvc/router/router_reference.sv`, `router_module_env.sv` | which packets *should* come out |
 | [Virtual sequencer](virtual-sequencer.md) | `yapp_project/tb/router_mcsequencer.sv`, `mcseqs/router_simple_mcseq.sv` | coordinate several interfaces |
 | [Functional coverage](coverage.md) | covergroup in `yapp_tx_monitor.sv` | did we test everything we meant to? |
+| [Random values](random.md) | `common/rand_util_pkg.sv` | every random value outside a randomized object: `rnd::get_int(...)` |
 | [Register model (RAL)](register-model.md) | `yapp_project/tb/yapp_router_reg_pkg.sv` + `reg/`, `yapp_project/uvc/hbus/hbus_reg_adapter.sv` | registers as objects: front door, backdoor, prediction |
 
 The reference implementations live in `yapp_project/` (the finished project); the lab

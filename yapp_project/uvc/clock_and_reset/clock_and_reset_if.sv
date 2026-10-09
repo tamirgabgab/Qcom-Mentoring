@@ -30,7 +30,9 @@ interface clock_and_reset_if (
     clock_period = period;
     reset        = 1'b1;
     run_clock    = 1'b1;
-    repeat (reset_cycles) @(posedge clock);
+    repeat (reset_cycles) begin
+      @(posedge clock);
+    end
     @(negedge clock);          // release on a falling edge, like every DUT input
     reset = 1'b0;
   endtask

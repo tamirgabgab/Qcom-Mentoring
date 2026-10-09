@@ -5,6 +5,7 @@
 -covoverwrite
 
 -incdir ../../../common
+../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
 
 // YAPP UVC (the monitor contains the covergroup)
 -incdir ../../../yapp_project/uvc/yapp

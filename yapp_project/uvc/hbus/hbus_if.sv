@@ -79,7 +79,9 @@ interface hbus_if (input logic clock, input logic reset);
       data = hdata_w;
     end
     // Wait for hen to drop so one transaction is not collected twice
-    while (hen) @(posedge clock);
+    while (hen) begin
+      @(posedge clock);
+    end
   endtask : collect_transaction
 
 endinterface : hbus_if

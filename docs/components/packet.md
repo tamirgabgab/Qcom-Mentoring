@@ -60,6 +60,8 @@ router** pushes it through the same router model as the register simulator on th
 * `parity` is **not** `rand`: it is a function of the other fields. It is
   recomputed in `post_randomize()`, and `set_parity()` is public so a sequence
   that edits the payload afterwards (`yapp_incr_payload_seq`) can call it.
+  A bad parity flips one bit whose index comes from the common random library
+  (`rnd::get_index(8, ...)`, see [Random values](random.md)).
 * `do_compare` leaves `packet_delay` out (the course marks the field
   `UVM_NOCOMPARE`): two packets with the same contents are equal even if they
   were sent with different gaps. `do_copy` and `do_print` do include it.

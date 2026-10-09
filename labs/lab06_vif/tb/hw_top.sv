@@ -22,7 +22,9 @@ module hw_top;
   // Reset: active for the first 5 clock cycles
   initial begin
     reset = 1'b1;
-    repeat (5) @(negedge clock);
+    repeat (5) begin
+      @(negedge clock);
+    end
     reset = 1'b0;
   end
 

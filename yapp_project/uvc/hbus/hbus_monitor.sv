@@ -54,7 +54,11 @@ task hbus_monitor::run_phase(uvm_phase phase);
     tr = hbus_transaction::type_id::create("tr", this);   // new object each time
     vif.collect_transaction(tr.haddr, tr.hdata, is_write);
     tr.hwr_rd = is_write ? HBUS_WRITE : HBUS_READ;
-    if (is_write) num_writes++; else num_reads++;
+    if (is_write) begin
+      num_writes++;
+    end else begin
+      num_reads++;
+    end
     `uvm_info(get_type_name(), {"Collected ", tr.convert2string()}, UVM_LOW)
     item_collected_port.write(tr);
   end

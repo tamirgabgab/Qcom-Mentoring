@@ -60,7 +60,9 @@ task hbus_protocol_test::access_checks();
   if (data != 8'h2a) begin
     `uvm_error("HBUS_PROTO", $sformatf("ctrl_reg reads 0x%02h after writing 0x2a", data))
   end
-  repeat (2) @(posedge vif.clock);          // the monitor finishes the read one edge later
+  repeat (2) begin
+    @(posedge vif.clock);  // the monitor finishes the read one edge later
+  end
   if (tb.hbus.monitor.num_writes != writes_before + 1 || tb.hbus.monitor.num_reads != reads_before + 1) begin
     `uvm_error("HBUS_PROTO", $sformatf("monitor counted %0d write(s) and %0d read(s), expected 1 and 1",
                                        tb.hbus.monitor.num_writes - writes_before,

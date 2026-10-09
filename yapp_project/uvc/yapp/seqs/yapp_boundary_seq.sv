@@ -43,14 +43,18 @@ task yapp_boundary_seq::body();
   int cand[4];
   cand = '{maxpktsize - 1, maxpktsize, maxpktsize + 1, 63};
   foreach (cand[i]) begin
-    if (cand[i] >= 1 && cand[i] <= 63 && !(cand[i] inside {lens})) lens.push_back(cand[i]);
+    if (cand[i] >= 1 && cand[i] <= 63 && !(cand[i] inside {lens})) begin
+      lens.push_back(cand[i]);
+    end
   end
   `uvm_info(get_type_name(), $sformatf("Executing yapp_boundary_seq (maxpktsize %0d, lengths %p)",
                                        maxpktsize, lens), UVM_LOW)
   sent_total = 0;
   sent_oversized = 0;
   sent_forwarded = 0;
-  foreach (sent_per_addr[i]) sent_per_addr[i] = 0;
+  foreach (sent_per_addr[i]) begin
+    sent_per_addr[i] = 0;
+  end
   for (int a = 0; a < 4; a++) begin
     foreach (lens[i]) begin
       req = yapp_packet::type_id::create("req");
@@ -65,8 +69,12 @@ task yapp_boundary_seq::body();
       finish_item(req);
       sent_total++;
       sent_per_addr[a]++;
-      if (lens[i] > maxpktsize) sent_oversized++;
-      if (a != 3 && lens[i] <= maxpktsize) sent_forwarded++;
+      if (lens[i] > maxpktsize) begin
+        sent_oversized++;
+      end
+      if (a != 3 && lens[i] <= maxpktsize) begin
+        sent_forwarded++;
+      end
     end
   end
 endtask : body

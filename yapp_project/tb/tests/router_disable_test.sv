@@ -88,7 +88,9 @@ endfunction : channel_packets
 task router_disable_test::wait_channels(int expected);
   // a packet needs at most 65 cycles plus the receiver's response delay
   repeat (400) begin
-    if (channel_packets() >= expected) return;
+    if (channel_packets() >= expected) begin
+      return;
+    end
     @(posedge tb.yapp.agent.monitor.vif.clock);
   end
 endtask : wait_channels

@@ -98,7 +98,11 @@ runs unchanged on Xcelium.
 | A comment that starts with the word `verilator` | read as a Verilator directive | avoid it |
 
 Not used by this code, but known to be incomplete in Verilator: clocking blocks
-through virtual interfaces, `disable fork`, `process::kill()`.
+through virtual interfaces, `disable fork`, `process::kill()`. Two more found
+while writing [the random library](../components/random.md): a dynamic array
+cannot be assigned to a fixed-size array (compile error), and inside a class
+method `if (v inside {[-5:5]})` is false for a negative `v` (a range with a
+negative bound; compare with `>=` / `<=` instead).
 
 **What still needs Xcelium:** four-state behaviour (`x` propagation, the real
 `'z` on HBUS), coverage numbers that match IMC, and the Cadence-specific steps

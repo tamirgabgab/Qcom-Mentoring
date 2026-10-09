@@ -110,7 +110,9 @@ task yapp_tx_monitor::collect_packets();
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
     pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
     num_pkt_col++;
-    if (pkt.parity_type == BAD_PARITY) num_bad_parity++;
+    if (pkt.parity_type == BAD_PARITY) begin
+      num_bad_parity++;
+    end
     `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_LOW)
     yapp_pkt_cg.sample(pkt.length, pkt.addr, pkt.parity_type);
     item_collected_port.write(pkt);

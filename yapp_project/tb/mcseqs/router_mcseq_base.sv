@@ -29,11 +29,15 @@ endfunction : new
 //------------------------------------------------------------------------------
 task router_mcseq_base::pre_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
-  if (phase != null) phase.raise_objection(this, get_type_name());
+  if (phase != null) begin
+    phase.raise_objection(this, get_type_name());
+  end
 endtask : pre_body
 
 //------------------------------------------------------------------------------
 task router_mcseq_base::post_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;
-  if (phase != null) phase.drop_objection(this, get_type_name());
+  if (phase != null) begin
+    phase.drop_objection(this, get_type_name());
+  end
 endtask : post_body

@@ -10,8 +10,10 @@ Rules (text based; `make lint` with slang is the safety net):
 1. Locals of a function are declared at its top: the configuration block that reads
    uvm_config_db ("begin  uvm_bitstream_t cfg_x; if (uvm_config_int::get(...)) ...  end")
    is unwrapped -- declarations first, then super.build_phase(), then the get() calls.
-2. The body of if / else / for / foreach / while / repeat that sits on its own line is
-   wrapped in begin ... end.  Same-line one-liners (`if (x) y = 1;`) are left alone.
+2. The body of if / else / for / foreach / while / repeat is always a begin ... end
+   block, also when it is a single statement: `if (x) y = 1;` and
+   `foreach (p[i]) s += p[i];` are first split over two lines, then wrapped.
+   Constraint and `with {...}` blocks are left alone (begin/end is not legal there).
 3. Out-of-class method bodies are separated by a blank line and a //----- delimiter.
 4. `extern // comment` glued prototypes are repaired to `extern virtual ...`.
 """
@@ -327,8 +329,105 @@ class Wrapper:
         return self.stmt_end(b)
 
 
+ONE_ELSE_RX = re.compile(r"^(\s*(?:end\s+)?else)\s+(?!if\b)(?!begin\b)(\S.*)$")
+CTRL_KW_RX = re.compile(r"^(?:if|for|foreach|while|repeat)\s*\(")
+
+
+def scan(code: str, start: int, stop_at_semi: bool = False, depth: int = 0) -> tuple[int, int]:
+    """Walk code from start, skipping strings and nested (), {}, [].
+    stop_at_semi: return (index of the first top-level ';', 0).
+    Otherwise return (index of the bracket that brings the depth back to 0, 0).
+    Not found on this line: (-1, depth reached at the end of the line)."""
+    i, n = start, len(code)
+    while i < n:
+        c = code[i]
+        if c == '"':
+            i += 1
+            while i < n and code[i] != '"':
+                i += 2 if code[i] == "\\" else 1
+        elif c in "({[":
+            depth += 1
+        elif c in ")}]":
+            depth -= 1
+            if not stop_at_semi and depth == 0:
+                return i, 0
+        elif c == ";" and stop_at_semi and depth == 0:
+            return i, 0
+        i += 1
+    return -1, depth
+
+
+def split_one_liners(lines: list[str]) -> list[str]:
+    """Move the body of a control statement that shares a line with its header to a line
+    of its own, so that the Wrapper puts it in begin/end:
+        if (x) y = 1;              ->  if (x)  /  y = 1;
+        if (a) x; else y;          ->  if (a)  /  x;  /  else  /  y;
+    Multi-line headers and multi-line bodies (a case, a macro call) are followed."""
+    depth = 0           # {} depth: constraints and with-blocks are skipped
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        code, cmt = split_comment(line)
+        stripped = code.strip()
+        in_macro = code.endswith("\\") or (i > 0 and lines[i - 1].rstrip().endswith("\\"))
+        if depth != 0 or not stripped or in_macro:
+            depth += code_of(line).count("{") - code_of(line).count("}")
+            i += 1
+            continue
+        ind = indent_of(line)
+        m = CTRL_RX.match(stripped)
+        if m:
+            # find the ')' closing the header, possibly some lines further down
+            j, col = i, len(ind) + m.end() - 1
+            close, bal = scan(code, col)
+            while close < 0 and bal > 0 and j + 1 < len(lines):
+                j += 1
+                close, bal = scan(split_comment(lines[j])[0], 0, depth=bal)
+            if close < 0:
+                i += 1
+                continue
+            hcode, hcmt = split_comment(lines[j])
+            rest = hcode[close + 1:].strip()
+            if not rest or rest == ";" or re.match(r"begin\b", rest):
+                i = j + 1
+                continue
+            body, tail = rest, ""
+            if IF_RX.match(stripped) and not CTRL_KW_RX.match(rest):
+                semi, _ = scan(rest, 0, stop_at_semi=True)
+                if semi >= 0 and re.match(r"\s*else\b", rest[semi + 1:]):
+                    body, tail = rest[:semi + 1], rest[semi + 1:].strip()
+            new = [hcode[:close + 1].rstrip(),
+                   ind + INDENT + body + (("  " + hcmt) if hcmt and not tail else "")]
+            if tail:
+                new.append(ind + tail + (("  " + hcmt) if hcmt else ""))
+            lines[j:j + 1] = new
+            if not tail:
+                indent_continuation(lines, j + 1)
+            i += 1                  # the header lines i..j stay; the body is re-scanned
+            continue
+        m = ONE_ELSE_RX.match(code)
+        if m:
+            lines[i:i + 1] = [m.group(1), ind + INDENT + m.group(2).strip() + (("  " + cmt) if cmt else "")]
+            indent_continuation(lines, i + 1)
+            i += 1
+            continue
+        depth += code_of(line).count("{") - code_of(line).count("}")
+        i += 1
+    return lines
+
+
+def indent_continuation(lines: list[str], b: int) -> None:
+    """The body that now starts on line b may run over more lines (a case, a macro call):
+    indent its other lines one level too."""
+    e = Wrapper(lines).stmt_end(b)
+    for k in range(b + 1, e + 1):
+        if not is_blank(lines[k]):
+            lines[k] = INDENT + lines[k]
+
+
 def wrap_bodies(text: str) -> str:
     lines = text.split("\n")
+    lines = split_one_liners(lines)
     lines = Wrapper(lines).run()
     return "\n".join(lines)
 

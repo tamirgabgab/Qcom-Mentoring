@@ -50,7 +50,9 @@ endfunction : new
 //------------------------------------------------------------------------------
 function bit [7:0] channel_packet::calc_parity();
   calc_parity = {length, addr};
-  foreach (payload[i]) calc_parity ^= payload[i];
+  foreach (payload[i]) begin
+    calc_parity ^= payload[i];
+  end
 endfunction : calc_parity
 
 //------------------------------------------------------------------------------

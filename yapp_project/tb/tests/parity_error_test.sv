@@ -90,8 +90,12 @@ task parity_error_test::send_bad(int n);
   end
   // let the channels deliver the packets (and the last pulse come) before checking
   repeat (400) begin
-    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= judged_before + n) break;
+    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= judged_before + n) begin
+      break;
+    end
     @(posedge tb.yapp.agent.monitor.vif.clock);
   end
-  repeat (12) @(posedge tb.yapp.agent.monitor.vif.clock);
+  repeat (12) begin
+    @(posedge tb.yapp.agent.monitor.vif.clock);
+  end
 endtask : send_bad

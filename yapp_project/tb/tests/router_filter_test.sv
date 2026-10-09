@@ -88,8 +88,12 @@ task router_filter_test::run_boundary();
   bnd_seq.start(yapp_seqr);
   repeat (600) begin
     if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched
-        >= judged_before + bnd_seq.sent_forwarded) break;
+        >= judged_before + bnd_seq.sent_forwarded) begin
+      break;
+    end
     @(posedge tb.yapp.agent.monitor.vif.clock);
   end
-  repeat (4) @(posedge tb.yapp.agent.monitor.vif.clock);
+  repeat (4) begin
+    @(posedge tb.yapp.agent.monitor.vif.clock);
+  end
 endtask : run_boundary

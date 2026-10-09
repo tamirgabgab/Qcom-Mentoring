@@ -306,6 +306,7 @@ scripts/
 common/
   lab.mk                            the Makefile shared by every simulation directory (run / gui / sim / waves / lint)
   uvm_version_compat.svh            UVM 1.1d / 1.2 shim
+  rand_util_pkg.sv                  rnd:: -- every random value outside a randomized object (std::randomize)
   verilator/                        public.vlt (RAL backdoor access), vl_waves.sv (+waves=<file>.fst)
 test_install/                     the UVM installation check
 .github/workflows/
@@ -337,9 +338,13 @@ The code is written to be read. Conventions, enforced by `make style-check`:
   (`function yapp_packet::set_parity();`), one `//-----` delimiter before every
   body. Read the class to learn what it does, scroll down to see how.
 * **Locals at the top of a function**, never in a bare `begin … end` in the
-  middle; **`begin … end` around every control body that sits on its own
-  line** (`if / else / for / foreach / while / repeat`), in the testbench and in
-  the RTL alike.
+  middle; **`begin … end` around every control body**
+  (`if / else / for / foreach / while / repeat`), also a single statement
+  (`foreach (p[i]) begin s ^= p[i]; end` over three lines), in the testbench and
+  in the RTL alike.
+* **Random values come from `rnd::`** (`common/rand_util_pkg.sv`):
+  `rnd::get_index(8, "pkt.bad_bit")`, `rnd::get_bytes(n, "pkt.payload")`, never
+  a bare `$urandom`. Objects keep their own `randomize() with {...}`.
 * **No `uvm_do*` macros.** A sequence writes `create → start_item →
   randomize() with { … } → finish_item` itself and starts a sub-sequence with
   `seq.start(sequencer, this)`.

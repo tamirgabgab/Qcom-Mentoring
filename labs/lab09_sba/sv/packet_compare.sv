@@ -18,7 +18,9 @@
       ok = 0;
     end
     foreach (yp.payload[i]) begin
-      if (i >= cp.payload.size()) break;
+      if (i >= cp.payload.size()) begin
+        break;
+      end
       if (yp.payload[i] != cp.payload[i]) begin
         `uvm_error("PKT_COMPARE", $sformatf("Payload[%0d] mismatch: YAPP 0x%02h, Channel 0x%02h",
                                             i, yp.payload[i], cp.payload[i]))

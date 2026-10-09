@@ -34,8 +34,12 @@ function void channel_rx_agent::build_phase(uvm_phase phase);
   uvm_bitstream_t cfg_channel_id;
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
-  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
-  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) channel_id = cfg_channel_id;
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) begin
+    is_active = uvm_active_passive_enum'(cfg_is_active);
+  end
+  if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
+    channel_id = cfg_channel_id;
+  end
   // Pass the channel id down to the children
   uvm_config_int::set(this, "*", "channel_id", channel_id);
   monitor = channel_rx_monitor::type_id::create("monitor", this);

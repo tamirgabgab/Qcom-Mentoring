@@ -56,7 +56,9 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_reference::write_hbus(hbus_transaction tr);
-  if (tr.hwr_rd != HBUS_WRITE) return;
+  if (tr.hwr_rd != HBUS_WRITE) begin
+    return;
+  end
   case (tr.haddr)
     16'h1000: begin
       maxpktsize = tr.hdata[5:0];

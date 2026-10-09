@@ -3,6 +3,7 @@
 -timescale 1ns/1ns
 
 -incdir ../../../common
+../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
 
 // YAPP UVC (your files from lab06_vif, now standalone in yapp_project/uvc/yapp)
 -incdir ../../../yapp_project/uvc/yapp

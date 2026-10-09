@@ -32,7 +32,9 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_simple_mcseq_test::build_phase(uvm_phase phase);
-  if (short_packets) set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
+  if (short_packets) begin
+    set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
+  end
   super.build_phase(phase);
 endfunction : build_phase
 

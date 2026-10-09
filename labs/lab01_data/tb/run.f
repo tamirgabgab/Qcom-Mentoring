@@ -4,5 +4,6 @@
 -timescale 1ns/1ns
 
 -incdir ../sv             // include directory for sv files
+../../../common/rand_util_pkg.sv  // rnd:: random values (before the packages that use it)
 ../sv/yapp_pkg.sv         // compile YAPP package
 top.sv                    // compile top level module

@@ -96,7 +96,9 @@ endtask : count_suspends
 task backpressure_test::wait_scoreboard(int expected);
   // 65 bytes plus a 40-cycle response delay per packet, with a margin
   repeat (1000) begin
-    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= expected) return;
+    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= expected) begin
+      return;
+    end
     @(posedge tb.yapp.agent.monitor.vif.clock);
   end
 endtask : wait_scoreboard

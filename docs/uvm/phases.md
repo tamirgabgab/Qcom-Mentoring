@@ -51,7 +51,9 @@ library keeps the simulation alive exactly as long as it runs:
 ```systemverilog
 task pre_body();
   uvm_phase phase = `YAPP_STARTING_PHASE;      // starting_phase / get_starting_phase()
-  if (phase != null) phase.raise_objection(this, get_type_name());
+  if (phase != null) begin
+    phase.raise_objection(this, get_type_name());
+  end
 endtask
 ```
 

@@ -36,7 +36,9 @@ interface yapp_if (input logic clock, input logic reset);
   // falling edge means the byte was taken at the preceding rising edge).
   task automatic wait_accept();
     @(negedge clock);
-    while (in_suspend) @(negedge clock);
+    while (in_suspend) begin
+      @(negedge clock);
+    end
   endtask : wait_accept
 
   task automatic send_to_dut(input bit [1:0] addr,
@@ -45,7 +47,9 @@ interface yapp_if (input logic clock, input logic reset);
                              input bit [7:0] parity,
                              input int       packet_delay);
     // Inter-packet gap
-    repeat (packet_delay) @(negedge clock);
+    repeat (packet_delay) begin
+      @(negedge clock);
+    end
 
     // Header: {length, addr} together with in_data_vld
     @(negedge clock);

@@ -7,6 +7,7 @@
 package yapp_pkg;
 
   import uvm_pkg::*;
+  import rand_util_pkg::*;   // rnd:: random values (common/rand_util_pkg.sv)
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
   `include "yapp_packet.sv"

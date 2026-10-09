@@ -65,11 +65,11 @@ Points worth a second look:
   can write `GOOD_PARITY` without a scope prefix.
 * **`parity` is not `rand`.** It is derived: `post_randomize()` calls
   `set_parity()`, which uses `calc_parity()` for a good packet and flips one
-  bit for a bad one -- with **one** `$urandom_range` call:
-  `parity ^= 8'h01 << $urandom_range(7, 0);`. Writing
-  `parity[$urandom_range(7,0)] = ~parity[$urandom_range(7,0)]` picks two different
-  bits and leaves the parity correct about half of the time (a real bug, found by
-  the first simulation of this code).
+  bit for a bad one. The bit is drawn **once**, from the common random library
+  (`rnd::get_index(8, ...)`, see [Random values](../components/random.md)), and
+  then flipped. Writing `parity[$urandom_range(7,0)] = ~parity[$urandom_range(7,0)]`
+  draws twice, picks two different bits and leaves the parity correct about half
+  of the time (a real bug, found by the first simulation of this code).
 * **Named constraints** can be disabled later (`c_addr_legal.constraint_mode(0)`).
 * `do_compare` does not look at `packet_delay` (the course's `UVM_NOCOMPARE`):
   two identical packets sent with different gaps still compare equal.

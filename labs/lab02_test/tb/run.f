@@ -3,6 +3,7 @@
 -timescale 1ns/1ns
 
 -incdir ../sv
+../../../common/rand_util_pkg.sv  // rnd:: random values (before the packages that use it)
 ../sv/yapp_pkg.sv
 top.sv
 

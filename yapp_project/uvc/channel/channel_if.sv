@@ -37,14 +37,18 @@ interface channel_if (input logic clock, input logic reset);
     do @(negedge clock); while (!data_vld);
 
     // Optional response delay while the header is held on the bus
-    repeat (response_delay) @(negedge clock);
+    repeat (response_delay) begin
+      @(negedge clock);
+    end
 
     // Read the header and release suspend on the same falling edge
     length  = data[7:2];
     suspend <= 1'b0;
 
     // payload bytes + parity byte arrive one per falling edge
-    repeat (length + 1) @(negedge clock);
+    repeat (length + 1) begin
+      @(negedge clock);
+    end
 
     // The parity byte is being read on this edge: stop the router here
     suspend <= 1'b1;

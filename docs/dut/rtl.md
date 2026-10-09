@@ -180,11 +180,17 @@ i.e. in the cycle the parity byte is accepted and only for packets received
 with `router_en` set (`pkt_done` already includes that):
 
 ```systemverilog
-if (pkt_mem_we) yapp_pkt_mem[pkt_mem_addr] <= pkt_mem_wdata;
+if (pkt_mem_we) begin
+  yapp_pkt_mem[pkt_mem_addr] <= pkt_mem_wdata;
+end
 if (pkt_done) begin
   mem_size_reg <= {2'b00, pkt_len};
-  if (pkt_parity_err && parity_err_cnt_en)  parity_err_cnt_reg    <= parity_err_cnt_reg + 8'd1;
-  if (pkt_oversized  && oversized_pkt_cnt_en) oversized_pkt_cnt_reg <= oversized_pkt_cnt_reg + 8'd1;
+  if (pkt_parity_err && parity_err_cnt_en) begin
+    parity_err_cnt_reg <= parity_err_cnt_reg + 8'd1;
+  end
+  if (pkt_oversized && oversized_pkt_cnt_en) begin
+    oversized_pkt_cnt_reg <= oversized_pkt_cnt_reg + 8'd1;
+  end
   case (pkt_addr)  // one of addr0..3_cnt_reg++, each behind its en_reg bit
 ```
 
@@ -199,8 +205,12 @@ assign hdata = hdata_oe ? hdata_out : 8'bz;
 
 always_ff @(posedge clock) begin
   hdata_oe <= hen && !hwr_rd;         // drive during the second read cycle
-  if (hen && !hwr_rd) hdata_out <= rd_mux;
-  if (hen &&  hwr_rd) ...             // single-cycle write
+  if (hen && !hwr_rd) begin
+    hdata_out <= rd_mux;
+  end
+  if (hen && hwr_rd) begin
+    ...                               // single-cycle write
+  end
 end
 ```
 
@@ -210,7 +220,9 @@ reach only `ctrl_reg`, `en_reg` and `yapp_mem`.
 
 ```systemverilog
 `ifdef INJECT_ERROR
-  if (haddr[7:0] == 8'h2a) rd_mux[3] = ~rd_mux[3];   // Lab 11B: make the memory test fail
+  if (haddr[7:0] == 8'h2a) begin
+    rd_mux[3] = ~rd_mux[3];   // Lab 11B: make the memory test fail
+  end
 `endif
 ```
 
@@ -227,9 +239,13 @@ wire [3:0] err_delay = (rnd_cnt % 4'd10) + 4'd1;
 error <= 1'b0;
 if (err_timer != 4'd0) begin
   err_timer <= err_timer - 4'd1;
-  if (err_timer == 4'd1) error <= 1'b1;
+  if (err_timer == 4'd1) begin
+    error <= 1'b1;
+  end
 end
-if (start) err_timer <= err_delay;     // a new bad packet re-arms the timer (load wins over decrement)
+if (start) begin
+  err_timer <= err_delay;   // a new bad packet re-arms the timer (load wins over decrement)
+end
 ```
 
 ## The files

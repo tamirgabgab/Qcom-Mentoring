@@ -49,7 +49,9 @@ interface yapp_if (input logic clock, input logic reset);
                              input bit [7:0] parity,
                              input int       packet_delay);
     // Inter-packet gap
-    repeat (packet_delay) @(negedge clock);
+    repeat (packet_delay) begin
+      @(negedge clock);
+    end
 
     // Header: {length, addr} together with in_data_vld
     @(negedge clock);

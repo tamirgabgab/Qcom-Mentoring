@@ -4,6 +4,7 @@
 -access +rwc                  // backdoor (peek/poke) needs read/write access to the RTL
 
 -incdir ../../../common
+../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
 
 // YAPP UVC
 -incdir ../../../yapp_project/uvc/yapp

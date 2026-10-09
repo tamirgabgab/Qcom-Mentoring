@@ -51,8 +51,13 @@
     תחת באנר `// <cls> -- method implementations`, ו-**delimiter `//-----…` (78 מקפים) לפני כל
     מימוש** (שורה ריקה, delimiter, המימוש).
   - **משתנים מקומיים בתחילת הפונקציה** — אף פעם לא בלוק `begin/end` עירום באמצע הגוף.
-  - **כל גוף של `if/else/for/foreach/while/repeat` שנמצא בשורה נפרדת עטוף ב-`begin … end`**
-    (גם ב-RTL). שורות בודדות כמו `if (x) y;` נשארות. `begin` תמיד על שורת הכותרת.
+  - **כל גוף של `if/else/for/foreach/while/repeat` עטוף ב-`begin … end`, גם פקודה אחת**
+    (גם ב-RTL, גם `repeat (n) @(posedge clk);`). `begin` תמיד על שורת הכותרת. `sv_style.py` מפצל
+    one-liners ועוטף; בלוקי constraint ו-`with {…}` לא נוגעים (שם begin/end לא חוקי).
+  - **ערכים אקראיים רק דרך `rnd::`** (`common/rand_util_pkg.sv`, import בכל package וב-tb_top):
+    `get_bit/get_int/get_uint/get_byte/get_bits/get_index/get_bytes/get_byte_queue`,
+    `rnd_array #(N)::get_bytes` למערך קבוע. ארגומנט אחרון = שם לזיהוי; כישלון → `uvm_fatal("RND", ...)`.
+    בלי `$urandom` ישיר. `randomize()` של אובייקטים (sequence items/sequences) נשאר כמו שהוא.
   - **בלי `uvm_do*` / `uvm_create` / `uvm_send`**: סיקוונס כותב `create → start_item → randomize()
     with {…} (+ uvm_error על כישלון) → finish_item`; תת-סיקוונס: `create → randomize → seq.start(p_sequencer.x, this)`.
   - **בלי `uvm_field_*`**: ל-objects יש `do_copy / do_compare / do_print / do_pack / do_unpack /
@@ -314,7 +319,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    — בניתי מהמקור ב-scratchpad, הפרויקט התקמפל מהפעם הראשונה (2.5 דק'), ואז מצאתי ותיקנתי (תשובות תמיר: לתקן
    בכל העותקים; cross עם ifdef; make + Codespaces + רגרסיה על כל הלאבים):
    - **באג אמיתי** `yapp_packet::set_parity()`: שתי קריאות `$urandom_range` → ~44% מפקטות ה-bad parity יצאו תקינות.
-     עכשיו `parity ^= 8'h01 << $urandom_range(7, 0);` (פרויקט + לאבים 1–6, 7 עותקים זהים).
+     תוקן (סבב 1: `parity ^= 8'h01 << $urandom_range(7, 0)`; סבב 2: `rnd::get_index` + היפוך ביט), 7 עותקים זהים.
    - Verilator: `payload.size() == length` לא מתקיים תחת `randomize() with` → `post_randomize()` מקצה payload לפי length.
    - Verilator: `dist` + שוויון ב-`with` → UNSAT אקראי → `c_parity_dist.constraint_mode(0)` ב-4 סיקוונסים שבוחרים parity
      (`yapp_pkt_seq`, `yapp_coverage_seq`, `yapp_boundary_seq`, `yapp_88_packets_seq`).
@@ -332,6 +337,21 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    הרחבות VaporView ו-veriloghdl, 4 ליבות), `.github/workflows/sim.yml` (job `benches` קורא את regress.yaml → matrix).
 4. תיעוד: `docs/appendix/verilator.md` (חדש, בניווט), `unverified.md` → "Verification status", getting-started, README
    (badge `sim`, Quick start, עץ, Tooling, Verification status), `coverage.md`, `lab01.md`, `lab10.md`, `index.md`.
+5. **סבב 2 — ספריית אקראיות + begin/end בכל מקום** (תשובות תמיר: package `rand_util_pkg` + מחלקה `rnd`; בכל
+   העותקים כולל לאבים 1–6; `uvm_fatal` עם השם; begin/end על **כל** גוף בקרה ו-sv_style אוכף):
+   - `common/rand_util_pkg.sv`: `virtual class rnd` עם static `get_bit/get_int/get_uint/get_byte/get_bits/get_index/
+     get_bytes/get_byte_queue(…, string name = "")` + `rnd_array #(N)::get_bytes` (מערך קבוע). הכול `std::randomize()`;
+     מערכים מוקצים קודם (Verilator מחזיר תור ריק עם `q.size() == n` ב-`with`). כישלון / `min > max` / `size == 0` →
+     `uvm_fatal("RND", "<name>: ...")`. נבדק ב-Verilator (טסט זמני ב-`build/rnd_check/`, לא בריפו).
+   - נכנס לכל `run.f` (לאבים 1–11C חוץ מ-11A, ופרויקט) ו-`import rand_util_pkg::*;` בכל package של UVC, ב-`router_module_pkg`
+     של 9B–9D וב-`tb_top`/`top`. `yapp_packet` (7 עותקים): `set_parity` = `rnd::get_index(8, …)` + היפוך ביט אחד;
+     `post_randomize` = `rnd::get_bytes(length, …)`. שם = `{get_full_name(), ".field"}`. אין יותר `$urandom` בקוד שלנו.
+   - `sv_style.py` כלל 2: `split_one_liners()` מפצל `if (x) y;` / `if (a) x; else y;` / `else y;` / כותרות רב-שורתיות
+     (`router_filter_test`) / גוף רב-שורתי (`end else case … endcase` ב-`yapp_hbus_regs`), ואז ה-Wrapper עוטף. מדלג על
+     בלוקי `{}` (constraints, `with`) ו-macros. 115 קבצים השתנו; קטעי קוד ב-`docs/dut/rtl.md` ו-`docs/uvm/phases.md` עודכנו.
+   - תיעוד: `docs/components/random.md` (חדש, בניווט ובטבלת components), `packet.md`, `lab01.md`, getting-started, README.
+   - **שני באגים חדשים של Verilator 5.052** (מתועדים ב-`verilator.md`): השמת מערך דינמי למערך בגודל קבוע לא מתקמפלת;
+     בתוך מתודה של class, `if (v inside {[-5:5]})` שקרי ל-`v` שלילי (טווח עם גבול שלילי). הקוד שלנו לא משתמש בזה.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
@@ -366,7 +386,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `yapp_project/` = מקור האמת; לאבים 7+ קומפלים ממנו (`../../../yapp_project/...`); לאבים 1–6 שומרים עותק `sv/` משלהם (מצב ביניים הוראתי) | "כאילו פרויקט שנכתב מאפס"; המעבדות נשארות snapshots | להעתיק הכול לכל מעבדה | סופי |
 | DUT מפוצל **לפי ארכיטקטורה**: `yapp_router` (wiring) + `yapp_input_fsm`, `yapp_output_channel` (×3 ב-`g_ch[i].u_ch`, בתוכו `u_fifo`), `yapp_fifo`, `yapp_hbus_regs` (כל הרגיסטרים/זיכרונות/HBUS), `yapp_error_timer`; `-F yapp_router.f` | תשובת תמיר "לפי הארכיטקטורה"; שומר התנהגות | פיצול לפי פונקציה/שכבה | סופי; backdoor root `hw_top.dut.u_regs` |
 | הכרעות במפרט (ב-`dut/spec.md` "Decisions"): `router_en=0` → כלום לא נספר/נשמר; פקטות drop (oversize/addr3) כן נספרות, parity נבדק, error מורם, pkt_mem/mem_size מתעדכנים; פקטת bad-parity **מועברת** | המפרט שותק; DUT, reference model ו-RAL tests עקביים | — | סופי (לשנות רק יחד ב-3 המקומות + sim.js) |
-| `begin/end` רק לגופים בשורה נפרדת; same-line one-liners נשארים | תשובת תמיר | לעטוף הכול | סופי |
+| `begin/end` סביב **כל** גוף בקרה, גם one-liner (session 6; החליף את "רק לגופים בשורה נפרדת") | תשובת תמיר | להשאיר one-liners / לפטור המתנות לשעון | סופי |
+| ספריית `rnd::` (`rand_util_pkg`, static functions, `std::randomize`) במקום `$urandom`; `uvm_fatal` עם שם | תשובת תמיר (session 6) | `uvm_error`+trace / include בכל package | סופי; `randomize()` של אובייקטים נשאר |
 | סימולטור = רגיסטרים **+ תעבורת פקטות** (RouterModel מחקה את ה-RTL) | תשובת תמיר | רק קובץ רגיסטרים | סופי |
 | widgets גם במפה וגם בדפי התיעוד, אותו `sim.js` (inlined במפה, `extra_javascript` באתר) | תשובת תמיר | רק במפה | סופי |
 | איור הפקטה **צויר מחדש כ-SVG** (gen_waves.py) ולא צילום מה-PDF | זכויות יוצרים; מצב כהה | PNG של תמיר | סופי |
@@ -497,6 +518,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`.devcontainer/`** | Codespaces: Dockerfile + devcontainer.json | **חדש (סשן 6)** |
 | **`.github/workflows/sim.yml`** | רגרסיית Verilator, matrix לכל ספרייה | **חדש (סשן 6)** |
 | **`docs/appendix/verilator.md`** | איך להריץ, Codespaces, הבדלים מ-Xcelium | **חדש (סשן 6)** |
+| **`common/rand_util_pkg.sv`** | ספריית `rnd::` — כל ערך אקראי שאינו שדה של אובייקט | **חדש (סשן 6, סבב 2)** |
+| **`docs/components/random.md`** | מדריך ל-`rnd::` | **חדש (סשן 6, סבב 2)** |
 | **`HANDOFF.md`** | המסמך הזה (ב-commit) | חדש |
 
 קבצים שנמחקו בעבר: `router_rtl/` (עבר ל-`yapp_project/rtl/`), `<uvc>/sv/` (עברו ל-`yapp_project/uvc/`). קבצים חד-פעמיים שאינם בריפו: `restyle.py`, `split_classes.py`, `sim_test.mjs`, `shot.mjs` (scratchpad של הסשנים). `readme_shots.mjs` לעומתם **כן** בריפו.

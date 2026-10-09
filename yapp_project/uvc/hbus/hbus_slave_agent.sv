@@ -31,7 +31,9 @@ function void hbus_slave_agent::build_phase(uvm_phase phase);
   uvm_bitstream_t cfg_is_active;
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
-  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) is_active = uvm_active_passive_enum'(cfg_is_active);
+  if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) begin
+    is_active = uvm_active_passive_enum'(cfg_is_active);
+  end
   `uvm_warning(get_type_name(),
                "hbus_slave_agent has no behaviour in this course; set num_slaves = 0")
 endfunction : build_phase
