@@ -60,7 +60,8 @@ class yapp_packet extends uvm_sequence_item;
   // A bad parity flips one random bit of the correct value.
   extern function void set_parity();
 
-  // Called automatically after every successful randomize()
+  // Called automatically after every successful randomize(): sizes the
+  // payload to `length` if the solver did not, then sets the parity
   extern function void post_randomize();
 
 endclass : yapp_packet
@@ -83,12 +84,21 @@ endfunction : calc_parity
 function void yapp_packet::set_parity();
   parity = calc_parity();
   if (parity_type == BAD_PARITY) begin
-    parity[$urandom_range(7, 0)] = ~parity[$urandom_range(7, 0)];
+    // one $urandom_range only: two calls would pick two different bits and
+    // leave the parity correct about half of the time
+    parity ^= 8'h01 << $urandom_range(7, 0);
   end
 endfunction : set_parity
 
 //------------------------------------------------------------------------------
 function void yapp_packet::post_randomize();
+  // Some solvers (Verilator 5.052) do not resize payload when randomize() is
+  // called with an inline `with {...}`. Size it here: no sequence constrains
+  // the payload bytes, so nothing is lost.
+  if (payload.size() != length) begin
+    payload = new[length];
+    foreach (payload[i]) payload[i] = $urandom;
+  end
   set_parity();
 endfunction : post_randomize
 

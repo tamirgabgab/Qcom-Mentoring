@@ -7,6 +7,7 @@
 //   1. one-cycle write to ctrl_reg, two-cycle read back: the value is there and
 //      the HBUS monitor decoded exactly one write and one read
 //   2. after the read the DUT releases hdata (tri-state): the bus reads 'z
+//      (two-state Verilator: neither the master nor the DUT drives the bus)
 //   3. unmapped addresses read 0x00 and ignore writes
 //   4. a write to a read-only address (parity_err_cnt_reg) is ignored
 //------------------------------------------------------------------------------
@@ -68,7 +69,12 @@ task hbus_protocol_test::access_checks();
 
   // 2. hen is low again: the DUT must have let go of the data bus
   @(posedge vif.clock);
+`ifdef VERILATOR
+  // two-state simulator: a wire has no 'z, so check that neither driver is enabled
+  if (vif.hdata_oe || hw_top.dut.u_regs.hdata_oe) begin
+`else
   if (vif.hdata_w !== 8'bz) begin
+`endif
     `uvm_error("HBUS_PROTO", $sformatf("hdata is 0x%02h after the read; expected tri-state (z)", vif.hdata_w))
   end else begin
     `uvm_info("HBUS_PROTO", "hdata tri-stated after the read", UVM_NONE)

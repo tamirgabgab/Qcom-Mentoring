@@ -34,6 +34,7 @@ task yapp_coverage_seq::body();
       for (int bad = 0; bad < 2; bad++) begin
         req = yapp_packet::type_id::create("req");
         req.c_addr_legal.constraint_mode(0);
+        req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
         if (!req.randomize() with { req.addr == a;
                                     req.length == lengths[i];
                                     req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); }) begin

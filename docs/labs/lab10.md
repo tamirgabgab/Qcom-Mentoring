@@ -40,7 +40,10 @@ covergroup yapp_pkt_cg with function sample(bit [5:0] length,
     bins legal[]      = {[0:2]};
     bins illegal_addr = {3};
   }
-  parity_cp : coverpoint parity_type;
+  parity_cp : coverpoint parity_type {
+    bins good = {GOOD_PARITY};
+    bins bad  = {BAD_PARITY};
+  }
   len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
     ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
     ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);

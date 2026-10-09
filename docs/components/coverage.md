@@ -34,7 +34,10 @@ covergroup yapp_pkt_cg with function sample(bit [5:0] length,
     bins legal[]      = {[0:2]};
     bins illegal_addr = {3};
   }
-  parity_cp : coverpoint parity_type;
+  parity_cp : coverpoint parity_type {
+    bins good = {GOOD_PARITY};
+    bins bad  = {BAD_PARITY};
+  }
   len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
     ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
     ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);
@@ -51,6 +54,12 @@ endgroup
 * The cross is **restricted** with `ignore_bins` so that only the combinations
   REQ3 cares about count towards 100%: 5 lengths × 3 addresses × BAD_PARITY =
   15 bins.
+* `parity_cp` names its two bins. An enum coverpoint without bins gets one bin
+  per value on Xcelium, but Verilator bins it by value range.
+* Verilator ignores `ignore_bins` written with `binsof() intersect`, so under
+  `` `ifdef VERILATOR `` the monitor builds the same 15-bin cross from two extra
+  coverpoints that hold only the legal addresses and only `BAD_PARITY` -- see
+  [Simulating with Verilator](../appendix/verilator.md#what-differs-from-xcelium).
 
 ## Sampling
 

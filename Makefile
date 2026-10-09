@@ -7,6 +7,10 @@
 #   make style-check          verify the code style (CI)
 #   make run LAB=lab05_seq TEST=exhaustive_seq_test   run one lab test with xrun
 #   make run-project TEST=reg_function_test      run a test of the complete project (yapp_project/tb)
+#   make setup-sim            install Verilator + UVM for the free flow (scripts/setup_sim.sh)
+#   make sim LAB=lab07_integ TEST=simple_test [WAVES=1]   run one lab test with Verilator
+#   make sim-project TEST=reg_function_test [WAVES=1]     run a project test with Verilator
+#   make regress              every lab and test with Verilator (scripts/regress.yaml) [SEEDS=3] [ONLY=lab09]
 #   make docs                 build the teaching site into site/
 #   make serve                serve the teaching site locally
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
@@ -20,11 +24,15 @@ XRUN      ?= xrun
 XRUN_OPTS ?=
 LAB       ?=
 TEST      ?= base_test
+WAVES     ?=
+SEEDS     ?=
+ONLY      ?=
+SIM       := $(PYTHON) scripts/sim.py
 
-.PHONY: help lint style style-check uvm-src run run-project docs serve map map-check map-export readme-shots clean
+.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress docs serve map map-check map-export readme-shots clean
 
 help:
-	@sed -n '2,18p' $(MAKEFILE_LIST)
+	@sed -n '2,21p' $(MAKEFILE_LIST)
 
 uvm-src:
 	@bash scripts/get_uvm.sh
@@ -50,6 +58,21 @@ endif
 
 run-project:
 	cd yapp_project/tb && $(XRUN) -f run.f +UVM_TESTNAME=$(TEST) $(XRUN_OPTS)
+
+setup-sim:
+	bash scripts/setup_sim.sh
+
+sim:
+ifeq ($(LAB),)
+	$(error usage: make sim LAB=lab07_integ TEST=simple_test [WAVES=1])
+endif
+	$(SIM) run labs/$(LAB)/tb -t $(TEST) $(if $(WAVES),--waves)
+
+sim-project:
+	$(SIM) run yapp_project/tb -t $(TEST) $(if $(WAVES),--waves)
+
+regress: uvm-src
+	$(SIM) regress $(if $(SEEDS),--seeds $(SEEDS)) $(foreach o,$(ONLY),--only $(o))
 
 docs:
 	mkdocs build --strict

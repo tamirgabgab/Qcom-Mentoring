@@ -1,0 +1,23 @@
+{
+  // GitHub Codespaces / VS Code Dev Containers: everything needed to simulate
+  // the labs and the project with Verilator and to look at the waves.
+  //   cd yapp_project/tb && make sim TEST=reg_function_test WAVES=1
+  //   then open build/sim/yapp_project_tb/waves/reg_function_test.fst
+  "name": "YAPP router UVM (Verilator)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "postCreateCommand": "bash scripts/get_uvm.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "lramseyer.vaporview",
+        "mshr-h.veriloghdl"
+      ]
+    }
+  }
+}

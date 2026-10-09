@@ -7,6 +7,7 @@
 | **Cadence Xcelium** (`xrun`) | runs the labs | any release that ships a UVM library (17.04 or later) |
 | UVM library | `-uvmhome CDNS-1.1d` in every `run.f` | the course recommends 1.1d because of transaction-recording quirks in 1.2; `CDNS-1.2` works too — the code compiles on both (see [compat shim](#uvm-versions)) |
 | SimVision / Verisium | GUI debug (Labs 5, 6, 10) | optional |
+| **or Verilator 5.052** | runs the same labs without a licence (`make sim`) | free; `bash scripts/setup_sim.sh`, or open the repository in GitHub Codespaces -- see [Simulating with Verilator](appendix/verilator.md) |
 | Python 3 + `pip install pyslang mkdocs-material` | lint without a simulator, build this site | optional |
 
 ## Check the installation
@@ -134,6 +135,20 @@ UVM_ERROR :    0
 Every component of the environment prints a short report at the end of the
 simulation (packets sent, collected, matched...). The lab pages tell you which
 numbers to expect.
+
+## Simulating without Xcelium
+
+Every lab directory also has a free flow with Verilator, from the same `run.f`:
+
+```bash
+cd labs/lab07_integ/tb
+make sim TEST=simple_test            # compile (first time ~2.5 min) and run: PASS / FAIL
+make sim TEST=simple_test WAVES=1    # with waves in build/sim/.../waves/simple_test.fst
+make regress                         # at the root: every lab and every test
+```
+
+Installation, waves, the regression in GitHub Actions and the few differences
+from Xcelium: [Simulating with Verilator](appendix/verilator.md).
 
 ## Linting without a simulator
 

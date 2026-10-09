@@ -24,8 +24,13 @@ import sys
 
 try:
     import pyslang
-except ImportError:  # pragma: no cover
-    sys.exit("pyslang is not installed: pip install pyslang")
+except ImportError:  # pragma: no cover -- parse_run_f() works without it (scripts/sim.py)
+    pyslang = None
+
+
+def need_pyslang():
+    if pyslang is None:
+        sys.exit("pyslang is not installed: pip install pyslang")
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UVM_SRC = os.path.join(ROOT, "scripts", "uvm_src", "src")
@@ -109,6 +114,7 @@ def standard_args():
 
 def compile_run_f(run_f):
     """Parse + elaborate one run.f; returns (driver, compilation) or (driver, None)."""
+    need_pyslang()
     args = standard_args()
     parse_run_f(run_f, args, set())
     drv = pyslang.driver.Driver()
@@ -145,6 +151,7 @@ def main():
     ap.add_argument("--all", action="store_true", help="lint every lab and test_install")
     ap.add_argument("-q", "--quiet", action="store_true", help="only print errors")
     ns = ap.parse_args()
+    need_pyslang()
 
     if not os.path.isdir(UVM_SRC):
         sys.exit(f"UVM source not found in {UVM_SRC}: run scripts/get_uvm.sh (or `make uvm-src`)")

@@ -1,0 +1,8 @@
+`verilator_config
+// Configuration of the Verilator flow (scripts/sim.py).
+//
+// The register model's backdoor (peek/poke, uvm_hdl_* through VPI) reaches the
+// RTL variables of the register block, so they must stay visible at run time.
+// Making the whole design public (--public-flat-rw) also exposes the UVM
+// classes and does not compile, so only the DUT's register block is listed.
+public_flat_rw -module "yapp_hbus_regs" -var "*"

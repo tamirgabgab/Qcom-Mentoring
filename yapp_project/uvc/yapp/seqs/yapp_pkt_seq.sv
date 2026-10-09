@@ -42,6 +42,7 @@ task yapp_pkt_seq::body();
                                        pkt_addr, pkt_len, pkt_parity.name()), UVM_LOW)
   req = yapp_packet::type_id::create("req");
   req.c_addr_legal.constraint_mode(0);      // the test may ask for address 3
+  req.c_parity_dist.constraint_mode(0);     // the sequence chooses the parity
   start_item(req);
   if (!req.randomize() with { req.addr        == pkt_addr;
                               req.length      == pkt_len;

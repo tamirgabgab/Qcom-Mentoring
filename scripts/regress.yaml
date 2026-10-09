@@ -1,0 +1,41 @@
+# regress.yaml -- what `make regress` simulates with Verilator (scripts/sim.py).
+#
+# One entry per simulation directory (the directory that holds run.f). Each
+# directory is compiled once; every test is then a separate run of the same
+# executable with +UVM_TESTNAME=<test>. `default` runs the test the run.f names
+# itself (a top module without run_test(), or run_test("<name>") in the code).
+#
+# A run passes when it ends normally with no UVM_ERROR / UVM_FATAL report.
+
+seeds: 1          # runs per test (seed 1, 2, ...); `make regress SEEDS=3`
+
+benches:
+  test_install:               [default]
+  labs/lab01_data/tb:         [default]
+  labs/lab02_test/tb:         [base_test]
+  labs/lab03_uvc/tb:          [base_test]
+  labs/lab04_factory/tb:      [base_test, short_packet_test, set_config_test]
+  labs/lab05_seq/tb:          [base_test, short_packet_test, set_config_test,
+                               incr_payload_test, exhaustive_seq_test]
+  labs/lab06_vif/tb:          [base_test, short_packet_test, set_config_test,
+                               incr_payload_test, exhaustive_seq_test, yapp_012_test]
+  labs/lab07_integ/tb:        [base_test, simple_test, test_uvc_integration]
+  labs/lab08_mcseq/tb:        [base_test, simple_test, test_uvc_integration, router_simple_mcseq_test]
+  labs/lab09_sba/tb:          [base_test, simple_test, test_uvc_integration,
+                               router_simple_mcseq_test, scoreboard_drop_test]
+  labs/lab09_sbb/tb:          [base_test, simple_test, test_uvc_integration,
+                               router_simple_mcseq_test, scoreboard_drop_test]
+  labs/lab09_sbc/tb:          [base_test, simple_test, test_uvc_integration,
+                               router_simple_mcseq_test, scoreboard_drop_test]
+  labs/lab09_sbd/tb:          [base_test, simple_test, test_uvc_integration,
+                               router_simple_mcseq_test, scoreboard_drop_test]
+  labs/lab10_cov/tb:          [base_test, router_simple_mcseq_test, test_uvc_integration, coverage_test]
+  labs/lab11a_rm_gen:         [default]
+  labs/lab11b_rm_integ/tb:    [base_test, router_simple_mcseq_test, uvm_reset_test, uvm_mem_walk_test]
+  labs/lab11c_rm_sim/tb:      [base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
+                               reg_function_test, reg_function_check_test, reg_introspection_test]
+  yapp_project/tb:            [base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
+                               reg_function_test, reg_function_check_test, reg_introspection_test,
+                               router_disable_test, router_filter_test, pkt_mem_test,
+                               reg_bit_walk_test, hbus_protocol_test, backpressure_test,
+                               parity_error_test]

@@ -33,6 +33,7 @@ task yapp_88_packets_seq::body();
     for (int l = 1; l <= 22; l++) begin
       req = yapp_packet::type_id::create("req");
       req.c_addr_legal.constraint_mode(0);
+      req.c_parity_dist.constraint_mode(0);   // the inline dist below replaces it
       if (!req.randomize() with { req.addr == a;
                                   req.length == l;
                                   req.parity_type dist { GOOD_PARITY := 4, BAD_PARITY := 1 }; }) begin

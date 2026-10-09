@@ -1,0 +1,52 @@
+name: sim
+
+# Simulate every lab and the project with Verilator (scripts/sim.py,
+# scripts/regress.yaml): one job per simulation directory, in parallel.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  benches:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 -c "import json, yaml; print('list=' + json.dumps(list(yaml.safe_load(open('scripts/regress.yaml'))['benches'])))" >> "$GITHUB_OUTPUT"
+
+  regress:
+    needs: benches
+    runs-on: ubuntu-latest
+    container: verilator/verilator:v5.052
+    strategy:
+      fail-fast: false
+      matrix:
+        bench: ${{ fromJSON(needs.benches.outputs.list) }}
+    name: ${{ matrix.bench }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the UVM pieces Verilator needs
+        run: bash scripts/setup_sim.sh
+
+      - name: Compile and run every test
+        run: python3 scripts/sim.py regress --only "${{ matrix.bench }}" --seeds 2
+
+      - name: Report
+        if: always()
+        run: cat build/sim/regress.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Keep the logs of a failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ strategy.job-index }}
+          path: |
+            build/sim/**/compile.log
+            build/sim/**/logs/*.log

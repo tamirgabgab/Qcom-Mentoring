@@ -55,6 +55,7 @@ task yapp_boundary_seq::body();
     foreach (lens[i]) begin
       req = yapp_packet::type_id::create("req");
       req.c_addr_legal.constraint_mode(0);
+      req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
       start_item(req);
       if (!req.randomize() with { req.addr        == a;
                                   req.length      == lens[i];
