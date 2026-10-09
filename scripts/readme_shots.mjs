@@ -42,17 +42,21 @@ await page.waitForTimeout(400);
 await shot("map_overview.png");
 
 // the Test plan view with one feature group open in the panel (source column hidden)
-await page.evaluate(() => { const m = window.projectMap; document.querySelector(".pm").classList.add("code-hidden"); m.switchView("plan"); m.select("plan:PKT"); m.fit(); });
+await page.evaluate(() => { const m = window.projectMap; m.toggleCode(false); m.switchView("plan"); m.select("plan:PKT"); m.fit(); });
 await page.waitForTimeout(400);
 await shot("map_testplan.png");
-await page.evaluate(() => { document.querySelector(".pm").classList.remove("code-hidden"); });
+await page.evaluate(() => { window.projectMap.toggleCode(true); });
 
 // zoom on hw_top: hide the side panels, fit the hardware frame to the canvas
 await page.evaluate(() => {
   const m = window.projectMap;
-  m.select(null);
-  document.querySelector(".pm").classList.add("panel-hidden", "code-hidden");
-  document.querySelectorAll(".pm-legend, .pm-hint").forEach(e => { e.style.display = "none"; });
+  m.show("h:root");
+  document.querySelector(".pm").classList.add("panel-hidden"); m.toggleCode(false);
+  document.querySelectorAll(".pm-legend, .pm-statusbar").forEach(e => { e.style.display = "none"; });
+});
+await page.waitForTimeout(400);                       // the columns settle (afterResize re-fits once more)
+await page.evaluate(() => {
+  const m = window.projectMap;
   const s = m.scenes["h:root"];
   const hw = s.items.find(i => i.id === "hw_top");
   const r = m.canvas.getBoundingClientRect();

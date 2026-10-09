@@ -373,9 +373,30 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - תיעוד: driver.md (פסקת "The gap between packets"), monitor.md, lab11b.md, verilator.md, unverified.md, spec.md, test-plan (נוצר).
    - אימות: slang 18/18, style OK, map-check OK, mkdocs strict OK, **`make regress SEEDS=2`: 156/156 PASS** (counter_wrap 255→0→1,
      back_to_back: 5/6/6/6 כמתוכנן, INJECT_ERROR: שגיאה אחת על `yapp_mem[42]`, coverage_test עדיין 100%). commit `77bae40`.
+7. **סבב 4 — UX במפה** (תמיר בחר מתוך 10 הצעות את 1, 2, 3, 6, 10; רק `app.js`/`app.css`, בלי שינוי במודל):
+   - **עמודת Source מתקפלת**: כשאין קובץ להציג (כלום לא נבחר, חץ נבחר, או העמודה כבויה) היא פס של 30px עם
+     "Source" אנכי (`.pm.code-collapsed`); נפתחת לבד (מעבר 0.18s) כשבוחרים קופסה עם קובץ; ה-× מכבה (פס "Source ▸",
+     לחיצה מדליקה). `afterResize()` מחליף את `fit()` אחרי שינוי רוחב: שומר את הפריט הנבחר בתוך הקנבס (`ensureVisible`)
+     במקום Fit מחדש, ובלי בחירה — Fit. `code-hidden` = העדפה כבויה; `code-collapsed` = מצויר כפס.
+   - **Legend** = `<details>` סגור כברירת מחדל (מצב ב-localStorage `pm-legend`), פינה שמאלית-תחתונה. **שורת סטטוס**
+     (`footer.pm-statusbar`, מתחת ל-`.pm-body`): רמזי התצוגה משמאל, `flash()` ("link copied") באמצע, ומימין
+     `.pm-statusbar-path` — המסלול המלא של הפריט הנבחר (`tb_top › uvm_test_top › tb › … › driver : type`), כל צעד
+     לחיץ (`gotoNode`). שים לב: `.pm-status` הוא כבר ה-chip של סטטוס בתוכנית, לכן השם `pm-statusbar`.
+   - **Fit בשני מצבים** (`fit(mode)`, `fitNext()`, `FIT_MIN_K = 0.5`): "width" (ברירת מחדל ב-`show()`; ממלא רוחב, לא
+     מתחת ל-0.5, מיושר למעלה) ו-"all" (הישן). הכפתור מציג את הפעולה הבאה ("Fit all"/"Fit width"), או "Fit" כשהתמונה
+     נכנסת בשני המצבים. `f` = `fitNext()`; resize = `fit()` במצב הנוכחי. ב-1600 ה-TLM עדיין נכנס כולו (k=0.525).
+   - **חיפוש**: במקום datalist — `ul.pm-search-results` (`searchHits` מדורג: שם מדויק/מתחיל/מכיל → type → id/file →
+     summary; מופעים לפני מחלקות), כל שורה: שם : type, המסלול (`placeOf`) ותצוגה (`viewOf`); ↑/↓/Enter/Esc. **רשימת
+     הפריטים בפאנל** (`renderItemList`): קיבוץ לפי הורה (hierarchy/tlm/env), package (classes) או Features/Tests
+     (plan), `: type` באפור, summary, ותיבת סינון; לחיצה = `select` (בלי לעבור סצנה).
+   - **לשוניות package** (`.pm-subbar`, שורה שנייה מתחת לסרגל, רק ב-Classes): All classes + 7 packages עם מספר
+     המחלקות; מחליפות את ה-`<select>` (`showGroup` נשאר). `readme_shots.mjs` משתמש ב-`toggleCode(false/true)`
+     במקום להוסיף `code-hidden`.
+   - אימות: סקריפט Playwright זמני (scratchpad `ux/check.mjs`, 33 בדיקות ב-1600 וב-1280, בלי שגיאות console),
+     map-check, mkdocs strict, `make readme-shots` (5 תמונות חודשו). תיעוד: project-map.md, README.
 
 ### מה בתהליך ולא גמור
-- כלום פתוח בקוד. כל המשימות שתמיר ביקש הושלמו ונדחפו. ה-handoff הזה הוא הפעולה האחרונה.
+- כלום פתוח בקוד. סבב 4 (UX) נדחף; הסעיפים שנשארו מרשימת ה-UX — סעיף 8 פריט 3.
 
 ### סטטוס git
 - ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main` אחרי ff בסוף הסשן). commits: `63b94b9` (flow + תיקונים),
@@ -507,8 +528,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`scripts/project_map/test_sim.mjs`** | בדיקות התנהגות של `sim.js` (`RouterModel`, עוזרי פקטה) ב-node; רץ מ-`build --check` | **חדש (סשן 5)** |
 | `scripts/project_map/export.mjs` | Playwright → `export/*.svg|png`, PDF ל-`build/` | — |
 | `scripts/project_map/templates/standalone.html.j2` | שלד ה-HTML העצמאי | + sim/regmap |
-| `docs/assets/project_map/app.js` | אפליקציית המפה; `drawDutSpec`, tap על `.pm-regmap`, `simKind`, `renderSim`, לשונית Simulate; **סשן 5: `orthoRoute/roundedPath/routeEdges/endpointOf` (ניתוב ב-JS), `drawDutTlm`, גרירה (`moveItem`, `applySavedLayout`, `resetLayout`), `toggleArrows/applyArrows`, `initResizers`, `showCodeAt/focusRow`, טבלאות members, תיקון `exportSvgString`** | כן (+סשן 5) |
-| `docs/assets/project_map/app.css` | עיצוב; **`.dut-spec`, `.pm-regmap`** | כן |
+| `docs/assets/project_map/app.js` | אפליקציית המפה; `drawDutSpec`, tap על `.pm-regmap`, `simKind`, `renderSim`, לשונית Simulate; **סשן 5: `orthoRoute/roundedPath/routeEdges/endpointOf` (ניתוב ב-JS), `drawDutTlm`, גרירה (`moveItem`, `applySavedLayout`, `resetLayout`), `toggleArrows/applyArrows`, `initResizers`, `showCodeAt/focusRow`, טבלאות members, תיקון `exportSvgString`**; **סשן 6 סבב 4: `renderCodePane` (פס מתקפל), `afterResize`, `fit(mode)/fitNext`, `renderStatus/flash`, `searchHits/renderSearch/pickSearch`, `renderItemList`, לשוניות `groupTabs`** | כן (+סשן 5, 6) |
+| `docs/assets/project_map/app.css` | עיצוב; **`.dut-spec`, `.pm-regmap`**; סשן 6: `.pm-search-results`, `.pm-subbar`, `.pm-statusbar`, `.pm.code-collapsed`/`.pm-codepane-strip`, `.pm-filter`/`.pm-items` | כן |
 | **`docs/assets/project_map/sim.js`** | `YappSim`: `RouterModel`, `encodePacket`, `checkPacket`, `mountRegs`, `mountPacket`, auto-mount של `.yapp-sim[data-sim]`; **סשן 5: `fieldDiagram`/`parseFields`, עורך ביטים בכרטיס HBUS, מצב על `model.__ysRegs`** | חדש (+סשן 5) |
 | **`docs/assets/project_map/sim.css`** | עיצוב ה-widgets (tokens `--ys-*` נופלים ל-`--pm-*`/`--md-*`) | **חדש** |
 | **`docs/assets/project_map/regmap.js`** | **מיוצר** מ-regmap.yaml — לא לערוך ידנית | **חדש** |
@@ -640,9 +661,12 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - לעבור עם תמיר על הטקסטים של `plan:` ו-`tests:` מול ה-PDF (רק אצלו) ולתקן ניסוחים/פריטים חסרים.
 - כל שינוי: `annotations.yaml` → `make map` (מייצר גם `docs/test-plan.md`); `test_model.py` ייכשל אם טסט לא מוזכר.
 
-**3. עוד שיפורי UX במפה (לפי מה שתמיר ימצא בשימוש).** פתוח מסעיף 7: עקיפת מכשולים מלאה לחצים (מסלולי U/L,
-חצים אנכיים), מיקום תוויות, הסרגל שנשבר ב-1600px בתצוגת TLM, חיצי covers ב-Test plan כש-Arrows דלוק.
-לא נבחר בסבב 5: גלגלת = גלילה (תמיר מעדיף זום בגלגלת).
+**3. עוד שיפורי UX במפה.** בסשן 6 סבב 4 בוצעו 1, 2, 3, 6, 10 מרשימת 10 ההצעות (עמודת Source מתקפלת, Legend +
+שורת סטטוס עם מסלול, Fit width/all, חיפוש + רשימה מקובצת עם סינון, לשוניות package). **נשאר מהרשימה** (לפי סדר
+ההמלצה): 5 — רמת פירוט לפי זום (שתי רמות: רחוק = שם בגופן גדול); 7 בגרסה הזולה — ב-Test plan עם Arrows דלוק להציג
+רק את חצי הפריט הנבחר (השאר מעומעמים); 8 — מטריצת פריטים×טסטים כטבלת Markdown מ-`annotations.yaml` (לא במפה);
+4 — מיני-מפה (רק אם Classes עדיין מצריך גלילה); 7 מלא — עקיפת מכשולים לחצי U/L/אנכיים. 9 (Copy link) כבר קיים
+בתפריט Export ובפאנל. לא נבחר בסבב 5: גלגלת = גלילה (תמיר מעדיף זום בגלגלת).
 
 **4. תוכן לאתר וללימוד** (לא נבחר כעדיפות, אבל נשאר רלוונטי): דפי הלאבים, שאלות checkpoint, הסברי UVM.
 

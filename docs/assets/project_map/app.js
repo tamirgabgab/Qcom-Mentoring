@@ -62,6 +62,7 @@
   const STUB = 18;             // perpendicular run before the first corner
   const CHANNEL = 9;           // spacing between parallel arrows sharing a corridor
   const PIN_OUT = 24;          // the pin arrows of a block diagram (the DUT), drawn outside its box
+  const FIT_MIN_K = 0.5;       // "Fit width" never zooms out further than this: the labels stay readable
   function pickSide(box, pt) {
     const cx = box.x + box.w / 2, cy = box.y + box.h / 2;
     const dx = pt[0] - cx, dy = pt[1] - cy;
@@ -234,13 +235,27 @@
         this.views.append(el("button", { "data-view": v, onclick: () => this.switchView(v) }, [VIEW_LABEL[v]]));
       });
       this.crumbs = el("nav", { class: "pm-crumbs" });
-      this.search = el("input", { type: "search", placeholder: "Search a component, class, file…  ( / )", list: "pm-search-list", autocomplete: "off" });
-      const dl = el("datalist", { id: "pm-search-list" });
-      Object.values(this.N).filter(n => n.kind !== "uvm_base").sort((a, b) => a.id.localeCompare(b.id)).forEach(n => {
-        dl.append(el("option", { value: n.id }, [n.name !== n.id ? `${n.name} : ${n.type || ""}` : (n.type || "")]));
+      // search: a results list under the box (name, type, where it lives, which view), arrows + Enter to pick
+      this.search = el("input", { type: "search", placeholder: "Search a component, class, file…  ( / )", autocomplete: "off", spellcheck: "false" });
+      this.searchList = el("ul", { class: "pm-search-results" });
+      this.searchList.addEventListener("mousedown", e => e.preventDefault());   // keep the focus in the box
+      this.search.addEventListener("input", () => this.renderSearch());
+      this.search.addEventListener("focus", () => this.renderSearch());
+      this.search.addEventListener("blur", () => this.searchList.classList.remove("open"));
+      this.search.addEventListener("keydown", e => {
+        const rows = [...this.searchList.querySelectorAll("li")];
+        const cur = rows.findIndex(r => r.classList.contains("active"));
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          if (!rows.length) return;
+          const nxt = e.key === "ArrowDown" ? (cur + 1) % rows.length : (cur - 1 + rows.length) % rows.length;
+          rows.forEach((r, i) => r.classList.toggle("active", i === nxt));
+          rows[nxt].scrollIntoView({ block: "nearest" });
+        } else if (e.key === "Enter") {
+          const row = rows[cur] || rows[0];
+          if (row) this.pickSearch(row.dataset.id); else this.gotoSearch(this.search.value);
+        } else if (e.key === "Escape") { this.search.blur(); }
       });
-      this.search.addEventListener("change", () => this.gotoSearch(this.search.value));
-      this.search.addEventListener("keydown", e => { if (e.key === "Enter") this.gotoSearch(this.search.value); if (e.key === "Escape") this.search.blur(); });
       this.tools = el("div", { class: "pm-tools" });
       this.btnHome = el("button", { title: "Home: the overview, nothing selected (h)", onclick: () => this.home() }, ["⌂"]);
       this.btnBack = el("button", { title: "Back to the previous view (Alt+←)", onclick: () => this.back() }, ["◀"]);
@@ -251,11 +266,20 @@
       this.btnArrows = el("button", { title: "Arrows: all of them, or only those of the box under the pointer / selected (a)", onclick: () => this.toggleArrows() }, ["Arrows"]);
       this.btnReset = el("button", { title: "Put every box of this view back where the generator placed it", onclick: () => this.resetLayout() }, ["Reset layout"]);
       this.btnVariant = el("button", { title: "Lab 9D variant: analysis FIFOs instead of reference + scoreboard", onclick: () => this.toggleVariant() }, ["Lab 9D"]);
-      this.selGroup = el("select", { title: "Class group", onchange: () => this.showGroup(this.selGroup.value) });
-      this.selGroup.append(el("option", { value: "" }, ["All classes"]));
-      Object.entries(this.m.groups).forEach(([g, meta]) => this.selGroup.append(el("option", { value: g }, [meta.label])));
+      // Classes: one tab per package (a second toolbar row, shown in that view only)
+      this.subbar = el("div", { class: "pm-subbar" });
+      const groupOrder = ["yapp_pkg", "channel_pkg", "hbus_pkg", "clock_and_reset_pkg", "router_module_pkg", "yapp_router_reg_pkg", "tb_top"];
+      const groups = [...Object.keys(this.m.groups)].sort((a, b) => (groupOrder.indexOf(a) + 1 || 99) - (groupOrder.indexOf(b) + 1 || 99));
+      const classCount = sid => { const s = this.scenes[sid]; return s ? s.items.filter(it => !it.stub && it.kind !== "uvm_base").length : 0; };
+      this.subbar.append(el("span", { class: "lbl" }, ["Package"]));
+      this.groupTabs = [["", "All classes", classCount("uml:all")], ...groups.map(g => [g, this.m.groups[g].label, classCount(`uml:${g}`)])].map(([g, label, n]) => {
+        const b = el("button", { "data-group": g, title: `${n} classes`, onclick: () => this.showGroup(g) }, [label, " ", el("small", {}, [String(n)])]);
+        this.subbar.append(b);
+        return b;
+      });
+      this.btnFit = el("button", { title: "Fit: the width at a readable zoom, then the whole picture (f)", onclick: () => this.fitNext() }, ["Fit"]);
       const zoom = el("div", { class: "grp" }, [
-        el("button", { title: "Fit (f)", onclick: () => this.fit() }, ["Fit"]),
+        this.btnFit,
         el("button", { title: "Zoom out (-)", onclick: () => this.zoomBy(0.8) }, ["−"]),
         el("button", { title: "Zoom in (+)", onclick: () => this.zoomBy(1.25) }, ["+"]),
       ]);
@@ -270,14 +294,15 @@
       ]);
       document.addEventListener("click", e => { if (!this.menu.contains(e.target)) this.menu.classList.remove("open"); });
       this.btnTheme = el("button", { title: "Toggle light / dark", onclick: () => this.toggleTheme() }, ["◐"]);
-      this.btnPanel = el("button", { title: "Show / hide the panel (p)", onclick: () => { r.classList.toggle("panel-hidden"); this.fit(); } }, ["Panel"]);
-      this.btnCode = el("button", { title: "Show / hide the source column (c)", onclick: () => this.toggleCode() }, ["</> Source"]);
+      this.btnPanel = el("button", { title: "Show / hide the panel (p)", onclick: () => { r.classList.toggle("panel-hidden"); this.afterResize(); } }, ["Panel"]);
+      this.btnCode = el("button", { title: "Source column on / off (c). On, it opens by itself for the selected item and folds to a strip when there is nothing to show", onclick: () => this.toggleCode() }, ["</> Source"]);
       const btnHelp = el("button", { title: "Keyboard shortcuts (?)", onclick: () => this.help.classList.toggle("open") }, ["?"]);
-      this.tools.append(el("div", { class: "grp" }, [this.btnHome, this.btnBack, this.btnFwd]), this.btnUp, this.btnMembers, this.btnVariant, this.selGroup, this.btnArrows, this.btnLabels, this.btnReset, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
+      this.tools.append(el("div", { class: "grp" }, [this.btnHome, this.btnBack, this.btnFwd]), this.btnUp, this.btnMembers, this.btnVariant, this.btnArrows, this.btnLabels, this.btnReset, zoom, this.menu, this.btnTheme, this.btnPanel, this.btnCode, btnHelp);
       if (this.opts.standaloneUrl) {
         this.tools.append(el("a", { href: this.opts.standaloneUrl, download: "", title: "Save this map as one HTML file that works offline" }, [el("button", {}, ["Download offline copy"])]));
       }
-      r.append(el("header", { class: "pm-toolbar" }, [this.views, this.crumbs, el("div", { class: "pm-search" }, [this.search, dl]), this.tools]));
+      r.append(el("header", { class: "pm-toolbar" }, [this.views, this.crumbs, el("div", { class: "pm-search" }, [this.search, this.searchList]), this.tools]));
+      r.append(this.subbar);
       // body
       this.svg = svg("svg", { xmlns: SVG_NS });
       const defs = svg("defs");
@@ -289,9 +314,14 @@
       this.viewport = svg("g", { class: "pm-viewport" });
       this.svg.append(this.viewport);
       this.canvas = el("div", { class: "pm-canvas" }, [this.svg]);
-      this.legend = el("details", { class: "pm-legend", open: "" });
-      this.hint = el("div", { class: "pm-hint" }, ["drag to pan · wheel to zoom · click to inspect · double-click to open"]);
-      this.canvas.append(this.legend, this.hint);
+      // the legend folds to a small button (open state remembered); the hints live in the status bar below
+      this.legend = el("details", { class: "pm-legend", ontoggle: () => store("pm-legend", this.legend.open) });
+      if (load("pm-legend", false)) this.legend.open = true;
+      this.canvas.append(this.legend);
+      this.hint = el("span", { class: "pm-hint" }, ["drag to pan · wheel to zoom · click to inspect · double-click to open"]);
+      this.flashEl = el("span", { class: "pm-flash" });
+      this.statusPath = el("span", { class: "pm-statusbar-path" });
+      this.status = el("footer", { class: "pm-statusbar" }, [this.hint, this.flashEl, this.statusPath]);
       this.panel = el("aside", { class: "pm-panel" });
       this.codePane = el("aside", { class: "pm-codepane" });
       this.help = el("div", { class: "pm-help", onclick: e => { if (e.target === this.help) this.help.classList.remove("open"); } }, [
@@ -300,7 +330,7 @@
           "<tr><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td>Hierarchy / TLM / Classes</td></tr>" +
           "<tr><td><kbd>/</kbd></td><td>search</td></tr>" +
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
-          "<tr><td><kbd>c</kbd></td><td>source column on / off</td></tr>" +
+          "<tr><td><kbd>c</kbd></td><td>source column on / off (on, it opens for the selected item and folds to a strip when empty)</td></tr>" +
           "<tr><td><kbd>a</kbd></td><td>arrows: all, or only those of the box under the pointer</td></tr>" +
           "<tr><td>drag a box</td><td>move it (the arrows follow; the layout is remembered in this browser). A frame moves by its title bar; its inside pans like the background</td></tr>" +
           "<tr><td>middle button, or <kbd>Space</kbd> + drag</td><td>pan from anywhere, even over a box</td></tr>" +
@@ -310,7 +340,7 @@
           "<tr><td><kbd>h</kbd></td><td>home: the overview</td></tr>" +
           "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan</td></tr>" +
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
-          "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit / zoom</td></tr>" +
+          "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit (the width at a readable zoom, then the whole picture) / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
           "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr></table>" +
           "<p style='color:var(--pm-muted);font-size:12px'>Generated from the SystemVerilog source with pyslang; descriptions from <code>scripts/project_map/annotations.yaml</code>.</p>" }),
@@ -318,6 +348,7 @@
       this.resPanel = el("div", { class: "pm-resizer r-panel", title: "drag to resize the panel, double-click for the default width" });
       this.resCode = el("div", { class: "pm-resizer r-code", title: "drag to resize the source column, double-click for the default width" });
       r.append(el("div", { class: "pm-body" }, [this.canvas, this.resPanel, this.panel, this.resCode, this.codePane, this.help]));
+      r.append(this.status);
       this.initPanZoom();
       this.initSpacePan();
       this.initKeys();
@@ -341,10 +372,10 @@
           const w = Math.max(240, Math.min(window.innerWidth * 0.7, drag.w + (drag.x - e.clientX)));
           target.style.width = target.style.flexBasis = w + "px";
         });
-        const end = () => { if (!drag) return; drag = null; handle.classList.remove("active"); store(key, Math.round(target.getBoundingClientRect().width)); this.fit(); };
+        const end = () => { if (!drag) return; drag = null; handle.classList.remove("active"); store(key, Math.round(target.getBoundingClientRect().width)); this.afterResize(); };
         handle.addEventListener("pointerup", end);
         handle.addEventListener("pointercancel", end);
-        handle.addEventListener("dblclick", () => { target.style.width = target.style.flexBasis = ""; store(key, null); this.fit(); });
+        handle.addEventListener("dblclick", () => { target.style.width = target.style.flexBasis = ""; store(key, null); this.afterResize(); });
       };
       setup(this.resPanel, this.panel, "pm-w-panel");
       setup(this.resCode, this.codePane, "pm-w-code");
@@ -558,6 +589,60 @@
       }
       if (nid) { this.gotoNode(nid); this.search.blur(); }
     }
+    // the search results: the best matches on name, type, path, file or summary, ranked
+    searchHits(q, limit) {
+      const lq = (q || "").trim().toLowerCase();
+      if (!lq) return [];
+      const score = n => {
+        const name = n.name.toLowerCase(), type = (n.type || "").toLowerCase(), id = n.id.toLowerCase();
+        if (name === lq || type === lq) return 0;
+        if (name.startsWith(lq)) return 1;
+        if (name.includes(lq)) return 2;
+        if (type.includes(lq)) return 3;
+        if (id.includes(lq) || (n.file || "").toLowerCase().includes(lq)) return 4;
+        if ((n.summary || "").toLowerCase().includes(lq)) return 5;
+        return -1;
+      };
+      const rank = { tb: 0, hw: 1, plan: 2, cls: 3 };
+      return Object.values(this.N).filter(n => n.kind !== "uvm_base")
+        .map(n => ({ n, s: score(n) })).filter(x => x.s >= 0)
+        .sort((a, b) => (a.s - b.s) || ((rank[a.n.scope] || 0) - (rank[b.n.scope] || 0)) || a.n.id.localeCompare(b.n.id))
+        .slice(0, limit || 12).map(x => x.n);
+    }
+    // where a search hit lives: its path (instances), its package (classes) or its group (plan items)
+    placeOf(n) {
+      if (n.scope === "cls") return n.group_label || "";
+      if (n.scope === "plan") return "Test plan";
+      if (n.scope === "tb" && n.id !== "uvm_test_top") return "uvm_test_top." + n.id;
+      return n.id;
+    }
+    viewOf(n) {
+      if (n.scope === "cls") return n.kind === "test" ? "Test plan" : "Classes";
+      if (n.scope === "plan") return "Test plan";
+      const sid = (this.where[n.id] || []).find(x => this.scenes[x].view === "hierarchy") || (this.where[n.id] || [])[0];
+      return sid ? VIEW_LABEL[this.scenes[sid].view].split(" ")[0] : "Hierarchy";
+    }
+    renderSearch() {
+      const ul = this.searchList;
+      ul.innerHTML = "";
+      const hits = this.searchHits(this.search.value, 12);
+      hits.forEach((n, i) => {
+        const li = el("li", { "data-id": n.id, class: i === 0 ? "active" : "", onclick: () => this.pickSearch(n.id) });
+        li.append(el("i", { style: `background: var(--k-${n.kind})` }));
+        const main = el("div", { class: "main" }, [el("b", {}, [n.name])]);
+        if (n.type && n.type !== n.name) main.append(el("span", { class: "type" }, [" : " + n.type]));
+        const place = this.placeOf(n);
+        if (place && place !== n.name) main.append(el("div", { class: "place" }, [place]));
+        li.append(main, el("span", { class: "view" }, [this.viewOf(n)]));
+        ul.append(li);
+      });
+      ul.classList.toggle("open", hits.length > 0);
+    }
+    pickSearch(nid) {
+      this.searchList.classList.remove("open");
+      this.gotoNode(nid);
+      this.search.blur();
+    }
 
     // ------------------------------------------------------------- scenes
     show(sceneId, o) {
@@ -571,9 +656,10 @@
       if (s.view === "tlm") this.state.variant = sceneId.endsWith("lab09d");
       this.state.selected = null;
       this.render();
-      this.fit();
+      this.fit("width");
       this.renderPanel();
       this.renderCodePane();
+      this.renderStatus();
       this.updateHash();
       this._silent = false;
     }
@@ -618,8 +704,8 @@
       this.btnUp.disabled = !s.parent;
       this.btnMembers.style.display = s.view === "classes" ? "" : "none";
       this.btnMembers.classList.toggle("on", !!this.state.full);
-      this.selGroup.style.display = s.view === "classes" ? "" : "none";
-      this.selGroup.value = this.state.group || "";
+      this.subbar.style.display = s.view === "classes" ? "" : "none";
+      this.groupTabs.forEach(b => b.classList.toggle("on", b.dataset.group === (this.state.group || "")));
       this.btnVariant.style.display = s.view === "tlm" ? "" : "none";
       this.btnVariant.classList.toggle("on", !!this.state.variant);
       this.hint.textContent = s.view === "hierarchy" ? "drag the background or the inside of a frame to pan · drag a box, or a frame by its title bar, to move it · click to inspect · double-click a box to open it"
@@ -991,7 +1077,40 @@
       }
       this.renderPanel();
       this.renderCodePane();
+      this.renderStatus();
       if (!(o && o.silent)) this.updateHash();
+    }
+    // the status bar: the full path of the selected item, every step clickable
+    renderStatus() {
+      const sp = this.statusPath;
+      sp.innerHTML = "";
+      const id = this.state.selected;
+      if (!id) return;
+      const sep = () => el("span", { class: "sep" }, ["›"]);
+      if (this.E[id] || !this.N[id]) {
+        const e = this.E[id.replace(/b$/, "")] || this.sceneEdge(id);
+        if (e) sp.append(el("span", { class: "cur" }, [e.label || e.kind.replace("_", " ")]), el("span", { class: "type" }, [` (${e.kind.replace("_", " ")})`]));
+        return;
+      }
+      const chain = [];
+      let cur = this.N[id];
+      while (cur) { chain.unshift(cur); cur = cur.parent && this.N[cur.parent] ? this.N[cur.parent] : null; }
+      const n = chain[chain.length - 1];
+      if (n.scope === "cls" && n.group_label) sp.append(el("span", { class: "grp" }, [n.group_label]), sep());
+      else if (n.scope === "plan") sp.append(el("span", { class: "grp" }, ["Test plan"]), sep());
+      chain.forEach((c, i) => {
+        if (i) sp.append(sep());
+        if (i === chain.length - 1) sp.append(el("span", { class: "cur" }, [c.name]));
+        else sp.append(el("a", { title: c.type || c.id, onclick: () => this.gotoNode(c.id) }, [c.name]));
+      });
+      if (n.type && n.type !== n.name) sp.append(el("span", { class: "type" }, [" : " + n.type]));
+    }
+    // a short message in the status bar ("link copied"), gone after two seconds
+    flash(msg) {
+      this.flashEl.textContent = msg;
+      this.flashEl.classList.add("on");
+      clearTimeout(this._flash);
+      this._flash = setTimeout(() => this.flashEl.classList.remove("on"), 2000);
     }
     // the ids an arrow may use to touch this node: itself, its ports, the pins drawn on it
     idsOf(nid) {
@@ -1202,16 +1321,38 @@
       this.applyVp();
     }
     zoomBy(f) { const r = this.canvas.getBoundingClientRect(); this.zoomAt(f, r.width / 2, r.height / 2); }
-    fit() {
+    // Two fits. "width": the picture fills the width, but never below FIT_MIN_K (the zoom at
+    // which the labels stay readable), top aligned, so a tall view (Classes, Environment)
+    // opens readable and scrolls. "all": the whole picture, however small (the old Fit).
+    // Every view opens in "width"; the Fit button and `f` go to the other one.
+    fit(mode) {
       const s = this.scenes[this.state.scene];
       if (!s) return;
+      if (mode) this.fitMode = mode; else mode = this.fitMode || "width";
       const r = this.canvas.getBoundingClientRect();
       if (!r.width || !r.height) return;
-      const k = Math.min((r.width - 40) / s.w, (r.height - 60) / s.h, 1.6);
+      const kAll = Math.min((r.width - 40) / s.w, (r.height - 60) / s.h, 1.6);
+      const kWidth = Math.max(Math.min((r.width - 40) / s.w, 1.6), FIT_MIN_K);
+      const k = mode === "width" ? kWidth : kAll;
       this.vp.k = k;
-      this.vp.x = (r.width - s.w * k) / 2;
-      this.vp.y = Math.max(20, (r.height - s.h * k) / 2 - 10);
+      this.vp.x = s.w * k <= r.width - 40 ? (r.width - s.w * k) / 2 : 20;
+      this.vp.y = s.h * k <= r.height - 60 ? Math.max(20, (r.height - s.h * k) / 2 - 10) : 20;
       this.applyVp();
+      // the button names the other fit; a picture that fits either way needs no second one
+      const same = Math.abs(kWidth - kAll) < 0.005;
+      this.btnFit.textContent = same ? "Fit" : (mode === "width" ? "Fit all" : "Fit width");
+      this.btnFit.title = same ? "Fit the picture (f)" : (mode === "width" ? "Shrink until the whole picture is visible (f)" : "Back to the readable zoom, top of the picture (f)");
+    }
+    fitNext() { this.fit(this.fitMode === "width" ? "all" : "width"); }
+    // after a column opened, closed or changed width: keep the selected item in view, or re-fit
+    afterResize() {
+      const fix = () => {
+        if (this.state.selected && this.N[this.state.selected]) this.ensureVisible(this.state.selected);
+        else this.fit();
+      };
+      fix();
+      clearTimeout(this._afterResize);
+      this._afterResize = setTimeout(fix, 240);     // once more when the width transition is over
     }
     ensureVisible(id) {
       const s = this.scenes[this.state.scene];
@@ -1244,14 +1385,14 @@
         else if (k === "4") this.switchView("env");
         else if (k === "5") this.switchView("plan");
         else if (k === "Escape" || k === "Backspace") { e.preventDefault(); if (this.help.classList.contains("open")) this.help.classList.remove("open"); else this.up(); }
-        else if (k === "f") this.fit();
+        else if (k === "f") this.fitNext();
         else if (k === "h") this.home();
         else if (k === "+" || k === "=") this.zoomBy(1.25);
         else if (k === "-") this.zoomBy(0.8);
         else if (k === "m") this.toggleFull();
         else if (k === "l") { this.state.labels = !this.state.labels; this.render(); }
         else if (k === "a") this.toggleArrows();
-        else if (k === "p") { this.root.classList.toggle("panel-hidden"); this.fit(); }
+        else if (k === "p") { this.root.classList.toggle("panel-hidden"); this.afterResize(); }
         else if (k === "c") this.toggleCode();
         else if (k === "?") this.help.classList.toggle("open");
         else if (k === "Enter") { if (this.state.selected && this.N[this.state.selected]) this.open(this.state.selected); }
@@ -1349,7 +1490,7 @@
       this.btnCode.classList.toggle("on", !!this.state.code);
       this.renderCodePane();
       this.renderPanel();
-      this.fit();
+      this.afterResize();
     }
     showCode() {
       if (window.matchMedia("(min-width: 1100px)").matches) this.toggleCode(true);
@@ -1384,27 +1525,36 @@
       });
       return table;
     }
+    // The source column opens by itself when there is a file to show and folds to a narrow strip
+    // otherwise (nothing selected, an arrow selected, or the column switched off), so the empty
+    // column never takes a third of the screen. Opening or folding keeps the selected box in view.
     renderCodePane() {
       const cp = this.codePane;
       cp.innerHTML = "";
       this.btnCode.classList.toggle("on", !!this.state.code);
-      if (!this.state.code) return;
       const sel = this.state.selected;
       let n = sel && this.N[sel] ? this.N[sel] : null;
       if (n && n.port && !this.fileOf(n) && n.parent && this.N[n.parent]) n = this.N[n.parent];
       const s = this.scenes[this.state.scene];
       if (!n && s && s.node && this.N[s.node]) n = this.N[s.node];
       if (!n && s && s.id === "h:root" && this.N.tb_top) n = this.N.tb_top;
-      const file = n ? this.fileOf(n) : null;
+      const file = n && this.state.code ? this.fileOf(n) : null;
       const text = this.fileText(file);
-      const head = el("div", { class: "pm-codepane-head" });
-      cp.append(head);
-      if (!text) {
-        head.append(el("div", { class: "title" }, [el("b", {}, ["Source"])]),
-          el("div", { class: "acts" }, [el("a", { class: "close", title: "Hide the source column (c)", onclick: () => this.toggleCode(false) }, ["×"])]));
-        cp.append(el("div", { class: "pm-codepane-empty" }, [sel && this.E[sel] ? "Arrows have no file of their own: click one of the two ends." : "Click a class or a component in the picture to see its file here (one class per file)."]));
+      const open = !!(this.state.code && text);
+      const wasOpen = !this.root.classList.contains("code-collapsed");
+      this.root.classList.toggle("code-collapsed", !open);
+      if (wasOpen !== open) this.afterResize();
+      if (!open) {
+        const off = !this.state.code;
+        const strip = el("div", { class: "pm-codepane-strip" + (off ? " off" : ""),
+          title: off ? "Show the source column (c)" : (sel && this.E[sel] ? "Arrows have no file of their own: click one of the two ends" : "The file of the selected item appears here: click a box"),
+          onclick: () => { if (off) this.toggleCode(true); } });
+        strip.append(el("span", {}, [off ? "Source ▸" : "Source · click a box to see its file"]));
+        cp.append(strip);
         return;
       }
+      const head = el("div", { class: "pm-codepane-head" });
+      cp.append(head);
       const [a, b] = this.rangeOf(n);
       const total = text.split("\n").length;
       const whole = a <= 1 && b >= total;
@@ -1414,7 +1564,7 @@
       const acts = el("div", { class: "acts" });
       if (this.opts.repoUrl) acts.append(el("a", { href: `${this.opts.repoUrl}/blob/main/${file}#L${a}-L${b}`, target: "_blank", rel: "noopener" }, ["open on GitHub ↗"]));
       acts.append(el("a", { onclick: () => this.download(new Blob([text + "\n"], { type: "text/plain" }), file.split("/").pop()) }, ["⤓ download file"]));
-      acts.append(el("a", { onclick: () => { if (navigator.clipboard) navigator.clipboard.writeText(text + "\n").then(() => { this.hint.textContent = "file copied"; }); } }, ["copy"]));
+      acts.append(el("a", { onclick: () => { if (navigator.clipboard) navigator.clipboard.writeText(text + "\n").then(() => this.flash("file copied")); } }, ["copy"]));
       acts.append(el("a", { class: "close", title: "Hide the source column (c)", onclick: () => this.toggleCode(false) }, ["×"]));
       head.append(acts);
       const box = el("div", { class: "pm-code pane" });
@@ -1698,7 +1848,7 @@
     }
     copyLink() {
       const link = this.state.selected ? this.linkFor(this.state.selected) : (this.opts.pageUrl || location.href.split("#")[0]) + location.hash;
-      if (navigator.clipboard) navigator.clipboard.writeText(link).then(() => { this.hint.textContent = "link copied"; });
+      if (navigator.clipboard) navigator.clipboard.writeText(link).then(() => this.flash("link copied"), () => prompt("Link", link));
       else prompt("Link", link);
     }
     renderScenePanel() {
@@ -1726,13 +1876,48 @@
       } else {
         add(md("Inheritance per package. Grey dashed boxes are UVM library classes. Dashed arrows: *runs on* (sequence → sequencer), *uses* (sequence → sub-sequence), *starts* (test → default sequence), *overrides* (factory).\n\n**Members** switches the full UML boxes on (fields with `rand`, methods, constraints)."));
       }
-      add(`<h3>Items in this view</h3>`);
-      const ul = el("ul");
-      [...s.items].filter(it => !it.stub).sort((a, b) => (a.depth - b.depth) || a.label.localeCompare(b.label)).slice(0, 60).forEach(it => {
-        const n = this.N[it.id]; if (!n) return;
-        ul.append(el("li", {}, [this.nodeLink(it.id, it.label), " ", el("span", { class: "role" }, [n.kind_label || n.kind]), n.summary ? el("div", { style: "font-size:12px;color:var(--pm-muted)" }, [trunc(n.summary, 110)]) : ""]));
-      });
-      body.append(ul);
+      this.renderItemList(body, s);
+    }
+    // "Items in this view": grouped (by parent instance, by package, or features / tests), each
+    // with its path in grey so six "driver"s can be told apart, and a filter box on top
+    renderItemList(body, s) {
+      const items = [...s.items].filter(it => !it.stub && this.N[it.id] && it.kind !== "uvm_base");
+      const groupOf = n => {
+        if (s.view === "classes") return n.group_label || "UVM library";
+        if (s.view === "plan") return n.kind === "test" ? "Tests" : "Features";
+        if (!n.parent || !this.N[n.parent]) return n.scope === "hw" ? "Hardware" : "Top level";
+        return n.scope === "tb" ? "uvm_test_top." + n.parent : n.parent;
+      };
+      const groups = new Map();
+      items.forEach(it => { const g = groupOf(this.N[it.id]); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(it); });
+      body.append(el("h3", {}, [`Items in this view`, " ", el("span", { class: "count" }, [`(${items.length})`])]));
+      const filter = el("input", { type: "search", class: "pm-filter", placeholder: "Filter by name, type or role…", spellcheck: "false" });
+      const list = el("div", { class: "pm-items" });
+      const build = q => {
+        list.innerHTML = "";
+        const lq = (q || "").trim().toLowerCase();
+        const hit = n => !lq || [n.name, n.type, n.id, n.kind_label, n.kind, n.summary].some(x => (x || "").toLowerCase().includes(lq));
+        let shown = 0;
+        groups.forEach((its, g) => {
+          const rows = its.filter(it => hit(this.N[it.id])).sort((a, b) => (a.depth - b.depth) || a.label.localeCompare(b.label));
+          if (!rows.length) return;
+          if (groups.size > 1) list.append(el("div", { class: "grp" }, [g]));
+          const ul = el("ul");
+          rows.forEach(it => {
+            const n = this.N[it.id];
+            const li = el("li", {}, [el("a", { class: "node", onclick: () => this.select(it.id) }, [it.label]), " ", el("span", { class: "role" }, [n.kind_label || n.kind])]);
+            if (n.type && n.type !== n.name && n.scope !== "cls") li.append(el("span", { class: "path" }, [" : " + n.type]));
+            if (n.summary) li.append(el("div", { class: "sum" }, [trunc(n.summary, 110)]));
+            ul.append(li);
+            shown++;
+          });
+          list.append(ul);
+        });
+        if (!shown) list.append(el("p", { class: "empty" }, ["Nothing matches."]));
+      };
+      filter.addEventListener("input", () => build(filter.value));
+      build("");
+      body.append(filter, list);
     }
     renderEdgePanel(eid) {
       const e = this.E[eid.replace(/b$/, "")] || this.sceneEdge(eid);

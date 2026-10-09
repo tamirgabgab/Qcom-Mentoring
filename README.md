@@ -51,8 +51,9 @@ the expected results and checkpoint questions.
 The [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
 is one picture of the whole project that you can look into. Click a box for
 its role, its file and the lab that introduces it; double-click to drill
-down; the **Source** column on the right shows the complete file of whatever
-is selected (one class per file). Five views: **Hierarchy** (who contains
+down; the **Source** column on the right opens with the complete file of
+whatever is selected (one class per file) and folds away when there is
+nothing to show. Five views: **Hierarchy** (who contains
 whom), **TLM / data flow** (who talks to whom), **Classes (UML)** (who inherits
 from whom, with fields and methods), **Environment** (the course figure of the
 whole verification environment, one role line per box) and **Test plan** (the
@@ -65,7 +66,11 @@ appear for the box under the pointer (the **Arrows** button shows them all). Box
 can be dragged and the arrows follow: a leaf from anywhere, a frame by its title bar
 (dragging inside a frame pans the view, and so do the middle mouse button or
 Space + drag from any point). ⌂ returns to the overview, ◀ ▶ walk back and
-forward through the views visited, and the panel and source column can be resized.
+forward through the views visited, the search box finds any component or class
+by name with its full path, the status bar at the bottom shows the path of the
+selected item, and the panel and source column can be resized. Every view opens
+at a readable zoom (**Fit** then shows the whole picture); the Classes view has
+one tab per package.
 
 ![The project map: the UVM testbench above, the hardware below, the selected component's role and source on the right](docs/assets/readme/map_overview.png)
 

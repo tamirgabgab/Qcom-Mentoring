@@ -7,8 +7,9 @@ hide:
 
 One picture of the whole project that you can look into: **click** a box for its role, its file
 and its lab, **double-click** to open it. Five views: Hierarchy, TLM / data flow, Classes (UML),
-Environment, Test plan. The **Source** column on the right shows the complete file of
-whatever is selected (one class per file). Press ++question++ inside the map for the shortcuts.
+Environment, Test plan. The **Source** column on the right opens by itself with the complete
+file of whatever is selected (one class per file) and folds to a thin strip when there is nothing
+to show. Press ++question++ inside the map for the shortcuts.
 
 <style>.md-grid { max-width: none; }</style>
 
@@ -60,8 +61,10 @@ whatever is selected (one class per file). Press ++question++ inside the map for
   click a port or an arrow to light up the complete path. The DUT is drawn compact here, one pin
   per interface (stimulus enters on the left, observation leaves on the right); the 19 signals
   are in the Hierarchy view. The **Lab 9D** button swaps in the FIFO-based scoreboard.
-* **Classes (UML)** — inheritance per package; **Members** shows fields (with `rand`), methods
-  and constraints. Dashed arrows: *runs on*, *uses*, *starts* (default sequence), *overrides*.
+* **Classes (UML)** — inheritance per package: the **package tabs** under the toolbar switch
+  between all classes and one UVC (with the number of classes on each tab); **Members** shows
+  fields (with `rand`), methods and constraints. Dashed arrows: *runs on*, *uses*, *starts*
+  (default sequence), *overrides*.
 * **Environment** — the verification environment as the course draws it: the test, the testbench
   with every UVC opened down to sequencer, driver and monitor, the interfaces and the DUT, one
   role line per box. Double-click a box to open it in the Hierarchy view.
@@ -93,13 +96,28 @@ width).
 
 **Getting around.** ⌂ (or ++h++) is home: the overview, nothing selected. ◀ and ▶ (or
 ++alt+left++ / ++alt+right++) walk back and forward through the views visited, like a browser;
-**↑ Up** (++esc++) goes one level out.
+**↑ Up** (++esc++) goes one level out. The **search box** (++slash++) finds anything in any
+view: type `driver` and the list shows every driver with its full path, the classes of that
+name and the view each one lives in; ++down++ / ++up++ and ++enter++ pick one. The **status
+bar** at the bottom shows the hints of the current view and, on the right, the full path of the
+selected item (`tb_top › uvm_test_top › tb › yapp › agent › driver`), every step clickable. The
+**Legend** is a small button in the corner of the picture; it stays open or closed as you left it.
+
+**Fit.** Every view opens in *fit width*: the picture fills the width of the canvas but never
+zooms out below the point where the labels stop being readable, so a tall view (Classes,
+Environment) opens readable, top first, and scrolls. The **Fit** button (or ++f++) then goes to
+*fit all* (the whole picture, however small) and back; when the picture fits either way the
+button is just "Fit".
 
 The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
 introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
-guide, lab page, the same item in the other views, a shareable link). The **Source** column
-(toolbar button or ++c++) is a third column with the whole file of the selected class, module or
-RTL block, the item's lines marked; it can be downloaded or opened on GitHub from there.
+guide, lab page, the same item in the other views, a shareable link). With nothing selected it
+lists the **items in this view**, grouped by parent (or by package in Classes, features and
+tests in the Test plan) and with a filter box. The **Source** column (toolbar button or ++c++)
+is a third column with the whole file of the selected class, module or RTL block, the item's
+lines marked; it can be downloaded or opened on GitHub from there. It opens when a box with a
+file is selected and folds to a strip labelled "Source" otherwise; the × on it switches it off
+until the strip is clicked again.
 
 **Simulate.** The DUT is drawn as in the course figure, pins inside and the register map in a
 block; click that block (or the **Simulate** tab on the DUT, `u_regs`, `hbus0`, the register
