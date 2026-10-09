@@ -69,8 +69,10 @@ Space + drag from any point). ⌂ returns to the overview, ◀ ▶ walk back and
 forward through the views visited, the search box finds any component or class
 by name with its full path, the status bar at the bottom shows the path of the
 selected item, and the panel and source column can be resized. Every view opens
-at a readable zoom (**Fit** then shows the whole picture); the Classes view has
-one tab per package.
+at a readable zoom (**Fit** then shows the whole picture; zoomed far out only
+the names stay, bigger, and a minimap shows where you are); the Classes view has
+one tab per package. The [test plan page](https://tamirgabgab.github.io/Qcom-Mentoring/test-plan/#coverage-matrix)
+adds a coverage matrix: every plan item against every test.
 
 ![The project map: the UVM testbench above, the hardware below, the selected component's role and source on the right](docs/assets/readme/map_overview.png)
 

@@ -76,8 +76,10 @@ to show. Press ++question++ inside the map for the shortcuts.
   last), all of them extending `base_test`. The chips are the stages of the test's plan; click a
   test for the plan as a timeline with the detail of every stage, what the log and the waveform
   are expected to show, the plan items it verifies, and the default sequences, factory overrides
-  and `start()` calls found in its code. The same data generates the [test plan](test-plan.md)
-  page.
+  and `start()` calls found in its code. With **Arrows** on, the feature → test arrows stay
+  faint until a card is selected: then only its own are drawn. The same data generates the
+  [test plan](test-plan.md) page, with a [coverage matrix](test-plan.md#coverage-matrix) of
+  every item against every test.
 
 **Arrows, moving boxes, column widths.** Arrows are orthogonal (horizontal and vertical runs,
 rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM
@@ -103,11 +105,15 @@ bar** at the bottom shows the hints of the current view and, on the right, the f
 selected item (`tb_top › uvm_test_top › tb › yapp › agent › driver`), every step clickable. The
 **Legend** is a small button in the corner of the picture; it stays open or closed as you left it.
 
-**Fit.** Every view opens in *fit width*: the picture fills the width of the canvas but never
-zooms out below the point where the labels stop being readable, so a tall view (Classes,
-Environment) opens readable, top first, and scrolls. The **Fit** button (or ++f++) then goes to
-*fit all* (the whole picture, however small) and back; when the picture fits either way the
-button is just "Fit".
+**Fit, zoom, the minimap.** Every view opens in *fit width*: the picture fills the width of the
+canvas but never zooms out below the point where the labels stop being readable, so a tall view
+(Classes, Environment) opens readable, top first, and scrolls. The **Fit** button (or ++f++) then
+goes to *fit all* (the whole picture, however small) and back; when the picture fits either way
+the button is just "Fit". Zoomed far out, the boxes keep only their names, drawn as large as the
+box allows, so the shape of the whole picture still reads (zoom back in and the types, ports and
+roles return; an export always has every detail). Whenever the picture is larger than the
+canvas a **minimap** appears in the corner: the boxes in miniature with a rectangle for what is
+on screen; click or drag it to move around.
 
 The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
 introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component

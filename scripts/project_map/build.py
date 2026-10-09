@@ -14,6 +14,7 @@ Outputs (committed, so the site and the offline file never need pyslang):
     docs/test-plan.md                      (the feature matrix and the tests of annotations.yaml plan: / tests:)
 """
 import argparse
+import html
 import json
 import os
 import re
@@ -89,14 +90,21 @@ def render_test_plan_md(m):
                 cell.append(f"*Note:* {md_cell(it['note'])}")
             out.append(f"| **{it['id']}**<br>{STATUS_MARK[it['status']]} | {'<br>'.join(cell)} | {tests} |")
         out.append("")
+    scene = next((s for s in m["scenes"] if s["id"] == "plan:main"), None)
+    order = [it["id"] for it in scene["items"] if it.get("style") == "test_card"] if scene else []
+    out.append("## Coverage matrix\n")
+    out.append("Who verifies what, at a glance: one row per plan item, one column per test (in course order, "
+               "the test-plan tests last); a dot where the test covers the item, in the colour of the item's "
+               "status. The last column counts the tests of an item, the last row the items of a test. "
+               "Hover a dot for the pair.\n")
+    out.extend(render_matrix_html(plan, N, order))
+    out.append("")
     out.append("## Tests\n")
     out.append("Every test extends `base_test` and only changes what runs. The lab is where the test was born; "
                "the test-plan tests exist only in `yapp_project/tb/tests`. Run one with "
                "`make run-project TEST=<name>` (or `make run LAB=<lab> TEST=<name>` for a lab).\n")
     out.append("| Test | Lab | Purpose | Verifies |")
     out.append("|---|---|---|---|")
-    scene = next((s for s in m["scenes"] if s["id"] == "plan:main"), None)
-    order = [it["id"] for it in scene["items"] if it.get("style") == "test_card"] if scene else []
     for nid in order:
         n = N[nid]
         lab_doc = next((d["url"] for d in n.get("docs", []) if d["title"].startswith("Lab")), None)
@@ -114,6 +122,36 @@ def render_test_plan_md(m):
     out.append("6. Add the test to `annotations.yaml`: a line under `classes:`, its plan under `tests:`, and the items it verifies under `plan:`; `make map` regenerates this page and the map.")
     out.append("")
     return "\n".join(out)
+
+
+def render_matrix_html(plan, N, order):
+    """The items x tests matrix as one HTML table (Markdown tables cannot rotate headers or
+    colour cells): a group row per feature group, a dot per (item, test) pair."""
+    tests = [N[nid]["name"] for nid in order]
+    ncols = len(tests) + 3
+    esc = html.escape
+    rows = ['<div class="mx-wrap" markdown="0">', '<table class="mx">', "<thead><tr>",
+            '<th class="mx-item">Item</th>',
+            *(f'<th class="mx-t"><span>{esc(t)}</span></th>' for t in tests),
+            '<th class="mx-n">tests</th>', "</tr></thead>", "<tbody>"]
+    per_test = {t: 0 for t in tests}
+    for g in plan:
+        rows.append(f'<tr class="mx-g"><th colspan="{ncols - 1}">{esc(g["id"])} · {esc(g["title"])}</th></tr>')
+        for it in g["items"]:
+            cells = []
+            for t in tests:
+                if t in it["tests"]:
+                    per_test[t] += 1
+                    cells.append(f'<td class="mx-c st-{it["status"]}" title="{esc(it["id"])} ← {esc(t)}">●</td>')
+                else:
+                    cells.append('<td class="mx-c"></td>')
+            rows.append(f'<tr><th class="mx-item st-{it["status"]}" title="{esc(md_cell(it["title"]))}">'
+                        f'<b>{esc(it["id"])}</b> <span>{esc(md_cell(it["title"]))}</span></th>'
+                        + "".join(cells) + f'<td class="mx-n">{len(it["tests"]) or "–"}</td></tr>')
+    rows.append('<tr class="mx-sum"><th class="mx-item">items per test</th>'
+                + "".join(f'<td class="mx-n">{per_test[t]}</td>' for t in tests) + "<td></td></tr>")
+    rows.extend(["</tbody>", "</table>", "</div>"])
+    return rows
 
 
 def load_regmap():

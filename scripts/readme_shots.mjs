@@ -52,7 +52,7 @@ await page.evaluate(() => {
   const m = window.projectMap;
   m.show("h:root");
   document.querySelector(".pm").classList.add("panel-hidden"); m.toggleCode(false);
-  document.querySelectorAll(".pm-legend, .pm-statusbar").forEach(e => { e.style.display = "none"; });
+  document.querySelectorAll(".pm-legend, .pm-statusbar, .pm-minimap").forEach(e => { e.style.display = "none"; });
 });
 await page.waitForTimeout(400);                       // the columns settle (afterResize re-fits once more)
 await page.evaluate(() => {

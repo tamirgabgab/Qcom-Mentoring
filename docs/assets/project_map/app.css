@@ -261,6 +261,29 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm.arrows-off .pm-edge { opacity: 0; pointer-events: none; transition: opacity .12s; }
 .pm.arrows-off .pm-edge.hover, .pm.arrows-off .pm-edge.selected, .pm.arrows-off .pm-edge.path { opacity: 1; pointer-events: auto; }
 .pm.arrows-off .pm-edge.hover text, .pm.arrows-off .pm-edge.path text { display: block; }
+/* Test plan, Arrows on: the arrows stay faint until a card is selected, then only its own are drawn */
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge { opacity: .3; }
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge path.line { stroke-width: 1.1; }
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge.hover, .pm[data-view="plan"]:not(.arrows-off) .pm-edge.path,
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge.selected { opacity: 1; }
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge.hover path.line, .pm[data-view="plan"]:not(.arrows-off) .pm-edge.path path.line,
+.pm[data-view="plan"]:not(.arrows-off) .pm-edge.selected path.line { stroke-width: 2.6; }
+.pm[data-view="plan"]:not(.arrows-off).has-sel .pm-edge.dim { opacity: 0; pointer-events: none; }
+/* level of detail: zoomed far out (lod-far) only the names stay, in the size applyLod() gives them */
+.pm.lod-far .pm-node text.sub, .pm.lod-far .pm-node text.kind, .pm.lod-far .pm-node text.role, .pm.lod-far .pm-node text.purpose,
+.pm.lod-far .pm-node text.member, .pm.lod-far .pm-node line.sep, .pm.lod-far .chip text, .pm.lod-far .pm-port text,
+.pm.lod-far .pm-edge text, .pm.lod-far .pin text, .pm.lod-far .pm-regmap text, .pm.lod-far .pm-node.stub text.sub { display: none; }
+.pm.lod-far .pm-frame text, .pm.lod-far .pm-lane text { font-size: 16px; }
+.pm.lod-far .pm-node.stub text.label { font-size: 14px; }
+/* the minimap: boxes in miniature, the viewport as a rectangle */
+.pm-minimap { position: absolute; right: 10px; bottom: 10px; background: var(--pm-panel); border: 1px solid var(--pm-border);
+  border-radius: 6px; padding: 4px; box-shadow: var(--pm-shadow); display: none; cursor: crosshair; }
+.pm-minimap.show { display: block; }
+.pm-minimap svg { display: block; overflow: hidden; }
+.pm-minimap rect.frame { fill: none; stroke: var(--pm-border); stroke-width: 2; stroke-dasharray: 6 4; }
+.pm-minimap rect.box { fill: var(--kc, var(--pm-muted)); fill-opacity: .55; stroke: none; }
+.pm-minimap rect.box.container { fill-opacity: .12; stroke: var(--kc, var(--pm-border)); stroke-width: 3; }
+.pm-minimap rect.view { fill: var(--pm-accent); fill-opacity: .12; stroke: var(--pm-accent); stroke-width: 1.5; }
 .pm-frame rect { fill: none; stroke: var(--kc, var(--pm-border)); stroke-dasharray: 6 4; stroke-width: 1; rx: 8; }
 .pm-frame text { font-size: 12px; fill: var(--pm-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .pm-lane text { font-size: 11px; fill: var(--pm-muted); text-transform: uppercase; letter-spacing: .08em; }
@@ -388,7 +411,7 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 @media print {
   body.pm-standalone { background: #fff; }
   .pm.arrows-off .pm-edge { opacity: 1; }
-  .pm-toolbar, .pm-subbar, .pm-panel, .pm-codepane, .pm-legend, .pm-statusbar, .pm-help { display: none !important; }
+  .pm-toolbar, .pm-subbar, .pm-panel, .pm-codepane, .pm-legend, .pm-statusbar, .pm-minimap, .pm-help { display: none !important; }
   .pm, .pm-body, .pm-canvas { height: auto; display: block; overflow: visible; background: #fff; }
   .pm-canvas svg { width: 100%; height: auto; }
   @page { size: landscape; margin: 10mm; }

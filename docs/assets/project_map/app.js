@@ -63,6 +63,7 @@
   const CHANNEL = 9;           // spacing between parallel arrows sharing a corridor
   const PIN_OUT = 24;          // the pin arrows of a block diagram (the DUT), drawn outside its box
   const FIT_MIN_K = 0.5;       // "Fit width" never zooms out further than this: the labels stay readable
+  const LOD_FAR_K = 0.45;      // below this zoom only the names are drawn, in a bigger font (level of detail)
   function pickSide(box, pt) {
     const cx = box.x + box.w / 2, cy = box.y + box.h / 2;
     const dx = pt[0] - cx, dy = pt[1] - cy;
@@ -318,6 +319,9 @@
       this.legend = el("details", { class: "pm-legend", ontoggle: () => store("pm-legend", this.legend.open) });
       if (load("pm-legend", false)) this.legend.open = true;
       this.canvas.append(this.legend);
+      this.miniSvg = svg("svg", { xmlns: SVG_NS });
+      this.minimap = el("div", { class: "pm-minimap", title: "Where you are in the picture: click or drag to move" }, [this.miniSvg]);
+      this.canvas.append(this.minimap);
       this.hint = el("span", { class: "pm-hint" }, ["drag to pan · wheel to zoom · click to inspect · double-click to open"]);
       this.flashEl = el("span", { class: "pm-flash" });
       this.statusPath = el("span", { class: "pm-statusbar-path" });
@@ -342,7 +346,8 @@
           "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit (the width at a readable zoom, then the whole picture) / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
-          "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr></table>" +
+          "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr>" +
+          "<tr><td>zoomed far out</td><td>only the names are drawn, bigger; the small map in the corner shows where you are (click or drag it to move)</td></tr></table>" +
           "<p style='color:var(--pm-muted);font-size:12px'>Generated from the SystemVerilog source with pyslang; descriptions from <code>scripts/project_map/annotations.yaml</code>.</p>" }),
       ]);
       this.resPanel = el("div", { class: "pm-resizer r-panel", title: "drag to resize the panel, double-click for the default width" });
@@ -353,6 +358,7 @@
       this.initSpacePan();
       this.initKeys();
       this.initResizers();
+      this.initMinimap();
     }
     // ------------------------------------------------------------- resizable columns
     initResizers() {
@@ -688,7 +694,7 @@
       });
       // items sorted: containers (shallow first) under leaves
       const items = [...s.items].sort((a, b) => (a.depth - b.depth) || (b.container - a.container));
-      items.forEach(it => g.append(this.drawItem(it, s)));
+      items.forEach(it => { const grp = this.drawItem(it, s); this.tagFar(grp, it); g.append(grp); });
       (s.stubs || []).forEach(st => g.append(this.drawItem(st, s)));
       // edges on top; in dense scenes labels appear only on hover / selection
       this.denseLabels = !this.state.labels && s.edges.length > 14;
@@ -698,6 +704,9 @@
       this.btnLabels.classList.toggle("on", !!this.state.labels);
       this.btnReset.style.display = s._offsets && Object.keys(s._offsets).length ? "" : "none";
       this.applyArrows();
+      this.applyLod(this._far);
+      this.root.dataset.view = s.view;
+      this.renderMinimap(s);
       this.renderCrumbs(s);
       this.renderLegend(s);
       this.views.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.view === s.view));
@@ -713,6 +722,66 @@
         : s.view === "env" ? "the whole environment on one page · click a box for its role and code · double-click to open it in the Hierarchy"
         : s.view === "plan" ? "top: the DUT features and what verifies them (click a chip for the item) · below: the tests · arrows: feature → test, who extends whom"
         : "click a class to see its file · Members shows fields and methods · drag a class to move it";
+    }
+    // ---- level of detail: zoomed far out, only the names are drawn, each as big as its box allows
+    tagFar(grp, it) {
+      grp.querySelectorAll(":scope > text.label").forEach(t => {
+        const chars = (t.textContent || "").length || 1;
+        const cap = it.container ? 20 : 24;
+        t.dataset.far = Math.max(14, Math.min(cap, Math.floor((it.w - 16) / (chars * 0.58))));
+      });
+    }
+    applyLod(far) {
+      this.root.classList.toggle("lod-far", !!far);
+      this.viewport.querySelectorAll("text.label[data-far]").forEach(t => { t.style.fontSize = far ? t.dataset.far + "px" : ""; });
+    }
+    // ---- the minimap: the boxes of the view in miniature and the part of it on screen; shown
+    // only while the picture is larger than the canvas; click or drag to move around
+    renderMinimap(s) {
+      const mm = this.miniSvg;
+      mm.innerHTML = "";
+      const scale = Math.min(180 / s.w, 130 / s.h);
+      mm.setAttribute("viewBox", `0 0 ${s.w} ${s.h}`);
+      mm.setAttribute("width", Math.ceil(s.w * scale));
+      mm.setAttribute("height", Math.ceil(s.h * scale));
+      (s.frames || []).forEach(f => { const r = this.frameRect(s, f); mm.append(svg("rect", { class: "frame", x: r.x, y: r.y, width: r.width, height: r.height })); });
+      s.items.filter(it => !it.stub).forEach(it => {
+        const kind = it.kind || (this.N[it.id] || {}).kind || "object";
+        mm.append(svg("rect", { class: it.container ? "box container" : "box", x: it.x, y: it.y, width: it.w, height: it.h, style: `--kc: var(--k-${kind})` }));
+      });
+      this.miniView = svg("rect", { class: "view", "vector-effect": "non-scaling-stroke" });
+      mm.append(this.miniView);
+      this.miniScale = scale;
+    }
+    updateMinimap() {
+      if (!this.miniView) return;
+      const s = this.scenes[this.state.scene];
+      const w = this._cw || this.canvas.clientWidth, h = this._ch || this.canvas.clientHeight;
+      const k = this.vp.k;
+      const over = s.w * k > w + 1 || s.h * k > h + 1;
+      this.minimap.classList.toggle("show", over);
+      if (!over) return;
+      this.miniView.setAttribute("x", -this.vp.x / k);
+      this.miniView.setAttribute("y", -this.vp.y / k);
+      this.miniView.setAttribute("width", w / k);
+      this.miniView.setAttribute("height", h / k);
+    }
+    initMinimap() {
+      const mm = this.miniSvg;
+      const go = e => {
+        const r = mm.getBoundingClientRect();
+        const sx = (e.clientX - r.left) / this.miniScale, sy = (e.clientY - r.top) / this.miniScale;
+        const w = this._cw || this.canvas.clientWidth, h = this._ch || this.canvas.clientHeight;
+        this.vp.x = w / 2 - sx * this.vp.k;
+        this.vp.y = h / 2 - sy * this.vp.k;
+        this.applyVp();
+      };
+      let down = false;
+      mm.addEventListener("pointerdown", e => { down = true; try { mm.setPointerCapture(e.pointerId); } catch (err) { /* released */ } go(e); e.preventDefault(); });
+      mm.addEventListener("pointermove", e => { if (down) go(e); });
+      const end = () => { down = false; };
+      mm.addEventListener("pointerup", end);
+      mm.addEventListener("pointercancel", end);
     }
     // a group frame (TLM) follows its members
     frameRect(s, f) {
@@ -1064,6 +1133,7 @@
     // ------------------------------------------------------------- selection
     select(id, o) {
       this.state.selected = id || null;
+      this.root.classList.toggle("has-sel", !!id);
       this.viewport.querySelectorAll(".selected, .dim, .path").forEach(x => x.classList.remove("selected", "dim", "path"));
       if (id) {
         const isEdge = !!this.E[id] || !this.N[id];
@@ -1311,7 +1381,12 @@
       document.addEventListener("keyup", e => { if (e.key === " ") release(); });
       window.addEventListener("blur", release);
     }
-    applyVp() { this.viewport.setAttribute("transform", `translate(${this.vp.x},${this.vp.y}) scale(${this.vp.k})`); }
+    applyVp() {
+      this.viewport.setAttribute("transform", `translate(${this.vp.x},${this.vp.y}) scale(${this.vp.k})`);
+      const far = this.vp.k < LOD_FAR_K;
+      if (far !== this._far) { this._far = far; this.applyLod(far); }
+      this.updateMinimap();
+    }
     zoomAt(f, px, py) {
       const k = Math.min(6, Math.max(0.08, this.vp.k * f));
       const real = k / this.vp.k;
@@ -1331,6 +1406,7 @@
       if (mode) this.fitMode = mode; else mode = this.fitMode || "width";
       const r = this.canvas.getBoundingClientRect();
       if (!r.width || !r.height) return;
+      this._cw = r.width; this._ch = r.height;              // cached for the minimap (applyVp runs per frame)
       const kAll = Math.min((r.width - 40) / s.w, (r.height - 60) / s.h, 1.6);
       const kWidth = Math.max(Math.min((r.width - 40) / s.w, 1.6), FIT_MIN_K);
       const k = mode === "width" ? kWidth : kAll;
@@ -1347,7 +1423,9 @@
     // after a column opened, closed or changed width: keep the selected item in view, or re-fit
     afterResize() {
       const fix = () => {
-        if (this.state.selected && this.N[this.state.selected]) this.ensureVisible(this.state.selected);
+        const r = this.canvas.getBoundingClientRect();
+        this._cw = r.width; this._ch = r.height;
+        if (this.state.selected && this.N[this.state.selected]) { this.ensureVisible(this.state.selected); this.updateMinimap(); }
         else this.fit();
       };
       fix();
@@ -1871,6 +1949,9 @@
         const sum = el("p", { class: "pm-counts" });
         Object.keys(STATUS_LABEL).forEach(k => { if (counts[k]) sum.append(el("span", { class: `pm-status st-${k}` }, [`${counts[k]} ${STATUS_LABEL[k]}`]), " "); });
         body.append(sum);
+        body.append(el("p", {}, [el("a", { href: this.docUrl("test-plan.md") + "#coverage-matrix", target: "_blank", rel: "noopener" }, ["Coverage matrix ↗"]),
+          " — every item against every test on one page, on the site."]));
+        add('<p class="empty">With <b>Arrows</b> on, the arrows stay faint until a card is selected: then only its own are drawn.</p>');
       } else if (s.view === "tlm") {
         add(md("Left to right: who controls whom and where the data goes. Sequences run on **sequencers**, items reach the **drivers** through `seq_item_port`, pins reach the DUT through the virtual interfaces, **monitors** publish on analysis ports, the **router module UVC** receives them through exports: the reference model filters, the scoreboard compares.\n\nClick a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the FIFO-based scoreboard."));
       } else {
@@ -1961,9 +2042,14 @@
     // ------------------------------------------------------------- export
     exportSvgString() {
       const s = this.scenes[this.state.scene];
-      // the picture is exported with every arrow visible, whatever the Arrows button says
+      // the picture is exported with every arrow visible, whatever the Arrows button says, and
+      // with every detail, whatever the zoom
       const arrowsOff = this.root.classList.contains("arrows-off");
       if (arrowsOff) this.root.classList.remove("arrows-off");
+      const far = this._far;
+      if (far) this.applyLod(false);
+      const hadSel = this.root.classList.contains("has-sel");
+      this.root.classList.remove("has-sel");
       const clone = this.svg.cloneNode(true);
       const vp = clone.querySelector(".pm-viewport");
       vp.setAttribute("transform", "translate(10,10)");
@@ -1983,6 +2069,8 @@
       });
       drop.forEach(d => d.remove());
       if (arrowsOff) this.root.classList.add("arrows-off");
+      if (far) this.applyLod(true);
+      if (hadSel) this.root.classList.add("has-sel");
       // markers keep their CSS-driven colours
       clone.querySelectorAll("marker path").forEach(mp => { mp.style.fill = getComputedStyle(this.svg.querySelector("#pm-arrow path")).fill; });
       const bg = svg("rect", { width: "100%", height: "100%", fill: getComputedStyle(this.canvas).backgroundColor || "#fff" });
