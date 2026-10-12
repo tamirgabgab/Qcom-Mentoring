@@ -479,6 +479,9 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    מ-raw.githubusercontent (הריפו public, CORS `*`). `sim_report.py` מוסיף עמודת **Waves** ל-`index.md` ושורה ב-`timeline.md`
    רק כשהדוח נכתב לתוך הריפו (לא תחת `build/`). תיעוד: סעיף "A ready signal layout for Surfer" ב-`sim-report.md` +
    `docs/assets/sim/surfer_layout.png` (צילום Surfer, backpressure s1, 245–455ns).
+   תמיר גרר את ה-`.sucl` לחלון ← `UnknownFileFormat` (קובץ שנגרר נקרא כגלים); ההסבר: File → Run command file.
+   לבקשתו נוסף גם ה-state שלו `yapp_project/tb/yapp_lab.surf.ron` (8 קבוצות מקופלות, שמות Global; נבדק: נטען
+   ב-Surfer 0.7 על FST של הריפו). המלצתי ש-`.sucl` נשאר המקור (state מחליף הגדרות משתמש ותלוי גרסה).
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור

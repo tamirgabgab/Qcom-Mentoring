@@ -169,7 +169,14 @@ FIFO is full and `in_suspend` holds byte `49`:
 The layout is written by `scripts/surfer_layout.py` (`LAYOUT` at the top):
 edit it there and run `python3 scripts/surfer_layout.py` to rewrite the
 `.sucl`. To keep your own arrangement after changing it in Surfer, use
-*File → Save state as...* and *File → Load state...* next time.
+*File → Save state as...* and *File → Load state...* next time (open the
+`.fst` first; the state keeps the waves that are open and brings back the
+list). `yapp_project/tb/yapp_lab.surf.ron` is such a state, saved in the
+web app: eight folded groups (clock and reset, input, ch0..ch2 out, FSM,
+HBUS, registers), full signal names.
+
+A `.sucl` or `.surf.ron` file is never dragged into the Surfer window: a
+dropped file is read as waves and fails with `UnknownFileFormat`.
 
 ### Which signals to look at
 
