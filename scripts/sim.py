@@ -150,7 +150,9 @@ def compile_dir(d, quiet=False, defines=()):
     dpi = uvm_dpi_dir()
     obj = os.path.join(build_dir(d, defines), "obj")
     os.makedirs(obj, exist_ok=True)
-    cmd = [verilator(), "--binary", "--timing", "--trace-fst", "--vpi",
+    # --trace-max-array: Verilator skips unpacked arrays above 32 elements in the waves
+    # by default; yapp_pkt_mem has 64 and yapp_mem 256.
+    cmd = [verilator(), "--binary", "--timing", "--trace-fst", "--trace-max-array", "256", "--vpi",
            "-j", str(os.cpu_count() or 2), "--Mdir", obj, "--prefix", "Vsim",
            "-Wno-fatal", "-Wno-lint", "-Wno-style", "-Wno-MULTITOP",
            "--timescale", "1ns/1ns",
