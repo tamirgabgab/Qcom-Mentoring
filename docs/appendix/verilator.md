@@ -64,7 +64,10 @@ A run **passes** when it ends normally with no `UVM_ERROR` and no `UVM_FATAL`.
 
 **Waves.** `WAVES=1` records the whole design into an FST file. In Codespaces,
 open the file from the Explorer (VaporView opens `.fst`); on a desktop
-`make waves` starts `surfer` or `gtkwave` when one is installed.
+`make waves` starts `surfer` or `gtkwave` when one is installed. Verilator skips unpacked
+arrays of more than 32 elements by default, so `scripts/sim.py` passes `--trace-max-array 256`;
+without it `yapp_pkt_mem` (64) and `yapp_mem` (256) in `dut.u_regs` would be missing from the
+waves.
 
 From the root: `make sim LAB=lab07_integ TEST=simple_test`,
 `make sim-project TEST=reg_function_test WAVES=1`.
