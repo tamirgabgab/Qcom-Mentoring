@@ -178,6 +178,14 @@ variable_add hw_top.dut.u_regs.parity_err_cnt_reg
 item_set_format Unsigned
 item_set_color Violet
 
+# Packet memory (hw_top.dut.u_regs.yapp_pkt_mem), folded
+item_unfocus
+scope_add_as_group hw_top.dut.u_regs.yapp_pkt_mem
+item_focus dc
+item_rename Packet memory
+item_set_color Violet
+group_fold_recursive
+
 # The view
 item_unfocus
 variable_force_name_type Local

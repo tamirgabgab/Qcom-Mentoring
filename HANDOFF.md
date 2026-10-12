@@ -482,6 +482,11 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    תמיר גרר את ה-`.sucl` לחלון ← `UnknownFileFormat` (קובץ שנגרר נקרא כגלים); ההסבר: File → Run command file.
    לבקשתו נוסף גם ה-state שלו `yapp_project/tb/yapp_lab.surf.ron` (8 קבוצות מקופלות, שמות Global; נבדק: נטען
    ב-Surfer 0.7 על FST של הריפו). המלצתי ש-`.sucl` נשאר המקור (state מחליף הגדרות משתמש ותלוי גרסה).
+11. **זיכרונות ב-waves:** סשן אחר (`claude/hopeful-gates-acsuwt`) הוסיף `--trace-max-array 256` ב-`sim.py` (Verilator
+   מדלג על מערכים מעל 32 איברים) ודחף ל-main; מוזג לענף (`c78971d`). קובצי ה-FST ב-`yapp_project/regression/` הוקלטו
+   לפני כן, ולכן תמיר לא ראה את `yapp_pkt_mem`/`yapp_mem`. הרגרסיה הורצה מחדש (48/48), הדוח נבנה מחדש, ובכל 48 ה-FST
+   יש 320 משתני זיכרון (scope `yapp_pkt_mem` עם `[0]..[63]`, `yapp_mem` עם `[0]..[255]`). ה-layout קיבל קבוצה מקופלת
+   "Packet memory" (`scope_add_as_group` + `group_fold_recursive`).
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור

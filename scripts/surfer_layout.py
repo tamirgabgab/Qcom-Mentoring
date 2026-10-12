@@ -14,6 +14,8 @@ on the data buses, the clock drawn as a clock and one color per group:
   Error              hw_top.dut: the error pulse, pkt_done, u_error_timer.err_timer
   HBUS               hw_top.hbus0: hen, hwr_rd, haddr, hdata
   Config, counters   hw_top.dut: router_en, maxpktsize; u_regs: the statistics registers
+  Packet memory      hw_top.dut.u_regs.yapp_pkt_mem[0..63], folded (needs a .fst recorded
+                     with --trace-max-array 256, see scripts/sim.py)
 
 Open a .fst, then File -> Run command file... and pick the .sucl. The same
 file works for every test: the hierarchy is the same in all of them.
@@ -127,6 +129,16 @@ def commands():
             style(*rest)
         row += len(signals) + 1
         out.append("")
+    # The packet memory (64 bytes, a scope of [0]..[63] in the waves): a whole scope
+    # as one group, folded so it does not push the rest down; click it open.
+    out += ["# Packet memory (hw_top.dut.u_regs.yapp_pkt_mem), folded",
+            "item_unfocus",
+            "scope_add_as_group hw_top.dut.u_regs.yapp_pkt_mem",
+            f"item_focus {alpha(row)}",
+            "item_rename Packet memory",
+            "item_set_color Violet",
+            "group_fold_recursive",
+            ""]
     out += ["# The view",
             "item_unfocus",
             "variable_force_name_type Local",

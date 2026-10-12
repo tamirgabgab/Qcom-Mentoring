@@ -136,7 +136,7 @@ spreadsheet or a script can read: one row per cycle.
 
 `yapp_project/tb/yapp_router.sucl` is a Surfer command file that opens the
 signals of the router in ten groups, one color per group, buses in hex, the
-FSM state and `in_phase` by name:
+FSM state and `in_phase` by name, plus the packet memory, folded:
 
 | Group | Signals | Scope |
 |---|---|---|
@@ -148,6 +148,13 @@ FSM state and `in_phase` by name:
 | Error | `error`, `pkt_done`, `err_timer` | `hw_top.dut`, `u_error_timer` |
 | HBUS | `hen`, `hwr_rd`, `haddr`, `hdata` | `hw_top.hbus0` |
 | Config, counters | `router_en`, `maxpktsize`, `addr0..3_cnt_reg`, `parity_err_cnt_reg`, `oversized_pkt_cnt_reg` | `hw_top.dut`, `u_regs` |
+| Packet memory (folded) | `[0]` … `[63]`: the last packet, header first | `hw_top.dut.u_regs.yapp_pkt_mem` |
+
+The memories are arrays, and Verilator leaves arrays of more than 32 elements
+out of the waves unless told otherwise: `scripts/sim.py` passes
+`--trace-max-array 256`, so `yapp_pkt_mem` (64 bytes) and `yapp_mem` (256
+bytes) are in every `.fst` recorded since. In Surfer they are scopes under
+`u_regs`, one variable per byte; a `.fst` recorded before has no memories.
 
 Three ways to use it:
 
