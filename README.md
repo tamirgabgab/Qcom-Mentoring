@@ -269,6 +269,7 @@ yapp_project/                     the complete project — the source of truth
                                     router_fifo_scoreboard (Lab 9D), packet_compare
   tb/                             the final testbench
     yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
+    yapp_router.sucl                Surfer command file: the router signals in 10 colored groups (scripts/surfer_layout.py)
     tb_top.sv                       UVM side: publishes the virtual interfaces, run_test()
     hw_top.sv                       hardware side: the DUT, the five interface instances, clkgen
     router_tb.sv                    the environment: five UVC envs, virtual sequencer, module UVC, register model
@@ -314,6 +315,7 @@ scripts/
   get_uvm.sh                        fetches the Accellera UVM source (2020.3.1) into scripts/uvm_src/ (not committed)
   sim.py                            Verilator flow: compile / run / waves / regress from the same run.f (`make sim`)
   sim_report.py                     bundles a regression: log + timeline + waves + pictures per run (`make sim-report`)
+  surfer_layout.py                  the Surfer signal layout of the waves → yapp_project/tb/yapp_router.sucl
   regress.yaml                      every simulation directory and its tests (`make regress`)
   setup_sim.sh                      installs Verilator 5.052 + UVM's DPI code for Verilator (`make setup-sim`)
   sv_style.py                       the code-style checker / fixer (`make style-check`, `make style`)
@@ -431,7 +433,10 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
   back-pressure, the first error pulse and the HBUS accesses -- drawn with the
   same `gen_waves.py` as the timing diagrams of the specification. A new
   message format belongs in `docs/appendix/sim-report.md`, and in
-  `sim_report.py` if the timeline should count it.
+  `sim_report.py` if the timeline should count it. The waves open in Surfer
+  with every signal already arranged: `yapp_project/tb/yapp_router.sucl`
+  (*File → Run command file...*), or one click from the *Waves* column of
+  the committed report.
 * **CI.** `sim.yml` runs the Verilator regression on every push, one job per
   simulation directory, in the official `verilator/verilator` container.
   `lint.yml` runs on every push: style check → slang lint → map

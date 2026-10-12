@@ -132,6 +132,45 @@ And the same packet leaving the router on channel 2:
 `signals.csv` is the same information for the port signals in a form a
 spreadsheet or a script can read: one row per cycle.
 
+### A ready signal layout for Surfer
+
+`yapp_project/tb/yapp_router.sucl` is a Surfer command file that opens the
+signals of the router in ten groups, one color per group, buses in hex, the
+FSM state and `in_phase` by name:
+
+| Group | Signals | Scope |
+|---|---|---|
+| Clock, reset | `clock`, `reset` | `hw_top` |
+| Input port | `in_data`, `in_data_vld`, `in_suspend`, `in_phase` | `hw_top.in0`; `in_phase` from `hw_top.dut.u_tracer` |
+| Input FSM | `state`, `cur_addr`, `cur_len`, `byte_cnt`, `cur_drop`, `fifo_push`, `fifo_full` | `hw_top.dut.u_input_fsm` |
+| FIFO fill | `ch0 count` … `ch2 count`: bytes waiting in each channel FIFO | `hw_top.dut.g_ch[c].u_ch.u_fifo.count` |
+| Channel 0 / 1 / 2 | `data`, `data_vld`, `suspend` | `hw_top.ch0` … `ch2` |
+| Error | `error`, `pkt_done`, `err_timer` | `hw_top.dut`, `u_error_timer` |
+| HBUS | `hen`, `hwr_rd`, `haddr`, `hdata` | `hw_top.hbus0` |
+| Config, counters | `router_en`, `maxpktsize`, `addr0..3_cnt_reg`, `parity_err_cnt_reg`, `oversized_pkt_cnt_reg` | `hw_top.dut`, `u_regs` |
+
+Three ways to use it:
+
+* **One click.** The *Waves* column of `yapp_project/regression/index.md` (and
+  the line under the result in every `timeline.md`) opens
+  [Surfer's web app](https://app.surfer-project.org/) with that run's `.fst`
+  and the layout, both read from GitHub.
+* **A local file in the web app or the desktop Surfer.** Open the `.fst`, then
+  *File → Run command file...* and pick `yapp_router.sucl`. *File → Switch
+  file...* then moves to another test and keeps the list.
+* **Command line:** `surfer backpressure_test_s1.fst -c yapp_project/tb/yapp_router.sucl`.
+
+The first packet of `backpressure_test` (seed 1) in this layout: the header
+`de` (`HEADER`, one cycle) goes to channel 2, `ch2 count` climbs to 16, the
+FIFO is full and `in_suspend` holds byte `49`:
+
+![Surfer with the YAPP router layout](../assets/sim/surfer_layout.png)
+
+The layout is written by `scripts/surfer_layout.py` (`LAYOUT` at the top):
+edit it there and run `python3 scripts/surfer_layout.py` to rewrite the
+`.sucl`. To keep your own arrangement after changing it in Surfer, use
+*File → Save state as...* and *File → Load state...* next time.
+
 ### Which signals to look at
 
 Following one packet from the driver to a channel (Surfer: click a scope in the

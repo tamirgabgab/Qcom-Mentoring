@@ -465,6 +465,20 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    הוא עובד עם **Surfer בדפדפן** (app.surfer-project.org, גרירת ה-FST). הדרכתי אותו: Scopes/Variables, `+` = קבוצה, Name → Global,
    Format → Clock (קווים על עליות, Settings → Clock highlighting), Hex. אם ישאל על GTKWave מותקן: MSYS2 `pacman -S
    mingw-w64-ucrt-x86_64-gtkwave`. הוצע ועדיין לא נבחר: קובצי `.gtkw` מוכנים לכל טסט, `.surfer/config.toml` בריפו.
+10. **סבב 4: layout מוכן ל-Surfer** (בקשת תמיר: "קונפיגורציה נוחה עם כל הסיגנלים, כניסות, יציאות, HBUS").
+   `scripts/surfer_layout.py` (`LAYOUT` בראש הקובץ) כותב את `yapp_project/tb/yapp_router.sucl`: 10 קבוצות צבעוניות
+   (Clock/reset, Input port + `in_phase`, Input FSM, FIFO fill = `u_fifo.count` ×3 בשם `chN count`, Channel 0/1/2, Error,
+   HBUS, Config/counters), hex על buses, Clock על השעון, Local names, clock highlight Line. **מתכון הפקודות** (נבדק בקוד
+   libsurfer): `variable_add` מוסיף אחרי ה-item ה-focused ומעביר אליו focus רק אם יש focus; `group_marked` עוטף את ה-focused
+   ומפקס את הקבוצה; קבוצה פתוחה ב-focus → `variable_add` נכנס כילד ראשון. לכן כל קבוצה מתחילה מהסיגנל **האחרון** שלה
+   (`item_unfocus` → `variable_add` → `item_focus <row>`), עוטפים, `item_rename`, ואז שאר הסיגנלים לפי הסדר. אינדקס
+   `item_focus` = מספר השורה ב-hex באותיות a..p. **אומת** עם Surfer 0.7 שנבנה מהמקור (`cargo build --release -p surfer`
+   מ-gitlab, ~18 דק'; app.surfer-project.org חסום ב-proxy, gitlab ו-crates פתוחים; צריך `apt install libxkbcommon-x11-0`) תחת
+   Xvfb + `import` לצילום: backpressure/parity_error/hbus_protocol, 0 שגיאות, גם `load_url` + `run_command_file_from_url`.
+   **קישור בלחיצה אחת:** ל-web app יש `?load_url=<fst>&startup_commands=<cmds>`; `surfer_layout.surfer_url()` בונה אותו
+   מ-raw.githubusercontent (הריפו public, CORS `*`). `sim_report.py` מוסיף עמודת **Waves** ל-`index.md` ושורה ב-`timeline.md`
+   רק כשהדוח נכתב לתוך הריפו (לא תחת `build/`). תיעוד: סעיף "A ready signal layout for Surfer" ב-`sim-report.md` +
+   `docs/assets/sim/surfer_layout.png` (צילום Surfer, backpressure s1, 245–455ns).
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור
