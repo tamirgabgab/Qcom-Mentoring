@@ -136,7 +136,8 @@ spreadsheet or a script can read: one row per cycle.
 
 `yapp_project/tb/yapp_router.sucl` is a Surfer command file that opens the
 signals of the router in ten groups, one color per group, buses in hex, the
-FSM state and `in_phase` by name, plus the two memories of the spec, folded:
+FSM state and `in_phase` by name, plus the two memories of the spec, folded.
+Variable names are full paths (*Settings → Variable names → Global*):
 
 | Group | Signals | Scope |
 |---|---|---|

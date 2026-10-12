@@ -468,7 +468,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 10. **סבב 4: layout מוכן ל-Surfer** (בקשת תמיר: "קונפיגורציה נוחה עם כל הסיגנלים, כניסות, יציאות, HBUS").
    `scripts/surfer_layout.py` (`LAYOUT` בראש הקובץ) כותב את `yapp_project/tb/yapp_router.sucl`: 10 קבוצות צבעוניות
    (Clock/reset, Input port + `in_phase`, Input FSM, FIFO fill = `u_fifo.count` ×3 בשם `chN count`, Channel 0/1/2, Error,
-   HBUS, Config/counters), hex על buses, Clock על השעון, Local names, clock highlight Line. **מתכון הפקודות** (נבדק בקוד
+   HBUS, Config/counters), hex על buses, Clock על השעון, שמות Global (בקשת תמיר; = Settings → Variable names → Global), clock highlight Line. **מתכון הפקודות** (נבדק בקוד
    libsurfer): `variable_add` מוסיף אחרי ה-item ה-focused ומעביר אליו focus רק אם יש focus; `group_marked` עוטף את ה-focused
    ומפקס את הקבוצה; קבוצה פתוחה ב-focus → `variable_add` נכנס כילד ראשון. לכן כל קבוצה מתחילה מהסיגנל **האחרון** שלה
    (`item_unfocus` → `variable_add` → `item_focus <row>`), עוטפים, `item_rename`, ואז שאר הסיגנלים לפי הסדר. אינדקס

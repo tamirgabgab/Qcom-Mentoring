@@ -151,7 +151,9 @@ def commands():
         row += 1
     out += ["# The view",
             "item_unfocus",
-            "variable_force_name_type Local",
+            # = Settings -> Variable names -> Global: full paths (hw_top.ch0.data), and the
+            # default for variables added later. Labels set with item_rename stay.
+            "variable_force_name_type Global",
             "preference_set_clock_highlight Line",
             "zoom_fit"]
     return "\n".join(out) + "\n"
