@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="871" height="382" viewBox="0 0 871 382" font-family="monospace" font-size="12">
+<style>.lbl{fill:#444}.sig{fill:none;stroke:#1a5fb4;stroke-width:1.6}.clk{fill:none;stroke:#555;stroke-width:1.4}.bus{fill:#e8f0fe;stroke:#1a5fb4;stroke-width:1.2}.idle{stroke:#999;stroke-width:1.2;stroke-dasharray:0}.z{stroke:#999;stroke-dasharray:3 3}.txt{fill:#1a1a1a;text-anchor:middle}.grid{stroke:#ddd;stroke-width:0.8;stroke-dasharray:2 3}.note{fill:#c01c28;font-size:11px}@media (prefers-color-scheme: dark){.lbl{fill:#ccc}.clk{stroke:#aaa}.txt{fill:#eee}.bus{fill:#1e2a44}.grid{stroke:#444}}</style>
+<text class="lbl" x="8" y="16" font-weight="bold">reg_function_test s2: reset and the first cycles</text>
+<line class="grid" x1="118" y1="36" x2="118" y2="334"/>
+<line class="grid" x1="162" y1="36" x2="162" y2="334"/>
+<line class="grid" x1="206" y1="36" x2="206" y2="334"/>
+<line class="grid" x1="250" y1="36" x2="250" y2="334"/>
+<line class="grid" x1="294" y1="36" x2="294" y2="334"/>
+<line class="grid" x1="338" y1="36" x2="338" y2="334"/>
+<line class="grid" x1="382" y1="36" x2="382" y2="334"/>
+<line class="grid" x1="426" y1="36" x2="426" y2="334"/>
+<line class="grid" x1="470" y1="36" x2="470" y2="334"/>
+<line class="grid" x1="514" y1="36" x2="514" y2="334"/>
+<line class="grid" x1="558" y1="36" x2="558" y2="334"/>
+<line class="grid" x1="602" y1="36" x2="602" y2="334"/>
+<line class="grid" x1="646" y1="36" x2="646" y2="334"/>
+<line class="grid" x1="690" y1="36" x2="690" y2="334"/>
+<line class="grid" x1="734" y1="36" x2="734" y2="334"/>
+<text class="lbl" x="110" y="54.2" text-anchor="end">clock</text>
+<path class="clk" d="M118,62 L118,36 L140.0,36 L140.0,62 L162,62 L162,62 L162,36 L184.0,36 L184.0,62 L206,62 L206,62 L206,36 L228.0,36 L228.0,62 L250,62 L250,62 L250,36 L272.0,36 L272.0,62 L294,62 L294,62 L294,36 L316.0,36 L316.0,62 L338,62 L338,62 L338,36 L360.0,36 L360.0,62 L382,62 L382,62 L382,36 L404.0,36 L404.0,62 L426,62 L426,62 L426,36 L448.0,36 L448.0,62 L470,62 L470,62 L470,36 L492.0,36 L492.0,62 L514,62 L514,62 L514,36 L536.0,36 L536.0,62 L558,62 L558,62 L558,36 L580.0,36 L580.0,62 L602,62 L602,62 L602,36 L624.0,36 L624.0,62 L646,62 L646,62 L646,36 L668.0,36 L668.0,62 L690,62 L690,62 L690,36 L712.0,36 L712.0,62 L734,62"/>
+<text class="lbl" x="110" y="98.2" text-anchor="end">reset</text>
+<path class="sig" d="M140.0,80 L184.0,80 L184.0,80 L228.0,80 L228.0,80 L272.0,80 L272.0,80 L316.0,80 L316.0,80 L316.0,106 L360.0,106 L360.0,106 L404.0,106 L404.0,106 L448.0,106 L448.0,106 L492.0,106 L492.0,106 L536.0,106 L536.0,106 L580.0,106 L580.0,106 L624.0,106 L624.0,106 L668.0,106 L668.0,106 L712.0,106 L712.0,106 L756.0,106"/>
+<text class="lbl" x="110" y="142.2" text-anchor="end">in_data_vld</text>
+<path class="sig" d="M140.0,150 L184.0,150 L184.0,150 L228.0,150 L228.0,150 L272.0,150 L272.0,150 L316.0,150 L316.0,150 L360.0,150 L360.0,150 L404.0,150 L404.0,150 L448.0,150 L448.0,150 L492.0,150 L492.0,150 L536.0,150 L536.0,150 L580.0,150 L580.0,150 L624.0,150 L624.0,150 L668.0,150 L668.0,150 L712.0,150 L712.0,150 L756.0,150"/>
+<text class="lbl" x="110" y="186.2" text-anchor="end">in_data</text>
+<line class="idle" x1="140.0" y1="181.0" x2="184.0" y2="181.0"/>
+<line class="idle" x1="184.0" y1="181.0" x2="228.0" y2="181.0"/>
+<line class="idle" x1="228.0" y1="181.0" x2="272.0" y2="181.0"/>
+<line class="idle" x1="272.0" y1="181.0" x2="316.0" y2="181.0"/>
+<line class="idle" x1="316.0" y1="181.0" x2="360.0" y2="181.0"/>
+<line class="idle" x1="360.0" y1="181.0" x2="404.0" y2="181.0"/>
+<line class="idle" x1="404.0" y1="181.0" x2="448.0" y2="181.0"/>
+<line class="idle" x1="448.0" y1="181.0" x2="492.0" y2="181.0"/>
+<line class="idle" x1="492.0" y1="181.0" x2="536.0" y2="181.0"/>
+<line class="idle" x1="536.0" y1="181.0" x2="580.0" y2="181.0"/>
+<line class="idle" x1="580.0" y1="181.0" x2="624.0" y2="181.0"/>
+<line class="idle" x1="624.0" y1="181.0" x2="668.0" y2="181.0"/>
+<line class="idle" x1="668.0" y1="181.0" x2="712.0" y2="181.0"/>
+<line class="idle" x1="712.0" y1="181.0" x2="756.0" y2="181.0"/>
+<text class="lbl" x="110" y="230.2" text-anchor="end">in_suspend</text>
+<path class="sig" d="M118,238 L162,238 L162,238 L206,238 L206,238 L250,238 L250,238 L294,238 L294,238 L338,238 L338,238 L382,238 L382,238 L426,238 L426,238 L470,238 L470,238 L514,238 L514,238 L558,238 L558,238 L602,238 L602,238 L646,238 L646,238 L690,238 L690,238 L734,238"/>
+<text class="lbl" x="110" y="274.2" text-anchor="end">router_en</text>
+<path class="sig" d="M118,256 L162,256 L162,256 L206,256 L206,256 L250,256 L250,256 L294,256 L294,256 L338,256 L338,256 L382,256 L382,256 L426,256 L426,256 L470,256 L470,256 L514,256 L514,256 L558,256 L558,256 L602,256 L602,256 L646,256 L646,256 L690,256 L690,256 L734,256"/>
+<text class="lbl" x="110" y="318.2" text-anchor="end">maxpktsize</text>
+<path class="bus" d="M118,313.0 L123,300 L729,300 L734,313.0 L729,326 L123,326 Z"/>
+<text class="txt" x="426.0" y="317.0">63</text>
+<text class="note" x="118" y="358">cycle 0 = rising edge at t = 5 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
+</svg>

@@ -10,5 +10,5 @@ top.sv
 
 // Tests: base_test | short_packet_test | set_config_test
 +UVM_TESTNAME=base_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random

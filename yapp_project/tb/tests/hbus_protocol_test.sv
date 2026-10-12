@@ -53,6 +53,7 @@ task hbus_protocol_test::access_checks();
   vif = tb.hbus.monitor.vif;
 
   // 1. write, read back, and the monitor saw both cycles
+  stage("1. raw HBUS write 0x2a to ctrl_reg, read it back, the monitor counts one of each");
   writes_before = tb.hbus.monitor.num_writes;
   reads_before  = tb.hbus.monitor.num_reads;
   bus_write(16'h1000, 8'h2a);
@@ -70,6 +71,7 @@ task hbus_protocol_test::access_checks();
   end
 
   // 2. hen is low again: the DUT must have let go of the data bus
+  stage("2. after the read the DUT releases hdata (tri-state)");
   @(posedge vif.clock);
 `ifdef VERILATOR
   // two-state simulator: a wire has no 'z, so check that neither driver is enabled
@@ -83,6 +85,7 @@ task hbus_protocol_test::access_checks();
   end
 
   // 3. unmapped addresses: write something, read 0x00
+  stage($sformatf("3. %0d unmapped addresses: a write is ignored, a read returns 0x00", $size(UNMAPPED)));
   foreach (UNMAPPED[i]) begin
     bus_write(UNMAPPED[i], 8'ha5);
     bus_read(UNMAPPED[i], data);
@@ -93,6 +96,7 @@ task hbus_protocol_test::access_checks();
   `uvm_info("HBUS_PROTO", $sformatf("%0d unmapped addresses read 0x00", $size(UNMAPPED)), UVM_NONE)
 
   // 4. a read-only register ignores a write
+  stage("4. a raw write to the read-only parity_err_cnt_reg is ignored");
   bus_write(16'h1004, 8'h77);
   bus_read(16'h1004, data);
   if (data != 8'h00) begin

@@ -1,13 +1,17 @@
 # HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
 
-> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08) ובסשן השישי (2026-10-09: סימולציה
-> ב-Verilator). סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
+> נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08), בסשן השישי (2026-10-09: סימולציה
+> ב-Verilator) ובסשן השביעי (2026-10-12: לוגים קריאים, tracer של ה-DUT, דוח רגרסיה עם צירי זמן ותמונות גלים).
+> סשן חדש לא זוכר כלום — זה המקור היחיד להקשר, יחד עם `CLAUDE.md` בשורש.
 > HEAD: ראה "סטטוס git" בסעיף 2. `main` תמיד מצביע לאותו commit כמו ענף העבודה. עץ העבודה נקי.
 > CI (lint + sim + docs) — ראה סעיף 2. האתר: https://tamirgabgab.github.io/Qcom-Mentoring/
 > **לאן ממשיכים:** סעיף 8. מצב בסוף סשן 6: ה-Test plan **הושלם** (55 covered + 1 excluded), ספריית `rnd::` בכל הקוד,
 > שני סבבי UX במפה **הושלמו** (9 מ-10 ההצעות; תמיר ויתר על עקיפת מכשולים מלאה לחצים). הקוד **רץ** ב-Verilator
 > (`make sim` / `make regress` 156/156, Codespaces, workflow `sim`); Xcelium עדיין לא. מה שנשאר פתוח תלוי בתמיר:
 > מעבר על ניסוחי ה-Test plan מול ה-PDF (רק אצלו), הרצה ב-Xcelium אם ישיג גישה, ותוכן לימודי לאתר.
+> **סשן 7:** הלוגים מספרים את הסיפור ([TEST] באנר+שלבים+פסק דין, שורה לאירוע בכל UVC, [DUT] מ-`yapp_router_tracer`),
+> `make regress WAVES=1` מקליט FST + CSV סיגנלים לכל ריצה, `make sim-report` בונה `build/sim/report/` (לוג, timeline,
+> גלים, תמונות SVG לכל ריצה) + `regression_report.zip`. רגרסיית הפרויקט: 48/48 (16 טסטים × 3 seeds).
 
 ---
 
@@ -95,6 +99,12 @@
   ב-Verilator 5.052 (מקומית ב-seed 1–2 וב-CI ב-2 seeds). `coverage_test` סוגר `yapp_pkt_cg` ב-100%,
   `backpressure_test`: in_suspend עלה 7 פעמים, 6/6 matched; `parity_error_test`: 12 פולסים ל-12 פקטות, 2..10 מחזורים.
   workflow `sim` ב-GitHub: job לכל ספרייה, ~3–4 דקות בסך הכול.
+- **לוגים ודוח (סשן 7):** `make regress ONLY=yapp_project SEEDS=3 WAVES=1` → 48/48 PASS בדקה אחת (אחרי קימפול של ~4 דק');
+  `make sim-report ONLY=yapp_project` → `build/sim/report/index.md`, תיקייה לכל ריצה (`<test>_s<seed>.log`, `timeline.md/.csv`,
+  `<test>_s<seed>.fst`, `signals.csv`, `wave_*.svg`), `all_logs.log`, ו-`build/sim/regression_report.zip` (~2 MB, 18 MB פרוס).
+  **הדוח committed ב-`yapp_project/regression/`** (בקשת תמיר, סבב 2 של סשן 7; `.gitignore` מחריג את ה-`*.log` שם). אחרי
+  שינוי בטסטים/UVCs: להריץ מחדש ולעשות commit לתיקייה (18 MB, רובם לוגים; ה-FST רק 660 KB).
+  התמונות נבדקו ויזואלית (Playwright → PNG): פקטה נכנסת/יוצאת, suspend, error pulse, HBUS write/read.
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
 - `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
@@ -415,10 +425,67 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      גדולה מהקנבס (`_cw/_ch` נשמרים ב-`fit`/`afterResize`); לחיצה/גרירה = pan למרכז. `readme_shots.mjs` מסתיר
      גם אותה. אימות: scratchpad `ux/check2.mjs` (16 בדיקות) + `check.mjs` (33) עוברים; map-check, mkdocs strict.
 
+**סשן 7 (2026-10-12) — לוגים קריאים, tracer, דוח רגרסיה (ענף `claude/confident-rubin-m1zkvc` שוב):**
+1. תמיר ביקש: רגרסיה + איגוד כל הלוגים בקובץ עם שם טסט + seed; הדפסות `uvm_info` שמתארות את מהלך הטסט ואת פעולות
+   כל הרכיבים (ואפילו הארכיטקטורה); סקריפט שמחלץ מהלוג טרנזקציות ואירועי DUT; גלים ל-GTKWave ותמונות. שאלות מנחות —
+   תשובותיו: **הפרויקט בלבד** (לא הלאבים), **3 seeds**, **שורה לאירוע ב-UVM_MEDIUM + פקטה מלאה רק ב-UVM_HIGH**,
+   **FST + ציר זמן + תמונות אוטומטיות**. הנחה שלי (לא נשאל): הלוגים לא נכנסים לריפו, רק ל-`build/` ול-zip.
+2. **`yapp_project/tb/yapp_router_tracer.sv`** (חדש): מודול testbench שנקשר ל-DUT עם `bind` (המודול `yapp_router_tracer_bind`
+   באותו קובץ, רשום ב-`run.f` אחרי `tb_top.sv`; ה-RTL לא נגעו). מדפיס `[DUT]` ב-posedge עם הערכים שה-DUT דוגם: `RESET`,
+   `IN pkt #n header: addr len -> channel X | DROP (reason)`, `IN pkt #n complete: … parity=ok|BAD forwarded|dropped, bytes/cycles/held`,
+   `SUSPEND asserted: FIFO x full, byte 0x.. held` / `released after N cycle(s)`, `OUT chX pkt #n start/done`, `ERROR pulse, N cycle(s)
+   after the bad-parity packet` (ב-`always @(posedge error)` — תואם ל-`error_pulse_checker`), `CONFIG router_en/maxpktsize`; ב-UVM_HIGH
+   גם `HBUS write/read` עם שם הרגיסטר ו-`FIFO x full/has room`. עם `+trace_csv=<file>` כותב שורה לכל negedge (ערכי הפורטים
+   + מצב ה-FSM דרך הפורט `fsm_state(u_input_fsm.state)`). **סבב 3:** סיגנל `in_phase` (enum IDLE/HEADER/PAYLOAD/PARITY)
+   לצופה הגלים — סוג הבית שעל `in_data`, מתחלף בירידה (`bus_state <= fsm_state` ב-negedge + always_comb), כך ש-HEADER מחזור
+   אחד בדיוק; עמודת `phase` ב-CSV ושורת `in_phase` בתמונות. תמיר שאל "למה אין header בגלים": ה-FSM מקבל את ה-header ב-IDLE —
+   מצב HEADER אמיתי היה מוסיף מחזור לפקטה ומשנה את הפרוטוקול, לכן לא נגעתי ב-RTL. מלכודות Verilator שנתקלתי בהן: `cond ? "ok" : "BAD"` מרופד ל-"\0ok"
+   (→ if/else למשתנה string), ו-`$fdisplay(fd, {"a","b"})` מדפיס מספר (→ literal אחד).
+3. **הדפסות ב-UVCs** (שורה אחת, פורמט קבוע, UVM_MEDIUM; ה-`sprint()` עבר ל-UVM_HIGH): driver `TX pkt #n: addr len parity delay`
+   + `TX pkt #n accepted by the DUT`; monitor `RX pkt #n on the input: … gap=`; channel driver `chX: packet consumed`; channel monitor
+   `chX RX pkt #n: …`; hbus monitor `Collected …` (MEDIUM במקום LOW); scoreboard `chX pkt matched: addr len (k matched so far)`;
+   reference `Packet forwarded: … -> channel X` ו-drops עם addr/len. `parity_text()` חדש ב-`yapp_packet`/`channel_packet`.
+   **`+UVM_VERBOSITY=UVM_MEDIUM` בכל run.f** (פרויקט + לאבים 3–11C; lab02 נשאר HIGH). דפי לאבים 3/4/6 עודכנו ("TX pkt" במקום
+   "Packet is tables").
+4. **טסטים:** `base_test` — `start_of_simulation_phase` מדפיס `=== <test>  seed <n> ===` (`+SEED` מ-sim.py או `+SVSEED`),
+   `stage(string)` מדפיס `[TEST] STAGE: …`, `final_phase` מדפיס `=== … PASSED|FAILED (e UVM_ERROR, f UVM_FATAL) ===`. כל 16
+   הטסטים קוראים `stage()` בכל שלב (reg_access/reg_bit_walk: stage לכל רגיסטר במקום ה-`---` headers).
+5. **`scripts/sim.py`:** `+SEED=<n>` לכל ריצה; `waves/<test>_s<seed>.fst` + `trace/<test>_s<seed>.csv` (עם `--waves`);
+   `regress --waves`; Makefile `make regress WAVES=1`, `make sim-report [ONLY=]`.
+6. **`scripts/sim_report.py`** (חדש): מפרסר לוגים (regex של פורמט UVM + `ROUTER DROPS PACKET`), מסווג who לפי נתיב הרכיב,
+   סופר (packets sent/in/fwd/drop+reasons/out per channel/matched/suspends/pulses/hbus), כותב `timeline.md` (verdict, summary,
+   stages, pictures, כל האירועים) + `timeline.csv`, מעתיק לוג/FST/CSV, ומצייר SVG עם `gen_waves.render()` (קיבל `out_dir`,
+   `title`, `quiet`, רוחב לפי notes) מחלונות של `signals.csv` סביב האירוע הראשון מכל סוג: reset, first_packet_in, first_packet_out,
+   first_suspend, first_error_pulse, first_hbus_write/read. `index.md` + `all_logs.log` + `--zip`.
+7. **המפה:** `extract.py` מדלג על מופעי `bind` (`_from_bind` דרך `BindDirectiveSyntax` בשרשרת ה-syntax) — אחרת ה-tracer הופיע
+   כתת-מודול של ה-DUT ו-`test_model.py` נכשל. map-check OK (250 nodes, 297 edges).
+8. **תיעוד:** `docs/appendix/sim-report.md` (חדש, ב-nav: "Logs, timelines and waves") עם דוגמת לוג, טבלת השורות, מבנה הדוח,
+   טבלת התמונות, שתי תמונות לדוגמה מ-`docs/assets/sim/` (הועתקו מהדוח של backpressure_test s1), פתיחת FST ב-GTKWave/Surfer/VaporView.
+9. **גלים אצל תמיר (סבב 3):** FSDB לא אפשרי (קנייני של Synopsys, דורש VCS/Verdi). מה שהוריד בהתחלה היה קוד המקור של GTKWave;
+   הוא עובד עם **Surfer בדפדפן** (app.surfer-project.org, גרירת ה-FST). הדרכתי אותו: Scopes/Variables, `+` = קבוצה, Name → Global,
+   Format → Clock (קווים על עליות, Settings → Clock highlighting), Hex. אם ישאל על GTKWave מותקן: MSYS2 `pacman -S
+   mingw-w64-ucrt-x86_64-gtkwave`. הוצע ועדיין לא נבחר: קובצי `.gtkw` מוכנים לכל טסט, `.surfer/config.toml` בריפו.
+10. **סבב 4: layout מוכן ל-Surfer** (בקשת תמיר: "קונפיגורציה נוחה עם כל הסיגנלים, כניסות, יציאות, HBUS").
+   `scripts/surfer_layout.py` (`LAYOUT` בראש הקובץ) כותב את `yapp_project/tb/yapp_router.sucl`: 10 קבוצות צבעוניות
+   (Clock/reset, Input port + `in_phase`, Input FSM, FIFO fill = `u_fifo.count` ×3 בשם `chN count`, Channel 0/1/2, Error,
+   HBUS, Config/counters), hex על buses, Clock על השעון, Local names, clock highlight Line. **מתכון הפקודות** (נבדק בקוד
+   libsurfer): `variable_add` מוסיף אחרי ה-item ה-focused ומעביר אליו focus רק אם יש focus; `group_marked` עוטף את ה-focused
+   ומפקס את הקבוצה; קבוצה פתוחה ב-focus → `variable_add` נכנס כילד ראשון. לכן כל קבוצה מתחילה מהסיגנל **האחרון** שלה
+   (`item_unfocus` → `variable_add` → `item_focus <row>`), עוטפים, `item_rename`, ואז שאר הסיגנלים לפי הסדר. אינדקס
+   `item_focus` = מספר השורה ב-hex באותיות a..p. **אומת** עם Surfer 0.7 שנבנה מהמקור (`cargo build --release -p surfer`
+   מ-gitlab, ~18 דק'; app.surfer-project.org חסום ב-proxy, gitlab ו-crates פתוחים; צריך `apt install libxkbcommon-x11-0`) תחת
+   Xvfb + `import` לצילום: backpressure/parity_error/hbus_protocol, 0 שגיאות, גם `load_url` + `run_command_file_from_url`.
+   **קישור בלחיצה אחת:** ל-web app יש `?load_url=<fst>&startup_commands=<cmds>`; `surfer_layout.surfer_url()` בונה אותו
+   מ-raw.githubusercontent (הריפו public, CORS `*`). `sim_report.py` מוסיף עמודת **Waves** ל-`index.md` ושורה ב-`timeline.md`
+   רק כשהדוח נכתב לתוך הריפו (לא תחת `build/`). תיעוד: סעיף "A ready signal layout for Surfer" ב-`sim-report.md` +
+   `docs/assets/sim/surfer_layout.png` (צילום Surfer, backpressure s1, 245–455ns).
+   `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
+
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. סבבים 4–5 (UX) נדחפו; מה שנשאר מרשימת ה-UX — סעיף 8 פריט 3.
 
 ### סטטוס git
+- ענף סשן 7: `claude/confident-rubin-m1zkvc` (הענף של סשן 5, קודם ל-`e9e0af2` = main של סשן 6, ואז commit הסשן; `main` ff).
 - ענף סשן 6: `claude/hopeful-gates-acsuwt` (= `main`, ff אחרי כל push). commits: `63b94b9` (flow + תיקונים),
   `05d4e2c` (Lab 9), `2af0853` (תיעוד/HANDOFF), `62c6e7f` + `4de60f4` (סבב 2: `rnd::` + begin/end), `77bae40` +
   `7984a96` (סבב 3: Test plan הושלם), `f1bd720` (סבב 4: UX), `a2b4b0b` (סבב 5: UX המשך), ואחריו commit ה-HANDOFF/README.
@@ -538,7 +605,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | `scripts/lint.py` | elaboration של `run.f` עם pyslang; `--all`, `--quiet`; `standard_args()`, `compile_run_f()` (משמש גם את ה-extractor) | — |
 | `scripts/get_uvm.sh` | מוריד UVM של Accellera ל-`scripts/uvm_src/` (gitignored) | — |
 | **`scripts/sv_style.py`** | כללי הסגנון: hoist config locals, wrap bodies, delimiters, תיקון `extern //`; `--fix/--check/--diff` | **חדש** |
-| `scripts/gen_waves.py` | SVG של waveforms + **`packet_structure()`** → `docs/assets/packet_structure.svg` | + figure |
+| `scripts/gen_waves.py` | SVG של waveforms + **`packet_structure()`** → `docs/assets/packet_structure.svg`; **סשן 7: `render(out_dir, title, quiet)` משמש גם את `sim_report.py`** | + figure |
+| **`scripts/sim_report.py`** | **סשן 7:** לוגים → `build/sim/report/` (timeline md/csv, FST, signals.csv, `wave_*.svg`), `index.md`, `all_logs.log`, zip | **חדש (סשן 7)** |
+| **`yapp_project/tb/yapp_router_tracer.sv`** | **סשן 7:** observer שנקשר ל-DUT ב-`bind`: שורות `[DUT]` + `+trace_csv` (CSV לכל מחזור) | **חדש (סשן 7)** |
+| **`docs/appendix/sim-report.md`** | **סשן 7:** איך לקרוא לוג, מבנה הדוח, התמונות, פתיחת גלים | **חדש (סשן 7)** |
 | `scripts/project_map/extract.py` | pyslang → מבנה גולמי (classes, methods incl. extern prototypes, modules, ports, connects, vif) | — |
 | `scripts/project_map/model.py` | מיזוג + annotations → nodes/edges/paths/files; `wire_module` לחיווט מודולים | — |
 | `scripts/project_map/layout.py` | גיאומטריית הסצנות; `arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`; **סשן 5: `port_on_left()`, DUT `dut_tlm` עם `pins` ב-`TlmLayout.scene`** | כן (+סשן 5) |
@@ -728,7 +798,10 @@ node scripts/project_map/test_sim.mjs       # בדיקות ה-RouterModel לבד
 # סימולציה חינמית (Verilator; בקונטיינר: PATH של Verilator — ראה למטה)
 bash scripts/setup_sim.sh                   # פעם אחת (בקונטיינר חדש: ~15 דק' בנייה; או PREFIX=...)
 cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1 SEED=3
-make regress [SEEDS=2] [ONLY=lab09]         # מהשורש; טבלה ב-build/sim/regress.md
+make regress [SEEDS=2] [ONLY=lab09] [WAVES=1]   # מהשורש; טבלה ב-build/sim/regress.md; WAVES=1 = FST + signals CSV לכל ריצה
+make regress ONLY=yapp_project SEEDS=3 WAVES=1 && make sim-report ONLY=yapp_project   # הדוח: build/sim/report/ + regression_report.zip
+python3 scripts/sim_report.py --only yapp_project --zip
+make sim-report ONLY=yapp_project OUT=yapp_project/regression   # הדוח ה-committed (תמיר ביקש אותו בתוך yapp_project)
 python3 scripts/sim.py run labs/lab07_integ/tb -t simple_test
 
 # סימולציה (Xcelium — אם תמיר ישיג גישה)
@@ -738,7 +811,7 @@ cd labs/lab07_integ/tb && make run TEST=simple_test
 cd test_install && xrun -f run.f
 
 # git (הכללים של תמיר)
-git push -u origin <הענף של הסשן>          # סשן 5: claude/confident-rubin-m1zkvc
+git push -u origin <הענף של הסשן>          # סשן 5+7: claude/confident-rubin-m1zkvc
 git branch -f main <הענף של הסשן> && git push origin main
 
 # מסירה

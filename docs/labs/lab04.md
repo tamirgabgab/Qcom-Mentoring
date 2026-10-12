@@ -75,8 +75,8 @@ make run TEST=set_config_test       # passive agent, nothing runs
 
 **Expected:**
 
-* `short_packet_test`: each `Packet is` table starts with
-  `short_yapp_packet`, `length` < 15, no `addr = 2`.
+* `short_packet_test`: every `TX pkt` line has `len` < 15 and never
+  `addr=2`; at `UVM_HIGH` each `Packet is` table starts with `short_yapp_packet`.
 * `set_config_test`: topology shows `tb.yapp.agent` with `is_active
   UVM_PASSIVE` and only a `monitor` below it. **No** configuration-usage
   report at the end.

@@ -56,9 +56,11 @@ make waves TEST=backpressure_test              # open the waves
 
 `make sim` compiles first when a source changed; choosing another test does not
 recompile (the test is picked at run time with `+UVM_TESTNAME`). Everything goes
-to `build/sim/<directory>/`: `compile.log`, `logs/<test>_s<seed>.log`,
-`waves/<test>.fst`. The plusargs of `run.f` (`+UVM_VERBOSITY=...`) are passed
-on; more can be added with `SIM_OPTS="+UVM_VERBOSITY=UVM_HIGH"`.
+to `build/sim/<directory>/`: `compile.log`, `logs/<test>_s<seed>.log`, and
+with `WAVES=1` also `waves/<test>_s<seed>.fst` and `trace/<test>_s<seed>.csv`
+(the per-cycle signal trace, see [Logs, timelines and waves](sim-report.md)).
+The plusargs of `run.f` (`+UVM_VERBOSITY=...`) are passed on, plus `+SEED=<n>`
+for the banner of the log; more can be added with `SIM_OPTS="+UVM_VERBOSITY=UVM_HIGH"`.
 
 A run **passes** when it ends normally with no `UVM_ERROR` and no `UVM_FATAL`.
 
@@ -76,8 +78,10 @@ From the root: `make sim LAB=lab07_integ TEST=simple_test`,
 
 `make regress` compiles every simulation directory listed in
 `scripts/regress.yaml` once and runs each of its tests (`SEEDS=3` for more
-seeds, `ONLY=lab09` for some directories). The table goes to
-`build/sim/regress.md`.
+seeds, `ONLY=lab09` for some directories, `WAVES=1` to record the waves and the
+signal trace of every run). The table goes to `build/sim/regress.md`;
+`make sim-report` then bundles the logs, timelines, waves and pictures of every
+run into `build/sim/report/` ([Logs, timelines and waves](sim-report.md)).
 
 The **sim** workflow of GitHub Actions (`.github/workflows/sim.yml`) runs the
 same regression on every push, one job per directory, in the official Verilator

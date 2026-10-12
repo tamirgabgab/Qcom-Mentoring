@@ -39,6 +39,7 @@ task back_to_back_test::access_checks();
     `uvm_error("GAP", "gap_seq.randomize() failed")
   end
   gaps_before = tb.yapp.agent.monitor.num_gap;
+  stage("1. yapp_gap_seq: 24 packets with gaps of 0, 1, 2 and more cycles between them");
   gap_seq.start(yapp_seqr);
 
   // let the channels deliver the last packets
@@ -49,6 +50,7 @@ task back_to_back_test::access_checks();
     @(posedge tb.yapp.agent.monitor.vif.clock);
   end
 
+  stage("2. the gap classes the monitor measured match the plan of the sequence, gap coverage 100%");
   foreach (gaps_before[i]) begin
     // the monitor skips the first packet after reset, the sequence its first packet
     measured = tb.yapp.agent.monitor.num_gap[i] - gaps_before[i];

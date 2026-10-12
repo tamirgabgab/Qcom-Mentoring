@@ -1,0 +1,11 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 0 packets collected
+0,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
+0,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
+0,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 0 reads"
+0,INFO,reference,router_reference,
+0,INFO,scoreboard,router_scoreboard,
+0,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent
+0,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, coverage 0.0%"
+0,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)"

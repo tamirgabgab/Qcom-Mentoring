@@ -56,6 +56,9 @@ class yapp_packet extends uvm_sequence_item;
   // Correct parity: XOR of header and every payload byte
   extern function bit [7:0] calc_parity();
 
+  // "good" / "bad" for the one-line log messages
+  extern function string parity_text();
+
   // Write the parity byte according to the parity_type knob.
   // A bad parity flips one random bit of the correct value.
   extern function void set_parity();
@@ -81,6 +84,14 @@ function bit [7:0] yapp_packet::calc_parity();
     calc_parity ^= payload[i];
   end
 endfunction : calc_parity
+
+//------------------------------------------------------------------------------
+function string yapp_packet::parity_text();
+  if (parity_type == GOOD_PARITY) begin
+    return "good";
+  end
+  return "bad";
+endfunction : parity_text
 
 //------------------------------------------------------------------------------
 function void yapp_packet::set_parity();

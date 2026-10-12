@@ -37,6 +37,7 @@ task uvm_reset_test::run_phase(uvm_phase phase);
   phase.raise_objection(this);
   reset_seq = uvm_reg_hw_reset_seq::type_id::create("reset_seq");
   reset_seq.model = tb.yapp_rm;
+  stage("uvm_reg_hw_reset_seq: read every register through the front door and compare with its reset value");
   reset_seq.start(null);
   phase.drop_objection(this);
 endtask : run_phase

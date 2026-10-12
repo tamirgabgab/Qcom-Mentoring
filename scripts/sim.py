@@ -6,12 +6,15 @@ source), from the same xrun-style `run.f` command files that `make run` uses.
     python3 scripts/sim.py compile  [DIR] [-D NAME]        verilate DIR/run.f
     python3 scripts/sim.py run      [DIR] [-t TEST] [--seed N] [--waves] [-D NAME]
     python3 scripts/sim.py waves    [DIR] [-t TEST]        open the last waves
-    python3 scripts/sim.py regress  [--only PATTERN] [--seeds N]
+    python3 scripts/sim.py regress  [--only PATTERN] [--seeds N] [--waves]
 
 DIR is a simulation directory (the one holding run.f); default: the current
 directory. Everything is written under build/sim/<dir>/: the executable,
-logs/<test>_s<seed>.log and waves/<test>.fst. `make compile | sim | waves` in
-a lab directory and `make regress` at the root call this script.
+logs/<test>_s<seed>.log, and with --waves also waves/<test>_s<seed>.fst and
+trace/<test>_s<seed>.csv (the per-cycle signal trace of yapp_router_tracer,
+for the pictures of scripts/sim_report.py). `make compile | sim | waves` in a
+lab directory and `make regress` at the root call this script; every run gets
++SEED=<n> so the test can print its seed in the log banner.
 
 The executable is built once per directory; the test is chosen at run time
 (+UVM_TESTNAME), so changing the test does not recompile. Verilator skips the
@@ -210,10 +213,12 @@ def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True, defines=()):
     plus = runtime_plusargs(d)
     if test:
         plus = [p for p in plus if not p.startswith("+UVM_TESTNAME=")] + [f"+UVM_TESTNAME={test}"]
-    plus += [f"+verilator+seed+{seed}", "+UVM_NO_RELNOTES"]
+    plus += [f"+verilator+seed+{seed}", f"+SEED={seed}", "+UVM_NO_RELNOTES"]
     if waves:
         os.makedirs(os.path.join(bd, "waves"), exist_ok=True)
-        plus.append("+waves=" + os.path.join(bd, "waves", f"{name}.fst"))
+        os.makedirs(os.path.join(bd, "trace"), exist_ok=True)
+        plus.append("+waves=" + os.path.join(bd, "waves", f"{name}_s{seed}.fst"))
+        plus.append("+trace_csv=" + os.path.join(bd, "trace", f"{name}_s{seed}.csv"))
     plus += list(extra)
     t0 = time.time()
     with open(log, "w") as fh:
@@ -251,7 +256,7 @@ def load_regress():
         return yaml.safe_load(fh)
 
 
-def regress(only=None, seeds=None, report=None):
+def regress(only=None, seeds=None, report=None, waves=False):
     cfg = load_regress()
     seeds = seeds or int(cfg.get("seeds", 1))
     results, broken = [], []
@@ -273,7 +278,7 @@ def regress(only=None, seeds=None, report=None):
             # point is that the checker fires (the run must then report UVM_ERROR)
             test, expect = (entry["test"], entry.get("expect")) if isinstance(entry, dict) else (entry, None)
             for seed in range(1, seeds + 1):
-                r = run_one(d, None if test == "default" else test, seed, echo=False, defines=defines)
+                r = run_one(d, None if test == "default" else test, seed, waves=waves, echo=False, defines=defines)
                 if expect == "errors":
                     if r["rc"] == 0 and r["errors"] and not r["fatals"] and r["sim_time"] != "?":
                         r["ok"], r["reason"] = True, f"expected: {r['errors']} UVM_ERROR"
@@ -312,7 +317,7 @@ def regress(only=None, seeds=None, report=None):
 # ------------------------------------------------------------------ waves
 def open_waves(d, test, defines=()):
     wdir = os.path.join(build_dir(d, defines), "waves")
-    files = sorted(glob.glob(os.path.join(wdir, f"{test or '*'}.fst")), key=os.path.getmtime)
+    files = sorted(glob.glob(os.path.join(wdir, f"{test or '*'}_s*.fst")), key=os.path.getmtime)
     if not files:
         die(f"no waves in {os.path.relpath(wdir, ROOT)}: run `make sim TEST=<test> WAVES=1` first")
     f = files[-1]
@@ -347,6 +352,7 @@ def main():
     g.add_argument("--only", action="append", help="benches whose path contains this (repeatable)")
     g.add_argument("--seeds", type=int, help="runs per test (default: seeds: in regress.yaml)")
     g.add_argument("--report", help="markdown report (default build/sim/regress.md)")
+    g.add_argument("--waves", action="store_true", help="record waves/<test>_s<seed>.fst and trace/<test>_s<seed>.csv for every run")
     ns = ap.parse_args()
 
     if ns.cmd == "compile":
@@ -360,13 +366,13 @@ def main():
         print(f"\n{'PASS' if res['ok'] else 'FAIL'}: {res['test']} seed {seed}, sim time {res['sim_time']}"
               + (f" -- {res['reason']}" if res["reason"] else "") + f"\nlog: {res['log']}")
         if ns.waves:
-            print(f"waves: {os.path.relpath(os.path.join(build_dir(d, ns.define), 'waves', res['test'] + '.fst'), ROOT)}")
+            print(f"waves: {os.path.relpath(os.path.join(build_dir(d, ns.define), 'waves', res['test'] + f'_s{seed}.fst'), ROOT)}")
         sys.exit(0 if res["ok"] else 1)
     if ns.cmd == "waves":
         open_waves(sim_dir(ns.dir), ns.test, ns.define)
         return
     if ns.cmd == "regress":
-        sys.exit(0 if regress(ns.only, ns.seeds, ns.report) else 1)
+        sys.exit(0 if regress(ns.only, ns.seeds, ns.report, ns.waves) else 1)
 
 
 if __name__ == "__main__":

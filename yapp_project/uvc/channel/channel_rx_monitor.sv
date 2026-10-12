@@ -68,8 +68,11 @@ task channel_rx_monitor::run_phase(uvm_phase phase);
                                                         : CHANNEL_BAD_PARITY;
     num_pkt_col++;
     `uvm_info(get_type_name(),
+              $sformatf("ch%0d RX pkt #%0d: addr=%0d len=%0d parity=%s", channel_id, num_pkt_col, pkt.addr,
+                        pkt.length, pkt.parity_text()), UVM_MEDIUM)
+    `uvm_info(get_type_name(),
               $sformatf("Channel %0d collected packet:\n%s", channel_id, pkt.sprint()),
-              UVM_LOW)
+              UVM_HIGH)
     if (pkt.addr != channel_id) begin
       `uvm_error(get_type_name(),
                  $sformatf("Packet with address %0d received on channel %0d",

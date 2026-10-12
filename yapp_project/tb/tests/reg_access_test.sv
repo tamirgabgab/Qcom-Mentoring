@@ -71,7 +71,8 @@ endtask : access_checks
 task reg_access_test::check_rw_register(uvm_reg rg, uvm_reg_data_t wr_val, uvm_reg_data_t poke_val);
   uvm_status_e   status;
   uvm_reg_data_t val;
-  `uvm_info("REG_ACCESS", $sformatf("--- RW register %s ---", rg.get_name()), UVM_NONE)
+  stage($sformatf("RW register %s: front-door write 0x%02h, peek, poke 0x%02h, front-door read",
+                  rg.get_name(), wr_val, poke_val));
 
   rg.write(status, wr_val);
   `uvm_info("REG_ACCESS", $sformatf("front-door write 0x%02h", wr_val), UVM_NONE)
@@ -94,7 +95,8 @@ endtask : check_rw_register
 task reg_access_test::check_ro_register(uvm_reg rg, uvm_reg_data_t poke_val, uvm_reg_data_t wr_val);
   uvm_status_e   status;
   uvm_reg_data_t val;
-  `uvm_info("REG_ACCESS", $sformatf("--- RO register %s ---", rg.get_name()), UVM_NONE)
+  stage($sformatf("RO register %s: poke 0x%02h, front-door read, write 0x%02h must be ignored",
+                  rg.get_name(), poke_val, wr_val));
 
   rg.poke(status, poke_val);
   `uvm_info("REG_ACCESS", $sformatf("poke            0x%02h", poke_val), UVM_NONE)

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="878" height="320" viewBox="0 0 878 320" font-family="monospace" font-size="12">
+<style>.lbl{fill:#444}.sig{fill:none;stroke:#1a5fb4;stroke-width:1.6}.clk{fill:none;stroke:#555;stroke-width:1.4}.bus{fill:#e8f0fe;stroke:#1a5fb4;stroke-width:1.2}.idle{stroke:#999;stroke-width:1.2;stroke-dasharray:0}.z{stroke:#999;stroke-dasharray:3 3}.txt{fill:#1a1a1a;text-anchor:middle}.grid{stroke:#ddd;stroke-width:0.8;stroke-dasharray:2 3}.note{fill:#c01c28;font-size:11px}@media (prefers-color-scheme: dark){.lbl{fill:#ccc}.clk{stroke:#aaa}.txt{fill:#eee}.bus{fill:#1e2a44}.grid{stroke:#444}}</style>
+<text class="lbl" x="8" y="16" font-weight="bold">uvm_mem_walk_test s3: first HBUS read</text>
+<line class="grid" x1="118" y1="36" x2="118" y2="246"/>
+<line class="grid" x1="162" y1="36" x2="162" y2="246"/>
+<line class="grid" x1="206" y1="36" x2="206" y2="246"/>
+<line class="grid" x1="250" y1="36" x2="250" y2="246"/>
+<line class="grid" x1="294" y1="36" x2="294" y2="246"/>
+<line class="grid" x1="338" y1="36" x2="338" y2="246"/>
+<line class="grid" x1="382" y1="36" x2="382" y2="246"/>
+<line class="grid" x1="426" y1="36" x2="426" y2="246"/>
+<line class="grid" x1="470" y1="36" x2="470" y2="246"/>
+<text class="lbl" x="110" y="54.2" text-anchor="end">clock</text>
+<path class="clk" d="M118,62 L118,36 L140.0,36 L140.0,62 L162,62 L162,62 L162,36 L184.0,36 L184.0,62 L206,62 L206,62 L206,36 L228.0,36 L228.0,62 L250,62 L250,62 L250,36 L272.0,36 L272.0,62 L294,62 L294,62 L294,36 L316.0,36 L316.0,62 L338,62 L338,62 L338,36 L360.0,36 L360.0,62 L382,62 L382,62 L382,36 L404.0,36 L404.0,62 L426,62 L426,62 L426,36 L448.0,36 L448.0,62 L470,62"/>
+<text class="lbl" x="110" y="98.2" text-anchor="end">hen</text>
+<path class="sig" d="M140.0,80 L184.0,80 L184.0,80 L184.0,106 L228.0,106 L228.0,106 L228.0,80 L272.0,80 L272.0,80 L316.0,80 L316.0,80 L316.0,106 L360.0,106 L360.0,106 L360.0,80 L404.0,80 L404.0,80 L404.0,106 L448.0,106 L448.0,106 L448.0,80 L492.0,80"/>
+<text class="lbl" x="110" y="142.2" text-anchor="end">hwr_rd</text>
+<path class="sig" d="M140.0,124 L184.0,124 L184.0,124 L184.0,150 L228.0,150 L228.0,150 L272.0,150 L272.0,150 L316.0,150 L316.0,150 L360.0,150 L360.0,150 L360.0,124 L404.0,124 L404.0,124 L404.0,150 L448.0,150 L448.0,150 L448.0,124 L492.0,124"/>
+<text class="lbl" x="110" y="186.2" text-anchor="end">haddr</text>
+<path class="bus" d="M140.0,181.0 L145.0,168 L179.0,168 L184.0,181.0 L179.0,194 L145.0,194 Z"/>
+<text class="txt" x="162.0" y="185.0">1101</text>
+<line class="idle" x1="184.0" y1="181.0" x2="228.0" y2="181.0"/>
+<path class="bus" d="M228.0,181.0 L233.0,168 L311.0,168 L316.0,181.0 L311.0,194 L233.0,194 Z"/>
+<text class="txt" x="272.0" y="185.0">1100</text>
+<line class="idle" x1="316.0" y1="181.0" x2="360.0" y2="181.0"/>
+<path class="bus" d="M360.0,181.0 L365.0,168 L399.0,168 L404.0,181.0 L399.0,194 L365.0,194 Z"/>
+<text class="txt" x="382.0" y="185.0">1100</text>
+<line class="idle" x1="404.0" y1="181.0" x2="448.0" y2="181.0"/>
+<path class="bus" d="M448.0,181.0 L453.0,168 L487.0,168 L492.0,181.0 L487.0,194 L453.0,194 Z"/>
+<text class="txt" x="470.0" y="185.0">1102</text>
+<text class="lbl" x="110" y="230.2" text-anchor="end">hdata</text>
+<path class="bus" d="M118,225.0 L123,212 L157,212 L162,225.0 L157,238 L123,238 Z"/>
+<text class="txt" x="140.0" y="229.0">FE</text>
+<line class="idle" x1="162" y1="225.0" x2="206" y2="225.0"/>
+<path class="bus" d="M206,225.0 L211,212 L289,212 L294,225.0 L289,238 L211,238 Z"/>
+<text class="txt" x="250.0" y="229.0">FF</text>
+<line class="idle" x1="294" y1="225.0" x2="338" y2="225.0"/>
+<path class="bus" d="M338,225.0 L343,212 L377,212 L382,225.0 L377,238 L343,238 Z"/>
+<text class="txt" x="360.0" y="229.0">00</text>
+<line class="idle" x1="382" y1="225.0" x2="426" y2="225.0"/>
+<path class="bus" d="M426,225.0 L431,212 L465,212 L470,225.0 L465,238 L431,238 Z"/>
+<text class="txt" x="448.0" y="229.0">FD</text>
+<text class="note" x="118" y="270">cycle 0 = rising edge at t = 85 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
+<text class="note" x="118" y="283">Collected READ  addr=0x1100 data=0xff</text>
+<text class="note" x="118" y="296">write: one hen cycle, stored on its rising edge; read: haddr in cycle 1, data from the DUT in cycle 2</text>
+</svg>

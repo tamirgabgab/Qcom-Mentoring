@@ -70,9 +70,14 @@ endtask : get_and_drive
 //------------------------------------------------------------------------------
 task yapp_tx_driver::send_to_dut(yapp_packet pkt);
   void'(begin_tr(pkt, "Driver_YAPP_Packet"));   // transaction recording
-  `uvm_info(get_type_name(), $sformatf("Packet is \n%s", pkt.sprint()), UVM_LOW)
+  // One line per packet (UVM_MEDIUM); the full table only at UVM_HIGH
+  `uvm_info(get_type_name(),
+            $sformatf("TX pkt #%0d: addr=%0d len=%0d parity=%s delay=%0d", num_sent + 1, pkt.addr, pkt.length,
+                      pkt.parity_text(), pkt.packet_delay), UVM_MEDIUM)
+  `uvm_info(get_type_name(), $sformatf("Packet is \n%s", pkt.sprint()), UVM_HIGH)
   vif.send_to_dut(pkt.addr, pkt.length, pkt.payload, pkt.parity, pkt.packet_delay);
   num_sent++;
+  `uvm_info(get_type_name(), $sformatf("TX pkt #%0d accepted by the DUT", num_sent), UVM_MEDIUM)
   end_tr(pkt);
 endtask : send_to_dut
 

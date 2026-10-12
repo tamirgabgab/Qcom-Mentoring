@@ -1,0 +1,114 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,"STAGE: 1. en_reg=0xfe (router_en=0, counters on): 3 packets into a deaf router"
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfe
+70,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=0 len=42 parity=good delay=20
+75,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=63
+75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfe
+75,INFO,reference,router_reference,router_en is now 0
+285,INFO,DUT,DUT,IN  pkt #1 header: addr=0 len=42 -> DROP (router disabled)
+715,INFO,DUT,DUT,"IN  pkt #1 complete: addr=0 len=42 parity=ok dropped, 44 bytes in 44 cycles (held 0)"
+715,INFO,yapp monitor,yapp_tx_monitor,RX pkt #1 on the input: addr=0 len=42 parity=good gap=23
+715,INFO,reference,router_reference,Packet dropped: router disabled (addr=0 len=42)
+715,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=42 (router disabled)
+720,INFO,yapp driver,yapp_tx_driver,TX pkt #1 accepted by the DUT
+720,INFO,yapp driver,yapp_tx_driver,TX pkt #2: addr=1 len=59 parity=good delay=2
+745,INFO,DUT,DUT,IN  pkt #2 header: addr=1 len=59 -> DROP (router disabled)
+1345,INFO,DUT,DUT,"IN  pkt #2 complete: addr=1 len=59 parity=ok dropped, 61 bytes in 61 cycles (held 0)"
+1345,INFO,yapp monitor,yapp_tx_monitor,RX pkt #2 on the input: addr=1 len=59 parity=good gap=2
+1345,INFO,reference,router_reference,Packet dropped: router disabled (addr=1 len=59)
+1345,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=59 (router disabled)
+1350,INFO,yapp driver,yapp_tx_driver,TX pkt #2 accepted by the DUT
+1350,INFO,yapp driver,yapp_tx_driver,TX pkt #3: addr=2 len=27 parity=good delay=1
+1365,INFO,DUT,DUT,IN  pkt #3 header: addr=2 len=27 -> DROP (router disabled)
+1645,INFO,DUT,DUT,"IN  pkt #3 complete: addr=2 len=27 parity=ok dropped, 29 bytes in 29 cycles (held 0)"
+1645,INFO,yapp monitor,yapp_tx_monitor,RX pkt #3 on the input: addr=2 len=27 parity=good gap=1
+1645,INFO,reference,router_reference,Packet dropped: router disabled (addr=2 len=27)
+1645,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=27 (router disabled)
+1650,INFO,yapp driver,yapp_tx_driver,TX pkt #3 accepted by the DUT
+5645,INFO,test,ROUTER_DIS,router_en = 0: no packet reached a channel
+5670,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x00
+5670,INFO,test,REG_FUNC,addr0_cnt_reg reads 0 as expected
+5675,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x00
+5700,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x00
+5700,INFO,test,REG_FUNC,addr1_cnt_reg reads 0 as expected
+5705,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x00
+5730,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x00
+5730,INFO,test,REG_FUNC,addr2_cnt_reg reads 0 as expected
+5735,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x00
+5760,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x00
+5760,INFO,test,REG_FUNC,addr3_cnt_reg reads 0 as expected
+5765,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x00
+5790,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x00
+5790,INFO,test,REG_FUNC,parity_err_cnt_reg reads 0 as expected
+5795,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x00
+5820,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0x00
+5820,INFO,test,REG_FUNC,oversized_pkt_cnt_reg reads 0 as expected
+5825,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0x00
+5850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x00
+5850,INFO,test,REG_FUNC,mem_size_reg reads 0 as expected
+5850,INFO,test,TEST,"STAGE: 2. en_reg=0xff (router_en=1): 3 packets, traffic and counters resume"
+5855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x00
+5870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
+5870,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=0 len=8 parity=good delay=1
+5875,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+5875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
+5875,INFO,reference,router_reference,router_en is now 1
+5895,INFO,DUT,DUT,IN  pkt #4 header: addr=0 len=8 -> channel 0
+5935,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=8 (receiver waited 3 cycle(s))
+5985,INFO,DUT,DUT,"IN  pkt #4 complete: addr=0 len=8 parity=ok forwarded, 10 bytes in 10 cycles (held 0)"
+5985,INFO,yapp monitor,yapp_tx_monitor,RX pkt #4 on the input: addr=0 len=8 parity=good gap=424
+5985,INFO,reference,router_reference,Packet forwarded: addr=0 len=8 -> channel 0
+5990,INFO,yapp driver,yapp_tx_driver,TX pkt #4 accepted by the DUT
+5990,INFO,yapp driver,yapp_tx_driver,TX pkt #5: addr=1 len=21 parity=good delay=19
+6020,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 3)
+6115,INFO,DUT,DUT,OUT ch0 pkt #1 done: 10 bytes in 19 cycles
+6115,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #1: addr=0 len=8 parity=good
+6115,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=8 (1 matched so far)
+6185,INFO,DUT,DUT,IN  pkt #5 header: addr=1 len=21 -> channel 1
+6260,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 8)
+6275,INFO,DUT,DUT,OUT ch1 pkt #1 start: addr=1 len=21 (receiver waited 8 cycle(s))
+6405,INFO,DUT,DUT,"IN  pkt #5 complete: addr=1 len=21 parity=ok forwarded, 23 bytes in 23 cycles (held 0)"
+6405,INFO,yapp monitor,yapp_tx_monitor,RX pkt #5 on the input: addr=1 len=21 parity=good gap=19
+6405,INFO,reference,router_reference,Packet forwarded: addr=1 len=21 -> channel 1
+6410,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
+6410,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=2 len=56 parity=good delay=16
+6490,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
+6505,INFO,DUT,DUT,OUT ch1 pkt #1 done: 23 bytes in 24 cycles
+6505,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #1: addr=1 len=21 parity=good
+6505,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=21 (2 matched so far)
+6575,INFO,DUT,DUT,IN  pkt #6 header: addr=2 len=56 -> channel 2
+6665,INFO,DUT,DUT,OUT ch2 pkt #1 start: addr=2 len=56 (receiver waited 8 cycle(s))
+7050,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 0)
+7145,INFO,DUT,DUT,"IN  pkt #6 complete: addr=2 len=56 parity=ok forwarded, 58 bytes in 58 cycles (held 0)"
+7145,INFO,yapp monitor,yapp_tx_monitor,RX pkt #6 on the input: addr=2 len=56 parity=good gap=16
+7145,INFO,reference,router_reference,Packet forwarded: addr=2 len=56 -> channel 2
+7150,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
+7230,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 8)
+7325,INFO,DUT,DUT,OUT ch2 pkt #1 done: 58 bytes in 67 cycles
+7325,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=56 parity=good
+7325,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=56 (3 matched so far)
+7350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x01
+7350,INFO,test,REG_FUNC,addr0_cnt_reg reads 1 as expected
+7355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x01
+7380,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x01
+7380,INFO,test,REG_FUNC,addr1_cnt_reg reads 1 as expected
+7385,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x01
+7410,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x01
+7410,INFO,test,REG_FUNC,addr2_cnt_reg reads 1 as expected
+7415,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x01
+7440,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x00
+7440,INFO,test,REG_FUNC,addr3_cnt_reg reads 0 as expected
+7445,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x00
+7640,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 1 packets collected
+7640,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
+7640,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 1 packets collected
+7640,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
+7640,INFO,reference,router_reference,
+7640,INFO,scoreboard,router_scoreboard,
+7640,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent
+7640,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, coverage 33.3%"
+7640,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 1 of 1 cycle, 1 of 2, 3 longer (gap coverage 75.0%)"

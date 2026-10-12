@@ -42,5 +42,5 @@ tb_top.sv
 // Tests: base_test | uvm_reset_test | uvm_mem_walk_test | reg_access_test |
 //        reg_function_test | reg_function_check_test | reg_introspection_test
 +UVM_TESTNAME=reg_function_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random

@@ -35,5 +35,5 @@ tb_top.sv
 // Tests: base_test | simple_test | test_uvc_integration |
 //        router_simple_mcseq_test | scoreboard_drop_test
 +UVM_TESTNAME=router_simple_mcseq_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random

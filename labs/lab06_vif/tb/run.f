@@ -15,5 +15,5 @@ tb_top.sv
 // Tests: base_test | short_packet_test | set_config_test |
 //        incr_payload_test | exhaustive_seq_test | yapp_012_test
 +UVM_TESTNAME=yapp_012_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random

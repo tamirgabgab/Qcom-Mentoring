@@ -45,9 +45,11 @@ task router_filter_test::access_checks();
   if (!bnd_seq.randomize() with { maxpktsize == 6'd10; }) begin
     `uvm_error("FILTER", "bnd_seq.randomize() failed")
   end
+  stage("ctrl_reg=10: maxpktsize is 10 for the boundary sequence");
   regs.ctrl_reg.write(status, 8'd10);       // maxpktsize = 10
 
   // 1. every counter enabled
+  stage("1. en_reg=0xff: lengths 9/10/11/63 to every address, drops counted");
   regs.en_reg.write(status, 8'hff);
   matched_before = tb.router_module.scoreboard.packets_matched;
   run_boundary();
@@ -66,6 +68,7 @@ task router_filter_test::access_checks();
   check_counter(regs.parity_err_cnt_reg, 0);
 
   // 2. counters disabled: same traffic, same drops, frozen counters
+  stage("2. en_reg=0x01: the same traffic, the same drops, the counters do not move");
   regs.en_reg.write(status, 8'h01);
   matched_before = tb.router_module.scoreboard.packets_matched;
   run_boundary();
@@ -78,6 +81,7 @@ task router_filter_test::access_checks();
   check_counter(regs.addr1_cnt_reg, bnd_seq.sent_per_addr[1]);
   check_counter(regs.addr2_cnt_reg, bnd_seq.sent_per_addr[2]);
 
+  stage("ctrl_reg back to 0x3f");
   regs.ctrl_reg.write(status, 8'h3f);       // back to the reset value
 endtask : access_checks
 

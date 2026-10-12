@@ -9,5 +9,5 @@
 top.sv
 
 +UVM_TESTNAME=base_test
-+UVM_VERBOSITY=UVM_LOW       // UVM_HIGH shows the phase messages
++UVM_VERBOSITY=UVM_MEDIUM       // UVM_HIGH shows the phase messages
 +SVSEED=random               // different packets on every run

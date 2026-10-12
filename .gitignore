@@ -4,6 +4,8 @@ INCA_libs/
 xrun.log
 xrun.history
 *.log
+# except the committed regression report of the project (make sim-report OUT=yapp_project/regression)
+!yapp_project/regression/**/*.log
 *.history
 *.shm/
 *.trn

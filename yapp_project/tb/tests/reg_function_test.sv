@@ -54,6 +54,7 @@ task reg_function_test::access_checks();
   int bad_before, bad_after;
 
   // 1. router enabled, every counter disabled
+  stage("1. en_reg=0x01 (router on, counters off): 3 packets, the address counters stay 0");
   regs.en_reg.write(status, 8'h01);
   regs.en_reg.read(status, val);
   `uvm_info("REG_FUNC", $sformatf("en_reg reads 0x%02h", val), UVM_NONE)
@@ -68,6 +69,7 @@ task reg_function_test::access_checks();
   check_counter(regs.addr3_cnt_reg, 0);
 
   // 2. every counter enabled
+  stage("2. en_reg=0xff (every counter on): 6 packets, 2 per address, counters follow the traffic");
   bad_before = tb.yapp.agent.monitor.num_bad_parity;
   regs.en_reg.write(status, 8'hff);
   seq.start(yapp_seqr);

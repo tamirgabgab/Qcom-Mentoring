@@ -102,8 +102,9 @@ make run XRUM_OPTS="+UVM_VERBOSITY=UVM_HIGH"    # see the start_of_simulation me
 
 **Expected:** the topology now shows `tb.yapp.agent.{driver,monitor,sequencer}`
 with `is_active UVM_ACTIVE`; then `Executing yapp_5_packets sequence`, the
-monitor's "Inside the monitor run_phase", and five `Packet is` tables from
-the driver, 10 ns apart.
+monitor's "Inside the monitor run_phase", and five `TX pkt #n: addr=… len=…`
+lines from the driver, 10 ns apart (at `+UVM_VERBOSITY=UVM_HIGH` each one is
+followed by the full `Packet is` table).
 
 ## Checkpoint questions
 

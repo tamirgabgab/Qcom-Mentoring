@@ -40,6 +40,7 @@ task router_disable_test::access_checks();
   int dropped_before;
 
   // 1. router disabled, every counter enabled
+  stage("1. en_reg=0xfe (router_en=0, counters on): 3 packets into a deaf router");
   regs.en_reg.write(status, 8'hfe);
   chan_before    = channel_packets();
   dropped_before = tb.router_module.reference.dropped_disabled;
@@ -63,6 +64,7 @@ task router_disable_test::access_checks();
   check_counter(regs.mem_size_reg, 0);      // ... and stores nothing
 
   // 2. router enabled again: traffic and counters resume
+  stage("2. en_reg=0xff (router_en=1): 3 packets, traffic and counters resume");
   regs.en_reg.write(status, 8'hff);
   chan_before = channel_packets();
   seq.start(yapp_seqr);

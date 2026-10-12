@@ -40,17 +40,21 @@ task counter_wrap_test::access_checks();
   regs.en_reg.write(status, 8'hff);         // router and every counter on
 
   // 1. up to the last value an 8-bit counter can hold
+  stage("1. 255 one-byte packets to address 0: addr0_cnt_reg reaches 255");
   send_to_addr0(255);
   check_counter(regs.addr0_cnt_reg, 255);
 
   // 2. the 256th packet wraps the counter
+  stage("2. the 256th packet wraps addr0_cnt_reg to 0");
   send_to_addr0(1);
   check_counter(regs.addr0_cnt_reg, 0);
 
   // 3. and it keeps counting from there
+  stage("3. one more packet: the counter goes on from 0");
   send_to_addr0(1);
   check_counter(regs.addr0_cnt_reg, 1);
 
+  stage("4. the other counters are untouched and the scoreboard matched all 257 packets");
   check_counter(regs.addr1_cnt_reg, 0);
   check_counter(regs.addr2_cnt_reg, 0);
   check_counter(regs.addr3_cnt_reg, 0);
