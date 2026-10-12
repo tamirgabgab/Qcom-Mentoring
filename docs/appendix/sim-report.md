@@ -168,6 +168,13 @@ Three ways to use it:
   *File → Run command file...* and pick `yapp_router.sucl`. *File → Switch
   file...* then moves to another test and keeps the list.
 * **Command line:** `surfer backpressure_test_s1.fst -c yapp_project/tb/yapp_router.sucl`.
+* **With the view settings too:** `yapp_project/tb/yapp_router.surf.ron` is the
+  same layout saved as a Surfer state, plus four settings no command can set:
+  *Focus highlight → Background*, *Hierarchy → Tree*, *Show hierarchy icons*
+  on, *Fill high values* off (and *Variable names → Global*). Open the `.fst`,
+  then *File → Load state...*; the state keeps the waves that are open. The web
+  app does not remember settings between visits, so this is the way to get
+  them back in one step.
 
 The first packet of `backpressure_test` (seed 1) in this layout: the header
 `de` (`HEADER`, one cycle) goes to channel 2, `ch2 count` climbs to 16, the
@@ -177,7 +184,9 @@ FIFO is full and `in_suspend` holds byte `49`:
 
 The layout is written by `scripts/surfer_layout.py` (`LAYOUT` at the top):
 edit it there and run `python3 scripts/surfer_layout.py` to rewrite the
-`.sucl`. To keep your own arrangement after changing it in Surfer, use
+`.sucl`. For the `.surf.ron`, run the new `.sucl` in Surfer, *File → Save
+state as...*, then `python3 scripts/surfer_layout.py --state <saved file>`
+(it puts the four settings of `STATE_SETTINGS` in). To keep your own arrangement after changing it in Surfer, use
 *File → Save state as...* and *File → Load state...* next time (open the
 `.fst` first; the state keeps the waves that are open and brings back the
 list). `yapp_project/tb/yapp_lab.surf.ron` is such a state, saved in the

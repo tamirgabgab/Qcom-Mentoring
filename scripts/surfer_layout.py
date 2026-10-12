@@ -21,6 +21,10 @@ on the data buses, the clock drawn as a clock and one color per group:
 Open a .fst, then File -> Run command file... and pick the .sucl. The same
 file works for every test: the hierarchy is the same in all of them.
 
+Four settings have no command: yapp_router.surf.ron, the state Surfer saves
+after running the .sucl with STATE_SETTINGS put in (--state, below), carries
+them -- File -> Load state... after opening a .fst.
+
 surfer_url(fst) is the one-click link of a committed .fst: Surfer's web app
 loads the waves and this command file straight from GitHub. sim_report.py puts
 it in the report.
@@ -155,8 +159,35 @@ def commands():
             # default for variables added later. Labels set with item_rename stay.
             "variable_force_name_type Global",
             "preference_set_clock_highlight Line",
+            "preference_set_hierarchy_style Tree",   # = Settings -> Hierarchy -> Tree
             "zoom_fit"]
     return "\n".join(out) + "\n"
+
+
+# Settings that no Surfer command sets but a state file keeps (Settings menu):
+# Focus highlight -> Background, Hierarchy -> Tree, Show hierarchy icons on,
+# Fill high values off.
+STATE_SETTINGS = {
+    "focus_highlight": "Some(Background)",
+    "hierarchy_style": "Some(Tree)",
+    "show_hierarchy_icons": "Some(true)",
+    "fill_high_values": "Some(false)",
+}
+STATE = os.path.join(ROOT, "yapp_project", "tb", "yapp_router.surf.ron")
+
+
+def settle_state(text):
+    """A state saved by Surfer after running the .sucl, with STATE_SETTINGS put in
+    and the wave source forgotten (Load state keeps the waves that are open)."""
+    import re
+    for key, value in STATE_SETTINGS.items():
+        text, n = re.subn(rf"^(    {key}: ).*,$", rf"\g<1>{value},", text, count=1, flags=re.M)
+        if n != 1:
+            sys.exit(f"surfer_layout.py: no top-level '{key}' in the state file")
+    text, n = re.subn(r"^(        source: ).*,$", r"\g<1>DragAndDrop(None),", text, count=1, flags=re.M)
+    if n != 1:
+        sys.exit("surfer_layout.py: no wave source in the state file")
+    return text
 
 
 def surfer_url(fst_rel):
@@ -167,6 +198,15 @@ def surfer_url(fst_rel):
 
 
 def main():
+    """No argument: write the .sucl. `--state <saved.surf.ron>`: write the .surf.ron
+    from a state Surfer saved after running the .sucl (File -> Save state as...)."""
+    if len(sys.argv) == 3 and sys.argv[1] == "--state":
+        with open(sys.argv[2]) as fh:
+            text = settle_state(fh.read())
+        with open(STATE, "w") as fh:
+            fh.write(text)
+        print(f"wrote {os.path.relpath(STATE, ROOT)}")
+        return
     with open(SUCL, "w") as fh:
         fh.write(commands())
     print(f"wrote {os.path.relpath(SUCL, ROOT)}")

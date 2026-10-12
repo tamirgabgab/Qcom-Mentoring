@@ -488,6 +488,12 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    יש 320 משתני זיכרון (scope `yapp_pkt_mem` עם `[0]..[63]`, `yapp_mem` עם `[0]..[255]`). ה-layout קיבל קבוצה מקופלת
    "Packet memory" (`scope_add_as_group` + `group_fold_recursive`), ולבקשת תמיר גם "Scratch memory" (`yapp_mem`, 256 B);
    שתיהן ב-`MEMORIES` ב-`surfer_layout.py`. קבוצה מקופלת = שורה נראית אחת (כך `item_focus` סופר).
+12. **הגדרות תצוגה (בקשת תמיר):** Variable names → Global (`variable_force_name_type Global` = אותו Message כמו התפריט),
+   Hierarchy → Tree (`preference_set_hierarchy_style Tree`). ל-Focus highlight → Background, Show hierarchy icons ו-Fill
+   high values (off) **אין פקודה**, וה-web app לא שומר הגדרות בין ביקורים; הם נשמרים רק ב-state. לכן
+   `yapp_project/tb/yapp_router.surf.ron` = state ש-Surfer 0.7 שמר אחרי הרצת ה-`.sucl`, ו-`surfer_layout.py --state <file>`
+   מכניס `STATE_SETTINGS` ומאפס את `source` ל-`DragAndDrop(None)`. נבדק: `surfer <fst אחר> -s yapp_router.surf.ron` →
+   עץ hierarchy עם אייקונים, בלי מילוי, הגלים של הקובץ הפתוח עם הקבוצות.
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור
