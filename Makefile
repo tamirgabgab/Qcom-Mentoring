@@ -13,6 +13,7 @@
 #   make regress              every lab and test with Verilator (scripts/regress.yaml) [SEEDS=3] [ONLY=lab09] [WAVES=1]
 #   make sim-report           bundle the logs of the last regression: one folder per run with the log,
 #                             a timeline, the waves and wave pictures (scripts/sim_report.py) [ONLY=yapp_project]
+#                             [OUT=yapp_project/regression] writes the committed report of the project
 #   make docs                 build the teaching site into site/
 #   make serve                serve the teaching site locally
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
@@ -77,7 +78,7 @@ regress: uvm-src
 	$(SIM) regress $(if $(SEEDS),--seeds $(SEEDS)) $(foreach o,$(ONLY),--only $(o)) $(if $(WAVES),--waves)
 
 sim-report:
-	$(PYTHON) scripts/sim_report.py $(foreach o,$(ONLY),--only $(o)) --zip
+	$(PYTHON) scripts/sim_report.py $(foreach o,$(ONLY),--only $(o)) $(if $(OUT),--out $(OUT)) --zip
 
 docs:
 	mkdocs build --strict

@@ -1,0 +1,102 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,STAGE: 1. slow receivers (channel_rx_slow_seq): 6 packets of 40..63 bytes fill the 16-byte FIFOs
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+50,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=2 len=44 parity=good delay=10
+165,INFO,DUT,DUT,IN  pkt #1 header: addr=2 len=44 -> channel 2
+325,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x7f held (pkt #1)"
+395,INFO,DUT,DUT,OUT ch2 pkt #1 start: addr=2 len=44 (receiver waited 22 cycle(s))
+405,INFO,DUT,DUT,SUSPEND released after 8 cycle(s)
+695,INFO,DUT,DUT,"IN  pkt #1 complete: addr=2 len=44 parity=ok forwarded, 46 bytes in 54 cycles (held 8)"
+695,INFO,yapp monitor,yapp_tx_monitor,RX pkt #1 on the input: addr=2 len=44 parity=good gap=11
+695,INFO,reference,router_reference,Packet forwarded: addr=2 len=44 -> channel 2
+700,INFO,yapp driver,yapp_tx_driver,TX pkt #1 accepted by the DUT
+700,INFO,yapp driver,yapp_tx_driver,TX pkt #2: addr=0 len=42 parity=good delay=20
+840,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 22)
+905,INFO,DUT,DUT,IN  pkt #2 header: addr=0 len=42 -> channel 0
+1065,INFO,DUT,DUT,"SUSPEND asserted: FIFO 0 full, byte 0xea held (pkt #2)"
+1085,INFO,DUT,DUT,OUT ch2 pkt #1 done: 46 bytes in 70 cycles
+1085,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=44 parity=good
+1085,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=44 (1 matched so far)
+1115,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=42 (receiver waited 20 cycle(s))
+1125,INFO,DUT,DUT,SUSPEND released after 6 cycle(s)
+1380,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 23)
+1395,INFO,DUT,DUT,"IN  pkt #2 complete: addr=0 len=42 parity=ok forwarded, 44 bytes in 50 cycles (held 6)"
+1395,INFO,yapp monitor,yapp_tx_monitor,RX pkt #2 on the input: addr=0 len=42 parity=good gap=20
+1395,INFO,reference,router_reference,Packet forwarded: addr=0 len=42 -> channel 0
+1400,INFO,yapp driver,yapp_tx_driver,TX pkt #2 accepted by the DUT
+1400,INFO,yapp driver,yapp_tx_driver,TX pkt #3: addr=2 len=49 parity=good delay=19
+1540,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 20)
+1595,INFO,DUT,DUT,IN  pkt #3 header: addr=2 len=49 -> channel 2
+1755,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x12 held (pkt #3)"
+1825,INFO,DUT,DUT,OUT ch0 pkt #1 done: 44 bytes in 72 cycles
+1825,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #1: addr=0 len=42 parity=good
+1825,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=42 (2 matched so far)
+1915,INFO,DUT,DUT,OUT ch2 pkt #2 start: addr=2 len=49 (receiver waited 31 cycle(s))
+1925,INFO,DUT,DUT,SUSPEND released after 17 cycle(s)
+2210,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 27)
+2265,INFO,DUT,DUT,"IN  pkt #3 complete: addr=2 len=49 parity=ok forwarded, 51 bytes in 68 cycles (held 17)"
+2265,INFO,yapp monitor,yapp_tx_monitor,RX pkt #3 on the input: addr=2 len=49 parity=good gap=19
+2265,INFO,reference,router_reference,Packet forwarded: addr=2 len=49 -> channel 2
+2270,INFO,yapp driver,yapp_tx_driver,TX pkt #3 accepted by the DUT
+2270,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=2 len=45 parity=good delay=19
+2410,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 31)
+2465,INFO,DUT,DUT,IN  pkt #4 header: addr=2 len=45 -> channel 2
+2615,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x86 held (pkt #4)"
+2825,INFO,DUT,DUT,OUT ch2 pkt #2 done: 51 bytes in 92 cycles
+2825,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #2: addr=2 len=49 parity=good
+2825,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=49 (3 matched so far)
+2835,INFO,DUT,DUT,SUSPEND released after 22 cycle(s)
+2835,INFO,DUT,DUT,OUT ch2 pkt #3 start: addr=2 len=45 (receiver waited 0 cycle(s))
+2900,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 40)
+2915,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xbb held (pkt #4)"
+3165,INFO,DUT,DUT,SUSPEND released after 25 cycle(s)
+3395,INFO,DUT,DUT,"IN  pkt #4 complete: addr=2 len=45 parity=ok forwarded, 47 bytes in 94 cycles (held 47)"
+3395,INFO,yapp monitor,yapp_tx_monitor,RX pkt #4 on the input: addr=2 len=45 parity=good gap=19
+3395,INFO,reference,router_reference,Packet forwarded: addr=2 len=45 -> channel 2
+3400,INFO,yapp driver,yapp_tx_driver,TX pkt #4 accepted by the DUT
+3400,INFO,yapp driver,yapp_tx_driver,TX pkt #5: addr=0 len=50 parity=good delay=19
+3545,INFO,DUT,DUT,OUT ch2 pkt #3 done: 47 bytes in 72 cycles
+3545,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #3: addr=2 len=45 parity=good
+3545,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=45 (4 matched so far)
+3595,INFO,DUT,DUT,IN  pkt #5 header: addr=0 len=50 -> channel 0
+3650,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 24)
+3755,INFO,DUT,DUT,"SUSPEND asserted: FIFO 0 full, byte 0xb7 held (pkt #5)"
+3935,INFO,DUT,DUT,OUT ch0 pkt #2 start: addr=0 len=50 (receiver waited 33 cycle(s))
+3945,INFO,DUT,DUT,SUSPEND released after 19 cycle(s)
+4295,INFO,DUT,DUT,"IN  pkt #5 complete: addr=0 len=50 parity=ok forwarded, 52 bytes in 71 cycles (held 19)"
+4295,INFO,yapp monitor,yapp_tx_monitor,RX pkt #5 on the input: addr=0 len=50 parity=good gap=19
+4295,INFO,reference,router_reference,Packet forwarded: addr=0 len=50 -> channel 0
+4300,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
+4300,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=1 len=45 parity=good delay=16
+4440,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 33)
+4465,INFO,DUT,DUT,IN  pkt #6 header: addr=1 len=45 -> channel 1
+4625,INFO,DUT,DUT,"SUSPEND asserted: FIFO 1 full, byte 0x07 held (pkt #6)"
+4735,INFO,DUT,DUT,OUT ch0 pkt #2 done: 52 bytes in 81 cycles
+4735,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #2: addr=0 len=50 parity=good
+4735,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=50 (5 matched so far)
+4875,INFO,DUT,DUT,OUT ch1 pkt #1 start: addr=1 len=45 (receiver waited 40 cycle(s))
+4885,INFO,DUT,DUT,SUSPEND released after 26 cycle(s)
+5150,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 28)
+5185,INFO,DUT,DUT,"IN  pkt #6 complete: addr=1 len=45 parity=ok forwarded, 47 bytes in 73 cycles (held 26)"
+5185,INFO,yapp monitor,yapp_tx_monitor,RX pkt #6 on the input: addr=1 len=45 parity=good gap=16
+5185,INFO,reference,router_reference,Packet forwarded: addr=1 len=45 -> channel 1
+5190,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
+5330,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 40)
+5585,INFO,DUT,DUT,OUT ch1 pkt #1 done: 47 bytes in 72 cycles
+5585,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #1: addr=1 len=45 parity=good
+5585,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=45 (6 matched so far)
+5585,INFO,test,TEST,"STAGE: 2. checks: in_suspend rose, 6 packets matched, nothing unexpected, no bad parity"
+5585,INFO,test,BACKPRESSURE,in_suspend rose 7 times
+5780,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 24)
+5785,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 2 packets collected
+5785,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
+5785,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 3 packets collected
+5785,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 0 reads"
+5785,INFO,reference,router_reference,
+5785,INFO,scoreboard,router_scoreboard,
+5785,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent
+5785,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, coverage 26.7%"
+5785,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer (gap coverage 25.0%)"

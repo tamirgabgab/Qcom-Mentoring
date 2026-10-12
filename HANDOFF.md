@@ -102,6 +102,8 @@
 - **לוגים ודוח (סשן 7):** `make regress ONLY=yapp_project SEEDS=3 WAVES=1` → 48/48 PASS בדקה אחת (אחרי קימפול של ~4 דק');
   `make sim-report ONLY=yapp_project` → `build/sim/report/index.md`, תיקייה לכל ריצה (`<test>_s<seed>.log`, `timeline.md/.csv`,
   `<test>_s<seed>.fst`, `signals.csv`, `wave_*.svg`), `all_logs.log`, ו-`build/sim/regression_report.zip` (~2 MB, 18 MB פרוס).
+  **הדוח committed ב-`yapp_project/regression/`** (בקשת תמיר, סבב 2 של סשן 7; `.gitignore` מחריג את ה-`*.log` שם). אחרי
+  שינוי בטסטים/UVCs: להריץ מחדש ולעשות commit לתיקייה (18 MB, רובם לוגים; ה-FST רק 660 KB).
   התמונות נבדקו ויזואלית (Playwright → PNG): פקטה נכנסת/יוצאת, suspend, error pulse, HBUS write/read.
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
@@ -778,6 +780,7 @@ cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1 SEED=3
 make regress [SEEDS=2] [ONLY=lab09] [WAVES=1]   # מהשורש; טבלה ב-build/sim/regress.md; WAVES=1 = FST + signals CSV לכל ריצה
 make regress ONLY=yapp_project SEEDS=3 WAVES=1 && make sim-report ONLY=yapp_project   # הדוח: build/sim/report/ + regression_report.zip
 python3 scripts/sim_report.py --only yapp_project --zip
+make sim-report ONLY=yapp_project OUT=yapp_project/regression   # הדוח ה-committed (תמיר ביקש אותו בתוך yapp_project)
 python3 scripts/sim.py run labs/lab07_integ/tb -t simple_test
 
 # סימולציה (Xcelium — אם תמיר ישיג גישה)

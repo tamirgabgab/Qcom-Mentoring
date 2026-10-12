@@ -268,6 +268,7 @@ yapp_project/                     the complete project — the source of truth
     router/                         router module UVC: router_scoreboard, router_reference, router_module_env,
                                     router_fifo_scoreboard (Lab 9D), packet_compare
   tb/                             the final testbench
+    yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
     tb_top.sv                       UVM side: publishes the virtual interfaces, run_test()
     hw_top.sv                       hardware side: the DUT, the five interface instances, clkgen
     router_tb.sv                    the environment: five UVC envs, virtual sequencer, module UVC, register model
@@ -282,6 +283,8 @@ yapp_project/                     the complete project — the source of truth
     reg/                            the register model: one class per register / memory, yapp_regs_c, yapp_router_regs_t
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`
+  regression/                     GENERATED report of the last project regression (16 tests x 3 seeds, Verilator):
+                                  index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures
 labs/                             one snapshot per lab; `make run` inside <lab>/tb
   lab01_data … lab06_vif/sv         the YAPP UVC as it grows (Labs 1–6 have their own copy)
   lab07_integ … lab11c_rm_sim       compile the UVCs and the DUT from yapp_project/

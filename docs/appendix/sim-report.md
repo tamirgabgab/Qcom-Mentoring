@@ -51,7 +51,13 @@ the channel (`OUT ch1 pkt #2`) and the scoreboard (`ch1 pkt matched`).
 ```bash
 make regress ONLY=yapp_project SEEDS=3 WAVES=1   # run, record waves and the signal trace
 make sim-report ONLY=yapp_project                 # bundle: build/sim/report/ + regression_report.zip
+make sim-report ONLY=yapp_project OUT=yapp_project/regression   # refresh the committed report
 ```
+
+The report of the project (16 tests, 3 seeds, 48 runs) is committed in
+`yapp_project/regression/`, so the logs, timelines, waves and pictures can be
+read on GitHub or in the ZIP without running anything; `index.md` is the
+entry point.
 
 `scripts/sim_report.py` reads `build/sim/<bench>/logs/<test>_s<seed>.log` and
 writes `build/sim/report/`:
