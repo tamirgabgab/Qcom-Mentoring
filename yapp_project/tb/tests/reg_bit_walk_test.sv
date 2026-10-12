@@ -44,7 +44,7 @@ task reg_bit_walk_test::access_checks();
   ro_q = all_q.find(r) with (r.get_rights() == "RO");
 
   foreach (rw_q[i]) begin
-    `uvm_info("REG_WALK", $sformatf("--- RW register %s: walking ones and zeros ---", rw_q[i].get_name()), UVM_NONE)
+    stage($sformatf("RW register %s: walking ones, walking zeros, 0x00 0xff 0xaa 0x55", rw_q[i].get_name()));
     for (int b = 0; b < 8; b++) begin
       pattern = 8'h01 << b;
       check_pattern(rw_q[i], pattern);
@@ -64,6 +64,7 @@ task reg_bit_walk_test::access_checks();
   end
 
   // leave the router as reset left it
+  stage("ctrl_reg and en_reg back to their reset values");
   regs.ctrl_reg.write(status, 8'h3f);
   regs.en_reg.write(status, 8'h01);
 endtask : access_checks

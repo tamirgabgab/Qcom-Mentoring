@@ -8,7 +8,9 @@ Each diagram is a list of signals. A signal is (name, kind, values, edge):
          'bus'  : a label per slot ('' = idle, '-' = continue previous value)
   edge   'neg'  : the signal changes on the FALLING edge (testbench-driven)
          'pos'  : the signal changes on the RISING edge (DUT-driven)
-Output: docs/assets/wave_<name>.svg and docs/assets/packet_structure.svg
+Output: docs/assets/wave_<name>.svg and docs/assets/packet_structure.svg.
+render() is also used by scripts/sim_report.py to draw the wave pictures of a
+simulation run (with its own output directory and a title).
 """
 import os
 
@@ -38,16 +40,20 @@ def svg_header(width, height):
             '</style>']
 
 
-def render(name, signals, cycles, notes=()):
-    width = LEFT + cycles * W + 20
-    height = TOP + ROW * len(signals) + 12 + (26 if notes else 0)
+def render(name, signals, cycles, notes=(), out_dir=None, title=None, quiet=False):
+    """Write wave_<name>.svg into out_dir (default docs/assets) and return its path."""
+    top = TOP + (22 if title else 0)
+    width = max([LEFT + cycles * W + 20, 8 * len(title or "") + 20] + [LEFT + int(6.7 * len(t)) + 10 for t, _c in notes])
+    height = top + ROW * len(signals) + 12 + (26 + 13 * (len(notes) - 1) if notes else 0)
     out = svg_header(width, height)
+    if title:
+        out.append(f'<text class="lbl" x="8" y="16" font-weight="bold">{title}</text>')
     # cycle grid at rising edges
     for c in range(cycles + 1):
         x = LEFT + c * W
-        out.append(f'<line class="grid" x1="{x}" y1="{TOP}" x2="{x}" y2="{TOP + ROW*len(signals) - 10}"/>')
+        out.append(f'<line class="grid" x1="{x}" y1="{top}" x2="{x}" y2="{top + ROW*len(signals) - 10}"/>')
     for r, (label, kind, values, edge) in enumerate(signals):
-        y0 = TOP + r * ROW            # top of the row
+        y0 = top + r * ROW            # top of the row
         y1 = y0 + H                   # logic-0 line
         out.append(f'<text class="lbl" x="{LEFT - 8}" y="{y0 + H*0.7}" text-anchor="end">{label}</text>')
         off = W / 2 if edge == "neg" else 0
@@ -106,14 +112,17 @@ def render(name, signals, cycles, notes=()):
                 c += n
     for i, (text, cycle) in enumerate(notes):
         x = LEFT + cycle * W
-        y = TOP + ROW * len(signals) + 14
+        y = top + ROW * len(signals) + 14 + 13 * i
         out.append(f'<text class="note" x="{x}" y="{y}">{text}</text>')
     out.append("</svg>")
-    os.makedirs(OUT, exist_ok=True)
-    path = os.path.join(OUT, f"wave_{name}.svg")
+    out_dir = out_dir or OUT
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, f"wave_{name}.svg")
     with open(path, "w") as fh:
         fh.write("\n".join(out))
-    print("wrote", os.path.relpath(path))
+    if not quiet:
+        print("wrote", os.path.relpath(path))
+    return path
 
 
 def packet_structure(name="packet_structure"):

@@ -23,6 +23,14 @@ class base_test extends uvm_test;
 
   extern function void check_phase(uvm_phase phase);
 
+  // Log structure (scripts/sim_report.py reads these [TEST] lines):
+  // a banner with the test name and the seed, one line per stage of the
+  // test, and a closing line with the verdict.
+  extern function void start_of_simulation_phase(uvm_phase phase);
+  extern function void stage(string what);
+  extern function void final_phase(uvm_phase phase);
+  extern function string seed_text();
+
 endclass : base_test
 
 //------------------------------------------------------------------------------
@@ -70,3 +78,36 @@ endtask : run_phase
 function void base_test::check_phase(uvm_phase phase);
   check_config_usage();
 endfunction : check_phase
+
+//------------------------------------------------------------------------------
+function string base_test::seed_text();
+  int seed;
+  // scripts/sim.py passes +SEED=<n>; with xrun the seed is +SVSEED=<n>
+  if ($value$plusargs("SEED=%d", seed) || $value$plusargs("SVSEED=%d", seed)) begin
+    return $sformatf("%0d", seed);
+  end
+  return "?";
+endfunction : seed_text
+
+//------------------------------------------------------------------------------
+function void base_test::start_of_simulation_phase(uvm_phase phase);
+  `uvm_info("TEST", $sformatf("=== %s  seed %s ===", get_type_name(), seed_text()), UVM_NONE)
+endfunction : start_of_simulation_phase
+
+//------------------------------------------------------------------------------
+function void base_test::stage(string what);
+  `uvm_info("TEST", {"STAGE: ", what}, UVM_LOW)
+endfunction : stage
+
+//------------------------------------------------------------------------------
+function void base_test::final_phase(uvm_phase phase);
+  uvm_report_server svr;
+  int errors;
+  int fatals;
+  svr    = uvm_report_server::get_server();
+  errors = svr.get_severity_count(UVM_ERROR);
+  fatals = svr.get_severity_count(UVM_FATAL);
+  `uvm_info("TEST", $sformatf("=== %s  seed %s: %s (%0d UVM_ERROR, %0d UVM_FATAL) ===", get_type_name(),
+                              seed_text(), (errors == 0 && fatals == 0) ? "PASSED" : "FAILED", errors, fatals),
+            UVM_NONE)
+endfunction : final_phase

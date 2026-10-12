@@ -114,8 +114,9 @@ make run TEST=yapp_012_test
 make gui TEST=yapp_012_test
 ```
 
-**Expected:** three `Packet is` tables from the driver and three `Packet
-collected` tables from the monitor with identical contents. In the waveform
+**Expected:** three `TX pkt` lines from the driver and three `RX pkt … on the
+input` lines from the monitor with the same address, length and parity (at
+`UVM_HIGH` the full `Packet is` / `Packet collected` tables follow). In the waveform
 viewer, `hw_top.in0.in_data` shows `H D D … P` for each packet and the same
 bytes appear a few cycles later on `hw_top.dut.data_0`, then `data_1`, then
 `data_2`. The transaction streams `Driver_YAPP_Packet` and

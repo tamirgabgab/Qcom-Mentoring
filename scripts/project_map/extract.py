@@ -44,6 +44,21 @@ def _members(sym):
         return []
 
 
+def _from_bind(inst):
+    """True when the instance comes from a `bind` directive (its syntax sits under one)."""
+    try:
+        n = inst.syntax
+        for _ in range(4):
+            if n is None:
+                return False
+            if type(n).__name__ == "BindDirectiveSyntax":
+                return True
+            n = n.parent
+    except Exception:
+        pass
+    return False
+
+
 def _kind(sym):
     return str(sym.kind).split(".")[-1]
 
@@ -407,6 +422,10 @@ class Extractor:
                     pass
                 info["blocks"].append({"kind": pk, "line": l1, "end_line": l2})
             elif k == "Instance" and depth < 3:
+                # an instance that a `bind` directive attached (yapp_router_tracer) is a
+                # testbench observer, not a sub-module of the design: leave it out
+                if _from_bind(m):
+                    continue
                 info["instances"].append(self.extract_instance_body(m, depth + 1))
             elif k == "GenerateBlockArray":
                 entries = list(m.entries)

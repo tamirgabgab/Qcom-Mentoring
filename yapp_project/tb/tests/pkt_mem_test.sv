@@ -40,6 +40,7 @@ task pkt_mem_test::access_checks();
   bit [7:0]      header;
 
   // 1. a packet with a known address and length
+  stage("1. one packet (addr 1, 20 bytes): mem_size_reg and yapp_pkt_mem hold it byte by byte");
   pkt_seq = yapp_pkt_seq::type_id::create("pkt_seq");
   if (!pkt_seq.randomize() with { pkt_addr == 2'd1; pkt_len == 6'd20; }) begin
     `uvm_error("PKT_MEM", "pkt_seq.randomize() failed")
@@ -48,6 +49,7 @@ task pkt_mem_test::access_checks();
   check_stored_packet(pkt_seq.req);
 
   // 2. the packet memory is read-only: a bus write must not change it
+  stage("2. a raw HBUS write to yapp_pkt_mem[0] is ignored (read-only memory)");
   header = {pkt_seq.req.length, pkt_seq.req.addr};
   wr = hbus_write_seq::type_id::create("wr");
   if (!wr.randomize() with { addr == 16'h1010; data == ~header; }) begin
@@ -62,6 +64,7 @@ task pkt_mem_test::access_checks();
   end
 
   // 3. a dropped (oversized) packet is still stored
+  stage("3. ctrl_reg=5, then a 9-byte packet: dropped as oversized but still stored");
   regs.ctrl_reg.write(status, 8'h05);       // maxpktsize = 5
   if (!pkt_seq.randomize() with { pkt_addr == 2'd2; pkt_len == 6'd9; }) begin
     `uvm_error("PKT_MEM", "pkt_seq.randomize() failed")

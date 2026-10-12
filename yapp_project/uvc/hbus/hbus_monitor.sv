@@ -59,7 +59,7 @@ task hbus_monitor::run_phase(uvm_phase phase);
     end else begin
       num_reads++;
     end
-    `uvm_info(get_type_name(), {"Collected ", tr.convert2string()}, UVM_LOW)
+    `uvm_info(get_type_name(), {"Collected ", tr.convert2string()}, UVM_MEDIUM)
     item_collected_port.write(tr);
   end
 endtask : run_phase

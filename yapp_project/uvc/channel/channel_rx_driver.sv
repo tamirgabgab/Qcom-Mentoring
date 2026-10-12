@@ -51,7 +51,12 @@ task channel_rx_driver::run_phase(uvm_phase phase);
   wait (vif.reset === 1'b0);
   forever begin
     seq_item_port.get_next_item(req);
+    `uvm_info(get_type_name(),
+              $sformatf("ch%0d: ready, will answer the next header after %0d cycle(s)", channel_id, req.delay),
+              UVM_HIGH)
     vif.receive_packet(req.delay);
+    `uvm_info(get_type_name(),
+              $sformatf("ch%0d: packet consumed (response delay %0d)", channel_id, req.delay), UVM_MEDIUM)
     seq_item_port.item_done();
   end
 endtask : run_phase

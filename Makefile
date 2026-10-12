@@ -10,7 +10,9 @@
 #   make setup-sim            install Verilator + UVM for the free flow (scripts/setup_sim.sh)
 #   make sim LAB=lab07_integ TEST=simple_test [WAVES=1]   run one lab test with Verilator
 #   make sim-project TEST=reg_function_test [WAVES=1]     run a project test with Verilator
-#   make regress              every lab and test with Verilator (scripts/regress.yaml) [SEEDS=3] [ONLY=lab09]
+#   make regress              every lab and test with Verilator (scripts/regress.yaml) [SEEDS=3] [ONLY=lab09] [WAVES=1]
+#   make sim-report           bundle the logs of the last regression: one folder per run with the log,
+#                             a timeline, the waves and wave pictures (scripts/sim_report.py) [ONLY=yapp_project]
 #   make docs                 build the teaching site into site/
 #   make serve                serve the teaching site locally
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
@@ -29,7 +31,7 @@ SEEDS     ?=
 ONLY      ?=
 SIM       := $(PYTHON) scripts/sim.py
 
-.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress docs serve map map-check map-export readme-shots clean
+.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report docs serve map map-check map-export readme-shots clean
 
 help:
 	@sed -n '2,21p' $(MAKEFILE_LIST)
@@ -72,7 +74,10 @@ sim-project:
 	$(SIM) run yapp_project/tb -t $(TEST) $(if $(WAVES),--waves)
 
 regress: uvm-src
-	$(SIM) regress $(if $(SEEDS),--seeds $(SEEDS)) $(foreach o,$(ONLY),--only $(o))
+	$(SIM) regress $(if $(SEEDS),--seeds $(SEEDS)) $(foreach o,$(ONLY),--only $(o)) $(if $(WAVES),--waves)
+
+sim-report:
+	$(PYTHON) scripts/sim_report.py $(foreach o,$(ONLY),--only $(o)) --zip
 
 docs:
 	mkdocs build --strict

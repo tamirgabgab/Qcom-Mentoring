@@ -85,8 +85,8 @@ function void router_scoreboard::write_yapp(yapp_packet packet);
   end
   pkt_q[pkt.addr].push_back(pkt);
   `uvm_info(get_type_name(),
-            $sformatf("Queued packet for channel %0d (%0d waiting)", pkt.addr, pkt_q[pkt.addr].size()),
-            UVM_MEDIUM)
+            $sformatf("Expecting packet on channel %0d: addr=%0d len=%0d (%0d waiting)", pkt.addr, pkt.addr,
+                      pkt.length, pkt_q[pkt.addr].size()), UVM_HIGH)
 endfunction : write_yapp
 
 //------------------------------------------------------------------------------
@@ -116,7 +116,9 @@ function void router_scoreboard::check_channel(int ch, channel_packet cp);
   expected = pkt_q[ch].pop_front();
   if (comp_equal(expected, cp)) begin
     packets_matched++;
-    `uvm_info(get_type_name(), $sformatf("Channel %0d packet matched", ch), UVM_MEDIUM)
+    `uvm_info(get_type_name(),
+              $sformatf("ch%0d pkt matched: addr=%0d len=%0d (%0d matched so far)", ch, cp.addr, cp.length,
+                        packets_matched), UVM_MEDIUM)
   end else begin
     packets_mismatched++;
     `uvm_error(get_type_name(),

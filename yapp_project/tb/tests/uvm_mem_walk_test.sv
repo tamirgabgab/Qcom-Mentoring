@@ -37,6 +37,7 @@ task uvm_mem_walk_test::run_phase(uvm_phase phase);
   phase.raise_objection(this);
   walk_seq = uvm_mem_walk_seq::type_id::create("walk_seq");
   walk_seq.model = tb.yapp_rm;
+  stage("uvm_mem_walk_seq: write and read back every location of every memory of the model");
   walk_seq.start(null);
   phase.drop_objection(this);
 endtask : run_phase

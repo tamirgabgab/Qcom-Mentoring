@@ -76,16 +76,21 @@ endfunction : write_hbus
 function void router_reference::write_yapp(yapp_packet pkt);
   if (!router_en) begin
     dropped_disabled++;
-    `uvm_info(get_type_name(), "Packet dropped: router disabled", UVM_LOW)
+    `uvm_info(get_type_name(),
+              $sformatf("Packet dropped: router disabled (addr=%0d len=%0d)", pkt.addr, pkt.length), UVM_LOW)
   end else if (pkt.addr == 2'd3) begin
     dropped_addr++;
-    `uvm_info(get_type_name(), "Packet dropped: illegal address 3", UVM_LOW)
+    `uvm_info(get_type_name(), $sformatf("Packet dropped: illegal address 3 (len=%0d)", pkt.length), UVM_LOW)
   end else if (pkt.length > maxpktsize) begin
     dropped_size++;
     `uvm_info(get_type_name(),
-              $sformatf("Packet dropped: length %0d > maxpktsize %0d", pkt.length, maxpktsize), UVM_LOW)
+              $sformatf("Packet dropped: length %0d > maxpktsize %0d (addr=%0d)", pkt.length, maxpktsize, pkt.addr),
+              UVM_LOW)
   end else begin
     packets_forwarded++;
+    `uvm_info(get_type_name(),
+              $sformatf("Packet forwarded: addr=%0d len=%0d -> channel %0d", pkt.addr, pkt.length, pkt.addr),
+              UVM_MEDIUM)
     yapp_valid_out.write(pkt);
   end
 endfunction : write_yapp

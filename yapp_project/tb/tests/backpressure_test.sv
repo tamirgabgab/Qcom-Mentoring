@@ -56,6 +56,7 @@ task backpressure_test::access_checks();
     count_suspends();
   join_none
 
+  stage("1. slow receivers (channel_rx_slow_seq): 6 packets of 40..63 bytes fill the 16-byte FIFOs");
   pkt_seq = yapp_pkt_seq::type_id::create("pkt_seq");
   repeat (6) begin
     if (!pkt_seq.randomize() with { pkt_len inside {[40:63]}; }) begin
@@ -65,6 +66,7 @@ task backpressure_test::access_checks();
   end
   wait_scoreboard(judged_before + 6);
 
+  stage("2. checks: in_suspend rose, 6 packets matched, nothing unexpected, no bad parity");
   if (num_suspend == 0) begin
     `uvm_error("BACKPRESSURE", "in_suspend never rose: the FIFO was never full, nothing was tested")
   end else begin

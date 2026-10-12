@@ -42,5 +42,5 @@ tb_top.sv
 // Tests: base_test | router_simple_mcseq_test | uvm_reset_test | uvm_mem_walk_test
 // Memory error injection:  xrun -f run.f -define INJECT_ERROR
 +UVM_TESTNAME=uvm_reset_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random

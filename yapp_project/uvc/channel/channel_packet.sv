@@ -37,6 +37,9 @@ class channel_packet extends uvm_sequence_item;
   // Even parity over header and payload
   extern function bit [7:0] calc_parity();
 
+  // "good" / "bad" for the one-line log messages
+  extern function string parity_text();
+
 endclass : channel_packet
 
 //------------------------------------------------------------------------------
@@ -54,6 +57,14 @@ function bit [7:0] channel_packet::calc_parity();
     calc_parity ^= payload[i];
   end
 endfunction : calc_parity
+
+//------------------------------------------------------------------------------
+function string channel_packet::parity_text();
+  if (parity_type == CHANNEL_GOOD_PARITY) begin
+    return "good";
+  end
+  return "bad";
+endfunction : parity_text
 
 //------------------------------------------------------------------------------
 function void channel_packet::do_copy(uvm_object rhs);

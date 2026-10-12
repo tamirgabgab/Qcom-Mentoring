@@ -55,6 +55,7 @@ task parity_error_test::access_checks();
   matched_before = tb.router_module.scoreboard.packets_matched;
 
   // 1. counter enabled
+  stage("1. en_reg=0x03 (parity counter on): 8 bad-parity packets, 8 pulses, counter 8, all delivered");
   regs.en_reg.write(status, 8'h03);
   send_bad(8);
   check_counter(regs.parity_err_cnt_reg, 8);
@@ -66,6 +67,7 @@ task parity_error_test::access_checks();
   end
 
   // 2. counter disabled: the pulse still comes, the count does not move
+  stage("2. en_reg=0x01 (counter off): 4 more bad packets, pulses still come, counter stays 8");
   regs.en_reg.write(status, 8'h01);
   send_bad(4);
   check_counter(regs.parity_err_cnt_reg, 8);

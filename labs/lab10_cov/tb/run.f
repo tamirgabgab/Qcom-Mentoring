@@ -41,5 +41,5 @@ tb_top.sv
 // Analyse: xrun -f run.f -gui   ->  Windows -> Tools -> Coverage (IMC)
 //          or  imc -load cov_work/scope/<test>
 +UVM_TESTNAME=coverage_test
-+UVM_VERBOSITY=UVM_LOW
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
 +SVSEED=random
