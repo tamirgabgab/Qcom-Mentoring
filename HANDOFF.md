@@ -436,7 +436,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    `SUSPEND asserted: FIFO x full, byte 0x.. held` / `released after N cycle(s)`, `OUT chX pkt #n start/done`, `ERROR pulse, N cycle(s)
    after the bad-parity packet` (ב-`always @(posedge error)` — תואם ל-`error_pulse_checker`), `CONFIG router_en/maxpktsize`; ב-UVM_HIGH
    גם `HBUS write/read` עם שם הרגיסטר ו-`FIFO x full/has room`. עם `+trace_csv=<file>` כותב שורה לכל negedge (ערכי הפורטים
-   + מצב ה-FSM דרך הפורט `fsm_state(u_input_fsm.state)`). מלכודות Verilator שנתקלתי בהן: `cond ? "ok" : "BAD"` מרופד ל-"\0ok"
+   + מצב ה-FSM דרך הפורט `fsm_state(u_input_fsm.state)`). **סבב 3:** סיגנל `in_phase` (enum IDLE/HEADER/PAYLOAD/PARITY)
+   לצופה הגלים — סוג הבית שעל `in_data`, מתחלף בירידה (`bus_state <= fsm_state` ב-negedge + always_comb), כך ש-HEADER מחזור
+   אחד בדיוק; עמודת `phase` ב-CSV ושורת `in_phase` בתמונות. תמיר שאל "למה אין header בגלים": ה-FSM מקבל את ה-header ב-IDLE —
+   מצב HEADER אמיתי היה מוסיף מחזור לפקטה ומשנה את הפרוטוקול, לכן לא נגעתי ב-RTL. מלכודות Verilator שנתקלתי בהן: `cond ? "ok" : "BAD"` מרופד ל-"\0ok"
    (→ if/else למשתנה string), ו-`$fdisplay(fd, {"a","b"})` מדפיס מספר (→ literal אחד).
 3. **הדפסות ב-UVCs** (שורה אחת, פורמט קבוע, UVM_MEDIUM; ה-`sprint()` עבר ל-UVM_HIGH): driver `TX pkt #n: addr len parity delay`
    + `TX pkt #n accepted by the DUT`; monitor `RX pkt #n on the input: … gap=`; channel driver `chX: packet consumed`; channel monitor
@@ -458,6 +461,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    כתת-מודול של ה-DUT ו-`test_model.py` נכשל. map-check OK (250 nodes, 297 edges).
 8. **תיעוד:** `docs/appendix/sim-report.md` (חדש, ב-nav: "Logs, timelines and waves") עם דוגמת לוג, טבלת השורות, מבנה הדוח,
    טבלת התמונות, שתי תמונות לדוגמה מ-`docs/assets/sim/` (הועתקו מהדוח של backpressure_test s1), פתיחת FST ב-GTKWave/Surfer/VaporView.
+9. **גלים אצל תמיר (סבב 3):** FSDB לא אפשרי (קנייני של Synopsys, דורש VCS/Verdi). מה שהוריד בהתחלה היה קוד המקור של GTKWave;
+   הוא עובד עם **Surfer בדפדפן** (app.surfer-project.org, גרירת ה-FST). הדרכתי אותו: Scopes/Variables, `+` = קבוצה, Name → Global,
+   Format → Clock (קווים על עליות, Settings → Clock highlighting), Hex. אם ישאל על GTKWave מותקן: MSYS2 `pacman -S
+   mingw-w64-ucrt-x86_64-gtkwave`. הוצע ועדיין לא נבחר: קובצי `.gtkw` מוכנים לכל טסט, `.surfer/config.toml` בריפו.
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור

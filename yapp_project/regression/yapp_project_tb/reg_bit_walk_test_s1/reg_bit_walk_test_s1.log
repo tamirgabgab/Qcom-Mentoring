@@ -296,46 +296,46 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_r
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_resp_seq.sv(28) @ 0: uvm_test_top.tb.chan2.rx_agent.sequencer@@channel_rx_resp_seq [channel_rx_resp_seq] Executing channel_rx_resp_seq (forever)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/clock_and_reset/seqs/clk10_rst5_seq.sv(27) @ 0: uvm_test_top.tb.clk_rst.agent.sequencer@@clk10_rst5_seq [clk10_rst5_seq] Executing clk10_rst5_seq
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/clock_and_reset/clock_and_reset_driver.sv(38) @ 0: uvm_test_top.tb.clk_rst.agent.driver [clock_and_reset_driver] Starting clock (period 10) and holding reset for 5 cycles
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(143) @ 0: reporter [DUT] RESET asserted
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(147) @ 50: reporter [DUT] RESET released: router_en=1 maxpktsize=63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(186) @ 0: reporter [DUT] RESET asserted
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(190) @ 50: reporter [DUT] RESET released: router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 70: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x01
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 75: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 100: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 105: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 120: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x02
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 125: reporter [DUT] CONFIG router_en=1 maxpktsize=2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 125: reporter [DUT] CONFIG router_en=1 maxpktsize=2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 125: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x02
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 125: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 150: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x02
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 155: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x02
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 170: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x04
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 175: reporter [DUT] CONFIG router_en=1 maxpktsize=4
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 175: reporter [DUT] CONFIG router_en=1 maxpktsize=4
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 175: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x04
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 175: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 4
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 200: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x04
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 205: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x04
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 220: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x08
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 225: reporter [DUT] CONFIG router_en=1 maxpktsize=8
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 225: reporter [DUT] CONFIG router_en=1 maxpktsize=8
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 225: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x08
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 225: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 8
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 250: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x08
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 255: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x08
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 270: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x10
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 275: reporter [DUT] CONFIG router_en=1 maxpktsize=16
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 275: reporter [DUT] CONFIG router_en=1 maxpktsize=16
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 275: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x10
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 275: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 16
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 300: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x10
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 305: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x10
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 320: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x20
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 325: reporter [DUT] CONFIG router_en=1 maxpktsize=32
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 325: reporter [DUT] CONFIG router_en=1 maxpktsize=32
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 325: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x20
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 325: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 32
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 350: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x20
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 355: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x20
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 370: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x40
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 375: reporter [DUT] CONFIG router_en=1 maxpktsize=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 375: reporter [DUT] CONFIG router_en=1 maxpktsize=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 375: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x40
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 375: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 400: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x40
@@ -346,43 +346,43 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_referenc
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 450: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x80
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 455: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x80
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 470: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xfe
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 475: reporter [DUT] CONFIG router_en=1 maxpktsize=62
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 475: reporter [DUT] CONFIG router_en=1 maxpktsize=62
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 475: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 475: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 62
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 500: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 505: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 520: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xfd
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 525: reporter [DUT] CONFIG router_en=1 maxpktsize=61
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 525: reporter [DUT] CONFIG router_en=1 maxpktsize=61
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 525: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xfd
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 525: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 61
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 550: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xfd
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 555: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xfd
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 570: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xfb
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 575: reporter [DUT] CONFIG router_en=1 maxpktsize=59
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 575: reporter [DUT] CONFIG router_en=1 maxpktsize=59
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 575: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xfb
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 575: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 59
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 600: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xfb
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 605: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xfb
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 620: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xf7
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 625: reporter [DUT] CONFIG router_en=1 maxpktsize=55
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 625: reporter [DUT] CONFIG router_en=1 maxpktsize=55
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 625: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xf7
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 625: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 55
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 650: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xf7
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 655: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xf7
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 670: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xef
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 675: reporter [DUT] CONFIG router_en=1 maxpktsize=47
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 675: reporter [DUT] CONFIG router_en=1 maxpktsize=47
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 675: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xef
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 675: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 47
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 700: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xef
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 705: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xef
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 720: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xdf
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 725: reporter [DUT] CONFIG router_en=1 maxpktsize=31
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 725: reporter [DUT] CONFIG router_en=1 maxpktsize=31
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 725: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xdf
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 725: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 31
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 750: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xdf
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 755: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xdf
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 770: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xbf
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 775: reporter [DUT] CONFIG router_en=1 maxpktsize=63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 775: reporter [DUT] CONFIG router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 775: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xbf
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 775: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 800: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xbf
@@ -393,25 +393,25 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_referenc
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 850: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x7f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 855: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x7f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 870: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x00
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 875: reporter [DUT] CONFIG router_en=1 maxpktsize=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 875: reporter [DUT] CONFIG router_en=1 maxpktsize=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 875: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 875: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 900: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 905: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 920: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xff
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 925: reporter [DUT] CONFIG router_en=1 maxpktsize=63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 925: reporter [DUT] CONFIG router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 925: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 925: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 950: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 955: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 970: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0xaa
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 975: reporter [DUT] CONFIG router_en=1 maxpktsize=42
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 975: reporter [DUT] CONFIG router_en=1 maxpktsize=42
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 975: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 975: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 42
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1000: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1005: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1000 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1020: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x55
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1025: reporter [DUT] CONFIG router_en=1 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1025: reporter [DUT] CONFIG router_en=1 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1025: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x55
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 1025: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1050: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x55
@@ -423,7 +423,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_referenc
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1100: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1105: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1120: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x02
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1125: reporter [DUT] CONFIG router_en=0 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1125: reporter [DUT] CONFIG router_en=0 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1125: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x02
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 1125: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1150: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x02
@@ -464,7 +464,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_referenc
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1500: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1505: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1520: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xfd
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1525: reporter [DUT] CONFIG router_en=1 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1525: reporter [DUT] CONFIG router_en=1 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1525: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xfd
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 1525: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1550: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0xfd
@@ -500,25 +500,25 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_referenc
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1850: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x7f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1855: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0x7f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1870: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x00
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1875: reporter [DUT] CONFIG router_en=0 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1875: reporter [DUT] CONFIG router_en=0 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1875: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 1875: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1900: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1905: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1920: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xff
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1925: reporter [DUT] CONFIG router_en=1 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1925: reporter [DUT] CONFIG router_en=1 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1925: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 1925: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1950: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1955: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1970: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xaa
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 1975: reporter [DUT] CONFIG router_en=0 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 1975: reporter [DUT] CONFIG router_en=0 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1975: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 1975: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 2000: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 2005: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1001 data=0xaa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 2020: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x55
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 2025: reporter [DUT] CONFIG router_en=1 maxpktsize=21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 2025: reporter [DUT] CONFIG router_en=1 maxpktsize=21
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 2025: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x55
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(69) @ 2025: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 2050: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x55
@@ -651,7 +651,7 @@ UVM_INFO tests/reg_access_test.sv(112) @ 2750: uvm_test_top [REG_ACCESS] peek   
 UVM_INFO tests/base_test.sv(99) @ 2750: uvm_test_top [TEST] STAGE: ctrl_reg and en_reg back to their reset values
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 2755: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x100d data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 2770: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x3f
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 2775: reporter [DUT] CONFIG router_en=1 maxpktsize=63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 2775: reporter [DUT] CONFIG router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 2775: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x3f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 2775: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 2790: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x01
@@ -706,5 +706,5 @@ UVM_FATAL :    0
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 3us; walltime 0.205 s; speed 14.579 us/s
-- Verilator: cpu 0.115 s on 1 threads; allocated 36 MB
+- Verilator: $finish at 3us; walltime 0.215 s; speed 13.889 us/s
+- Verilator: cpu 0.139 s on 1 threads; allocated 36 MB

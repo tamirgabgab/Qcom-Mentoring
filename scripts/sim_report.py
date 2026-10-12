@@ -240,6 +240,7 @@ def md_text(s):
 
 # ------------------------------------------------------------------ wave pictures
 STATE_SHORT = {"IDLE": "IDLE", "PAYLOAD": "PAYL", "PARITY": "PAR"}
+PHASE_SHORT = {"HEADER": "HDR", "PAYLOAD": "PAY", "PARITY": "PAR"}
 
 
 class Trace:
@@ -274,6 +275,13 @@ class Trace:
         return out
 
 
+def phase_row(tr, a, b):
+    """in_phase of the tracer (HDR / PAY / PAR, blank when idle); older traces have no phase column."""
+    if "phase" not in tr.rows[0]:
+        return [""] * (b - a)
+    return tr.bus("phase", a, b, lambda r: r["phase"] in PHASE_SHORT, fmt=lambda v: PHASE_SHORT.get(v, v))
+
+
 def window(tr, t_from, t_to, before, after, cap):
     a = max(0, tr.row_after(t_from) - 1 - before)
     b = min(len(tr.rows), tr.row_after(t_to) + after)
@@ -297,6 +305,11 @@ def pictures(run, summ, tr, out_dir):
         pics.append((f"wave_{name}.svg", title))
 
     def in_vld(r):
+        # a byte is on in_data for the header and payload (in_data_vld high) and for the
+        # parity byte (in_data_vld low): in_phase of the tracer says which, older traces
+        # fall back to the FSM state
+        if "phase" in r:
+            return r["phase"] in PHASE_SHORT
         return r["in_data_vld"] == "1" or r["state"] == "PARITY"
 
     # reset: the first cycles of the run
@@ -319,6 +332,7 @@ def pictures(run, summ, tr, out_dir):
         draw("first_packet_in", "first packet into the router", [
             ("in_data_vld",     "bit", tr.bit("in_data_vld", a, b), "neg"),
             ("in_data",         "bus", tr.bus("in_data", a, b, in_vld), "neg"),
+            ("in_phase",        "bus", phase_row(tr, a, b), "neg"),
             ("in_suspend",      "bit", tr.bit("in_suspend", a, b), "pos"),
             ("fsm state",       "bus", tr.bus("state", a, b, fmt=lambda v: STATE_SHORT.get(v, v)), "pos"),
             (f"fifo_full[{ch}]", "bit", [int(r["fifo_full"][2 - ch]) for r in tr.rows[a:b]], "pos"),
@@ -344,6 +358,7 @@ def pictures(run, summ, tr, out_dir):
         draw("first_suspend", "first back-pressure on the input port", [
             ("in_data_vld",      "bit", tr.bit("in_data_vld", a, b), "neg"),
             ("in_data",          "bus", tr.bus("in_data", a, b, in_vld), "neg"),
+            ("in_phase",        "bus", phase_row(tr, a, b), "neg"),
             ("in_suspend",       "bit", tr.bit("in_suspend", a, b), "pos"),
             (f"fifo_full[{ch}]", "bit", [int(r["fifo_full"][2 - ch]) for r in tr.rows[a:b]], "pos"),
             (f"data_vld_{ch}",   "bit", tr.bit(f"data_vld_{ch}", a, b), "pos"),
@@ -358,6 +373,7 @@ def pictures(run, summ, tr, out_dir):
         draw("first_error_pulse", "first error pulse after a bad-parity packet", [
             ("in_data_vld", "bit", tr.bit("in_data_vld", a, b), "neg"),
             ("in_data",     "bus", tr.bus("in_data", a, b, in_vld), "neg"),
+            ("in_phase",        "bus", phase_row(tr, a, b), "neg"),
             ("fsm state",   "bus", tr.bus("state", a, b, fmt=lambda v: STATE_SHORT.get(v, v)), "pos"),
             ("error",       "bit", tr.bit("error", a, b), "pos"),
         ], a, b, [(e["msg"], 0)])

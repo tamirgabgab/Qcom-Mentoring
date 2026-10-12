@@ -296,13 +296,13 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_r
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_resp_seq.sv(28) @ 0: uvm_test_top.tb.chan2.rx_agent.sequencer@@channel_rx_resp_seq [channel_rx_resp_seq] Executing channel_rx_resp_seq (forever)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/clock_and_reset/seqs/clk10_rst5_seq.sv(27) @ 0: uvm_test_top.tb.clk_rst.agent.sequencer@@clk10_rst5_seq [clk10_rst5_seq] Executing clk10_rst5_seq
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/clock_and_reset/clock_and_reset_driver.sv(38) @ 0: uvm_test_top.tb.clk_rst.agent.driver [clock_and_reset_driver] Starting clock (period 10) and holding reset for 5 cycles
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(143) @ 0: reporter [DUT] RESET asserted
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(147) @ 50: reporter [DUT] RESET released: router_en=1 maxpktsize=63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(186) @ 0: reporter [DUT] RESET asserted
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(190) @ 50: reporter [DUT] RESET released: router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 70: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1000 data=0x25
 UVM_INFO tests/reg_access_test.sv(78) @ 70: uvm_test_top [REG_ACCESS] front-door write 0x25
 UVM_INFO tests/reg_access_test.sv(80) @ 70: uvm_test_top [REG_ACCESS] peek            0x25
 UVM_INFO tests/reg_access_test.sv(86) @ 70: uvm_test_top [REG_ACCESS] poke            0x1a
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(351) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=26
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(394) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=26
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 75: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x25
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(65) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 37
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 100: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x1a
@@ -366,5 +366,5 @@ UVM_FATAL :    0
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 350ns; walltime 0.143 s; speed 2.442 us/s
-- Verilator: cpu 0.073 s on 1 threads; allocated 36 MB
+- Verilator: $finish at 350ns; walltime 0.177 s; speed 1.978 us/s
+- Verilator: cpu 0.100 s on 1 threads; allocated 35 MB

@@ -3,7 +3,7 @@
 // the DUT: it is bound into every yapp_router instance by yapp_router_tracer_bind
 // (listed in run.f after the DUT) and only watches signals.
 //
-// Two jobs:
+// Three jobs:
 //   1. One `uvm_info line per event inside the router, with the id "DUT":
 //        IN  pkt #n header / complete     a packet entering, and why it is dropped
 //        SUSPEND asserted / released      back-pressure on the input port
@@ -18,6 +18,12 @@
 //      the last rising edge saw and the outputs it produced. sim_report.py
 //      draws the wave pictures of the report from this file. xrun and Verilator
 //      both run it (no simulator-specific code).
+//   3. `in_phase`, a signal for the waveform viewer (hw_top.dut.u_tracer.in_phase):
+//      what the byte now on in_data is -- IDLE, HEADER, PAYLOAD or PARITY. It
+//      changes on the falling edge together with in_data, so HEADER lasts exactly
+//      the cycle the header is on the bus. The FSM itself has no HEADER state: it
+//      takes the header while in IDLE and is in PAYLOAD from the rising edge that
+//      accepted it, half a cycle before the next byte is driven.
 //------------------------------------------------------------------------------
 `timescale 1ns/1ns
 
@@ -101,6 +107,11 @@ module yapp_router_tracer (
   string      csv_name;
   int         csv_fd;
 
+  // The kind of byte on in_data, for the waveform viewer (job 3 above)
+  typedef enum logic [1:0] {IDLE, HEADER, PAYLOAD, PARITY} in_phase_e;
+  in_phase_e  in_phase;
+  logic [1:0] bus_state;       // FSM state when the byte now on in_data was driven
+
   //--------------------------------------------------------------------------
   // Register name for an HBUS address (map of yapp_hbus_regs.sv)
   //--------------------------------------------------------------------------
@@ -135,6 +146,38 @@ module yapp_router_tracer (
       default:   return "?";
     endcase
   endfunction : state_name
+
+  //--------------------------------------------------------------------------
+  // in_phase: the testbench drives a new byte on the falling edge, after the
+  // rising edge that took the previous one, so the FSM state at the falling
+  // edge says what the new byte is: IDLE -> a header if in_data_vld is high,
+  // PAYLOAD -> a payload byte, PARITY -> the parity byte. A held byte
+  // (in_suspend) keeps its phase because the FSM does not move.
+  //--------------------------------------------------------------------------
+  always @(negedge clock or posedge reset) begin
+    if (reset) begin
+      bus_state <= S_IDLE;
+    end else begin
+      bus_state <= fsm_state;
+    end
+  end
+
+  always_comb begin
+    case (bus_state)
+      S_PAYLOAD: in_phase = PAYLOAD;
+      S_PARITY:  in_phase = PARITY;
+      default:   in_phase = in_data_vld ? HEADER : IDLE;
+    endcase
+  end
+
+  function automatic string phase_name(in_phase_e ph);
+    case (ph)
+      HEADER:  return "HEADER";
+      PAYLOAD: return "PAYLOAD";
+      PARITY:  return "PARITY";
+      default: return "IDLE";
+    endcase
+  endfunction : phase_name
 
   //--------------------------------------------------------------------------
   // Reset
@@ -366,15 +409,15 @@ module yapp_router_tracer (
         `uvm_warning("DUT", {"cannot open +trace_csv file ", csv_name})
       end else begin
         // one literal: a concatenation of literals would be printed as a number
-        $fdisplay(csv_fd, "time,reset,in_data,in_data_vld,in_suspend,state,fifo_full,data_0,data_vld_0,suspend_0,data_1,data_vld_1,suspend_1,data_2,data_vld_2,suspend_2,error,hen,hwr_rd,haddr,hdata,router_en,maxpktsize");
+        $fdisplay(csv_fd, "time,reset,in_data,in_data_vld,in_suspend,phase,state,fifo_full,data_0,data_vld_0,suspend_0,data_1,data_vld_1,suspend_1,data_2,data_vld_2,suspend_2,error,hen,hwr_rd,haddr,hdata,router_en,maxpktsize");
       end
     end
   end
 
   always @(negedge clock) begin
     if (csv_fd != 0) begin
-      $fdisplay(csv_fd, "%0t,%0d,%02h,%0d,%0d,%s,%03b,%02h,%0d,%0d,%02h,%0d,%0d,%02h,%0d,%0d,%0d,%0d,%0d,%04h,%02h,%0d,%0d",
-                $time, reset, in_data, in_data_vld, in_suspend, state_name(fsm_state), fifo_full,
+      $fdisplay(csv_fd, "%0t,%0d,%02h,%0d,%0d,%s,%s,%03b,%02h,%0d,%0d,%02h,%0d,%0d,%02h,%0d,%0d,%0d,%0d,%0d,%04h,%02h,%0d,%0d",
+                $time, reset, in_data, in_data_vld, in_suspend, phase_name(in_phase), state_name(fsm_state), fifo_full,
                 data_0, data_vld_0, suspend_0, data_1, data_vld_1, suspend_1, data_2, data_vld_2, suspend_2,
                 error, hen, hwr_rd, haddr, hdata, router_en, maxpktsize);
     end

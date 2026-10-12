@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="885" height="307" viewBox="0 0 885 307" font-family="monospace" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" width="885" height="351" viewBox="0 0 885 351" font-family="monospace" font-size="12">
 <style>.lbl{fill:#444}.sig{fill:none;stroke:#1a5fb4;stroke-width:1.6}.clk{fill:none;stroke:#555;stroke-width:1.4}.bus{fill:#e8f0fe;stroke:#1a5fb4;stroke-width:1.2}.idle{stroke:#999;stroke-width:1.2;stroke-dasharray:0}.z{stroke:#999;stroke-dasharray:3 3}.txt{fill:#1a1a1a;text-anchor:middle}.grid{stroke:#ddd;stroke-width:0.8;stroke-dasharray:2 3}.note{fill:#c01c28;font-size:11px}@media (prefers-color-scheme: dark){.lbl{fill:#ccc}.clk{stroke:#aaa}.txt{fill:#eee}.bus{fill:#1e2a44}.grid{stroke:#444}}</style>
 <text class="lbl" x="8" y="16" font-weight="bold">parity_error_test s1: first error pulse after a bad-parity packet</text>
-<line class="grid" x1="118" y1="36" x2="118" y2="246"/>
-<line class="grid" x1="162" y1="36" x2="162" y2="246"/>
-<line class="grid" x1="206" y1="36" x2="206" y2="246"/>
-<line class="grid" x1="250" y1="36" x2="250" y2="246"/>
-<line class="grid" x1="294" y1="36" x2="294" y2="246"/>
-<line class="grid" x1="338" y1="36" x2="338" y2="246"/>
-<line class="grid" x1="382" y1="36" x2="382" y2="246"/>
-<line class="grid" x1="426" y1="36" x2="426" y2="246"/>
-<line class="grid" x1="470" y1="36" x2="470" y2="246"/>
-<line class="grid" x1="514" y1="36" x2="514" y2="246"/>
-<line class="grid" x1="558" y1="36" x2="558" y2="246"/>
-<line class="grid" x1="602" y1="36" x2="602" y2="246"/>
+<line class="grid" x1="118" y1="36" x2="118" y2="290"/>
+<line class="grid" x1="162" y1="36" x2="162" y2="290"/>
+<line class="grid" x1="206" y1="36" x2="206" y2="290"/>
+<line class="grid" x1="250" y1="36" x2="250" y2="290"/>
+<line class="grid" x1="294" y1="36" x2="294" y2="290"/>
+<line class="grid" x1="338" y1="36" x2="338" y2="290"/>
+<line class="grid" x1="382" y1="36" x2="382" y2="290"/>
+<line class="grid" x1="426" y1="36" x2="426" y2="290"/>
+<line class="grid" x1="470" y1="36" x2="470" y2="290"/>
+<line class="grid" x1="514" y1="36" x2="514" y2="290"/>
+<line class="grid" x1="558" y1="36" x2="558" y2="290"/>
+<line class="grid" x1="602" y1="36" x2="602" y2="290"/>
 <text class="lbl" x="110" y="54.2" text-anchor="end">clock</text>
 <path class="clk" d="M118,62 L118,36 L140.0,36 L140.0,62 L162,62 L162,62 L162,36 L184.0,36 L184.0,62 L206,62 L206,62 L206,36 L228.0,36 L228.0,62 L250,62 L250,62 L250,36 L272.0,36 L272.0,62 L294,62 L294,62 L294,36 L316.0,36 L316.0,62 L338,62 L338,62 L338,36 L360.0,36 L360.0,62 L382,62 L382,62 L382,36 L404.0,36 L404.0,62 L426,62 L426,62 L426,36 L448.0,36 L448.0,62 L470,62 L470,62 L470,36 L492.0,36 L492.0,62 L514,62 L514,62 L514,36 L536.0,36 L536.0,62 L558,62 L558,62 L558,36 L580.0,36 L580.0,62 L602,62"/>
 <text class="lbl" x="110" y="98.2" text-anchor="end">in_data_vld</text>
@@ -24,7 +24,8 @@
 <text class="txt" x="206.0" y="141.0">D3</text>
 <path class="bus" d="M228.0,137.0 L233.0,124 L267.0,124 L272.0,137.0 L267.0,150 L233.0,150 Z"/>
 <text class="txt" x="250.0" y="141.0">4B</text>
-<line class="idle" x1="272.0" y1="137.0" x2="316.0" y2="137.0"/>
+<path class="bus" d="M272.0,137.0 L277.0,124 L311.0,124 L316.0,137.0 L311.0,150 L277.0,150 Z"/>
+<text class="txt" x="294.0" y="141.0">45</text>
 <line class="idle" x1="316.0" y1="137.0" x2="360.0" y2="137.0"/>
 <line class="idle" x1="360.0" y1="137.0" x2="404.0" y2="137.0"/>
 <line class="idle" x1="404.0" y1="137.0" x2="448.0" y2="137.0"/>
@@ -32,15 +33,27 @@
 <line class="idle" x1="492.0" y1="137.0" x2="536.0" y2="137.0"/>
 <line class="idle" x1="536.0" y1="137.0" x2="580.0" y2="137.0"/>
 <line class="idle" x1="580.0" y1="137.0" x2="624.0" y2="137.0"/>
-<text class="lbl" x="110" y="186.2" text-anchor="end">fsm state</text>
-<path class="bus" d="M118,181.0 L123,168 L201,168 L206,181.0 L201,194 L123,194 Z"/>
-<text class="txt" x="162.0" y="185.0">PAYL</text>
-<path class="bus" d="M206,181.0 L211,168 L245,168 L250,181.0 L245,194 L211,194 Z"/>
-<text class="txt" x="228.0" y="185.0">PAR</text>
-<path class="bus" d="M250,181.0 L255,168 L597,168 L602,181.0 L597,194 L255,194 Z"/>
-<text class="txt" x="426.0" y="185.0">IDLE</text>
-<text class="lbl" x="110" y="230.2" text-anchor="end">error</text>
-<path class="sig" d="M118,238 L162,238 L162,238 L206,238 L206,238 L250,238 L250,238 L294,238 L294,238 L338,238 L338,238 L382,238 L382,238 L426,238 L426,238 L470,238 L470,238 L470,212 L514,212 L514,212 L514,238 L558,238 L558,238 L602,238"/>
-<text class="note" x="118" y="270">cycle 0 = rising edge at t = 485 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
-<text class="note" x="118" y="283">ERROR pulse, 5 cycle(s) after the bad-parity packet</text>
+<text class="lbl" x="110" y="186.2" text-anchor="end">in_phase</text>
+<path class="bus" d="M140.0,181.0 L145.0,168 L267.0,168 L272.0,181.0 L267.0,194 L145.0,194 Z"/>
+<text class="txt" x="206.0" y="185.0">PAY</text>
+<path class="bus" d="M272.0,181.0 L277.0,168 L311.0,168 L316.0,181.0 L311.0,194 L277.0,194 Z"/>
+<text class="txt" x="294.0" y="185.0">PAR</text>
+<line class="idle" x1="316.0" y1="181.0" x2="360.0" y2="181.0"/>
+<line class="idle" x1="360.0" y1="181.0" x2="404.0" y2="181.0"/>
+<line class="idle" x1="404.0" y1="181.0" x2="448.0" y2="181.0"/>
+<line class="idle" x1="448.0" y1="181.0" x2="492.0" y2="181.0"/>
+<line class="idle" x1="492.0" y1="181.0" x2="536.0" y2="181.0"/>
+<line class="idle" x1="536.0" y1="181.0" x2="580.0" y2="181.0"/>
+<line class="idle" x1="580.0" y1="181.0" x2="624.0" y2="181.0"/>
+<text class="lbl" x="110" y="230.2" text-anchor="end">fsm state</text>
+<path class="bus" d="M118,225.0 L123,212 L201,212 L206,225.0 L201,238 L123,238 Z"/>
+<text class="txt" x="162.0" y="229.0">PAYL</text>
+<path class="bus" d="M206,225.0 L211,212 L245,212 L250,225.0 L245,238 L211,238 Z"/>
+<text class="txt" x="228.0" y="229.0">PAR</text>
+<path class="bus" d="M250,225.0 L255,212 L597,212 L602,225.0 L597,238 L255,238 Z"/>
+<text class="txt" x="426.0" y="229.0">IDLE</text>
+<text class="lbl" x="110" y="274.2" text-anchor="end">error</text>
+<path class="sig" d="M118,282 L162,282 L162,282 L206,282 L206,282 L250,282 L250,282 L294,282 L294,282 L338,282 L338,282 L382,282 L382,282 L426,282 L426,282 L470,282 L470,282 L470,256 L514,256 L514,256 L514,282 L558,282 L558,282 L602,282"/>
+<text class="note" x="118" y="314">cycle 0 = rising edge at t = 485 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
+<text class="note" x="118" y="327">ERROR pulse, 5 cycle(s) after the bad-parity packet</text>
 </svg>

@@ -97,7 +97,7 @@ the timing diagrams of the [specification](../dut/spec.md):
 | Picture | When it is drawn | What it shows |
 |---|---|---|
 | `wave_reset.svg` | always | reset, the first idle cycles, `router_en` and `maxpktsize` after reset |
-| `wave_first_packet_in.svg` | a packet entered the router | header, payload and parity on `in_data`, `in_suspend`, the input FSM state, the target FIFO filling up |
+| `wave_first_packet_in.svg` | a packet entered the router | header, payload and parity on `in_data` with their `in_phase` (HDR / PAY / PAR), `in_suspend`, the input FSM state, the target FIFO filling up |
 | `wave_first_packet_out.svg` | a packet left on a channel | `data_x`, `data_vld_x`, the receiver's `suspend_x` |
 | `wave_first_suspend.svg` | `in_suspend` rose | the held byte on `in_data`, the full FIFO, the channel draining it |
 | `wave_first_error_pulse.svg` | `error` pulsed | the end of the bad-parity packet and the pulse 1..10 cycles later |
@@ -131,6 +131,27 @@ And the same packet leaving the router on channel 2:
 
 `signals.csv` is the same information for the port signals in a form a
 spreadsheet or a script can read: one row per cycle.
+
+### Which signals to look at
+
+Following one packet from the driver to a channel (Surfer: click a scope in the
+tree, then the signals in the *Variables* list; *Format → Hex* on the buses):
+
+| Where | Signals | What they show |
+|---|---|---|
+| `hw_top.in0` | `clock`, `in_data`, `in_data_vld`, `in_suspend` | what the YAPP driver puts on the input port (it changes the inputs on the **falling** edge) |
+| `hw_top.dut.u_tracer` | `in_phase` | what the byte now on `in_data` is: `IDLE`, `HEADER`, `PAYLOAD`, `PARITY`; changes with `in_data`, so `HEADER` lasts exactly the cycle of the header |
+| `hw_top.dut.u_input_fsm` | `state`, `cur_addr`, `cur_len`, `cur_drop`, `fifo_push`, `fifo_full` | what the router decided, on the **rising** edge that sampled each byte |
+| `hw_top.ch0` … `ch2` | `data`, `data_vld`, `suspend` | the packet leaving: the same bytes, in the same order, on the channel `addr` names |
+
+**Why the FSM has no HEADER state.** The FSM takes the header while it is in
+`IDLE`: on the rising edge where `in_data_vld` is high it latches `cur_addr` and
+`cur_len` from the header and moves to `PAYLOAD`. So `state` shows `PAYLOAD`
+half a cycle *before* the first payload byte is on the bus -- the testbench
+drives a byte on the falling edge and the router samples it on the next rising
+edge. A real HEADER state would cost a cycle per packet and change the
+protocol of the course; `in_phase` is the readable label, computed in the
+testbench (`yapp_router_tracer.sv`), with the RTL untouched.
 
 ## Running one test by hand
 
