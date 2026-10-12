@@ -480,8 +480,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    רק כשהדוח נכתב לתוך הריפו (לא תחת `build/`). תיעוד: סעיף "A ready signal layout for Surfer" ב-`sim-report.md` +
    `docs/assets/sim/surfer_layout.png` (צילום Surfer, backpressure s1, 245–455ns).
    תמיר גרר את ה-`.sucl` לחלון ← `UnknownFileFormat` (קובץ שנגרר נקרא כגלים); ההסבר: File → Run command file.
-   לבקשתו נוסף גם ה-state שלו `yapp_project/tb/yapp_lab.surf.ron` (8 קבוצות מקופלות, שמות Global; נבדק: נטען
-   ב-Surfer 0.7 על FST של הריפו). המלצתי ש-`.sucl` נשאר המקור (state מחליף הגדרות משתמש ותלוי גרסה).
+   לבקשתו נוסף גם ה-state שלו `yapp_project/tb/yapp_lab.surf.ron`, ו**נמחק** אחרי ש-`yapp_router.surf.ron` נוסף (תמיר
+   טען בטעות את שלו במקום את שלי; "תמחק כדי למנוע בלבול"). `yapp_router.surf.ron` הוא ה-state היחיד בריפו.
 11. **זיכרונות ב-waves:** סשן אחר (`claude/hopeful-gates-acsuwt`) הוסיף `--trace-max-array 256` ב-`sim.py` (Verilator
    מדלג על מערכים מעל 32 איברים) ודחף ל-main; מוזג לענף (`c78971d`). קובצי ה-FST ב-`yapp_project/regression/` הוקלטו
    לפני כן, ולכן תמיר לא ראה את `yapp_pkt_mem`/`yapp_mem`. הרגרסיה הורצה מחדש (48/48), הדוח נבנה מחדש, ובכל 48 ה-FST

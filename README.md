@@ -271,7 +271,6 @@ yapp_project/                     the complete project — the source of truth
     yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
     yapp_router.sucl                Surfer command file: the router signals in 10 colored groups (scripts/surfer_layout.py)
     yapp_router.surf.ron            the same layout as a Surfer state + view settings (File → Load state...)
-    yapp_lab.surf.ron               a Surfer state saved by Tamir (File → Load state... after opening a .fst)
     tb_top.sv                       UVM side: publishes the virtual interfaces, run_test()
     hw_top.sv                       hardware side: the DUT, the five interface instances, clkgen
     router_tb.sv                    the environment: five UVC envs, virtual sequencer, module UVC, register model

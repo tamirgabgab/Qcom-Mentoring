@@ -186,12 +186,10 @@ The layout is written by `scripts/surfer_layout.py` (`LAYOUT` at the top):
 edit it there and run `python3 scripts/surfer_layout.py` to rewrite the
 `.sucl`. For the `.surf.ron`, run the new `.sucl` in Surfer, *File → Save
 state as...*, then `python3 scripts/surfer_layout.py --state <saved file>`
-(it puts the four settings of `STATE_SETTINGS` in). To keep your own arrangement after changing it in Surfer, use
-*File → Save state as...* and *File → Load state...* next time (open the
-`.fst` first; the state keeps the waves that are open and brings back the
-list). `yapp_project/tb/yapp_lab.surf.ron` is such a state, saved in the
-web app: eight folded groups (clock and reset, input, ch0..ch2 out, FSM,
-HBUS, registers), full signal names.
+(it puts the four settings of `STATE_SETTINGS` in). To keep your own
+arrangement after changing it in Surfer, use *File → Save state as...* and
+*File → Load state...* next time (open the `.fst` first; the state keeps the
+waves that are open and brings back the list).
 
 A `.sucl` or `.surf.ron` file is never dragged into the Surfer window: a
 dropped file is read as waves and fails with `UnknownFileFormat`.
