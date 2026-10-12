@@ -14,8 +14,9 @@ on the data buses, the clock drawn as a clock and one color per group:
   Error              hw_top.dut: the error pulse, pkt_done, u_error_timer.err_timer
   HBUS               hw_top.hbus0: hen, hwr_rd, haddr, hdata
   Config, counters   hw_top.dut: router_en, maxpktsize; u_regs: the statistics registers
-  Packet memory      hw_top.dut.u_regs.yapp_pkt_mem[0..63], folded (needs a .fst recorded
-                     with --trace-max-array 256, see scripts/sim.py)
+  Packet memory      hw_top.dut.u_regs.yapp_pkt_mem[0..63], folded
+  Scratch memory     hw_top.dut.u_regs.yapp_mem[0..255], folded
+                     (both need a .fst recorded with --trace-max-array 256, see scripts/sim.py)
 
 Open a .fst, then File -> Run command file... and pick the .sucl. The same
 file works for every test: the hierarchy is the same in all of them.
@@ -89,6 +90,12 @@ LAYOUT = [
     ]),
 ]
 
+# (scope, group name): the two memories of the spec, at the end of the list, folded.
+MEMORIES = [
+    (D + "u_regs.yapp_pkt_mem", "Packet memory"),     # 0x1010, 64 B, RO: the last packet
+    (D + "u_regs.yapp_mem", "Scratch memory"),        # 0x1100, 256 B, RW
+]
+
 
 def alpha(idx):
     """Surfer's item reference: the visible index in hex, written with the letters a..p."""
@@ -129,16 +136,19 @@ def commands():
             style(*rest)
         row += len(signals) + 1
         out.append("")
-    # The packet memory (64 bytes, a scope of [0]..[63] in the waves): a whole scope
-    # as one group, folded so it does not push the rest down; click it open.
-    out += ["# Packet memory (hw_top.dut.u_regs.yapp_pkt_mem), folded",
-            "item_unfocus",
-            "scope_add_as_group hw_top.dut.u_regs.yapp_pkt_mem",
-            f"item_focus {alpha(row)}",
-            "item_rename Packet memory",
-            "item_set_color Violet",
-            "group_fold_recursive",
-            ""]
+    # The memories: each a scope of [0]..[n-1] in the waves, added whole as one
+    # group and folded so it does not push the rest down; click it open. A folded
+    # group is one visible row, which is what item_focus counts.
+    for scope, name in MEMORIES:
+        out += [f"# {name} ({scope}), folded",
+                "item_unfocus",
+                f"scope_add_as_group {scope}",
+                f"item_focus {alpha(row)}",
+                f"item_rename {name}",
+                "item_set_color Violet",
+                "group_fold_recursive",
+                ""]
+        row += 1
     out += ["# The view",
             "item_unfocus",
             "variable_force_name_type Local",

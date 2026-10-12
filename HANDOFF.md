@@ -486,7 +486,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    מדלג על מערכים מעל 32 איברים) ודחף ל-main; מוזג לענף (`c78971d`). קובצי ה-FST ב-`yapp_project/regression/` הוקלטו
    לפני כן, ולכן תמיר לא ראה את `yapp_pkt_mem`/`yapp_mem`. הרגרסיה הורצה מחדש (48/48), הדוח נבנה מחדש, ובכל 48 ה-FST
    יש 320 משתני זיכרון (scope `yapp_pkt_mem` עם `[0]..[63]`, `yapp_mem` עם `[0]..[255]`). ה-layout קיבל קבוצה מקופלת
-   "Packet memory" (`scope_add_as_group` + `group_fold_recursive`).
+   "Packet memory" (`scope_add_as_group` + `group_fold_recursive`), ולבקשת תמיר גם "Scratch memory" (`yapp_mem`, 256 B);
+   שתיהן ב-`MEMORIES` ב-`surfer_layout.py`. קבוצה מקופלת = שורה נראית אחת (כך `item_focus` סופר).
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
 
 ### מה בתהליך ולא גמור

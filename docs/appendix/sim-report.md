@@ -136,7 +136,7 @@ spreadsheet or a script can read: one row per cycle.
 
 `yapp_project/tb/yapp_router.sucl` is a Surfer command file that opens the
 signals of the router in ten groups, one color per group, buses in hex, the
-FSM state and `in_phase` by name, plus the packet memory, folded:
+FSM state and `in_phase` by name, plus the two memories of the spec, folded:
 
 | Group | Signals | Scope |
 |---|---|---|
@@ -148,7 +148,8 @@ FSM state and `in_phase` by name, plus the packet memory, folded:
 | Error | `error`, `pkt_done`, `err_timer` | `hw_top.dut`, `u_error_timer` |
 | HBUS | `hen`, `hwr_rd`, `haddr`, `hdata` | `hw_top.hbus0` |
 | Config, counters | `router_en`, `maxpktsize`, `addr0..3_cnt_reg`, `parity_err_cnt_reg`, `oversized_pkt_cnt_reg` | `hw_top.dut`, `u_regs` |
-| Packet memory (folded) | `[0]` … `[63]`: the last packet, header first | `hw_top.dut.u_regs.yapp_pkt_mem` |
+| Packet memory (folded) | `[0]` … `[63]`: the last packet, header first (0x1010, RO) | `hw_top.dut.u_regs.yapp_pkt_mem` |
+| Scratch memory (folded) | `[0]` … `[255]`: written and read over HBUS (0x1100, RW) | `hw_top.dut.u_regs.yapp_mem` |
 
 The memories are arrays, and Verilator leaves arrays of more than 32 elements
 out of the waves unless told otherwise: `scripts/sim.py` passes
