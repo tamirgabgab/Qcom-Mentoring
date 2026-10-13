@@ -69,8 +69,9 @@ to show. Press ++question++ inside the map for the shortcuts.
   with every UVC opened down to sequencer, driver and monitor, the interfaces and the DUT, one
   role line per box. Double-click a box to open it in the Hierarchy view.
 * **Test plan** — the verification plan on one page. On top, one card per **feature group**
-  of the DUT (packet format, input and output protocols, registers, drop rules, counters,
-  memories, host port, coverage, testbench mechanics), each with its items as status-coloured
+  of the DUT (routing, packet format, input and output protocols, registers, drop rules,
+  counters, memories, host port, random scenarios, coverage, testbench mechanics), each with its
+  items as status-coloured
   chips: click a chip for the item's stimulus, checker, coverage and the tests that cover it.
   Below, one card per **test** in course order (the lab is on the card; the test-plan tests come
   last), all of them extending `base_test`. The chips are the stages of the test's plan; click a
@@ -115,9 +116,16 @@ roles return; an export always has every detail). Whenever the picture is larger
 canvas a **minimap** appears in the corner: the boxes in miniature with a rectangle for what is
 on screen; click or drag it to move around.
 
-The side panel has three tabs: **Overview** (role, base chain, fields, connections, the lab that
-introduces the item), **Code** (the source, with a link to GitHub) and **Links** (component
-guide, lab page, the same item in the other views, a shareable link). With nothing selected it
+The side panel has three tabs — **Overview** (role, base chain, fields, connections, the lab that
+introduces the item, a GitHub link to the file), **Code** (the source, with a link to GitHub) and
+**Links** (component guide, lab page, the same item in the other views, a shareable link) — and a
+fourth, **Simulate**, on the DUT and its register block. A **test** also shows its regression:
+how many seeds passed, the coverage bins it hit, and one row per seed with the log, the timeline
+and the waves (Surfer) on GitHub, plus a link to its page in the
+[regression results](regression/index.md); the test cards carry the same as badges. A **coverage
+collector** (yellow) lists the merged bins of the committed regression with the tests that hit
+each one, a red row for a hole, and links to the annotated source and the
+[coverage results](coverage-results.md). With nothing selected it
 lists the **items in this view**, grouped by parent (or by package in Classes, features and
 tests in the Test plan) and with a filter box. The **Source** column (toolbar button or ++c++)
 is a third column with the whole file of the selected class, module or RTL block, the item's

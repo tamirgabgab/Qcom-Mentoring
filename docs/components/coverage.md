@@ -5,8 +5,9 @@
 
 Functional coverage answers "**did we exercise what we meant to?**" — not
 whether the DUT was right (that is the scoreboard's job). It samples what the
-**monitor** publishes, because the monitor sees what *actually* happened on
-the bus, whatever the sequences intended.
+**monitors** publish (the YAPP packets, the HBUS cycles) and what the reference
+model decided, because they see what *actually* happened on the bus, whatever
+the sequences intended.
 
 ## Where the covergroups live
 
@@ -184,8 +185,12 @@ and each run writes its bins to
    (`legal[]`, a cross) shows each one under *Branches* (`+` hit, `-` hole).
 
 The [project map](../project-map.md) shows the merged bins too: open a
-coverage collector (`pkt_cov`, `gap_cov`, `coverage`) and its panel lists every
-bin with its hits; a hole is red, a click shows its line.
+coverage collector (`pkt_cov`, `gap_cov`, `coverage`, `hbus_addr_cov`,
+`hbus_bits_cov`, `hbus_data_cov`, `hbus_counter_cov`) and its panel lists every
+bin with its hits and the tests that hit it; a hole is red, a click shows its
+line, and the panel links to the annotated source. The
+[regression results](../regression/index.md) pages say how many bins each test
+hit.
 
 The percentage is covered bins / bins of the covergroup, as Verilator's
 `get_inst_coverage()` gives it (the helper coverpoints of the Verilator cross
@@ -201,5 +206,5 @@ imc -load cov_work/scope/coverage_test
 ```
 
 In IMC (or SimVision → Windows → Tools → Coverage): *Verification Hierarchy →
-uvm_pkg → …yapp_tx_monitor*, right-click → *Cover Group Analysis*, open the
+uvm_pkg → …yapp_pkt_coverage*, right-click → *Cover Group Analysis*, open the
 *Items* of `yapp_pkt_cg`.

@@ -120,7 +120,7 @@ classDiagram
 | Virtual interface | `uvm_config_db #(virtual yapp_if)` | [6](../labs/lab06.md) |
 | Virtual sequencer | a sequencer that only holds handles to other sequencers | [8](../labs/lab08.md) |
 | TLM analysis | `uvm_analysis_port` → `uvm_analysis_imp` / `export` / `tlm_analysis_fifo` | [9A](../labs/lab09a.md)–[9D](../labs/lab09d.md) |
-| Coverage | covergroup sampled in the monitor | [10](../labs/lab10.md) |
+| Coverage | a covergroup in a `uvm_subscriber` fed by the monitor's analysis port | [10](../labs/lab10.md) |
 | Register model | `uvm_reg`, maps, adapter, front/backdoor | [11](../labs/lab11a.md) |
 
 Go deeper: [Phases and objections](phases.md) · [Factory and configuration](factory-config.md) · [TLM connections](tlm.md).

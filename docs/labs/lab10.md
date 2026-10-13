@@ -9,9 +9,28 @@
 
 ## Objective
 
-Learn where coverage lives in a UVM environment (the monitor), write a
+Learn where coverage lives in a UVM environment (the course puts it in the
+monitor; this repository next to it, in a subscriber of the monitor), write a
 covergroup for three requirements, find the holes and close them with better
 stimulus.
+
+## Concepts
+
+* A **covergroup** is a set of **coverpoints**; every coverpoint sorts the
+  sampled value into **bins**. A **cross** pairs the bins of two coverpoints.
+  `sample()` is called by the testbench, here once per collected packet.
+* The monitor is the right source: it reports what the DUT really received,
+  whatever the sequence intended. A `uvm_subscriber` with an `analysis_export`
+  hangs on the monitor's `item_collected_port` and samples in `write()`.
+* **Holes** are bins no run hit; **closing** them means writing stimulus that
+  reaches them (`yapp_coverage_seq`) — the regression merges every run.
+
+```mermaid
+flowchart LR
+    M["yapp_tx_monitor<br/>item_collected_port"] --> C["yapp_pkt_coverage<br/>(uvm_subscriber)<br/>write() → yapp_pkt_cg.sample()"]
+    M --> G["yapp_gap_coverage<br/>yapp_gap_cg"]
+    M --> S["scoreboard, reference"]
+```
 
 ## Requirements
 

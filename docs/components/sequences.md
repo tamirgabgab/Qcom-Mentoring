@@ -95,7 +95,16 @@ seq_1.start(m_sequencer, this);       // blocks until seq_1.body() returns
 --8<-- "yapp_project/uvc/yapp/seqs/yapp_exhaustive_seq.sv"
 --8<-- "yapp_project/uvc/yapp/seqs/yapp_coverage_seq.sv"
 --8<-- "yapp_project/uvc/yapp/seqs/yapp_88_packets_seq.sv"
+--8<-- "yapp_project/uvc/yapp/seqs/yapp_pkt_seq.sv"
+--8<-- "yapp_project/uvc/yapp/seqs/yapp_boundary_seq.sv"
+--8<-- "yapp_project/uvc/yapp/seqs/yapp_gap_seq.sv"
+--8<-- "yapp_project/uvc/yapp/seqs/yapp_random_burst_seq.sv"
 ```
+
+The last four are not in the course: `yapp_pkt_seq` (one packet the test
+chooses), `yapp_boundary_seq` (lengths around `maxpktsize`), `yapp_gap_seq`
+(exact idle cycles between packets) and `yapp_random_burst_seq` (the knobs of
+the [random tests](random-tests.md)) were written for the test plan.
 
 ## Patterns worth copying
 

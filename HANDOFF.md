@@ -1,4 +1,4 @@
-# HANDOFF.md — YAPP Router UVM course (`tamirgabgab/qcom-mentoring`)
+# HANDOFF.md — YAPP Router UVM course (`tamirgabgab/Qcom-Mentoring`)
 
 > נכתב בסוף הסשן הרביעי (2026-10-07), עודכן בסשן החמישי (2026-10-08), בסשן השישי (2026-10-09: סימולציה
 > ב-Verilator) ובסשן השביעי (2026-10-12: לוגים קריאים, tracer של ה-DUT, דוח רגרסיה עם צירי זמן ותמונות גלים).
@@ -14,7 +14,7 @@
 > גלים, תמונות SVG לכל ריצה) + `regression_report.zip`. layout מוכן ל-Surfer (`yapp_router.sucl` / `.surf.ron`), זיכרונות
 > ב-waves (`--trace-max-array 256`). **סבב 5:** 4 טסטים אקראיים (`random_*_test`) עם מודל מלא ב-`router_reference` שבודק כל
 > קריאת HBUS; נמצא ותוקן באג ב-`yapp_error_timer` (פולס אחד לכל פקטה bad). רגרסיה: **158/158** (מעבדות seed אחד; הפרויקט
-> 96/96 = 16 מכוונים × 4 + 4 אקראיים × 8). Test plan: **60 פריטים, 59 covered + 1 excluded** (קבוצה חדשה RND).
+> 96/96 = 16 מכוונים × 4 + 4 אקראיים × 8). Test plan אז: 60 פריטים (קבוצה חדשה RND); **היום 64 פריטים ב-12 קבוצות, 63 covered + 1 excluded**.
 > **סשן 8 (2026-10-13, coverage):** כל covergroup בקובץ משלו — coverage collector (`uvm_subscriber`): `yapp_pkt_coverage`,
 > `yapp_gap_coverage` (על ה-monitor), `router_coverage` (על `router_reference.decision_out`). כל ריצה כותבת `.dat`
 > (`--coverage-user`), `coverage_report.py` ממזג → `coverage.md` / `coverage.json` בדוח, HTML של genhtml ב-`docs/coverage/`,
@@ -23,6 +23,10 @@
 > + `hbus_sweep_test` שסוגר אותם (כל קריאה נבדקת מול הרפרנס). רגרסיה **162/162**; ממוזג על 100 ריצות: **222/222 bins**.
 > נפתח PR [tamirgabgab/Qcom-Mentoring#1](https://github.com/tamirgabgab/Qcom-Mentoring/pull/1) מה-UI; תמיר אישר: **ממשיכים
 > לקדם את `main` (ff) אחרי כל push כמו תמיד**, גם כשיש PR פתוח (ה-PR יסומן merged אוטומטית).
+> **סשן 8 סבב 3 (ביקורת + דוח באתר):** ביקורת קריאה של HANDOFF/אתר/דוח/מפה → 16 הצעות; תמיר בחר ניקיון + דוח רגרסיה
+> באתר וכיווץ + קישורים ותגים במפה. הדוח המחויב 83 → **33 MB** (`runs.json`, בלי `all_logs.log`/`signals.csv`/`timeline.csv`,
+> timeline מקוצץ), עמוד אתר **Regression results** + דף לכל טסט (`docs/regression/`, מיוצר ב-`build.py`), סעיף Regression
+> ותגי seeds/bins על כרטיסי הטסטים במפה, טבלאות ה-Appendix מיוצרות, CI מעלה את הדוח כ-artifact, ~30 דפי אתר תוקנו.
 
 ---
 
@@ -114,7 +118,8 @@
   `make sim-report ONLY=yapp_project` → `build/sim/report/index.md`, תיקייה לכל ריצה (`<test>_s<seed>.log`, `timeline.md/.csv`,
   `<test>_s<seed>.fst`, `signals.csv`, `wave_*.svg`), `all_logs.log`, ו-`build/sim/regression_report.zip` (~2 MB, 18 MB פרוס).
   **הדוח committed ב-`yapp_project/regression/`** (בקשת תמיר, סבב 2 של סשן 7; `.gitignore` מחריג את ה-`*.log` שם). אחרי
-  שינוי בטסטים/UVCs: להריץ מחדש ולעשות commit לתיקייה (18 MB, רובם לוגים; ה-FST רק 660 KB).
+  שינוי בטסטים/UVCs: להריץ מחדש ולעשות commit לתיקייה (סשן 8 סבב 3: **33 MB**, 100 ריצות; לוגים 22 MB, timeline.md 6 MB,
+  SVG 4 MB, FST 3 MB; בלי `all_logs.log`/`signals.csv`/`timeline.csv` — הם נכתבים רק לדוח המקומי ב-`build/`).
   התמונות נבדקו ויזואלית (Playwright → PNG): פקטה נכנסת/יוצאת, suspend, error pulse, HBUS write/read.
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
@@ -126,8 +131,8 @@
   ב-RTL ⇔ offsets ב-RAL, סצנות env/plan, עקביות ה-Test plan מול המחלקות) **+ `test_sim.mjs`
   (536 assertions על `RouterModel` ועוזרי הפקטה, רץ מתוך `build --check` כשיש node)**. `docs/test-plan.md`
   נוצר מ-`build.py` ונבדק staleness.
-- הטסטים: 26 מחלקות test במודל (17 של הקורס + 9 של ה-Test plan ב-`yapp_project/tb/tests`), לכל אחת plan
-  (stages + expected) ולפחות פריט אחד ב-`plan:` שמזכיר אותה. 56 פריטי תוכנית: **55 covered, 1 excluded** (סשן 6 סבב 3).
+- הטסטים: 31 מחלקות test במודל (17 של הקורס + 14 של ה-Test plan ב-`yapp_project/tb/tests`: 10 מכוונים + 4 אקראיים), לכל אחת
+  plan (stages + expected) ולפחות פריט אחד ב-`plan:` שמזכיר אותה. 64 פריטי תוכנית ב-12 קבוצות: **63 covered, 1 excluded** (סשן 8).
 - `mkdocs build --strict` — 0 אזהרות (רק INFO על anchors של deep links — צפוי).
 - בדיקת דפדפן (Playwright, סקריפט חד-פעמי ב-scratchpad, לא בריפו): המפה נטענת בבהיר/כהה,
   ה-DUT מצויר עם 19 פינים ובלוק רגיסטרים, קליק על הבלוק פותח את לשונית Simulate, כתיבה דרך ה-UI
@@ -580,11 +585,46 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - **`docs/dut/register-map.md`** (חדש, nav "Register map"): תמיר ביקש "קובץ MD פשוט" למפת הרגיסטרים — נוצר ע"י `build.py` מ-
      `regmap.yaml` (טבלאות בלבד, נקרא ב-GitHub/VS Code), כולל קישור לסימולטור. map-check שומר שהוא עדכני.
 
+16. **ביקורת + דוח רגרסיה באתר (סשן 8 סבב 3, בקשת תמיר "תסתכל על HANDOFF, האם הכול כתוב נכון, רשימת הצעות; דגש על הממשק
+   האינטרנטי, דוחות הרגרסיה, דף ההיררכיה והאתר").** 3 סוכני ביקורת (אתר / דוח / מפה) → רשימת טעויות קטנות + 16 הצעות. תמיר בחר:
+   ניקיון, דוח באתר (עמוד לכל טסט) + כיווץ (כל 4 האפשרויות), CI artifact בלבד (בלי בדיקת עדכניות), קישורים ותגים במפה. **לא** נבחר:
+   תוכן לימודי (מסלול Verilator, glossary/FAQ, מבנה אחיד ללאבים עם "See it run", קוד התחלה), היסטוריה/trend, שכתוב HANDOFF.
+   - **`sim_report.py`:** `runs.json` (date, commit, verilator, total/passed, wall; לכל ריצה: ok, verdict, sim_time, wall מהשורה
+     `walltime` של Verilator, counts, summary, stages, pictures, first_error, dir/log/fst/surfer). הודעות רב-שורתיות
+     (`report_phase` של reference/scoreboard) מצורפות לאירוע (` · `) — נעלמו 2 השורות הריקות בכל timeline. `TIMELINE_MAX = 1500`:
+     ריצה ארוכה יותר שומרת רק test/DUT/hbus monitor/reports/warnings/errors ולכל היותר 1500 (hbus_sweep 875 KB → 100 KB). דוח
+     מחויב (`committed`) לא כותב `all_logs.log`/`timeline.csv`/`signals.csv` (רק ב-`build/`), ומעתיק את תמונות seed 1 של כל טסט
+     ל-`docs/assets/regression/<test>/`. `index.md`: שורת מטא-דאטה, סעיף Failures (שגיאה ראשונה), עמודות Wall + Note, בלי Bench
+     כשיש bench אחד; "driver quiet (UVM_NONE)" במקום "sent 0"; `FAILED`; קישורים יחסיים אמיתיים. `--only` מקבל גם `labs/x/tb`.
+   - **`build.py`:** `render_regression_md()` → `docs/regression/index.md` (מטא-דאטה, Failures, טבלה לכל טסט: seeds שעברו, sim/wall,
+     bins hit) + `docs/regression/<test>.md` (seeds עם קישורי GitHub ללוג/timeline/.fst + Surfer, תוכנית הטסט, פריטי Test plan,
+     סיכום/שלבים/תמונות של seed 1). `render_index_tables()` → `docs/assets/generated/index_tests.md` / `index_sequences.md`
+     (snippets שמוכללים ב-`appendix/index-tables.md`; `exclude_docs` ב-mkdocs.yml). דפי regression של טסטים שנעלמו נמחקים ב-build.
+     קישור הסימולטור ב-`register-map.md` יחסי (`spec.md#...`). nav: "Regression results".
+   - **מפה:** `model.attach_regression()` (runs.json + coverage.json `tests[]`) → `regression` על כל test node; `renderRegression`
+     בפאנל (seeds, תוצאה, זמנים, log/timeline/Surfer ↗, קישור לדף באתר ול-Test plan); תגי `4/4 ✓ seeds` (ירוק/אדום) ו-`N bins`
+     (צהוב) על כרטיסי הטסטים (`drawTestCard`, מוסתרים ב-lod-far); `renderCoverage`: קישור ל-genhtml (`coverage[].html` מהמודל)
+     ול-Coverage results, עמודת tests כ-`nodeLink`; `renderFeature`: קישור לדף המפרט; Overview: `GitHub ↗` ליד source; כרטיס
+     העזרה: שורה כפולה הוסרה, `l`, `↑/↓`, `?`; ניגודיות התג הצהוב (`#3e2723`). `test_model`: ≥20 טסטים עם runs, דף לכל אחד, html לכל covergroup.
+   - **CI (`sim.yml`):** אחרי הרגרסיה `sim_report.py --only <bench> --out build/sim/report` + `upload-artifact` `report-<i>` (תמיד);
+     `coverage_report.py --md` לסיכום markdown; compile.log בכישלון.
+   - **ניקיון (~30 קבצים):** README (64 פריטים/12 קבוצות, 10 טסטי TP + `hbus_sweep_test`, 7 collectors, Quick start שניתן להדבקה,
+     עץ), `index.md` (5 תצוגות, מסלול Verilator, עץ), `architecture.md` (collectors בדיאגרמות + TLM עם `decision_out`/HBUS, טבלאות),
+     `big-picture`, `components/index` (+Random tests), `concept-map`, `coverage.md`, `reference-model.md` (לא עוד "tiny"),
+     `sequences.md` (+4), `unverified.md` (באג 3, 222/222), `getting-started` (עץ, lab.mk, sv/ ב-9A–9D, באנר, map outputs),
+     `labs/index` (המבנה האמיתי), `lab09b/9c/10/11a` (Concepts, דיאגרמה ל-10), `sim-report`, `verilator`, `xrun`, `rtl`,
+     `project-map.md` (4 לשוניות, Regression, collectors, 12 קבוצות), `annotations.yaml` (3 ניסוחים), `index-tables` (קבצים חדשים),
+     `wave_clock_reset.svg` נמחק (לא בשימוש). **לא** אוחד האיות הבריטי/אמריקאי (מעורב; לא משנה לקוראות).
+
 ### מה בתהליך ולא גמור
-- כלום פתוח בקוד. סשן 7 סבב 5 (טסטים אקראיים) נדחף כולו (`71636b3` + commit ה-HANDOFF). מה שתמיר דחה במפורש להמשך:
-  reset באמצע טסט, ו-receiver שעוצר באמצע פקטה (סעיף 8 פריט 5).
+- כלום פתוח בקוד. מה שתמיר דחה במפורש להמשך: reset באמצע טסט, receiver שעוצר באמצע פקטה (סעיף 8 פריט 5), ומהביקורת של
+  סשן 8 סבב 3 — תוכן לימודי (סעיף 8 פריט 7) ו-history/trend של הרגרסיה.
 
 ### סטטוס git
+- **ענף סשן 8: `claude/confident-rubin-m1zkvc`** (אותו ענף כמו סשנים 5 ו-7; `main` ff אחרי כל push). commits של סשן 8:
+  `9cbb6f1` (coverage collectors + דוח coverage), `edd70b9` (HBUS coverage + `hbus_sweep_test` + register-map.md), `2aafca1`/`094da66`
+  (HANDOFF), ואחריהם סבב 3: הדוח המכווץ + `runs.json`, דפי Regression results + המפה, CI artifact, סבב הניקיון, HANDOFF.
+  ה-remote המקומי הוחלף לשם החדש `Qcom-Mentoring` (הישן עובד דרך redirect).
 - ענף סשן 7: `claude/confident-rubin-m1zkvc` (הענף של סשן 5, קודם ל-`e9e0af2` = main של סשן 6, ואז commit הסשן; `main` ff).
   commits של סשן 7: `4bd6705` (לוגים, tracer, דוח), `b744589` (דוח committed), `852e92a` (in_phase), `1a6b908` (layout
   ל-Surfer), `0fdfe2c`/`5e62203` (state של תמיר נוסף ונמחק), `c78971d` (merge של `--trace-max-array` מסשן אחר),
@@ -596,7 +636,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - ענף סשן 5: `claude/confident-rubin-m1zkvc` (= `main` = `origin/main` אחרי ה-ff). הענף הישן
   `claude/hopeful-meitner-r5epiu` נשאר ברימוט על `79b5fd4` (לא נמחק; אפשר למחוק).
 - אין שינויים לא-committed. `HANDOFF.md` **כן** ב-commit.
-- 28 commits בסך הכול; האחרונים: (סשן 5, סבב 6) README/HANDOFF/צילומים, `3687ecb` (גרירה מפס הכותרת + pan באמצעי/Space), `7dc58f6` (CLAUDE.md), `f3b3556` (Test plan + 7 טסטים), `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
+- (היסטורי, סוף סשן 5) 28 commits בסך הכול; האחרונים: (סשן 5, סבב 6) README/HANDOFF/צילומים, `3687ecb` (גרירה מפס הכותרת + pan באמצעי/Space), `7dc58f6` (CLAUDE.md), `f3b3556` (Test plan + 7 טסטים), `a803879` (Tests/Environment), `a9b64b7` (סבב UX שני), `cde70e0` (סבב UX ראשון), `0df0f47`, `98565ae` (test_sim.mjs), `79b5fd4` (HANDOFF), `c98a036` (README),
   `c928f3d` (HANDOFF), `4948f7f`, `92171ec`, `4f13ab5`, `0fa3c80`, `294cf18`, `d6e6c0a`, `bea3cc2`, `c12b5aa`,
   `c78e729`, `1c8da5e`, `a4efbfb`.
 
@@ -627,7 +667,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | איור הפקטה **צויר מחדש כ-SVG** (gen_waves.py) ולא צילום מה-PDF | זכויות יוצרים; מצב כהה | PNG של תמיר | סופי |
 | `regmap.yaml` מקור יחיד; CI משווה ל-RTL ול-RAL | מניעת drift בין איור/סימולטור/RTL/RAL | לקרוא מה-RTL ישירות | סופי |
 | `sv_style.py` טקסטואלי (regex) ולא pyslang | פשוט, מהיר, בלי UVM src; slang הוא רשת הביטחון | pyslang rewriting | סופי |
-| `main` תמיד fast-forward ל-feature branch | תמיר ראה `main` ריק ורוצה את הכול שם | PRs | סופי (אין PRs) |
+| `main` תמיד fast-forward ל-feature branch | תמיר ראה `main` ריק ורוצה את הכול שם | PRs | סופי; גם כשתמיר פותח PR מה-UI (סשן 8), `main` מקבל ff אחרי כל push |
 | סימולציה חינמית ב-**Verilator 5.052** מאותם `run.f`, לצד xrun (לא במקומו) | לתמיר אין סימולטור; Verilator תומך ב-UVM 2020-3.x; אני יכול להריץ בקונטיינר | Questa Starter (רק אצל תמיר), EDA Playground, Vivado xsim | סופי (סשן 6) |
 | עקיפות Verilator **ניידות** (עובדות גם ב-Xcelium); `` `ifdef VERILATOR `` רק ל-Z ב-HBUS ול-cross של Lab 10 | קוד אחד; קוד הלימוד של הקורס נשאר ב-`else` | שתי גרסאות קוד | סופי (תשובות תמיר) |
 | Codespaces (`.devcontainer`, image רשמי `verilator/verilator:v5.052`) + workflow `sim` עם matrix לכל ספרייה | תמיר רץ בדפדפן בלי התקנה; CI מקביל ~3 דק' | בנייה מהמקור ב-Codespace (~20 דק') | סופי |
@@ -757,6 +797,11 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`docs/appendix/verilator.md`** | איך להריץ, Codespaces, הבדלים מ-Xcelium | **חדש (סשן 6)** |
 | **`common/rand_util_pkg.sv`** | ספריית `rnd::` — כל ערך אקראי שאינו שדה של אובייקט | **חדש (סשן 6, סבב 2)** |
 | **`docs/components/random.md`** | מדריך ל-`rnd::` | **חדש (סשן 6, סבב 2)** |
+| **`scripts/coverage_report.py`** | **סשן 8:** מיזוג ה-`.dat` של Verilator → coverage.md/json/HTML; `--md` לסיכום ה-CI | **חדש (סשן 8)** |
+| **`yapp_project/uvc/*/*_coverage.sv`** | **סשן 8:** 7 coverage collectors (`uvm_subscriber`), covergroup אחד לקובץ | **חדש (סשן 8)** |
+| **`yapp_project/regression/runs.json`** | **סשן 8 סבב 3:** כל ריצה כנתונים (תוצאה, זמנים, שלבים, תמונות, קישורים) — הקלט של `docs/regression/` ושל המפה | **חדש** |
+| **`docs/regression/`**, **`docs/assets/regression/`** | **סשן 8 סבב 3:** דפי Regression results (מיוצרים ב-`build.py`) + תמונות הגלים של seed 1 לכל טסט (מועתקות ע"י `sim_report.py`) | **חדש** |
+| **`docs/assets/generated/index_*.md`** | **סשן 8 סבב 3:** טבלאות הטסטים והסיקוונסים של `appendix/index-tables.md` (snippets, מיוצרים; `exclude_docs` ב-mkdocs.yml) | **חדש** |
 | **`HANDOFF.md`** | המסמך הזה (ב-commit) | חדש |
 
 קבצים שנמחקו בעבר: `router_rtl/` (עבר ל-`yapp_project/rtl/`), `<uvc>/sv/` (עברו ל-`yapp_project/uvc/`). קבצים חד-פעמיים שאינם בריפו: `restyle.py`, `split_classes.py`, `sim_test.mjs`, `shot.mjs` (scratchpad של הסשנים). `readme_shots.mjs` לעומתם **כן** בריפו.
@@ -843,9 +888,12 @@ begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצ�
    FIFO מלא, קריאות/כתיבות HBUS לכל רגיסטר (או RAL coverage במקום `UVM_NO_COVERAGE`), פולסי error חופפים (כמה חייבים),
    מוני wrap, gap × parity, transitions של קונפיגורציה בין bursts. כל collector חדש = קובץ `*_coverage.sv` + חיבור + `make map`.
 5. **(סשן 7) המשך הטסטים האקראיים** — מה שתמיר השאיר בחוץ: reset באמצע טסט (דורש drivers/monitors/רפרנס/scoreboard
-   מודעי reset) ו-suspend באמצע פקטה ב-receiver (מחוץ ל-spec; ה-RTL תומך). אפשר גם: לבדוק את `ref_cg` על פני seeds ולכוון
-   knobs, להפעיל `check_empty` גם במעבדות (דורש drain ארוך יותר בטסטי הקורס), להקטין את הדוח (51 MB; `all_logs.log`
-   מכפיל את הלוגים).
+   מודעי reset) ו-suspend באמצע פקטה ב-receiver (מחוץ ל-spec; ה-RTL תומך). אפשר גם: לבדוק את `router_cfg_cg` על פני seeds
+   ולכוון knobs, להפעיל `check_empty` גם במעבדות (דורש drain ארוך יותר בטסטי הקורס). ~~להקטין את הדוח~~ — בוצע בסבב 3 (33 MB).
+7. **(סשן 8 סבב 3) מה שתמיר לא בחר מרשימת ההצעות:** מסלול Verilator-first לסטודנטיות ב-`index.md`/getting-started (היום
+   "run test_install" + הערה); מבנה אחיד לדפי הלאבים עם קטע "See it run" (ציטוט אמיתי מהלוג ב-`yapp_project/regression` דרך
+   snippet + קישור לסצנה במפה ולכרטיס הטסט); glossary ו-FAQ/troubleshooting; קוד התחלה (skeleton) לכל לאב; `history.csv` + מגמה
+   לרגרסיה; בדיקת עדכניות של הדוח המחויב ב-CI; רענון HANDOFF (להוציא את הכרונולוגיה לקובץ היסטוריה).
 4. **רעיונות UX שלא נדרשו**: מטריצת הכיסוי גם בתוך המפה (היום באתר + קישור מהפאנל); כיוון הספים `FIT_MIN_K` (0.5)
    ו-`LOD_FAR_K` (0.45) ב-`app.js` לפי תחושת תמיר; גלגלת = גלילה (נדחה בסבב 5 של סשן 5).
 
@@ -947,7 +995,8 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
   `claude/confident-rubin-m1zkvc`). סשן חדש מקבל שם ענף חדש מה-system prompt — לפתוח אותו מ-`origin/main`
   ולעבוד עליו; `main` מקבל ff אחרי כל push.
 - **הודעת ה-system reminder** של הסשן נותנת trailer עם session id חדש — להשתמש בו, לא בישן.
-- **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), ואחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml` — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
+- **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), אחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml`,
+  **ואחרי כל דוח רגרסיה חדש** (`coverage.json` + `runs.json` → `coverage-results.md`, `docs/regression/`, המפה) — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.
 - `build --check` לא כותב; `build` ואז `--check`. אל תעשה `| head` על ה-build.
 - **צילומי ה-README** (`docs/assets/readme/`, 5 תמונות): לצלם מחדש עם `make readme-shots` אחרי כל שינוי שנראה בממשק
   (תמיר ביטל בסבב 6 את הבקשה הישנה "לא לצלם מחדש"). לבדוק את ה-PNG ב-Read לפני commit.

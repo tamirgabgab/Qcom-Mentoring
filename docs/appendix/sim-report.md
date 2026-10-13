@@ -58,16 +58,24 @@ The report of the project (17 directed tests with 4 seeds and 4 random tests
 with 8, 100 runs) is committed in
 `yapp_project/regression/`, so the logs, timelines, waves and pictures can be
 read on GitHub or in the ZIP without running anything; `index.md` is the
-entry point.
+entry point, `runs.json` the same table as data. The site shows it as
+[Regression results](../regression/index.md): one page per test with its
+seeds, the links to every log, timeline and waveform, the stages and the
+pictures of its first seed; the project map shows the same under every test
+card. A committed report leaves out the files that only repeat the log or the
+waves (`all_logs.log`, `timeline.csv`, `signals.csv`), and the timeline of a
+very long run (`hbus_sweep_test`, 11 000 events) keeps only the test, DUT,
+HBUS and report events.
 
 `scripts/sim_report.py` reads `build/sim/<bench>/logs/<test>_s<seed>.log` and
 writes `build/sim/report/`:
 
 ```text
 report/
-  index.md                      every run: result, packets in / forwarded / dropped,
-                                packets out per channel, suspends, errors, link
-  all_logs.log                  every log in one file, each under a banner
+  index.md                      every run: result, sim and wall time, packets in / forwarded / dropped,
+                                packets out per channel, suspends, errors, links; failures first
+  runs.json                     the same per run, as data (the site pages and the map read it)
+  all_logs.log                  every log in one file, each under a banner (local reports only)
   coverage.md                   the functional coverage merged over every run: holes,
                                 every bin with its hits and tests, what each test adds
   coverage.json                 the same data (the site page and the project map read it)
@@ -78,9 +86,9 @@ report/
     backpressure_test_s1/
       backpressure_test_s1.log  the log, named after the test and the seed
       timeline.md               summary · stages · pictures · every event in order
-      timeline.csv              the same events: time, severity, who, id, event
+      timeline.csv              the same events: time, severity, who, id, event (local reports only)
       backpressure_test_s1.fst  the waves
-      signals.csv               the per-cycle signal trace (see below)
+      signals.csv               the per-cycle signal trace (see below; local reports only)
       wave_*.svg                the pictures
     backpressure_test_s2/
     ...
@@ -137,7 +145,7 @@ And the same packet leaving the router on channel 2:
 * **Surfer** (`surfer file.fst`, also available as a web app), or the
   **VaporView** extension of VS Code (installed in the Codespace): open the
   file from the Explorer.
-* From a lab directory, `make waves TEST=<test>` starts whichever of the two is
+* From a lab directory, `make waves TEST=<test>` starts whichever viewer is
   installed.
 
 `signals.csv` is the same information for the port signals in a form a
@@ -169,7 +177,7 @@ out of the waves unless told otherwise: `scripts/sim.py` passes
 bytes) are in every `.fst` recorded since. In Surfer they are scopes under
 `u_regs`, one variable per byte; a `.fst` recorded before has no memories.
 
-Three ways to use it:
+Four ways to use it:
 
 * **One click.** The *Waves* column of `yapp_project/regression/index.md` (and
   the line under the result in every `timeline.md`) opens

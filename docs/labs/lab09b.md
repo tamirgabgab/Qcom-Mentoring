@@ -5,7 +5,8 @@
 
 **Directory:** `labs/lab09_sbb` · **New:** `sv/router_reference.sv`, `sv/router_module_env.sv`,
 `sv/router_module_pkg.sv` · **Changed:** `tb/router_tb.sv`, `tb/tb_top.sv`, `run.f` ·
-**Result copied to:** `yapp_project/uvc/router`
+**Result copied to:** `yapp_project/uvc/router` (where the reference model has since grown into a full
+model of the registers, counters and memories — see [Reference model](../components/reference-model.md))
 
 ## Objective
 

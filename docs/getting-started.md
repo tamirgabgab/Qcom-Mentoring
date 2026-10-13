@@ -39,18 +39,19 @@ yapp_project/
 │   ├── yapp_error_timer.sv
 │   └── yapp_router.f        file list, used from run.f as -F ../rtl/yapp_router.f
 ├── uvc/
-│   ├── yapp/            YAPP input UVC (seqs/ holds the sequence classes)
+│   ├── yapp/            YAPP input UVC (seqs/ holds the sequence classes; pkt / gap coverage collectors)
 │   ├── hbus/            HBUS UVC, including hbus_reg_adapter
 │   ├── channel/         Channel UVC
 │   ├── clock_and_reset/ Clock & Reset UVC and clkgen
-│   └── router/          router module UVC: reference model, scoreboards, packet_compare
-└── tb/                  the final testbench
-    ├── tb_top.sv, hw_top.sv, router_tb.sv, router_mcsequencer.sv
-    ├── tests/           one file per test class, included by router_test_lib.sv
-    ├── mcseqs/          the multichannel sequences, included by router_mcseqs_lib.sv
-    ├── reg/             the register model classes, included by yapp_router_reg_pkg.sv
-    ├── run.f            xrun command file (default test: reg_function_test)
-    └── Makefile         make run / gui / lint / clean
+│   └── router/          router module UVC: reference model, scoreboards, coverage collectors, packet_compare
+├── tb/                  the final testbench
+│   ├── tb_top.sv, hw_top.sv, router_tb.sv, router_mcsequencer.sv, yapp_router_tracer.sv (the DUT tracer)
+│   ├── tests/           one file per test class, included by router_test_lib.sv
+│   ├── mcseqs/          the multichannel sequences, included by router_mcseqs_lib.sv
+│   ├── reg/             the register model classes, included by yapp_router_reg_pkg.sv
+│   ├── run.f            xrun command file (default test: reg_function_test)
+│   └── Makefile         make run / gui / lint / clean (Xcelium), compile / sim / waves (Verilator)
+└── regression/          the committed report of the last regression: logs, timelines, waves, coverage
 ```
 
 ```bash
@@ -61,9 +62,10 @@ make lint                             # slang elaboration check, no simulator
 ```
 
 The labs are snapshots along the way to this project. Labs 1–6 carry their own copy of the
-YAPP UVC in `labs/<lab>/sv`; from Lab 7 on, every lab's `run.f` compiles the UVCs from
-`yapp_project/uvc/` and the DUT from `yapp_project/rtl/yapp_router.f`, and the lab directory
-only contains the testbench of that lab.
+YAPP UVC in `labs/<lab>/sv`; from Lab 7 on, every lab's `run.f` compiles the YAPP UVC and the
+provided UVCs from `yapp_project/uvc/` and the DUT from `yapp_project/rtl/yapp_router.f`, so
+the lab directory holds the testbench of that lab — plus, in Labs 9A–9D, the router module UVC
+as it grows (`labs/lab09_*/sv`), whose finished form is `yapp_project/uvc/router`.
 
 ## Running a lab
 
@@ -71,12 +73,12 @@ Every lab directory has the same shape:
 
 ```
 labs/lab05_seq/
-├── sv/        the UVC source files of that lab (Labs 1-6 only; later labs compile yapp_project/uvc/*)
+├── sv/        the UVC source files of that lab (Labs 1-6: the YAPP UVC; 9A-9D: the router module UVC)
 │   └── seqs/      one file per sequence class, included by yapp_tx_seqs.sv
 └── tb/        testbench, tests, top modules
     ├── tests/     one file per test class, included by router_test_lib.sv
     ├── run.f      xrun command file: what to compile + default plusargs
-    └── Makefile   make run / gui / lint / clean
+    └── Makefile   make run / gui / lint / clean (Xcelium); compile / sim / waves (Verilator)
 ```
 
 **One class per file, bodies outside the class.** The course's library files (`yapp_tx_seqs.sv`,
@@ -126,10 +128,13 @@ The full list of `xrun` options used in the course is in the
 
 ## Reading the log
 
-The three lines you look for first:
+The lines you look for first:
 
 ```
 UVM_INFO ... Running test base_test...            <- which test runs
+[TEST] === base_test  seed 1 ===                  <- the banner of the project's tests (and the seed)
+[TEST] STAGE: ...                                 <- what the test is doing now
+[TEST] === base_test  seed 1: PASSED (0 UVM_ERROR, 0 UVM_FATAL) ===
 --- UVM Report Summary ---                        <- counts of errors / warnings
 UVM_ERROR :    0
 ```
@@ -188,7 +193,8 @@ a `connect()` call:
 
 ```bash
 pip install pyslang pyyaml jinja2
-make map            # rewrites docs/assets/project_map/model.json and docs/downloads/yapp_project_map.html
+make map            # rewrites model.json, regmap.js, the standalone HTML and every generated page:
+                    # test-plan.md, coverage-results.md, dut/register-map.md, regression/, the index tables
 make map-check      # what CI runs: fails if the committed map is stale; also runs the
                     # consistency checks (test_model.py) and, when node is installed,
                     # the simulator checks (test_sim.mjs: RouterModel vs. the documented RTL rules)

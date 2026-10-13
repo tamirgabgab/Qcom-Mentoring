@@ -3,8 +3,8 @@
 Eleven labs, one environment. Every lab page has the same layout so you always
 know where to look:
 
-**Objective → Concepts → Diagram → Solution, step by step → Tests and expected
-result → Checkpoint questions → Optional → What changed since the previous lab**
+**Objective → Concepts (with a diagram) → Solution, step by step → Run: the tests and
+the expected result → Checkpoint questions → Optional → What changed since the previous lab**
 
 ## Session plan
 
@@ -32,10 +32,11 @@ flowchart LR
 ```
 
 Labs 1–6 carry their own copy of the YAPP UVC in `labs/<lab>/sv`. From Lab 7
-on, the finished UVC lives in `yapp_project/uvc/yapp` and the labs only contain the
+on, the finished UVC lives in `yapp_project/uvc/yapp` and the labs contain the
 testbench (`tb/`); their `run.f` compiles the UVCs from `yapp_project/uvc/` and the
-DUT from `yapp_project/rtl/yapp_router.f`. The router module UVC built in 9A–9D ends
-up in `yapp_project/uvc/router`; the register model built in 11A is copied into the
+DUT from `yapp_project/rtl/yapp_router.f`. Labs 9A–9D carry the router module UVC
+as it grows (`labs/lab09_*/sv`); its finished form, with the full reference model
+and the coverage collectors, is `yapp_project/uvc/router`; the register model built in 11A is copied into the
 `tb/` of 11B and 11C, as the course does. The end of the chain, with every UVC, the
 virtual sequencer and the register model, is `yapp_project/tb/`
 (see [Getting started](../getting-started.md#the-complete-project-yapp_project)).

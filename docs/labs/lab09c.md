@@ -10,6 +10,13 @@
 Expose all connection points of the module UVC at the env level with
 **exports**, so the testbench never reaches into the env.
 
+## Concepts
+
+* An `uvm_analysis_export` is a **pass-through**: it has no `write()` of its own; in
+  `connect_phase` the env connects it to the imp inside (`yapp_export.connect(reference.yapp_in)`).
+* The testbench then connects monitors to the env's exports and never names a child of the
+  env: the env can be reorganised without touching `router_tb`.
+
 ## Why
 
 An interface UVC always has its analysis ports in the monitor — you know where

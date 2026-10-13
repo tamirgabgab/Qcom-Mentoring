@@ -3,7 +3,7 @@
 The course targets Cadence Xcelium (`make run`). When no Xcelium licence is at
 hand, every lab and the complete project also run on
 [Verilator](https://verilator.org), a free, open-source simulator, from the
-**same `run.f` files**. Verilator 5.052 runs UVM 2020-3.x; the few places where
+**same `run.f` files**. Verilator 5.052 runs the Accellera UVM 2020.3.1 source; the few places where
 it differs from Xcelium are handled in the code (see [below](#what-differs-from-xcelium)).
 
 | | Xcelium | Verilator |

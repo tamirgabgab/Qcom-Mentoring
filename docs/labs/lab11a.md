@@ -11,6 +11,14 @@
 Get a UVM register model of the router and inspect it: hierarchy, reset
 values, access policies, address map.
 
+## Concepts
+
+* A **register model** mirrors the DUT's registers as objects: `uvm_reg_block` →
+  `uvm_reg` → `uvm_reg_field`, and `uvm_mem` for memories, placed in a `uvm_reg_map`
+  with their offsets and access policies (RW, RO).
+* The model is **generated** from a description of the register map (IP-XACT here), so the
+  testbench, the documentation and the RTL share one source.
+
 ## About the generation step
 
 The course generates the model from an IP-XACT description with Cadence's

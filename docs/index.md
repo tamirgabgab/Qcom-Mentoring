@@ -1,9 +1,10 @@
 # YAPP Router — SystemVerilog & UVM Course
 
-!!! tip "New: the interactive project map"
+!!! tip "The interactive project map"
     [Open the project map](project-map.md) — one picture of the whole testbench and DUT you can
-    drill into (hierarchy, TLM data flow, UML classes), generated from the source. Also
-    available as a [single offline HTML file](downloads/yapp_project_map.html).
+    drill into (five views: hierarchy, TLM data flow, UML classes, the environment and the test
+    plan), generated from the source, with the regression and coverage results on every card.
+    Also available as a [single offline HTML file](downloads/yapp_project_map.html).
 
 
 This site is the companion to the **YAPP packet-router verification project**: a
@@ -61,7 +62,9 @@ one idea per class, comments that say *why*.
 
 === "Students"
 
-    1. Read [Getting started](getting-started.md) once and run `test_install`.
+    1. Read [Getting started](getting-started.md) once and run `test_install` (Xcelium) — or,
+       without a licence, open the repository in a GitHub Codespace and run `make sim`
+       ([Verilator](appendix/verilator.md): the same labs, the same tests, free).
     2. Read the [DUT specification](dut/spec.md): every lab assumes you know
        the packet format and the three port protocols.
     3. Work through the [labs](labs/index.md) in order. Each lab page tells you
@@ -80,9 +83,10 @@ one idea per class, comments that say *why*.
       collapsible boxes so you can use them for reviews.
     * `labs/<lab>/` is a complete snapshot of the code at the end of that lab.
       `diff -r labs/lab04_factory labs/lab05_seq` shows exactly what a lab adds.
-    * The [test plan](test-plan.md) maps DUT features to tests and checkers, and
-      the [verification status](appendix/unverified.md) page lists what the
-      Verilator runs proved and what still needs Xcelium.
+    * The [test plan](test-plan.md) maps DUT features to tests and checkers, the
+      [regression results](regression/index.md) and [coverage results](coverage-results.md)
+      show what the last regression did, and the [verification status](appendix/unverified.md)
+      page lists what the Verilator runs proved and what still needs Xcelium.
 
 ## Course roadmap
 
@@ -100,7 +104,7 @@ one idea per class, comments that say *why*.
 | [9B](labs/lab09b.md) | Router module UVC | `router_reference`, `router_module_env` | reference model, module UVC |
 | [9C](labs/lab09c.md) | TLM exports *(optional)* | exports on the env | `uvm_analysis_export` |
 | [9D](labs/lab09d.md) | Analysis FIFOs *(optional)* | `router_fifo_scoreboard` | `uvm_tlm_analysis_fifo`, blocking `get` |
-| [10](labs/lab10.md) | Functional coverage *(optional)* | covergroup in the monitor | coverpoints, bins, cross |
+| [10](labs/lab10.md) | Functional coverage *(optional)* | `yapp_pkt_coverage`, a covergroup on the monitor's packets | coverpoints, bins, cross, `uvm_subscriber` |
 | [11A](labs/lab11a.md) | Register model generation | `yapp_router_reg_pkg` | `uvm_reg`, `uvm_reg_block`, maps |
 | [11B](labs/lab11b.md) | Register model integration | adapter, `set_sequencer`, built-in sequences | front door, backdoor, auto-predict |
 | [11C](labs/lab11c.md) | Register tests | `reg_access_test`, `reg_function_test` | `write/read/peek/poke`, `predict`, introspection |
@@ -125,12 +129,15 @@ yapp_project/                the complete project, the state after Lab 11C (sour
 ├── uvc/hbus/                HBUS UVC         -- "provided"
 ├── uvc/channel/             Channel UVC      -- "provided"
 ├── uvc/clock_and_reset/     Clock & Reset UVC-- "provided"
-├── uvc/router/              router module UVC (scoreboard, reference model) -- Labs 9A-9D
-└── tb/                      the final testbench: tests/, mcseqs/, reg/, run.f, Makefile
-labs/<lab>/                  one snapshot per lab (sv/ in Labs 1-6, tb/, run.f, Makefile);
-                             Labs 7+ compile the UVCs and the DUT from yapp_project/
+├── uvc/router/              router module UVC (scoreboard, reference model, coverage collectors) -- Labs 9A-9D
+├── tb/                      the final testbench: tests/, mcseqs/, reg/, run.f, Makefile, the DUT tracer
+└── regression/              the committed report of the last regression: logs, timelines, waves, coverage
+labs/<lab>/                  one snapshot per lab (sv/ in Labs 1-6 and 9A-9D, tb/, run.f, Makefile);
+                             Labs 7+ compile the YAPP UVC and the DUT from yapp_project/
+common/                      what every bench shares: rand_util_pkg (rnd::), lab.mk, the Verilator glue
 test_install/                does the simulator find UVM?
-scripts/                     lint harness (slang), project-map generator, waveform generator
+scripts/                     lint harness (slang), Verilator flow (sim.py, regress.yaml), the regression
+                             and coverage reports, the project-map generator, the waveform generator
 docs/                        this site
 ```
 

@@ -20,7 +20,7 @@
 | Reference model, module UVC | 9B | `router_reference.sv`, `router_module_env.sv` |
 | TLM exports | 9C | `router_module_env.sv` |
 | TLM analysis FIFOs, `get_peek_export` | 9D | `router_fifo_scoreboard.sv` |
-| Functional coverage (covergroup, bins, cross) | 10 | `yapp_tx_monitor.sv`, `yapp_coverage_seq` |
+| Functional coverage (covergroup, bins, cross) | 10 | `yapp_pkt_coverage.sv`, `yapp_coverage_seq` |
 | RAL model structure (`uvm_reg`, `uvm_reg_block`, `uvm_mem`, maps) | 11A | `yapp_router_reg_pkg.sv` |
 | RAL integration: adapter, `set_sequencer`, auto-predict, built-in sequences | 11B | `hbus_reg_adapter.sv`, `router_tb.sv`, `uvm_reset_test` |
 | RAL access: `write` / `read` / `peek` / `poke`, `predict`, check-on-read, introspection | 11C | `reg_*_test` |

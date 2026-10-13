@@ -4,21 +4,23 @@
 
 
 This is what the testbench looks like once every lab is done
-(`labs/lab11c_rm_sim`). Each lab page has the sub-diagram for its own stage.
+(`yapp_project/tb`, the source of truth; `labs/lab11c_rm_sim` is the last snapshot of the
+course). Each lab page has the sub-diagram for its own stage.
 
 ## Component tree
 
 ```mermaid
 flowchart TB
     subgraph tb_top["tb_top (module): publishes the virtual interfaces, calls run_test()"]
-        subgraph test["uvm_test_top : base_test / simple_test / router_simple_mcseq_test / reg_*_test"]
+        subgraph test["uvm_test_top : base_test / router_simple_mcseq_test / reg_*_test / the test-plan and random tests"]
             subgraph tb["tb : router_tb (uvm_env)"]
                 direction LR
                 subgraph yapp["yapp : yapp_env"]
                     subgraph yagent["agent : yapp_tx_agent"]
                         yseqr["sequencer"]
                         ydrv["driver"]
-                        ymon["monitor<br/>+ covergroup"]
+                        ymon["monitor"]
+                        ycov["pkt_cov, gap_cov<br/>(coverage collectors)"]
                     end
                 end
                 subgraph chan["chan0 / chan1 / chan2 : channel_env"]
@@ -45,6 +47,7 @@ flowchart TB
                 subgraph rm["router_module : router_module_env"]
                     ref["reference"]
                     sb["scoreboard"]
+                    rcov["coverage<br/>hbus_addr_cov, hbus_bits_cov,<br/>hbus_data_cov, hbus_counter_cov"]
                 end
                 yrm[("yapp_rm : yapp_router_regs_t<br/>reg2hbus : hbus_reg_adapter")]
             end
@@ -83,7 +86,9 @@ references. They come straight from `uvm_top.print_topology()`.
 | Path | Type | Used for |
 |---|---|---|
 | `tb.yapp.agent.sequencer` | `yapp_tx_sequencer` | YAPP default sequence; `mcseqr.yapp_seqr` |
-| `tb.yapp.agent.monitor` | `yapp_tx_monitor` | `item_collected_port`, coverage, `num_bad_parity` |
+| `tb.yapp.agent.monitor` | `yapp_tx_monitor` | `item_collected_port` (→ scoreboard, reference, `pkt_cov`, `gap_cov`), `num_bad_parity` |
+| `tb.yapp.agent.pkt_cov`, `gap_cov` | `yapp_pkt_coverage`, `yapp_gap_coverage` | the covergroups of the YAPP packets and the gaps between them |
+| `tb.router_module.coverage`, `hbus_*_cov` | `router_coverage`, `router_hbus_*_coverage` | the covergroups of the router configuration and of the HBUS traffic |
 | `tb.chan*.rx_agent.sequencer` | `channel_rx_sequencer` | `channel_rx_resp_seq` (one wildcard for all three) |
 | `tb.hbus.masters[0].sequencer` | `hbus_master_sequencer` | `mcseqr.hbus_seqr`; register map sequencer |
 | `tb.hbus.monitor` | `hbus_monitor` | `item_collected_port` → reference model |
@@ -111,7 +116,10 @@ flowchart LR
             ryi["yapp_in (imp)"]
             rhi["hbus_in (imp)"]
             rvo["yapp_valid_out (port)"]
+            rdo["decision_out (port)"]
         end
+        cov["coverage<br/>(router_cfg_cg)"]
+        hcov["hbus_addr_cov · hbus_bits_cov<br/>hbus_data_cov · hbus_counter_cov"]
         subgraph sb["scoreboard"]
             syi["yapp_in (imp)"]
             s0["chan0_in (imp)"]
@@ -120,6 +128,8 @@ flowchart LR
         end
         ye --> ryi
         he --> rhi
+        he --> hcov
+        rdo -->|"every packet seen while enabled, with the decision"| cov
         rvo -->|"only packets the router will route"| syi
         c0e --> s0
         c1e --> s1
@@ -185,7 +195,8 @@ implement their `do_*` methods instead of using `uvm_field_*` macros
 | `yapp_project/uvc/yapp/yapp_packet.sv` | `yapp_packet`, `short_yapp_packet`, `parity_type_e` | 1, 4 |
 | `yapp_project/uvc/yapp/yapp_tx_driver.sv` | `yapp_tx_driver` | 3, 6 |
 | `yapp_project/uvc/yapp/yapp_tx_sequencer.sv` | `yapp_tx_sequencer` | 3 |
-| `yapp_project/uvc/yapp/yapp_tx_monitor.sv` | `yapp_tx_monitor` (+ analysis port, covergroup) | 3, 6, 9A, 10 |
+| `yapp_project/uvc/yapp/yapp_tx_monitor.sv` | `yapp_tx_monitor` (+ analysis port) | 3, 6, 9A, 10 |
+| `yapp_project/uvc/yapp/yapp_pkt_coverage.sv`, `yapp_gap_coverage.sv` | the coverage collectors of the YAPP packets (subscribers of the monitor) | 10, test plan |
 | `yapp_project/uvc/yapp/yapp_tx_agent.sv`, `yapp_env.sv` | `yapp_tx_agent`, `yapp_env` | 3, 4 |
 | `yapp_project/uvc/yapp/yapp_tx_seqs.sv` | the sequence library | 3, 5, 7, 10 |
 | `yapp_project/uvc/yapp/yapp_if.sv` | `yapp_if` | 6 |
@@ -194,6 +205,8 @@ implement their `do_*` methods instead of using `uvm_field_*` macros
 | `yapp_project/tb/router_test_lib.sv` + `tests/` | the tests, one class per file | 2 → 11C |
 | `yapp_project/tb/hw_top.sv`, `tb_top.sv` | top modules | 6, 7 |
 | `yapp_project/tb/router_mcsequencer.sv`, `router_mcseqs_lib.sv` + `mcseqs/` | virtual sequencer and sequences | 8 |
-| `yapp_project/uvc/router/router_scoreboard.sv`, `router_reference.sv`, `router_module_env.sv`, `router_fifo_scoreboard.sv` | router module UVC | 9A–9D |
+| `yapp_project/uvc/router/router_scoreboard.sv`, `router_reference.sv`, `router_decision.sv`, `router_module_env.sv`, `router_fifo_scoreboard.sv` | router module UVC | 9A–9D |
+| `yapp_project/uvc/router/router_coverage.sv`, `router_hbus_addr_coverage.sv`, `router_hbus_bits_coverage.sv`, `router_hbus_data_coverage.sv`, `router_hbus_counter_coverage.sv` | the coverage collectors of the router (configuration, HBUS address map, register bits, `yapp_mem` patterns, counter values) | test plan |
+| `yapp_project/tb/yapp_router_tracer.sv` | the DUT tracer bound into the router: `[DUT]` log lines and the per-cycle signal trace | test plan |
 | `yapp_project/tb/yapp_router_reg_pkg.sv` + `reg/` | register model | 11A |
 | `yapp_project/rtl/yapp_router.sv`, `yapp_input_fsm.sv`, `yapp_output_channel.sv`, `yapp_fifo.sv`, `yapp_hbus_regs.sv`, `yapp_error_timer.sv` (`yapp_router.f`) | the DUT, one module per file | — |

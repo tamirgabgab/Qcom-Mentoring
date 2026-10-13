@@ -12,19 +12,25 @@ rules and the current register values: the **reference model**.
 
 ```mermaid
 flowchart LR
-    H["hbus monitor"] -->|"write_hbus: mirror maxpktsize / router_en"| R
+    H["hbus monitor"] -->|"write_hbus: mirror every register,<br/>check every read"| R
     Y["yapp monitor"] -->|"write_yapp"| R
-    R["router_reference<br/>forward if enabled,<br/>len ≤ maxpktsize, addr ≠ 3"] -->|"yapp_valid_out"| S["router_scoreboard<br/>yapp_in"]
+    R["router_reference<br/>forward if enabled,<br/>len ≤ maxpktsize, addr ≠ 3;<br/>counters, memories"] -->|"yapp_valid_out"| S["router_scoreboard<br/>yapp_in"]
+    R -->|"decision_out"| C["router_coverage"]
 ```
 
 ```systemverilog
 --8<-- "yapp_project/uvc/router/router_reference.sv"
 ```
 
-The model is deliberately tiny: it mirrors two register fields from the bus
+In the course the model is tiny: it mirrors two register fields from the bus
 traffic and re-implements the one decision the RTL makes when a header
-arrives. It must agree with the DUT on the corner cases listed in the
-[specification](../dut/spec.md#decisions-where-the-specification-is-silent).
+arrives (Lab 9B). The project's version grew with the test plan and the
+[random tests](random-tests.md): it keeps every register, the six counters
+with their enables and wrap-around, `mem_size`, the packet memory and
+`yapp_mem`, and, when `check_reads` is set, compares **every HBUS read** with
+what the model expects (`REF_READ` errors otherwise). The routing decision is
+the same one; the model must agree with the DUT on the corner cases listed in
+the [specification](../dut/spec.md#decisions-where-the-specification-is-silent).
 
 ## Interface UVC vs module UVC
 
@@ -35,9 +41,9 @@ arrives. It must agree with the DUT on the corner cases listed in the
 | generates stimulus? | yes | no |
 | reusable across | any design with that interface | any testbench of **this** design |
 
-`router_module_env` is the module UVC: an `uvm_env` that builds the reference
-and the scoreboard, connects them, and (Lab 9C) exposes **exports** so the
-testbench never reaches inside. The reference also publishes every packet it
+`router_module_env` is the module UVC: an `uvm_env` that builds the reference,
+the scoreboard and the five coverage collectors of the router, connects them,
+and (Lab 9C) exposes **exports** so the testbench never reaches inside. The reference also publishes every packet it
 received while enabled, with its decision, on `decision_out`; the
 `router_coverage` collector subscribes
 ([Functional coverage](coverage.md#where-the-covergroups-live)).

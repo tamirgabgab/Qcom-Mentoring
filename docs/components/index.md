@@ -12,13 +12,14 @@ look at the reference implementation and the mistakes people make.
 | [Packet (sequence item)](packet.md) | `yapp_project/uvc/yapp/yapp_packet.sv` | the data: fields, constraints, parity |
 | [Driver](driver.md) | `yapp_project/uvc/yapp/yapp_tx_driver.sv` + `yapp_if.sv` | transaction → pins |
 | [Sequencer and sequences](sequences.md) | `yapp_project/uvc/yapp/yapp_tx_seqs.sv` | which transactions, in which order |
-| [Monitor](monitor.md) | `yapp_project/uvc/yapp/yapp_tx_monitor.sv` | pins → transaction, publish, cover |
+| [Monitor](monitor.md) | `yapp_project/uvc/yapp/yapp_tx_monitor.sv` | pins → transaction, publish |
 | [Agent and env](agent-env.md) | `yapp_project/uvc/yapp/yapp_tx_agent.sv`, `yapp_env.sv`, `labs/*/tb/router_tb.sv` | structure, configuration, connections |
 | [Scoreboard](scoreboard.md) | `yapp_project/uvc/router/router_scoreboard.sv` | did the right packet come out of the right channel? |
 | [Reference model and module UVC](reference-model.md) | `yapp_project/uvc/router/router_reference.sv`, `router_module_env.sv` | which packets *should* come out |
 | [Virtual sequencer](virtual-sequencer.md) | `yapp_project/tb/router_mcsequencer.sv`, `mcseqs/router_simple_mcseq.sv` | coordinate several interfaces |
-| [Functional coverage](coverage.md) | covergroup in `yapp_tx_monitor.sv` | did we test everything we meant to? |
+| [Functional coverage](coverage.md) | `yapp_project/uvc/yapp/yapp_pkt_coverage.sv` and the six other `*_coverage.sv` collectors | did we test everything we meant to? |
 | [Random values](random.md) | `common/rand_util_pkg.sv` | every random value outside a randomized object: `rnd::get_int(...)` |
+| [Random tests](random-tests.md) | `yapp_project/tb/tests/random_*_test.sv`, `mcseqs/router_random_mcseq.sv`, `router_reference.sv` | random bursts and configurations, every HBUS read checked against the full reference model |
 | [Register model (RAL)](register-model.md) | `yapp_project/tb/yapp_router_reg_pkg.sv` + `reg/`, `yapp_project/uvc/hbus/hbus_reg_adapter.sv` | registers as objects: front door, backdoor, prediction |
 
 The reference implementations live in `yapp_project/` (the finished project); the lab

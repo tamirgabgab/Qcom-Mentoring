@@ -19,11 +19,14 @@ what the Verilator runs proved and what only Xcelium can.
 | 6 | **Register model backdoor paths** (`hw_top.dut.u_regs.*`) | `reg_access_test` peek/poke through `uvm_hdl_*` (VPI) |
 | 7 | **`uvm_reg_hw_reset_seq` on counters** | `uvm_reset_test`: 0 errors |
 | 8 | **`uvm_mem_walk_seq`** | `uvm_mem_walk_test`: 0 errors; with `INJECT_ERROR` exactly one, at `yapp_mem[42]` (both builds in the regression) |
-| 10 | **Coverage closure** with `coverage_test` | `yapp_pkt_cg` at 100% (Verilator's coverage, see the differences below) |
+| 10 | **Coverage closure** with `coverage_test` | `yapp_pkt_cg` at 100%; merged over the project's regression every covergroup is closed, 222 / 222 bins ([coverage results](../coverage-results.md); Verilator's coverage, see the differences below) |
 
 The first runs also found what slang could not: `set_parity()` left about half
 of the "bad parity" packets correct, and an explicit `base_test::build_phase()`
-call that Verilator turns into endless recursion -- both fixed.
+call that Verilator turns into endless recursion -- both fixed. The random
+tests later found a third, in the DUT: a second bad-parity packet arriving
+before the first one's `error` pulse took that pulse away; `yapp_error_timer`
+now owes one pulse per packet ([random tests](../components/random-tests.md)).
 
 ## Still needs Xcelium
 

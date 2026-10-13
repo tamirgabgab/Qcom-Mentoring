@@ -24,8 +24,10 @@ Every `labs/<lab>/tb/Makefile` includes `common/lab.mk`:
 --8<-- "common/lab.mk"
 ```
 
-The root `Makefile` adds `lint`, `docs`, `serve`, `clean` and
-`run LAB=<lab> TEST=<test>`.
+The root `Makefile` adds `lint`, `style`, `docs`, `serve`, `map`, `clean`,
+`run LAB=<lab> TEST=<test>` / `run-project TEST=<test>` (Xcelium) and, for
+Verilator, `sim`, `regress`, `sim-report` and `coverage`
+([Simulating with Verilator](verilator.md)).
 
 ## Other simulators
 

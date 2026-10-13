@@ -151,17 +151,17 @@ The [test plan](https://tamirgabgab.github.io/Qcom-Mentoring/test-plan/) follows
 pages of the course's DUT description: packet format, input and output protocols,
 registers, drop rules, counters, memories, the HBUS host port, plus the requirements the
 labs add (scoreboard, functional coverage, register tests). It is written as data
-(`scripts/project_map/annotations.yaml`, section `plan`): **11 feature groups, 56 items**,
+(`scripts/project_map/annotations.yaml`, section `plan`): **12 feature groups, 64 items**,
 each with its stimulus, its checker, its coverage, the tests that cover it and a status
-(55 covered; one excluded on purpose, a change of `router_en` in the middle of a packet,
+(63 covered; one excluded on purpose, a change of `router_en` in the middle of a packet,
 which the specification leaves undefined).
 The same data draws the **Test plan** view of the map and generates the site page, so the
 three never disagree.
 
 ![The Test plan view: the feature groups with their status chips on top, the tests below, one feature open in the panel with every item](docs/assets/readme/map_testplan.png)
 
-Nine tests exist only for the plan, in `yapp_project/tb/tests/`, for the features the
-course's own tests never checked: `router_disable_test` (a disabled router drops and
+Ten directed tests exist only for the plan, in `yapp_project/tb/tests/`, for the features
+the course's own tests never checked: `router_disable_test` (a disabled router drops and
 counts nothing), `router_filter_test` (lengths around `maxpktsize`, the illegal address,
 every counter with its enable on and off), `pkt_mem_test` (`yapp_pkt_mem` and
 `mem_size_reg` hold the last packet byte by byte, even a dropped one),
@@ -172,7 +172,11 @@ stalls the input, no byte is lost), `parity_error_test` (the counter, the `error
 pulse within 1..10 cycles, the packet still delivered), `counter_wrap_test` (an 8-bit
 counter wraps from 255 to 0 and keeps counting) and `back_to_back_test` (packets with
 0, 1, 2 and 3 idle cycles between them, measured by the monitor and covered by
-`yapp_gap_cg`). Writing `backpressure_test` found a real bug in the YAPP driver's
+`yapp_gap_cg`) and `hbus_sweep_test` (every address of the HBUS window read and written
+with four data patterns, every `ctrl_reg` / `en_reg` bit at 0 and 1, `yapp_mem` patterns,
+every counter read at 0, in the middle and at 255 — the test that closes the four HBUS
+covergroups). The four random tests (below) add the random scenarios.
+Writing `backpressure_test` found a real bug in the YAPP driver's
 handshake, fixed in `yapp_if.sv`; writing `back_to_back_test` found that the driver
 could never send the minimum gap, so `packet_delay` now means the exact number of idle
 cycles. The site page ends with a **coverage matrix**: every item against every test,
@@ -205,17 +209,19 @@ reaches at the end of Lab 11C — is `yapp_project/` itself.
 # install check (Cadence Xcelium)
 cd test_install && xrun -f run.f
 
-# run the complete project (any test of yapp_project/tb/tests)
-cd yapp_project/tb && make run TEST=reg_function_test
-make run-project TEST=backpressure_test     # the same from the root; the test-plan tests start here
+# run the complete project (any test of yapp_project/tb/tests); every command below runs from the root
+make run-project TEST=reg_function_test
+make run-project TEST=backpressure_test     # the test-plan tests live here too
+(cd yapp_project/tb && make run TEST=reg_function_test)   # the same from the testbench directory
 
 # run a lab
-cd labs/lab07_integ/tb && make run TEST=simple_test
+make run LAB=lab07_integ TEST=simple_test
+(cd labs/lab07_integ/tb && make run TEST=simple_test)
 
 # no Xcelium? the same labs with Verilator (free): install once, or open a GitHub Codespace
 bash scripts/setup_sim.sh
-cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1   # PASS / FAIL + waves
-make regress                                                    # every lab and test (root)
+(cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1)   # PASS / FAIL + waves
+make regress                                                    # every lab and test
 make regress ONLY=yapp_project WAVES=1 && make sim-report        # the project (4 seeds per directed test, 8 per random test), logs + timelines + waves + pictures + coverage
 make coverage ONLY=yapp_project                                 # the functional coverage merged over every run, and its holes
 
@@ -267,7 +273,7 @@ yapp_project/                     the complete project — the source of truth
                                       yapp_random_burst_seq for the random tests)
       README.md                       the packet structure, next to the code
     hbus/                           HBUS UVC: transaction, master agent, monitor, env, hbus_if, hbus_reg_adapter (RAL)
-      seqs/                           write / read / set-default / small / large / enable / disable sequences
+      seqs/                           write / read / set-default / small / large / read-max-pkt / enable / disable sequences
     channel/                        Channel UVC: channel_packet, rx agent (driver, monitor, sequencer), env, channel_if
       seqs/                           channel_rx_resp_seq, channel_rx_fast_seq, channel_rx_slow_seq (test plan),
                                       channel_rx_random_seq (receiver profiles: fast, normal, slow, stalling)
@@ -300,8 +306,8 @@ yapp_project/                     the complete project — the source of truth
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`
   regression/                     GENERATED report of the last project regression (17 directed tests x 4 seeds,
-                                  4 random tests x 8 seeds, Verilator):
-                                  index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures,
+                                  4 random tests x 8 seeds, Verilator): index.md + runs.json (every run as data),
+                                  one folder per run with the log, timeline, waves and pictures,
                                   coverage.md / coverage.json (the merged functional coverage), merged.dat / .info
 labs/                             one snapshot per lab; `make run` inside <lab>/tb
   lab01_data … lab06_vif/sv         the YAPP UVC as it grows (Labs 1–6 have their own copy)
@@ -318,6 +324,8 @@ docs/                             the course site (MkDocs Material) — see mkdo
   test-plan.md                      GENERATED from annotations.yaml (plan + tests): the feature matrix and the tests
   coverage-results.md               GENERATED from yapp_project/regression/coverage.json: the merged coverage, the holes
   coverage/yapp_project_tb/         GENERATED genhtml page: the covergroup sources with a count on every bin
+  regression/                       GENERATED from yapp_project/regression/runs.json: the results, one page per test
+                                    (seeds, logs, timelines, waves, the stages and pictures of seed 1)
   appendix/                         index tables, concept map, pitfalls, xrun options, Verilator, logs/timelines/waves, verification status
   assets/
     wave_*.svg                      protocol waveforms (generated by scripts/gen_waves.py)
@@ -346,8 +354,9 @@ scripts/
     extract.py                      pyslang → classes, methods, modules, ports, connect() calls
     model.py                        + annotations.yaml → nodes, edges, TLM paths, source files
     layout.py                       the geometry of every scene (hierarchy, TLM, UML, the DUT block diagram)
-    build.py                        writes model.json, regmap.js, the standalone HTML, test-plan.md and
-                                    coverage-results.md (`make map`, `--check`)
+    build.py                        writes model.json, regmap.js, the standalone HTML, test-plan.md,
+                                    coverage-results.md, dut/register-map.md, regression/*.md and the
+                                    index tables (`make map`, `--check`)
     test_model.py                   consistency checks, incl. regmap.yaml ⇔ RTL ⇔ register model
     test_sim.mjs                    behavioural checks of sim.js (RouterModel) with node (`make map-check`)
     annotations.yaml                the hand-written half: roles, labs, layout hints, the test plans and the feature plan
@@ -418,8 +427,9 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
   `make map` (pyslang reads the classes, ports, `connect()` calls and the
   module tree; `annotations.yaml` adds the prose and the layout hints) and
   `make map-check` fails when the committed `model.json`, `regmap.js`,
-  standalone HTML, `docs/test-plan.md` or `docs/coverage-results.md` no longer match the code — so the map and
-  the test plan never drift. After
+  standalone HTML or any generated page (`docs/test-plan.md`, `docs/coverage-results.md`,
+  `docs/dut/register-map.md`, `docs/regression/`, the index tables) no longer match the
+  code — so the map, the test plan and the results never drift. After
   changing any `.sv` file, `app.js`, `sim.js` or `regmap.yaml`: `make map` and
   commit the results; `make map-export` refreshes the pictures.
 * **The register map** lives once, in `scripts/project_map/regmap.yaml`. It
@@ -456,15 +466,18 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 * **Functional coverage you can see.** Every covergroup has its own file: a
   *coverage collector*, a `uvm_subscriber` with one covergroup
   (`yapp_pkt_coverage`, `yapp_gap_coverage` on the YAPP monitor,
-  `router_coverage` on the reference model's `decision_out`); the monitor and
-  the reference only publish. `sim.py` compiles with `--coverage-user`, so
+  `router_coverage` on the reference model's `decision_out`, and the four
+  `router_hbus_*_coverage` collectors on the HBUS monitor: address map,
+  register bits, `yapp_mem` patterns, counter values); the monitors and the
+  reference only publish. `sim.py` compiles with `--coverage-user`, so
   every run writes its bins to `build/sim/<bench>/coverage/<test>_s<seed>.dat`.
   `scripts/coverage_report.py` merges them (`make coverage` prints the summary
   and the holes); `make sim-report` writes `coverage.md` (every bin with its
   hits and tests, the holes, what each test adds) and a `genhtml` page of the
   annotated sources; `make map` turns the committed `coverage.json` into the
   site page *Coverage results* and the bin tables in the map's panels of the
-  three collectors. See
+  seven collectors; `runs.json` becomes the *Regression results* pages (one per
+  test) and the regression section of every test's panel on the map. See
   [`docs/components/coverage.md`](docs/components/coverage.md).
 * **Logs that read like a story.** The project runs at `UVM_MEDIUM`: one line
   per event, the full packet tables only at `UVM_HIGH`. `base_test` prints a

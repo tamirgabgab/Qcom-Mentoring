@@ -6,7 +6,7 @@
 The DUT is written to be readable from top to bottom in one sitting: no vendor
 features, and **one module per file**, cut along the functional blocks of the
 router. `yapp_router.sv` is the top level and contains nothing but wiring; the
-behaviour lives in four sub-modules (plus the FIFO they share). This page
+behaviour lives in four sub-modules (plus the FIFO each output channel instantiates). This page
 follows the data: input port → output channels, then the register side.
 
 | File | Module | Instance in `yapp_router` | Job |
