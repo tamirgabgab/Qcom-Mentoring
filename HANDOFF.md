@@ -136,6 +136,12 @@
 - CI ב-GitHub: workflow `lint` (slang + style-check + map-check) ו-`docs` (mkdocs → GitHub Pages)
   ירוקים על כל commit של סשן 5 עד `3687ecb` (נבדק דרך ה-API). ה-runner של GitHub (ubuntu-latest) כולל node, ולכן `map-check`
   ב-CI מריץ גם את `test_sim.mjs`.
+- **אתר הקורס אופליין (סשן 8):** `make docs-offline` (`scripts/build_offline_site.py`, `mkdocs-offline.yml` שיורש מ-`mkdocs.yml`,
+  `scripts/mkdocs_offline_hooks.py`) בונה תיקיית `build/offline/site/` שנפתחת עם `index.html` מהדיסק (file://) ו-`build/QcomCourseSite.zip`
+  (התיקייה `site/` בפנים). `use_directory_urls: false` + תוסף `offline` של Material; Mermaid ו-`iframe-worker` (החיפוש תחת file://)
+  נשלפים עם `npm pack` ל-`build/offline_cache/` ונשלחים בתוך האתר במקום unpkg; ה-iframe של המפה ב-`project-map.md` הוא HTML גולמי ולכן
+  ה-hook מתקן לו את הנתיב. נבדק ב-Playwright עם חסימת כל הרשת: חיפוש (10 תוצאות), ניווט, תרשימי mermaid והמפה האינטראקטיבית עובדים;
+  רק ה-API של GitHub (כוכבים/forks בכותרת) מנסה לצאת ונכשל בשקט. האתר הציבורי ב-Pages לא השתנה (ה-CI ממשיך לבנות עם `mkdocs.yml`).
 - GitHub Pages פעיל (Source = GitHub Actions), האתר חי, המפה ב-`/project-map/` והקובץ העצמאי
   ב-`/downloads/yapp_project_map.html`.
 

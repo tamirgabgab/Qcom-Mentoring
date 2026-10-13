@@ -18,6 +18,8 @@
 #   make coverage             print the merged functional coverage of the last regression and its holes
 #                             (scripts/coverage_report.py) [ONLY=yapp_project]
 #   make docs                 build the teaching site into site/
+#   make docs-offline         build the teaching site as a folder that opens from disk (no server, no internet):
+#                             offline/site/index.html (committed) and build/QcomCourseSite.zip (needs npm once)
 #   make serve                serve the teaching site locally
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
 #   make map-check            verify the committed project map is up to date (CI)
@@ -35,10 +37,10 @@ SEEDS     ?=
 ONLY      ?=
 SIM       := $(PYTHON) scripts/sim.py
 
-.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report coverage docs serve map map-check map-export readme-shots clean
+.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report coverage docs docs-offline serve map map-check map-export readme-shots clean
 
 help:
-	@sed -n '2,21p' $(MAKEFILE_LIST)
+	@awk 'NR > 1 && /^# ---/ { exit } NR > 1' $(MAKEFILE_LIST)
 
 uvm-src:
 	@bash scripts/get_uvm.sh
@@ -88,6 +90,10 @@ coverage:
 
 docs:
 	mkdocs build --strict
+
+# the course site as a folder that opens from disk: build/offline/site/index.html + build/QcomCourseSite.zip
+docs-offline:
+	$(PYTHON) scripts/build_offline_site.py
 
 map: uvm-src
 	$(PYTHON) -m scripts.project_map.build

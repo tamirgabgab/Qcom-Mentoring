@@ -17,6 +17,10 @@ generated and checked from the same source code.
 · the [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
 · the [labs](https://tamirgabgab.github.io/Qcom-Mentoring/labs/)
 
+**The course site on your own disk:** `make docs-offline` builds it into `build/offline/site/`
+(open `index.html`; search, diagrams and the project map work without a server or internet) and
+zips it as `build/QcomCourseSite.zip`. It needs `pip install mkdocs-material` and `npm`.
+
 ---
 
 ## Contents
