@@ -47,7 +47,7 @@ Waves: `pkt_mem_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); signa
 
 ## Timeline
 
-119 events (the same list is in `timeline.csv`).
+123 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -163,6 +163,10 @@ Waves: `pkt_mem_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); signa
 | 1990 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 1990 | hbus monitor | HBUS report: 3 writes, 34 reads |
 | 1990 | coverage | Coverage of the router configuration: 43.5% |
+| 1990 | coverage | HBUS address coverage: 37 accesses sampled, coverage 14.3% |
+| 1990 | coverage | HBUS register bits coverage: 2 writes to ctrl_reg/en_reg, coverage 52.3% |
+| 1990 | coverage | HBUS counter value coverage: 0 counter reads sampled, coverage 0.0% |
+| 1990 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 1990 | reference |  |
 | 1990 | scoreboard |  |
 | 1990 | yapp driver | YAPP driver report: 2 packets sent |

@@ -663,6 +663,10 @@ time_ns,severity,who,id,event
 9605,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 12 packets collected
 9605,INFO,hbus monitor,hbus_monitor,"HBUS report: 13 writes, 88 reads"
 9605,INFO,coverage,router_coverage,Coverage of the router configuration: 73.9%
+9605,INFO,coverage,router_hbus_addr_coverage,"HBUS address coverage: 101 accesses sampled, coverage 40.3%"
+9605,INFO,coverage,router_hbus_bits_coverage,"HBUS register bits coverage: 6 writes to ctrl_reg/en_reg, coverage 86.4%"
+9605,INFO,coverage,router_hbus_counter_coverage,"HBUS counter value coverage: 8 counter reads sampled, coverage 51.9%"
+9605,INFO,coverage,router_hbus_data_coverage,"HBUS yapp_mem data coverage: 14 accesses sampled, coverage 29.4%"
 9605,INFO,reference,router_reference,
 9605,INFO,reference,router_reference,"HBUS reads checked against the model: 84 (0 mismatches, 4 of memory bytes never written)"
 9605,INFO,scoreboard,router_scoreboard,

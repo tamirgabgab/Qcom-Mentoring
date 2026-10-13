@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - YAPP functional coverage (yapp_project_tb, 96 runs) - yapp_project/uvc/yapp/yapp_pkt_coverage.sv</title>
+  <title>LCOV - YAPP functional coverage (yapp_project_tb, 100 runs) - yapp_project/uvc/yapp/yapp_pkt_coverage.sv</title>
   <link rel="stylesheet" type="text/css" href="../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">YAPP functional coverage (yapp_project_tb, 96 runs)</td>
+            <td class="headerValue">YAPP functional coverage (yapp_project_tb, 100 runs)</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -86,30 +86,30 @@
 <span id="L24"><span class="lineNum">      24</span>                 :             :     option.per_instance = 1;</span>
 <span id="L25"><span class="lineNum">      25</span>                 :             :     length_cp : coverpoint length {</span>
 <span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC tlaBgGNC">        1316 :       bins MIN    = {1};</span></span>
-<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         426 :       bins SMALL  = {[2:10]};</span></span>
-<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         564 :       bins MEDIUM = {[11:40]};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">        4506 :       bins SMALL  = {[2:10]};</span></span>
+<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         568 :       bins MEDIUM = {[11:40]};</span></span>
 <span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         597 :       bins LARGE  = {[41:62]};</span></span>
 <span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         353 :       bins MAX    = {63};</span></span>
 <span id="L31"><span class="lineNum">      31</span>                 :             :     }</span>
 <span id="L32"><span class="lineNum">      32</span>                 :             :     addr_cp : coverpoint addr {</span>
-<span id="L33"><span class="lineNum">      33</span>      [<span class="tlaGBC" title="Branch 0 was taken 1539 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 529 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 985 times"> + </span>]:<span class="tlaGNC">        1539 :       bins legal[]      = {[0:2]};</span></span>
-<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">         203 :       bins illegal_addr = {3};</span></span>
+<span id="L33"><span class="lineNum">      33</span>      [<span class="tlaGBC" title="Branch 0 was taken 2563 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1549 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 2005 times"> + </span>]:<span class="tlaGNC">        2563 :       bins legal[]      = {[0:2]};</span></span>
+<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        1223 :       bins illegal_addr = {3};</span></span>
 <span id="L35"><span class="lineNum">      35</span>                 :             :     }</span>
 <span id="L36"><span class="lineNum">      36</span>                 :             :     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)</span>
 <span id="L37"><span class="lineNum">      37</span>                 :             :     parity_cp : coverpoint parity_type {</span>
-<span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">        2895 :       bins good = {GOOD_PARITY};</span></span>
-<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">         361 :       bins bad  = {BAD_PARITY};</span></span>
+<span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">        2899 :       bins good = {GOOD_PARITY};</span></span>
+<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">        4441 :       bins bad  = {BAD_PARITY};</span></span>
 <span id="L40"><span class="lineNum">      40</span>                 :             :     }</span>
 <span id="L41"><span class="lineNum">      41</span>                 :             :     // REQ3: only legal addresses and only BAD_PARITY are interesting</span>
 <span id="L42"><span class="lineNum">      42</span>                 :             : `ifdef VERILATOR</span>
 <span id="L43"><span class="lineNum">      43</span>                 :             :     // (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is</span>
 <span id="L44"><span class="lineNum">      44</span>                 :             :     // built from coverpoints that hold only the interesting bins: same 15 bins)</span>
-<span id="L45"><span class="lineNum">      45</span>      [<span class="tlaGBC" title="Branch 0 was taken 1539 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 529 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 985 times"> + </span>]:<span class="tlaGNC">        1539 :     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }</span></span>
-<span id="L46"><span class="lineNum">      46</span>                 :<span class="tlaGNC">         361 :     bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }</span></span>
-<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 41 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 5 times"> + </span> :<span class="tlaGNC">          45 :     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;</span></span>
+<span id="L45"><span class="lineNum">      45</span>      [<span class="tlaGBC" title="Branch 0 was taken 2563 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1549 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 2005 times"> + </span>]:<span class="tlaGNC">        2563 :     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }</span></span>
+<span id="L46"><span class="lineNum">      46</span>                 :<span class="tlaGNC">        4441 :     bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }</span></span>
+<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 41 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 5 times"> + </span> :<span class="tlaGNC">        1046 :     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;</span></span>
 <span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 16 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 21 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 45 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 11 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 14 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 35 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 13 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 13 times"> + </span> 
-<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 14 was taken 26 times"> + </span>]
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 11 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 14 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 35 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 1033 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 1033 times"> + </span> 
+<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 14 was taken 1046 times"> + </span>]
 <span id="L48"><span class="lineNum">      48</span>                 :             : `else</span>
 <span id="L49"><span class="lineNum">      49</span>                 :             :     len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {</span>
 <span id="L50"><span class="lineNum">      50</span>                 :             :       ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};</span>

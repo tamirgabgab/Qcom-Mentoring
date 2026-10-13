@@ -849,6 +849,10 @@ time_ns,severity,who,id,event
 30195,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 5 packets collected
 30195,INFO,hbus monitor,hbus_monitor,"HBUS report: 46 writes, 141 reads"
 30195,INFO,coverage,router_coverage,Coverage of the router configuration: 78.3%
+30195,INFO,coverage,router_hbus_addr_coverage,"HBUS address coverage: 187 accesses sampled, coverage 54.5%"
+30195,INFO,coverage,router_hbus_bits_coverage,"HBUS register bits coverage: 16 writes to ctrl_reg/en_reg, coverage 100.0%"
+30195,INFO,coverage,router_hbus_counter_coverage,"HBUS counter value coverage: 10 counter reads sampled, coverage 59.3%"
+30195,INFO,coverage,router_hbus_data_coverage,"HBUS yapp_mem data coverage: 60 accesses sampled, coverage 29.4%"
 30195,INFO,reference,router_reference,
 30195,INFO,reference,router_reference,"HBUS reads checked against the model: 139 (0 mismatches, 2 of memory bytes never written)"
 30195,INFO,scoreboard,router_scoreboard,

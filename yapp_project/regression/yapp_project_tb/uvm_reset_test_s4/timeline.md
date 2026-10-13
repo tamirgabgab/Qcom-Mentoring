@@ -33,7 +33,7 @@ Waves: `uvm_reset_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 
 ## Timeline
 
-34 events (the same list is in `timeline.csv`).
+38 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -64,6 +64,10 @@ Waves: `uvm_reset_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 | 520 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 520 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 520 | hbus monitor | HBUS report: 0 writes, 9 reads |
+| 520 | coverage | HBUS address coverage: 9 accesses sampled, coverage 24.7% |
+| 520 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
+| 520 | coverage | HBUS counter value coverage: 6 counter reads sampled, coverage 48.1% |
+| 520 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 520 | reference |  |
 | 520 | scoreboard |  |
 | 520 | yapp driver | YAPP driver report: 0 packets sent |

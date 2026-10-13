@@ -367,6 +367,10 @@ time_ns,severity,who,id,event
 2990,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
 2990,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
 2990,INFO,hbus monitor,hbus_monitor,"HBUS report: 56 writes, 54 reads"
+2990,INFO,coverage,router_hbus_addr_coverage,"HBUS address coverage: 110 accesses sampled, coverage 37.7%"
+2990,INFO,coverage,router_hbus_bits_coverage,"HBUS register bits coverage: 42 writes to ctrl_reg/en_reg, coverage 100.0%"
+2990,INFO,coverage,router_hbus_counter_coverage,"HBUS counter value coverage: 12 counter reads sampled, coverage 74.1%"
+2990,INFO,coverage,router_hbus_data_coverage,"HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0%"
 2990,INFO,reference,router_reference,
 2990,INFO,scoreboard,router_scoreboard,
 2990,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent

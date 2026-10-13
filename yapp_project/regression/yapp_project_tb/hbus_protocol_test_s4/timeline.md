@@ -40,7 +40,7 @@ Waves: `hbus_protocol_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-67 events (the same list is in `timeline.csv`).
+71 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -104,6 +104,10 @@ Waves: `hbus_protocol_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 790 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 790 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 790 | hbus monitor | HBUS report: 11 writes, 10 reads |
+| 790 | coverage | HBUS address coverage: 21 accesses sampled, coverage 41.6% |
+| 790 | coverage | HBUS register bits coverage: 2 writes to ctrl_reg/en_reg, coverage 50.0% |
+| 790 | coverage | HBUS counter value coverage: 1 counter reads sampled, coverage 11.1% |
+| 790 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 790 | reference |  |
 | 790 | scoreboard |  |
 | 790 | yapp driver | YAPP driver report: 0 packets sent |

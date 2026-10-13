@@ -38,7 +38,7 @@ Waves: `reg_access_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); si
 
 ## Timeline
 
-35 events (the same list is in `timeline.csv`).
+39 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -70,6 +70,10 @@ Waves: `reg_access_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); si
 | 350 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 350 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 350 | hbus monitor | HBUS report: 2 writes, 2 reads |
+| 350 | coverage | HBUS address coverage: 4 accesses sampled, coverage 10.4% |
+| 350 | coverage | HBUS register bits coverage: 1 writes to ctrl_reg/en_reg, coverage 43.2% |
+| 350 | coverage | HBUS counter value coverage: 1 counter reads sampled, coverage 11.1% |
+| 350 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 350 | reference |  |
 | 350 | scoreboard |  |
 | 350 | yapp driver | YAPP driver report: 0 packets sent |

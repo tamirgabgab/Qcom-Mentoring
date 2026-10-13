@@ -94,6 +94,10 @@ time_ns,severity,who,id,event
 6015,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 1 packets collected
 6015,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 0 reads"
 6015,INFO,coverage,router_coverage,Coverage of the router configuration: 26.1%
+6015,INFO,coverage,router_hbus_addr_coverage,"HBUS address coverage: 0 accesses sampled, coverage 0.0%"
+6015,INFO,coverage,router_hbus_bits_coverage,"HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0%"
+6015,INFO,coverage,router_hbus_counter_coverage,"HBUS counter value coverage: 0 counter reads sampled, coverage 0.0%"
+6015,INFO,coverage,router_hbus_data_coverage,"HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0%"
 6015,INFO,reference,router_reference,
 6015,INFO,scoreboard,router_scoreboard,
 6015,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent

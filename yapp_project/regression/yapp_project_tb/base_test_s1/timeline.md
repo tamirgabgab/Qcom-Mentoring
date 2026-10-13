@@ -17,7 +17,7 @@ Waves: `base_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal t
 
 ## Timeline
 
-12 events (the same list is in `timeline.csv`).
+16 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -26,6 +26,10 @@ Waves: `base_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal t
 | 0 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 0 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 0 | hbus monitor | HBUS report: 0 writes, 0 reads |
+| 0 | coverage | HBUS address coverage: 0 accesses sampled, coverage 0.0% |
+| 0 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
+| 0 | coverage | HBUS counter value coverage: 0 counter reads sampled, coverage 0.0% |
+| 0 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 0 | reference |  |
 | 0 | scoreboard |  |
 | 0 | yapp driver | YAPP driver report: 0 packets sent |

@@ -37,7 +37,7 @@ Waves: `uvm_mem_walk_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-1550 events (the same list is in `timeline.csv`).
+1554 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -1584,6 +1584,10 @@ Waves: `uvm_mem_walk_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 18150 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 18150 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 18150 | hbus monitor | HBUS report: 511 writes, 256 reads |
+| 18150 | coverage | HBUS address coverage: 767 accesses sampled, coverage 14.3% |
+| 18150 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
+| 18150 | coverage | HBUS counter value coverage: 0 counter reads sampled, coverage 0.0% |
+| 18150 | coverage | HBUS yapp_mem data coverage: 767 accesses sampled, coverage 100.0% |
 | 18150 | reference |  |
 | 18150 | scoreboard |  |
 | 18150 | yapp driver | YAPP driver report: 0 packets sent |

@@ -46,7 +46,7 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 
 ## Timeline
 
-110 events (the same list is in `timeline.csv`).
+114 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -153,6 +153,10 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 | 700 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 700 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 700 | hbus monitor | HBUS report: 9 writes, 9 reads |
+| 700 | coverage | HBUS address coverage: 18 accesses sampled, coverage 37.7% |
+| 700 | coverage | HBUS register bits coverage: 2 writes to ctrl_reg/en_reg, coverage 63.6% |
+| 700 | coverage | HBUS counter value coverage: 6 counter reads sampled, coverage 48.1% |
+| 700 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 700 | reference |  |
 | 700 | scoreboard |  |
 | 700 | yapp driver | YAPP driver report: 0 packets sent |

@@ -38,7 +38,7 @@ Waves: `back_to_back_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-276 events (the same list is in `timeline.csv`).
+280 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -311,6 +311,10 @@ Waves: `back_to_back_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 2615 | ch2 monitor | Channel 2 report: 14 packets collected |
 | 2615 | hbus monitor | HBUS report: 0 writes, 0 reads |
 | 2615 | coverage | Coverage of the router configuration: 26.1% |
+| 2615 | coverage | HBUS address coverage: 0 accesses sampled, coverage 0.0% |
+| 2615 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
+| 2615 | coverage | HBUS counter value coverage: 0 counter reads sampled, coverage 0.0% |
+| 2615 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 2615 | reference |  |
 | 2615 | scoreboard |  |
 | 2615 | yapp driver | YAPP driver report: 24 packets sent |

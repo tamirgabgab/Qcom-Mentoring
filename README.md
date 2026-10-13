@@ -310,7 +310,8 @@ labs/                             one snapshot per lab; `make run` inside <lab>/
 docs/                             the course site (MkDocs Material) — see mkdocs.yml for the navigation
   index.md, getting-started.md      what the project is, how to run it, the conventions
   project-map.md                    the interactive map, embedded
-  dut/                              spec.md (protocols, registers, the register simulator), rtl.md (walkthrough)
+  dut/                              spec.md (protocols, registers, the register simulator), rtl.md (walkthrough),
+                                    register-map.md (GENERATED from regmap.yaml: the register map as plain Markdown)
   uvm/                              the big picture, architecture, phases, factory & config, TLM
   components/                       one guide per component (packet.md hosts the packet playground)
   labs/                             one page per lab + the session plan

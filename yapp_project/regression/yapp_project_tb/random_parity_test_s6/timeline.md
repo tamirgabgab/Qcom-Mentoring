@@ -64,7 +64,7 @@ Waves: `random_parity_test_s6.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-1034 events (the same list is in `timeline.csv`).
+1038 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -1094,6 +1094,10 @@ Waves: `random_parity_test_s6.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 26655 | ch2 monitor | Channel 2 report: 24 packets collected |
 | 26655 | hbus monitor | HBUS report: 15 writes, 85 reads |
 | 26655 | coverage | Coverage of the router configuration: 78.3% |
+| 26655 | coverage | HBUS address coverage: 100 accesses sampled, coverage 48.1% |
+| 26655 | coverage | HBUS register bits coverage: 8 writes to ctrl_reg/en_reg, coverage 95.5% |
+| 26655 | coverage | HBUS counter value coverage: 8 counter reads sampled, coverage 55.6% |
+| 26655 | coverage | HBUS yapp_mem data coverage: 14 accesses sampled, coverage 29.4% |
 | 26655 | reference |  |
 | 26655 | reference | HBUS reads checked against the model: 84 (0 mismatches, 1 of memory bytes never written) |
 | 26655 | scoreboard |  |

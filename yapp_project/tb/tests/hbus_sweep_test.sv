@@ -11,6 +11,9 @@
 // (check_reads = 1), so a write to a read-only or unmapped address that
 // changed something fails the test. At the end the four HBUS coverage
 // collectors must be at 100 %.
+// About 6000 HBUS accesses and 1000 packets: the log keeps one line per access
+// (HBUS monitor) and per packet (YAPP monitor); the sequencers and drivers,
+// which would repeat them, are quiet (UVM_NONE).
 //------------------------------------------------------------------------------
 class hbus_sweep_test extends base_test;
 
@@ -21,6 +24,7 @@ class hbus_sweep_test extends base_test;
   extern function new(string name, uvm_component parent);
   extern function void build_phase(uvm_phase phase);
   extern function void configure_sequences();
+  extern function void end_of_elaboration_phase(uvm_phase phase);
   extern task run_phase(uvm_phase phase);
 
   // A coverage collector's percentage must be 100
@@ -46,6 +50,15 @@ endfunction : build_phase
 function void hbus_sweep_test::configure_sequences();
   set_clock_and_channel_sequences();
 endfunction : configure_sequences
+
+//------------------------------------------------------------------------------
+function void hbus_sweep_test::end_of_elaboration_phase(uvm_phase phase);
+  super.end_of_elaboration_phase(phase);
+  tb.hbus.masters[0].sequencer.set_report_verbosity_level(UVM_NONE);
+  tb.hbus.masters[0].driver.set_report_verbosity_level(UVM_NONE);
+  tb.yapp.agent.sequencer.set_report_verbosity_level(UVM_NONE);
+  tb.yapp.agent.driver.set_report_verbosity_level(UVM_NONE);
+endfunction : end_of_elaboration_phase
 
 //------------------------------------------------------------------------------
 task hbus_sweep_test::run_phase(uvm_phase phase);

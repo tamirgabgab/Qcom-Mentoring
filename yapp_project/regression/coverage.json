@@ -1,7 +1,7 @@
 [
  {
   "bench": "yapp_project_tb",
-  "runs": 96,
+  "runs": 100,
   "covergroups": [
    {
     "name": "router_cfg_cg",
@@ -26,9 +26,10 @@
        {
         "name": "one",
         "line": 21,
-        "hits": 95,
-        "runs": 9,
+        "hits": 4175,
+        "runs": 13,
         "tests": [
+         "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
          "random_parity_test",
@@ -64,8 +65,8 @@
        {
         "name": "max63",
         "line": 24,
-        "hits": 1428,
-        "runs": 43,
+        "hits": 1432,
+        "runs": 47,
         "tests": [
          "counter_wrap_test",
          "back_to_back_test",
@@ -77,6 +78,7 @@
          "backpressure_test",
          "random_test",
          "router_disable_test",
+         "hbus_sweep_test",
          "pkt_mem_test"
         ]
        }
@@ -92,8 +94,8 @@
        {
         "name": "below",
         "line": 27,
-        "hits": 1962,
-        "runs": 68,
+        "hits": 1966,
+        "runs": 72,
         "tests": [
          "counter_wrap_test",
          "random_parity_test",
@@ -107,6 +109,7 @@
          "router_filter_test",
          "backpressure_test",
          "router_disable_test",
+         "hbus_sweep_test",
          "pkt_mem_test"
         ]
        },
@@ -126,9 +129,10 @@
        {
         "name": "plus_one",
         "line": 29,
-        "hits": 158,
-        "runs": 28,
+        "hits": 4238,
+        "runs": 32,
         "tests": [
+         "hbus_sweep_test",
          "random_config_test",
          "router_filter_test",
          "random_test",
@@ -162,8 +166,8 @@
        {
         "name": "forwarded",
         "line": 34,
-        "hits": 2017,
-        "runs": 68,
+        "hits": 2021,
+        "runs": 72,
         "tests": [
          "counter_wrap_test",
          "random_parity_test",
@@ -177,15 +181,17 @@
          "reg_function_test",
          "backpressure_test",
          "router_disable_test",
+         "hbus_sweep_test",
          "pkt_mem_test"
         ]
        },
        {
         "name": "addr3",
         "line": 35,
-        "hits": 175,
-        "runs": 27,
+        "hits": 1195,
+        "runs": 31,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "router_filter_test",
@@ -196,9 +202,10 @@
        {
         "name": "oversized",
         "line": 36,
-        "hits": 803,
-        "runs": 40,
+        "hits": 3863,
+        "runs": 44,
         "tests": [
+         "hbus_sweep_test",
          "random_backpressure_test",
          "random_config_test",
          "random_test",
@@ -219,8 +226,8 @@
        {
         "name": "good",
         "line": 39,
-        "hits": 2670,
-        "runs": 64,
+        "hits": 2674,
+        "runs": 68,
         "tests": [
          "counter_wrap_test",
          "random_config_test",
@@ -233,15 +240,17 @@
          "reg_function_check_test",
          "backpressure_test",
          "router_disable_test",
-         "pkt_mem_test"
+         "pkt_mem_test",
+         "hbus_sweep_test"
         ]
        },
        {
         "name": "bad",
         "line": 40,
-        "hits": 325,
-        "runs": 40,
+        "hits": 4405,
+        "runs": 44,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "parity_error_test",
          "random_config_test",
@@ -264,8 +273,8 @@
        {
         "name": "none",
         "line": 43,
-        "hits": 412,
-        "runs": 39,
+        "hits": 416,
+        "runs": 43,
         "tests": [
          "back_to_back_test",
          "random_config_test",
@@ -277,15 +286,17 @@
          "random_backpressure_test",
          "reg_function_check_test",
          "reg_function_test",
-         "pkt_mem_test"
+         "pkt_mem_test",
+         "hbus_sweep_test"
         ]
        },
        {
         "name": "mixed",
         "line": 44,
-        "hits": 977,
-        "runs": 34,
+        "hits": 5057,
+        "runs": 38,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_test",
          "random_backpressure_test",
@@ -322,9 +333,10 @@
        {
         "name": "addr3_x_bad",
         "line": 47,
-        "hits": 33,
-        "runs": 12,
+        "hits": 1053,
+        "runs": 16,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "random_backpressure_test"
@@ -362,8 +374,8 @@
        {
         "name": "forwarded_x_good",
         "line": 47,
-        "hits": 1828,
-        "runs": 64,
+        "hits": 1832,
+        "runs": 68,
         "tests": [
          "counter_wrap_test",
          "random_test",
@@ -376,15 +388,17 @@
          "reg_function_check_test",
          "backpressure_test",
          "router_disable_test",
+         "hbus_sweep_test",
          "pkt_mem_test"
         ]
        },
        {
         "name": "oversized_x_bad",
         "line": 47,
-        "hits": 103,
-        "runs": 27,
+        "hits": 3163,
+        "runs": 31,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "random_test",
@@ -415,6 +429,2781 @@
     "pct": 100.0
    },
    {
+    "name": "hbus_addr_cg",
+    "file": "yapp_project/uvc/router/router_hbus_addr_coverage.sv",
+    "points": [
+     {
+      "name": "addr_cp",
+      "cross": false,
+      "line": 21,
+      "bins": [
+       {
+        "name": "ctrl",
+        "line": 21,
+        "hits": 1135,
+        "runs": 64,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "en",
+        "line": 22,
+        "hits": 1164,
+        "runs": 72,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "parity_error_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "parity_cnt",
+        "line": 23,
+        "hits": 710,
+        "runs": 76,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "random_parity_test",
+         "reg_introspection_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "oversized_cnt",
+        "line": 24,
+        "hits": 702,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "reg_introspection_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr3_cnt",
+        "line": 25,
+        "hits": 710,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr0_cnt",
+        "line": 26,
+        "hits": 728,
+        "runs": 72,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "counter_wrap_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "reg_access_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr1_cnt",
+        "line": 27,
+        "hits": 707,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr2_cnt",
+        "line": 28,
+        "hits": 714,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "mem_size",
+        "line": 29,
+        "hits": 758,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "pkt_mem_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "reg_hole[0]",
+        "line": 31,
+        "hits": 580,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[1]",
+        "line": 31,
+        "hits": 580,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[2]",
+        "line": 31,
+        "hits": 578,
+        "runs": 13,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[3]",
+        "line": 31,
+        "hits": 579,
+        "runs": 14,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[4]",
+        "line": 31,
+        "hits": 583,
+        "runs": 18,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[5]",
+        "line": 31,
+        "hits": 576,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[6]",
+        "line": 31,
+        "hits": 586,
+        "runs": 20,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "hbus_protocol_test",
+         "random_backpressure_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_first",
+        "line": 33,
+        "hits": 58,
+        "runs": 40,
+        "tests": [
+         "pkt_mem_test",
+         "random_config_test",
+         "random_test",
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_mid",
+        "line": 34,
+        "hits": 1946,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_last",
+        "line": 35,
+        "hits": 17,
+        "runs": 13,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "gap_first",
+        "line": 36,
+        "hits": 16,
+        "runs": 8,
+        "tests": [
+         "hbus_protocol_test",
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "gap_mid",
+        "line": 37,
+        "hits": 123,
+        "runs": 31,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "gap_last",
+        "line": 38,
+        "hits": 9,
+        "runs": 5,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_first",
+        "line": 39,
+        "hits": 54,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_mid",
+        "line": 40,
+        "hits": 14220,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_last",
+        "line": 41,
+        "hits": 48,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       }
+      ],
+      "total": 25,
+      "covered": 25
+     },
+     {
+      "name": "rw_cp",
+      "cross": false,
+      "line": 44,
+      "bins": [
+       {
+        "name": "read",
+        "line": 44,
+        "hits": 18792,
+        "runs": 88,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "reg_introspection_test",
+         "uvm_reset_test",
+         "counter_wrap_test",
+         "parity_error_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "write",
+        "line": 45,
+        "hits": 9089,
+        "runs": 84,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "reg_introspection_test",
+         "router_filter_test",
+         "pkt_mem_test",
+         "parity_error_test",
+         "reg_access_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "counter_wrap_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "addr_x_rw",
+      "cross": true,
+      "line": 47,
+      "bins": [
+       {
+        "name": "addr0_cnt_x_read",
+        "line": 47,
+        "hits": 696,
+        "runs": 72,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "counter_wrap_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr0_cnt_x_write",
+        "line": 47,
+        "hits": 32,
+        "runs": 16,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "addr1_cnt_x_read",
+        "line": 47,
+        "hits": 679,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr1_cnt_x_write",
+        "line": 47,
+        "hits": 28,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "addr2_cnt_x_read",
+        "line": 47,
+        "hits": 686,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr2_cnt_x_write",
+        "line": 47,
+        "hits": 28,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "addr3_cnt_x_read",
+        "line": 47,
+        "hits": 682,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr3_cnt_x_write",
+        "line": 47,
+        "hits": 28,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "ctrl_x_read",
+        "line": 47,
+        "hits": 760,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "ctrl_x_write",
+        "line": 47,
+        "hits": 375,
+        "runs": 60,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "en_x_read",
+        "line": 47,
+        "hits": 761,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "en_x_write",
+        "line": 47,
+        "hits": 403,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "gap_first_x_read",
+        "line": 47,
+        "hits": 8,
+        "runs": 8,
+        "tests": [
+         "hbus_protocol_test",
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "gap_first_x_write",
+        "line": 47,
+        "hits": 8,
+        "runs": 8,
+        "tests": [
+         "hbus_protocol_test",
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "gap_last_x_read",
+        "line": 47,
+        "hits": 5,
+        "runs": 5,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "gap_last_x_write",
+        "line": 47,
+        "hits": 4,
+        "runs": 4,
+        "tests": [
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "gap_mid_x_read",
+        "line": 47,
+        "hits": 99,
+        "runs": 31,
+        "tests": [
+         "random_config_test",
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "gap_mid_x_write",
+        "line": 47,
+        "hits": 24,
+        "runs": 4,
+        "tests": [
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "mem_size_x_read",
+        "line": 47,
+        "hits": 730,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "pkt_mem_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "mem_size_x_write",
+        "line": 47,
+        "hits": 28,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "oversized_cnt_x_read",
+        "line": 47,
+        "hits": 674,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "oversized_cnt_x_write",
+        "line": 47,
+        "hits": 28,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "parity_cnt_x_read",
+        "line": 47,
+        "hits": 678,
+        "runs": 76,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "parity_error_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "counter_wrap_test",
+         "hbus_protocol_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "parity_cnt_x_write",
+        "line": 47,
+        "hits": 32,
+        "runs": 16,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "hbus_protocol_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_first_x_read",
+        "line": 47,
+        "hits": 50,
+        "runs": 40,
+        "tests": [
+         "pkt_mem_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_first_x_write",
+        "line": 47,
+        "hits": 8,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_last_x_read",
+        "line": 47,
+        "hits": 13,
+        "runs": 13,
+        "tests": [
+         "random_config_test",
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_last_x_write",
+        "line": 47,
+        "hits": 4,
+        "runs": 4,
+        "tests": [
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_mid_x_read",
+        "line": 47,
+        "hits": 1698,
+        "runs": 40,
+        "tests": [
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_sweep_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "pkt_mem_mid_x_write",
+        "line": 47,
+        "hits": 248,
+        "runs": 4,
+        "tests": [
+         "hbus_sweep_test"
+        ]
+       },
+       {
+        "name": "reg_hole[0]_x_read",
+        "line": 47,
+        "hits": 560,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "hbus_protocol_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[0]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[1]_x_read",
+        "line": 47,
+        "hits": 560,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[1]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[2]_x_read",
+        "line": 47,
+        "hits": 558,
+        "runs": 13,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[2]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[3]_x_read",
+        "line": 47,
+        "hits": 559,
+        "runs": 14,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[3]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[4]_x_read",
+        "line": 47,
+        "hits": 563,
+        "runs": 18,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[4]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[5]_x_read",
+        "line": 47,
+        "hits": 556,
+        "runs": 15,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "reg_hole[5]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "reg_hole[6]_x_read",
+        "line": 47,
+        "hits": 566,
+        "runs": 20,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "reg_hole[6]_x_write",
+        "line": 47,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "hbus_protocol_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_first_x_read",
+        "line": 47,
+        "hits": 25,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_first_x_write",
+        "line": 47,
+        "hits": 29,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_last_x_read",
+        "line": 47,
+        "hits": 24,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_last_x_write",
+        "line": 47,
+        "hits": 24,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_mid_x_read",
+        "line": 47,
+        "hits": 6602,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "yapp_mem_mid_x_write",
+        "line": 47,
+        "hits": 7618,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       }
+      ],
+      "total": 50,
+      "covered": 50
+     }
+    ],
+    "total": 77,
+    "covered": 77,
+    "pct": 100.0
+   },
+   {
+    "name": "hbus_bits_cg",
+    "file": "yapp_project/uvc/router/router_hbus_bits_coverage.sv",
+    "points": [
+     {
+      "name": "reg_cp",
+      "cross": false,
+      "line": 18,
+      "bins": [
+       {
+        "name": "ctrl_reg",
+        "line": 18,
+        "hits": 3000,
+        "runs": 60,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "en_reg",
+        "line": 19,
+        "hits": 3224,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "bit_cp",
+      "cross": false,
+      "line": 22,
+      "bins": [
+       {
+        "name": "b[0]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[1]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[2]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[3]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[4]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[5]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[6]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "b[7]",
+        "line": 22,
+        "hits": 778,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_protocol_test",
+         "parity_error_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       }
+      ],
+      "total": 8,
+      "covered": 8
+     },
+     {
+      "name": "val_cp",
+      "cross": false,
+      "line": 25,
+      "bins": [
+       {
+        "name": "zero",
+        "line": 25,
+        "hits": 2981,
+        "runs": 76,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "parity_error_test",
+         "reg_introspection_test",
+         "pkt_mem_test",
+         "hbus_protocol_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_access_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "one",
+        "line": 26,
+        "hits": 3243,
+        "runs": 80,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "router_disable_test",
+         "hbus_protocol_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "counter_wrap_test",
+         "pkt_mem_test",
+         "reg_introspection_test",
+         "parity_error_test",
+         "reg_access_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "reg_x_bit_x_val",
+      "cross": true,
+      "line": 28,
+      "bins": [
+       {
+        "name": "ctrl_reg_x_b[0]_x_one",
+        "line": 28,
+        "hits": 202,
+        "runs": 59,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "pkt_mem_test",
+         "hbus_protocol_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[0]_x_zero",
+        "line": 28,
+        "hits": 173,
+        "runs": 46,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[1]_x_one",
+        "line": 28,
+        "hits": 196,
+        "runs": 49,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "hbus_protocol_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[1]_x_zero",
+        "line": 28,
+        "hits": 179,
+        "runs": 49,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[2]_x_one",
+        "line": 28,
+        "hits": 198,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "pkt_mem_test",
+         "hbus_protocol_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[2]_x_zero",
+        "line": 28,
+        "hits": 177,
+        "runs": 47,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "hbus_protocol_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[3]_x_one",
+        "line": 28,
+        "hits": 188,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[3]_x_zero",
+        "line": 28,
+        "hits": 187,
+        "runs": 52,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[4]_x_one",
+        "line": 28,
+        "hits": 190,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[4]_x_zero",
+        "line": 28,
+        "hits": 185,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[5]_x_one",
+        "line": 28,
+        "hits": 195,
+        "runs": 59,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[5]_x_zero",
+        "line": 28,
+        "hits": 180,
+        "runs": 48,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "pkt_mem_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[6]_x_one",
+        "line": 28,
+        "hits": 161,
+        "runs": 38,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[6]_x_zero",
+        "line": 28,
+        "hits": 214,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[7]_x_one",
+        "line": 28,
+        "hits": 162,
+        "runs": 37,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "ctrl_reg_x_b[7]_x_zero",
+        "line": 28,
+        "hits": 213,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[0]_x_one",
+        "line": 28,
+        "hits": 297,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[0]_x_zero",
+        "line": 28,
+        "hits": 106,
+        "runs": 26,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "router_disable_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[1]_x_one",
+        "line": 28,
+        "hits": 216,
+        "runs": 61,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[1]_x_zero",
+        "line": 28,
+        "hits": 187,
+        "runs": 54,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[2]_x_one",
+        "line": 28,
+        "hits": 207,
+        "runs": 61,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[2]_x_zero",
+        "line": 28,
+        "hits": 196,
+        "runs": 50,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[3]_x_one",
+        "line": 28,
+        "hits": 196,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[3]_x_zero",
+        "line": 28,
+        "hits": 207,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[4]_x_one",
+        "line": 28,
+        "hits": 211,
+        "runs": 60,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[4]_x_zero",
+        "line": 28,
+        "hits": 192,
+        "runs": 54,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[5]_x_one",
+        "line": 28,
+        "hits": 211,
+        "runs": 64,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[5]_x_zero",
+        "line": 28,
+        "hits": 192,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[6]_x_one",
+        "line": 28,
+        "hits": 206,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[6]_x_zero",
+        "line": 28,
+        "hits": 197,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[7]_x_one",
+        "line": 28,
+        "hits": 207,
+        "runs": 58,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "en_reg_x_b[7]_x_zero",
+        "line": 28,
+        "hits": 196,
+        "runs": 55,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       }
+      ],
+      "total": 32,
+      "covered": 32
+     }
+    ],
+    "total": 44,
+    "covered": 44,
+    "pct": 100.0
+   },
+   {
+    "name": "hbus_counter_cg",
+    "file": "yapp_project/uvc/router/router_hbus_counter_coverage.sv",
+    "points": [
+     {
+      "name": "counter_cp",
+      "cross": false,
+      "line": 18,
+      "bins": [
+       {
+        "name": "parity_err",
+        "line": 18,
+        "hits": 678,
+        "runs": 76,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "parity_error_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "counter_wrap_test",
+         "hbus_protocol_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "router_filter_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "oversized",
+        "line": 19,
+        "hits": 674,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr0",
+        "line": 20,
+        "hits": 696,
+        "runs": 72,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "counter_wrap_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr1",
+        "line": 21,
+        "hits": 679,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr2",
+        "line": 22,
+        "hits": 686,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       },
+       {
+        "name": "addr3",
+        "line": 23,
+        "hits": 682,
+        "runs": 68,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "reg_introspection_test",
+         "uvm_reset_test"
+        ]
+       }
+      ],
+      "total": 6,
+      "covered": 6
+     },
+     {
+      "name": "value_cp",
+      "cross": false,
+      "line": 26,
+      "bins": [
+       {
+        "name": "zero",
+        "line": 26,
+        "hits": 3568,
+        "runs": 63,
+        "tests": [
+         "hbus_sweep_test",
+         "router_disable_test",
+         "random_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "counter_wrap_test",
+         "random_backpressure_test",
+         "reg_bit_walk_test",
+         "uvm_reset_test",
+         "random_config_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "mid",
+        "line": 27,
+        "hits": 355,
+        "runs": 68,
+        "tests": [
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_sweep_test",
+         "reg_introspection_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "parity_error_test",
+         "counter_wrap_test",
+         "reg_access_test"
+        ]
+       },
+       {
+        "name": "max",
+        "line": 28,
+        "hits": 172,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "counter_wrap_test"
+        ]
+       }
+      ],
+      "total": 3,
+      "covered": 3
+     },
+     {
+      "name": "counter_x_value",
+      "cross": true,
+      "line": 30,
+      "bins": [
+       {
+        "name": "addr0_x_max",
+        "line": 30,
+        "hits": 40,
+        "runs": 12,
+        "tests": [
+         "hbus_sweep_test",
+         "counter_wrap_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "addr0_x_mid",
+        "line": 30,
+        "hits": 75,
+        "runs": 63,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "router_filter_test",
+         "counter_wrap_test",
+         "hbus_sweep_test",
+         "reg_access_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "addr0_x_zero",
+        "line": 30,
+        "hits": 581,
+        "runs": 35,
+        "tests": [
+         "hbus_sweep_test",
+         "counter_wrap_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "uvm_reset_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "addr1_x_max",
+        "line": 30,
+        "hits": 28,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "addr1_x_mid",
+        "line": 30,
+        "hits": 65,
+        "runs": 54,
+        "tests": [
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_sweep_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "addr1_x_zero",
+        "line": 30,
+        "hits": 586,
+        "runs": 33,
+        "tests": [
+         "hbus_sweep_test",
+         "counter_wrap_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "uvm_reset_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "addr2_x_max",
+        "line": 30,
+        "hits": 20,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "addr2_x_mid",
+        "line": 30,
+        "hits": 69,
+        "runs": 53,
+        "tests": [
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "router_filter_test",
+         "random_test",
+         "hbus_sweep_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "addr2_x_zero",
+        "line": 30,
+        "hits": 597,
+        "runs": 37,
+        "tests": [
+         "hbus_sweep_test",
+         "counter_wrap_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "uvm_reset_test",
+         "random_config_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "addr3_x_max",
+        "line": 30,
+        "hits": 12,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "addr3_x_mid",
+        "line": 30,
+        "hits": 38,
+        "runs": 30,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "router_filter_test",
+         "hbus_sweep_test",
+         "reg_introspection_test",
+         "random_backpressure_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "addr3_x_zero",
+        "line": 30,
+        "hits": 632,
+        "runs": 47,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "random_test",
+         "counter_wrap_test",
+         "reg_bit_walk_test",
+         "uvm_reset_test",
+         "random_config_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "oversized_x_max",
+        "line": 30,
+        "hits": 36,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "oversized_x_mid",
+        "line": 30,
+        "hits": 55,
+        "runs": 40,
+        "tests": [
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "hbus_sweep_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "oversized_x_zero",
+        "line": 30,
+        "hits": 583,
+        "runs": 36,
+        "tests": [
+         "hbus_sweep_test",
+         "random_parity_test",
+         "counter_wrap_test",
+         "random_test",
+         "reg_bit_walk_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "uvm_reset_test",
+         "random_backpressure_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "parity_err_x_max",
+        "line": 30,
+        "hits": 36,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test"
+        ]
+       },
+       {
+        "name": "parity_err_x_mid",
+        "line": 30,
+        "hits": 53,
+        "runs": 42,
+        "tests": [
+         "random_config_test",
+         "parity_error_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "hbus_sweep_test",
+         "reg_introspection_test",
+         "reg_function_check_test",
+         "reg_function_test"
+        ]
+       },
+       {
+        "name": "parity_err_x_zero",
+        "line": 30,
+        "hits": 589,
+        "runs": 42,
+        "tests": [
+         "hbus_sweep_test",
+         "random_backpressure_test",
+         "random_test",
+         "counter_wrap_test",
+         "hbus_protocol_test",
+         "reg_bit_walk_test",
+         "router_disable_test",
+         "router_filter_test",
+         "uvm_reset_test",
+         "random_config_test",
+         "random_parity_test",
+         "reg_function_check_test",
+         "reg_function_test"
+        ]
+       }
+      ],
+      "total": 18,
+      "covered": 18
+     }
+    ],
+    "total": 27,
+    "covered": 27,
+    "pct": 100.0
+   },
+   {
+    "name": "hbus_data_cg",
+    "file": "yapp_project/uvc/router/router_hbus_data_coverage.sv",
+    "points": [
+     {
+      "name": "rw_cp",
+      "cross": false,
+      "line": 17,
+      "bins": [
+       {
+        "name": "read",
+        "line": 17,
+        "hits": 6651,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "write",
+        "line": 18,
+        "hits": 7671,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "pattern_cp",
+      "cross": false,
+      "line": 21,
+      "bins": [
+       {
+        "name": "zeros",
+        "line": 21,
+        "hits": 2064,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "ones",
+        "line": 22,
+        "hits": 2060,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "x55",
+        "line": 23,
+        "hits": 2062,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       },
+       {
+        "name": "xaa",
+        "line": 24,
+        "hits": 2068,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "other",
+        "line": 25,
+        "hits": 6068,
+        "runs": 40,
+        "tests": [
+         "uvm_mem_walk_test",
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       }
+      ],
+      "total": 5,
+      "covered": 5
+     },
+     {
+      "name": "rw_x_pattern",
+      "cross": true,
+      "line": 27,
+      "bins": [
+       {
+        "name": "read_x_ones",
+        "line": 27,
+        "hits": 1030,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "read_x_other",
+        "line": 27,
+        "hits": 2530,
+        "runs": 40,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "read_x_x55",
+        "line": 27,
+        "hits": 1029,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       },
+       {
+        "name": "read_x_xaa",
+        "line": 27,
+        "hits": 1032,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "read_x_zeros",
+        "line": 27,
+        "hits": 1030,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "write_x_ones",
+        "line": 27,
+        "hits": 1030,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "write_x_other",
+        "line": 27,
+        "hits": 3538,
+        "runs": 40,
+        "tests": [
+         "uvm_mem_walk_test",
+         "hbus_sweep_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test"
+        ]
+       },
+       {
+        "name": "write_x_x55",
+        "line": 27,
+        "hits": 1033,
+        "runs": 8,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test"
+        ]
+       },
+       {
+        "name": "write_x_xaa",
+        "line": 27,
+        "hits": 1036,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "write_x_zeros",
+        "line": 27,
+        "hits": 1034,
+        "runs": 9,
+        "tests": [
+         "hbus_sweep_test",
+         "uvm_mem_walk_test",
+         "random_config_test"
+        ]
+       }
+      ],
+      "total": 10,
+      "covered": 10
+     }
+    ],
+    "total": 17,
+    "covered": 17,
+    "pct": 100.0
+   },
+   {
     "name": "yapp_gap_cg",
     "file": "yapp_project/uvc/yapp/yapp_gap_coverage.sv",
     "points": [
@@ -439,9 +3228,10 @@
        {
         "name": "one",
         "line": 21,
-        "hits": 345,
-        "runs": 53,
+        "hits": 603,
+        "runs": 57,
         "tests": [
+         "hbus_sweep_test",
          "random_test",
          "random_config_test",
          "counter_wrap_test",
@@ -458,9 +3248,10 @@
        {
         "name": "two",
         "line": 22,
-        "hits": 174,
-        "runs": 42,
+        "hits": 292,
+        "runs": 46,
         "tests": [
+         "hbus_sweep_test",
          "random_config_test",
          "counter_wrap_test",
          "random_parity_test",
@@ -477,9 +3268,10 @@
        {
         "name": "longer",
         "line": 23,
-        "hits": 1902,
-        "runs": 68,
+        "hits": 5606,
+        "runs": 72,
         "tests": [
+         "hbus_sweep_test",
          "counter_wrap_test",
          "random_test",
          "random_config_test",
@@ -534,9 +3326,10 @@
        {
         "name": "SMALL",
         "line": 27,
-        "hits": 426,
-        "runs": 52,
+        "hits": 4506,
+        "runs": 56,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "back_to_back_test",
          "random_test",
@@ -553,8 +3346,8 @@
        {
         "name": "MEDIUM",
         "line": 28,
-        "hits": 564,
-        "runs": 56,
+        "hits": 568,
+        "runs": 60,
         "tests": [
          "random_test",
          "random_config_test",
@@ -565,6 +3358,7 @@
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test",
+         "hbus_sweep_test",
          "pkt_mem_test"
         ]
        },
@@ -610,10 +3404,11 @@
        {
         "name": "legal[0]",
         "line": 33,
-        "hits": 1539,
-        "runs": 63,
+        "hits": 2563,
+        "runs": 67,
         "tests": [
          "counter_wrap_test",
+         "hbus_sweep_test",
          "random_config_test",
          "random_test",
          "random_parity_test",
@@ -630,9 +3425,10 @@
        {
         "name": "legal[1]",
         "line": 33,
-        "hits": 529,
-        "runs": 64,
+        "hits": 1549,
+        "runs": 68,
         "tests": [
+         "hbus_sweep_test",
          "random_test",
          "random_parity_test",
          "random_backpressure_test",
@@ -650,9 +3446,10 @@
        {
         "name": "legal[2]",
         "line": 33,
-        "hits": 985,
-        "runs": 64,
+        "hits": 2005,
+        "runs": 68,
         "tests": [
+         "hbus_sweep_test",
          "random_test",
          "random_config_test",
          "random_parity_test",
@@ -670,9 +3467,10 @@
        {
         "name": "illegal_addr",
         "line": 34,
-        "hits": 203,
-        "runs": 29,
+        "hits": 1223,
+        "runs": 33,
         "tests": [
+         "hbus_sweep_test",
          "random_config_test",
          "random_parity_test",
          "router_filter_test",
@@ -692,8 +3490,8 @@
        {
         "name": "good",
         "line": 38,
-        "hits": 2895,
-        "runs": 64,
+        "hits": 2899,
+        "runs": 68,
         "tests": [
          "counter_wrap_test",
          "random_test",
@@ -706,15 +3504,17 @@
          "reg_function_check_test",
          "backpressure_test",
          "router_disable_test",
-         "pkt_mem_test"
+         "pkt_mem_test",
+         "hbus_sweep_test"
         ]
        },
        {
         "name": "bad",
         "line": 39,
-        "hits": 361,
-        "runs": 41,
+        "hits": 4441,
+        "runs": 45,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "parity_error_test",
@@ -737,10 +3537,11 @@
        {
         "name": "legal[0]",
         "line": 45,
-        "hits": 1539,
-        "runs": 63,
+        "hits": 2563,
+        "runs": 67,
         "tests": [
          "counter_wrap_test",
+         "hbus_sweep_test",
          "random_config_test",
          "random_test",
          "random_parity_test",
@@ -757,9 +3558,10 @@
        {
         "name": "legal[1]",
         "line": 45,
-        "hits": 529,
-        "runs": 64,
+        "hits": 1549,
+        "runs": 68,
         "tests": [
+         "hbus_sweep_test",
          "random_test",
          "random_parity_test",
          "random_backpressure_test",
@@ -777,9 +3579,10 @@
        {
         "name": "legal[2]",
         "line": 45,
-        "hits": 985,
-        "runs": 64,
+        "hits": 2005,
+        "runs": 68,
         "tests": [
+         "hbus_sweep_test",
          "random_test",
          "random_config_test",
          "random_parity_test",
@@ -806,9 +3609,10 @@
        {
         "name": "bad",
         "line": 46,
-        "hits": 361,
-        "runs": 41,
+        "hits": 4441,
+        "runs": 45,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "parity_error_test",
@@ -984,9 +3788,10 @@
        {
         "name": "SMALL_x_legal[0]_x_bad",
         "line": 47,
-        "hits": 13,
-        "runs": 8,
+        "hits": 1033,
+        "runs": 12,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_test",
          "parity_error_test"
@@ -995,9 +3800,10 @@
        {
         "name": "SMALL_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 13,
-        "runs": 7,
+        "hits": 1033,
+        "runs": 11,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
          "random_test"
@@ -1006,9 +3812,10 @@
        {
         "name": "SMALL_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 26,
-        "runs": 13,
+        "hits": 1046,
+        "runs": 17,
         "tests": [
+         "hbus_sweep_test",
          "random_parity_test",
          "random_backpressure_test",
          "random_config_test",
@@ -1048,107 +3855,118 @@
    {
     "test": "counter_wrap_test",
     "runs": 4,
-    "bins_hit": 13,
+    "bins_hit": 64,
     "only_this": []
    },
    {
     "test": "hbus_protocol_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 57,
     "only_this": []
+   },
+   {
+    "test": "hbus_sweep_test",
+    "runs": 4,
+    "bins_hit": 197,
+    "only_this": [
+     "hbus_addr_cg.addr_x_rw.gap_last_x_write",
+     "hbus_addr_cg.addr_x_rw.gap_mid_x_write",
+     "hbus_addr_cg.addr_x_rw.pkt_mem_last_x_write",
+     "hbus_addr_cg.addr_x_rw.pkt_mem_mid_x_write"
+    ]
    },
    {
     "test": "parity_error_test",
     "runs": 4,
-    "bins_hit": 31,
+    "bins_hit": 60,
     "only_this": []
    },
    {
     "test": "pkt_mem_test",
     "runs": 4,
-    "bins_hit": 18,
+    "bins_hit": 52,
     "only_this": []
    },
    {
     "test": "random_backpressure_test",
     "runs": 8,
-    "bins_hit": 48,
+    "bins_hit": 159,
     "only_this": []
    },
    {
     "test": "random_config_test",
     "runs": 8,
-    "bins_hit": 55,
+    "bins_hit": 179,
     "only_this": []
    },
    {
     "test": "random_parity_test",
     "runs": 8,
-    "bins_hit": 57,
+    "bins_hit": 173,
     "only_this": []
    },
    {
     "test": "random_test",
     "runs": 8,
-    "bins_hit": 55,
+    "bins_hit": 169,
     "only_this": []
    },
    {
     "test": "reg_access_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 30,
     "only_this": []
    },
    {
     "test": "reg_bit_walk_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 93,
     "only_this": []
    },
    {
     "test": "reg_function_check_test",
     "runs": 4,
-    "bins_hit": 29,
+    "bins_hit": 90,
     "only_this": []
    },
    {
     "test": "reg_function_test",
     "runs": 4,
-    "bins_hit": 29,
+    "bins_hit": 90,
     "only_this": []
    },
    {
     "test": "reg_introspection_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 70,
     "only_this": []
    },
    {
     "test": "router_disable_test",
     "runs": 4,
-    "bins_hit": 25,
+    "bins_hit": 80,
     "only_this": []
    },
    {
     "test": "router_filter_test",
     "runs": 4,
-    "bins_hit": 28,
+    "bins_hit": 99,
     "only_this": []
    },
    {
     "test": "uvm_mem_walk_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 28,
     "only_this": []
    },
    {
     "test": "uvm_reset_test",
     "runs": 4,
-    "bins_hit": 0,
+    "bins_hit": 32,
     "only_this": []
    }
   ],
-  "total": 57,
-  "covered": 57
+  "total": 222,
+  "covered": 222
  }
 ]

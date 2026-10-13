@@ -42,7 +42,7 @@ Waves: `backpressure_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-100 events (the same list is in `timeline.csv`).
+104 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -139,6 +139,10 @@ Waves: `backpressure_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 6335 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 6335 | hbus monitor | HBUS report: 0 writes, 0 reads |
 | 6335 | coverage | Coverage of the router configuration: 26.1% |
+| 6335 | coverage | HBUS address coverage: 0 accesses sampled, coverage 0.0% |
+| 6335 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
+| 6335 | coverage | HBUS counter value coverage: 0 counter reads sampled, coverage 0.0% |
+| 6335 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 6335 | reference |  |
 | 6335 | scoreboard |  |
 | 6335 | yapp driver | YAPP driver report: 6 packets sent |

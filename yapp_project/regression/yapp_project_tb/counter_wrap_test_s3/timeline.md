@@ -48,7 +48,7 @@ Waves: `counter_wrap_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-2763 events (the same list is in `timeline.csv`).
+2767 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -2808,6 +2808,10 @@ Waves: `counter_wrap_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 43120 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 43120 | hbus monitor | HBUS report: 1 writes, 8 reads |
 | 43120 | coverage | Coverage of the router configuration: 26.1% |
+| 43120 | coverage | HBUS address coverage: 9 accesses sampled, coverage 20.8% |
+| 43120 | coverage | HBUS register bits coverage: 1 writes to ctrl_reg/en_reg, coverage 40.9% |
+| 43120 | coverage | HBUS counter value coverage: 8 counter reads sampled, coverage 63.0% |
+| 43120 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
 | 43120 | reference |  |
 | 43120 | scoreboard |  |
 | 43120 | yapp driver | YAPP driver report: 257 packets sent |

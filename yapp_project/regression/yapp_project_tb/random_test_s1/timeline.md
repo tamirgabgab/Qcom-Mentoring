@@ -64,7 +64,7 @@ Waves: `random_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal
 
 ## Timeline
 
-460 events (the same list is in `timeline.csv`).
+464 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -520,6 +520,10 @@ Waves: `random_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal
 | 12015 | ch2 monitor | Channel 2 report: 4 packets collected |
 | 12015 | hbus monitor | HBUS report: 30 writes, 78 reads |
 | 12015 | coverage | Coverage of the router configuration: 65.2% |
+| 12015 | coverage | HBUS address coverage: 108 accesses sampled, coverage 40.3% |
+| 12015 | coverage | HBUS register bits coverage: 12 writes to ctrl_reg/en_reg, coverage 97.7% |
+| 12015 | coverage | HBUS counter value coverage: 8 counter reads sampled, coverage 55.6% |
+| 12015 | coverage | HBUS yapp_mem data coverage: 36 accesses sampled, coverage 29.4% |
 | 12015 | reference |  |
 | 12015 | reference | HBUS reads checked against the model: 78 (0 mismatches, 0 of memory bytes never written) |
 | 12015 | scoreboard |  |

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - YAPP functional coverage (yapp_project_tb, 100 runs) - yapp_project/uvc/router/router_hbus_bits_coverage.sv</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">YAPP functional coverage (covergroup bins)</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">yapp_project/uvc/router</a> - router_hbus_bits_coverage.sv</td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">YAPP functional coverage (yapp_project_tb, 100 runs)</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">-</td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntry">40</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">             Branch data     Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L2"><span class="lineNum">       2</span>                 :             : // router_hbus_bits_coverage.sv -- every bit of the read-write registers written</span>
+<span id="L3"><span class="lineNum">       3</span>                 :             : // as 0 and as 1 (test plan COV-05)</span>
+<span id="L4"><span class="lineNum">       4</span>                 :             : //</span>
+<span id="L5"><span class="lineNum">       5</span>                 :             : //   hbus monitor ──► router_module_env.hbus_export ──► analysis_export (write)</span>
+<span id="L6"><span class="lineNum">       6</span>                 :             : //</span>
+<span id="L7"><span class="lineNum">       7</span>                 :             : // One sample per bit of every HBUS write to ctrl_reg (0x1000) or en_reg</span>
+<span id="L8"><span class="lineNum">       8</span>                 :             : // (0x1001): which register, which bit, which value. The reserved bits</span>
+<span id="L9"><span class="lineNum">       9</span>                 :             : // (ctrl_reg[7:6], en_reg[3]) are read-write too, so they count.</span>
+<span id="L10"><span class="lineNum">      10</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L11"><span class="lineNum">      11</span>                 :             : class router_hbus_bits_coverage extends uvm_subscriber #(hbus_transaction);</span>
+<span id="L12"><span class="lineNum">      12</span>                 :             : </span>
+<span id="L13"><span class="lineNum">      13</span>                 :             :   int num_writes;</span>
+<span id="L14"><span class="lineNum">      14</span>                 :             : </span>
+<span id="L15"><span class="lineNum">      15</span>                 :             :   covergroup hbus_bits_cg with function sample(bit is_en, int bit_index, bit value);</span>
+<span id="L16"><span class="lineNum">      16</span>                 :             :     option.per_instance = 1;</span>
+<span id="L17"><span class="lineNum">      17</span>                 :             :     reg_cp : coverpoint is_en {</span>
+<span id="L18"><span class="lineNum">      18</span>                 :<span class="tlaGNC tlaBgGNC">        3000 :       bins ctrl_reg = {0};</span></span>
+<span id="L19"><span class="lineNum">      19</span>                 :<span class="tlaGNC">        3224 :       bins en_reg   = {1};</span></span>
+<span id="L20"><span class="lineNum">      20</span>                 :             :     }</span>
+<span id="L21"><span class="lineNum">      21</span>                 :             :     bit_cp : coverpoint bit_index {</span>
+<span id="L22"><span class="lineNum">      22</span>   [<span class="tlaGBC" title="Branch 0 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 778 times"> + </span> :<span class="tlaGNC">         778 :       bins b[] = {[0:7]};</span></span>
+<span class="lineNum">        </span>    <span class="tlaGBC" title="Branch 4 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 778 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 778 times"> + </span>]
+<span id="L23"><span class="lineNum">      23</span>                 :             :     }</span>
+<span id="L24"><span class="lineNum">      24</span>                 :             :     val_cp : coverpoint value {</span>
+<span id="L25"><span class="lineNum">      25</span>                 :<span class="tlaGNC">        2981 :       bins zero = {0};</span></span>
+<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC">        3243 :       bins one  = {1};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :             :     }</span>
+<span id="L28"><span class="lineNum">      28</span>   [<span class="tlaGBC" title="Branch 0 was taken 202 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 173 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 196 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 179 times"> + </span> :<span class="tlaGNC">         297 :     reg_x_bit_x_val : cross reg_cp, bit_cp, val_cp;</span></span>
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 198 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 177 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 188 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 187 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 190 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 185 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 195 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 180 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 161 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 214 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 14 was taken 162 times"> + </span><span class="tlaGBC" title="Branch 15 was taken 213 times"> + </span><span class="tlaGBC" title="Branch 16 was taken 297 times"> + </span><span class="tlaGBC" title="Branch 17 was taken 106 times"> + </span><span class="tlaGBC" title="Branch 18 was taken 216 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 19 was taken 187 times"> + </span><span class="tlaGBC" title="Branch 20 was taken 207 times"> + </span><span class="tlaGBC" title="Branch 21 was taken 196 times"> + </span><span class="tlaGBC" title="Branch 22 was taken 196 times"> + </span><span class="tlaGBC" title="Branch 23 was taken 207 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 24 was taken 211 times"> + </span><span class="tlaGBC" title="Branch 25 was taken 192 times"> + </span><span class="tlaGBC" title="Branch 26 was taken 211 times"> + </span><span class="tlaGBC" title="Branch 27 was taken 192 times"> + </span><span class="tlaGBC" title="Branch 28 was taken 206 times"> + </span> 
+<span class="lineNum">        </span>       <span class="tlaGBC" title="Branch 29 was taken 197 times"> + </span><span class="tlaGBC" title="Branch 30 was taken 207 times"> + </span><span class="tlaGBC" title="Branch 31 was taken 196 times"> + </span>]
+<span id="L29"><span class="lineNum">      29</span>                 :             :   endgroup : hbus_bits_cg</span>
+<span id="L30"><span class="lineNum">      30</span>                 :             : </span>
+<span id="L31"><span class="lineNum">      31</span>                 :             :   `uvm_component_utils(router_hbus_bits_coverage)</span>
+<span id="L32"><span class="lineNum">      32</span>                 :             : </span>
+<span id="L33"><span class="lineNum">      33</span>                 :             :   extern function new(string name, uvm_component parent);</span>
+<span id="L34"><span class="lineNum">      34</span>                 :             : </span>
+<span id="L35"><span class="lineNum">      35</span>                 :             :   // One HBUS access from the monitor; only writes to ctrl_reg / en_reg count</span>
+<span id="L36"><span class="lineNum">      36</span>                 :             :   extern function void write(hbus_transaction t);</span>
+<span id="L37"><span class="lineNum">      37</span>                 :             : </span>
+<span id="L38"><span class="lineNum">      38</span>                 :             :   extern function void report_phase(uvm_phase phase);</span>
+<span id="L39"><span class="lineNum">      39</span>                 :             : </span>
+<span id="L40"><span class="lineNum">      40</span>                 :             : endclass : router_hbus_bits_coverage</span>
+<span id="L41"><span class="lineNum">      41</span>                 :             : </span>
+<span id="L42"><span class="lineNum">      42</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L43"><span class="lineNum">      43</span>                 :             : // router_hbus_bits_coverage -- method implementations</span>
+<span id="L44"><span class="lineNum">      44</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L45"><span class="lineNum">      45</span>                 :             : </span>
+<span id="L46"><span class="lineNum">      46</span>                 :             : function router_hbus_bits_coverage::new(string name, uvm_component parent);</span>
+<span id="L47"><span class="lineNum">      47</span>                 :             :   super.new(name, parent);</span>
+<span id="L48"><span class="lineNum">      48</span>                 :             :   hbus_bits_cg = new();</span>
+<span id="L49"><span class="lineNum">      49</span>                 :             : endfunction : new</span>
+<span id="L50"><span class="lineNum">      50</span>                 :             : </span>
+<span id="L51"><span class="lineNum">      51</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L52"><span class="lineNum">      52</span>                 :             : function void router_hbus_bits_coverage::write(hbus_transaction t);</span>
+<span id="L53"><span class="lineNum">      53</span>                 :             :   if (t.hwr_rd != HBUS_WRITE || !(t.haddr inside {16'h1000, 16'h1001})) begin</span>
+<span id="L54"><span class="lineNum">      54</span>                 :             :     return;</span>
+<span id="L55"><span class="lineNum">      55</span>                 :             :   end</span>
+<span id="L56"><span class="lineNum">      56</span>                 :             :   num_writes++;</span>
+<span id="L57"><span class="lineNum">      57</span>                 :             :   for (int i = 0; i &lt; 8; i++) begin</span>
+<span id="L58"><span class="lineNum">      58</span>                 :             :     hbus_bits_cg.sample(t.haddr == 16'h1001, i, t.hdata[i]);</span>
+<span id="L59"><span class="lineNum">      59</span>                 :             :   end</span>
+<span id="L60"><span class="lineNum">      60</span>                 :             : endfunction : write</span>
+<span id="L61"><span class="lineNum">      61</span>                 :             : </span>
+<span id="L62"><span class="lineNum">      62</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L63"><span class="lineNum">      63</span>                 :             : function void router_hbus_bits_coverage::report_phase(uvm_phase phase);</span>
+<span id="L64"><span class="lineNum">      64</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;HBUS register bits coverage: %0d writes to ctrl_reg/en_reg, coverage %.1f%%&quot;,</span>
+<span id="L65"><span class="lineNum">      65</span>                 :             :                                        num_writes, hbus_bits_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L66"><span class="lineNum">      66</span>                 :             : endfunction : report_phase</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -19,6 +19,10 @@
 > `yapp_gap_coverage` (על ה-monitor), `router_coverage` (על `router_reference.decision_out`). כל ריצה כותבת `.dat`
 > (`--coverage-user`), `coverage_report.py` ממזג → `coverage.md` / `coverage.json` בדוח, HTML של genhtml ב-`docs/coverage/`,
 > עמוד אתר "Coverage results", טבלת bins בפאנל של כל collector במפה. רגרסיה **158/158**; ממוזג על 96 ריצות: **57/57 bins (100%)**.
+> **סשן 8 סבב 2 (HBUS coverage):** 4 collectors חדשים על `hbus_export` (כתובת×R/W, ביטי ctrl/en, תבניות yapp_mem, ערכי מונים)
+> + `hbus_sweep_test` שסוגר אותם (כל קריאה נבדקת מול הרפרנס). רגרסיה **162/162**; ממוזג על 100 ריצות: **222/222 bins**.
+> נפתח PR [tamirgabgab/Qcom-Mentoring#1](https://github.com/tamirgabgab/Qcom-Mentoring/pull/1) מה-UI — **`main` לא קודם** מאז
+> `99397d4`; שאלתי את תמיר אם להמשיך ff אחרי כל push או לחכות שהוא ימזג. לא לקדם `main` עד שיענה.
 
 ---
 
@@ -557,6 +561,24 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      `random_parity_test` לבדו פוגע בכל 57. כלומר מודל ה-coverage הנוכחי רווי — הצעד הבא הוא coverpoints חדשים (סעיף 8).
    - תיעוד: `components/coverage.md` (איפה ה-covergroups, "Seeing the results (Verilator)"), `monitor.md`, `lab10.md`
      (הקורס שם ב-monitor, כאן subscriber), `reference-model.md`, `random-tests.md`, `sim-report.md`, `verilator.md`, README.
+
+15. **HBUS coverage (סשן 8 סבב 2, בקשת תמיר "coverage של hbus, לקרוא ולכתוב מכל הכתובות").** תשובותיו: זיכרונות =
+   **קצוות + אמצע** (לא bin לכל בית); לא ממופות = **החורים בין הרגיסטרים + 0x1050–0x10ff** (לא מחוץ לחלון); ערכים = **כל ביט
+   ב-ctrl/en ב-0 וב-1, תבניות ב-yapp_mem, ערכי מונים שנקראו**; holes = **לסגור באותו סבב**.
+   - **Collectors** (ב-router module UVC, כי מפת הכתובות של הראוטר; ה-HBUS UVC גנרי), כולם על `router_module_env.hbus_export`:
+     `router_hbus_addr_coverage` (`hbus_addr_cg`: 9 רגיסטרים, `reg_hole[]` ×7, first/mid/last של pkt_mem / חור 0x1050–0x10ff /
+     yapp_mem × read/write — 77 bins), `router_hbus_bits_coverage` (`hbus_bits_cg`: נדגם 8 פעמים לכל כתיבה ל-ctrl/en — 44),
+     `router_hbus_data_coverage` (`hbus_data_cg`: yapp_mem × 0x00/0xff/0x55/0xaa/other — 17), `router_hbus_counter_coverage`
+     (`hbus_counter_cg`: 6 מונים × 0 / 1..254 / 255 — 27). ב-`random_test` s1 לבדו: 40% / 98% / 29% / 56%.
+   - **סגירה:** `router_hbus_sweep_mcseq` + `hbus_sweep_test` (TP, 4 seeds): כל כתובת 0x1000–0x100f עם 4 תבניות **וקריאת
+     כל החלון אחרי כל כתיבה** (תופס כתיבה שנוחתת על רגיסטר אחר), walking 1/0, כתיבה לכל בית pkt_mem (RO), חור, yapp_mem×5,
+     1020 פקטות 2 בתים bad parity ב-maxpktsize=1 (נזרקות) עם en 0x17/0x21/0x41/0x81 → כל מונה ל-255. `check_reads=1`;
+     הטסט נכשל אם covergroup לא ב-100%. **מוטציה:** כתיבה ל-0x1002 שכותבת ל-ctrl_reg → `REF_READ ... 0x1000 returned 0x00,
+     the model expects 0xaa` (הוחזר). `hbus_write`/`hbus_read`/`stage` עברו ל-`router_mcseq_base` (גם random משתמש).
+     ה-sequencer/driver של HBUS ו-YAPP ב-`UVM_NONE` בטסט הזה (לוג 5.3→2 MB); הדוח המחויב 51→**83 MB** (מועמד לכיווץ).
+   - Test plan: **COV-04..07** + `hbus_sweep_test` תחת REG-05, MEM-02, CNT-06; `test_model`: router_module_env = 11 connects.
+   - **`docs/dut/register-map.md`** (חדש, nav "Register map"): תמיר ביקש "קובץ MD פשוט" למפת הרגיסטרים — נוצר ע"י `build.py` מ-
+     `regmap.yaml` (טבלאות בלבד, נקרא ב-GitHub/VS Code), כולל קישור לסימולטור. map-check שומר שהוא עדכני.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. סשן 7 סבב 5 (טסטים אקראיים) נדחף כולו (`71636b3` + commit ה-HANDOFF). מה שתמיר דחה במפורש להמשך:

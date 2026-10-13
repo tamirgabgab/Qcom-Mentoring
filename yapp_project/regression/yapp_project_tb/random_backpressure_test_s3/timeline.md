@@ -58,7 +58,7 @@ Waves: `random_backpressure_test_s3.fst` (GTKWave, Surfer or the VS Code wave vi
 
 ## Timeline
 
-362 events (the same list is in `timeline.csv`).
+366 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -416,6 +416,10 @@ Waves: `random_backpressure_test_s3.fst` (GTKWave, Surfer or the VS Code wave vi
 | 12825 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 12825 | hbus monitor | HBUS report: 24 writes, 41 reads |
 | 12825 | coverage | Coverage of the router configuration: 56.5% |
+| 12825 | coverage | HBUS address coverage: 65 accesses sampled, coverage 42.9% |
+| 12825 | coverage | HBUS register bits coverage: 10 writes to ctrl_reg/en_reg, coverage 93.2% |
+| 12825 | coverage | HBUS counter value coverage: 9 counter reads sampled, coverage 55.6% |
+| 12825 | coverage | HBUS yapp_mem data coverage: 28 accesses sampled, coverage 29.4% |
 | 12825 | reference |  |
 | 12825 | reference | HBUS reads checked against the model: 41 (0 mismatches, 0 of memory bytes never written) |
 | 12825 | scoreboard |  |
