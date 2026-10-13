@@ -12,7 +12,7 @@ time_ns,severity,who,id,event
 90,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
 90,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=0 len=9 parity=good delay=20
 95,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
-95,INFO,reference,router_reference,router_en is now 1
+95,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
 305,INFO,DUT,DUT,IN  pkt #1 header: addr=0 len=9 -> channel 0
 405,INFO,DUT,DUT,"IN  pkt #1 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0)"
 405,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=9 (receiver waited 9 cycle(s))
@@ -171,7 +171,7 @@ time_ns,severity,who,id,event
 6360,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 6360,INFO,yapp driver,yapp_tx_driver,TX pkt #17: addr=0 len=9 parity=good delay=20
 6365,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-6365,INFO,reference,router_reference,router_en is now 1
+6365,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 6575,INFO,DUT,DUT,IN  pkt #17 header: addr=0 len=9 -> channel 0
 6645,INFO,DUT,DUT,OUT ch0 pkt #3 start: addr=0 len=9 (receiver waited 6 cycle(s))
 6675,INFO,DUT,DUT,"IN  pkt #17 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0)"
@@ -332,6 +332,7 @@ time_ns,severity,who,id,event
 12690,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 4 packets collected
 12690,INFO,hbus monitor,hbus_monitor,"HBUS report: 4 writes, 11 reads"
 12690,INFO,reference,router_reference,
+12690,INFO,reference,router_reference,Coverage of the router configuration: 60.9%
 12690,INFO,scoreboard,router_scoreboard,
 12690,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 32 packets sent
 12690,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 32 packets collected, coverage 36.7%"

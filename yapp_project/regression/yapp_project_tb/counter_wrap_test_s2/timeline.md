@@ -48,7 +48,7 @@ Waves: `counter_wrap_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-2763 events (the same list is in `timeline.csv`).
+2764 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -60,7 +60,7 @@ Waves: `counter_wrap_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 70 | **test** | STAGE: 1. 255 one-byte packets to address 0: addr0_cnt_reg reaches 255 |
 | 70 | yapp driver | TX pkt #1: addr=0 len=1 parity=good delay=20 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 75 | reference | router_en is now 1 |
+| 75 | reference | router_en is now 1 (en_reg 0xff) |
 | 285 | **DUT** | IN  pkt #1 header: addr=0 len=1 -> channel 0 |
 | 295 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=1 (receiver waited 0 cycle(s)) |
 | 305 | **DUT** | IN  pkt #1 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
@@ -2811,6 +2811,7 @@ Waves: `counter_wrap_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 42060 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 42060 | hbus monitor | HBUS report: 1 writes, 8 reads |
 | 42060 | reference |  |
+| 42060 | reference | Coverage of the router configuration: 26.1% |
 | 42060 | scoreboard |  |
 | 42060 | yapp driver | YAPP driver report: 257 packets sent |
 | 42060 | yapp monitor | YAPP monitor report: 257 packets collected, coverage 13.3% |

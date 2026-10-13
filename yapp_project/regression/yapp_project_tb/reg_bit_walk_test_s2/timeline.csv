@@ -125,108 +125,108 @@ time_ns,severity,who,id,event
 1055,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x55
 1070,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 1075,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-1075,INFO,reference,router_reference,router_en is now 1
+1075,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 1100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x01
 1105,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x01
 1120,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x02
 1125,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
 1125,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x02
-1125,INFO,reference,router_reference,router_en is now 0
+1125,INFO,reference,router_reference,router_en is now 0 (en_reg 0x02)
 1150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x02
 1155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x02
 1170,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x04
 1175,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x04
-1175,INFO,reference,router_reference,router_en is now 0
+1175,INFO,reference,router_reference,router_en is now 0 (en_reg 0x04)
 1200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x04
 1205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x04
 1220,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x08
 1225,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x08
-1225,INFO,reference,router_reference,router_en is now 0
+1225,INFO,reference,router_reference,router_en is now 0 (en_reg 0x08)
 1250,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x08
 1255,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x08
 1270,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x10
 1275,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x10
-1275,INFO,reference,router_reference,router_en is now 0
+1275,INFO,reference,router_reference,router_en is now 0 (en_reg 0x10)
 1300,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x10
 1305,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x10
 1320,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x20
 1325,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x20
-1325,INFO,reference,router_reference,router_en is now 0
+1325,INFO,reference,router_reference,router_en is now 0 (en_reg 0x20)
 1350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x20
 1355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x20
 1370,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x40
 1375,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x40
-1375,INFO,reference,router_reference,router_en is now 0
+1375,INFO,reference,router_reference,router_en is now 0 (en_reg 0x40)
 1400,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x40
 1405,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x40
 1420,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x80
 1425,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x80
-1425,INFO,reference,router_reference,router_en is now 0
+1425,INFO,reference,router_reference,router_en is now 0 (en_reg 0x80)
 1450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x80
 1455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x80
 1470,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfe
 1475,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfe
-1475,INFO,reference,router_reference,router_en is now 0
+1475,INFO,reference,router_reference,router_en is now 0 (en_reg 0xfe)
 1500,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfe
 1505,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfe
 1520,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfd
 1525,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
 1525,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfd
-1525,INFO,reference,router_reference,router_en is now 1
+1525,INFO,reference,router_reference,router_en is now 1 (en_reg 0xfd)
 1550,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfd
 1555,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfd
 1570,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfb
 1575,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfb
-1575,INFO,reference,router_reference,router_en is now 1
+1575,INFO,reference,router_reference,router_en is now 1 (en_reg 0xfb)
 1600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfb
 1605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfb
 1620,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xf7
 1625,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xf7
-1625,INFO,reference,router_reference,router_en is now 1
+1625,INFO,reference,router_reference,router_en is now 1 (en_reg 0xf7)
 1650,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xf7
 1655,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xf7
 1670,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xef
 1675,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xef
-1675,INFO,reference,router_reference,router_en is now 1
+1675,INFO,reference,router_reference,router_en is now 1 (en_reg 0xef)
 1700,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xef
 1705,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xef
 1720,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xdf
 1725,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xdf
-1725,INFO,reference,router_reference,router_en is now 1
+1725,INFO,reference,router_reference,router_en is now 1 (en_reg 0xdf)
 1750,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xdf
 1755,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xdf
 1770,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xbf
 1775,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xbf
-1775,INFO,reference,router_reference,router_en is now 1
+1775,INFO,reference,router_reference,router_en is now 1 (en_reg 0xbf)
 1800,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xbf
 1805,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xbf
 1820,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x7f
 1825,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x7f
-1825,INFO,reference,router_reference,router_en is now 1
+1825,INFO,reference,router_reference,router_en is now 1 (en_reg 0x7f)
 1850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x7f
 1855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x7f
 1870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x00
 1875,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
 1875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x00
-1875,INFO,reference,router_reference,router_en is now 0
+1875,INFO,reference,router_reference,router_en is now 0 (en_reg 0x00)
 1900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x00
 1905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x00
 1920,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
 1925,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
 1925,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
-1925,INFO,reference,router_reference,router_en is now 1
+1925,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
 1950,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xff
 1955,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xff
 1970,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xaa
 1975,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
 1975,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xaa
-1975,INFO,reference,router_reference,router_en is now 0
+1975,INFO,reference,router_reference,router_en is now 0 (en_reg 0xaa)
 2000,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xaa
 2005,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xaa
 2020,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x55
 2025,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
 2025,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x55
-2025,INFO,reference,router_reference,router_en is now 1
+2025,INFO,reference,router_reference,router_en is now 1 (en_reg 0x55)
 2050,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x55
 2050,INFO,test,TEST,"STAGE: RO register parity_err_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
 2050,INFO,test,REG_ACCESS,poke            0x00
@@ -362,7 +362,7 @@ time_ns,severity,who,id,event
 2775,INFO,reference,router_reference,maxpktsize is now 63
 2790,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 2795,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-2795,INFO,reference,router_reference,router_en is now 1
+2795,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 2990,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 0 packets collected
 2990,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
 2990,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected

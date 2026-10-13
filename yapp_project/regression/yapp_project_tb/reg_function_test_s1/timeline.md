@@ -50,7 +50,7 @@ Waves: `reg_function_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-162 events (the same list is in `timeline.csv`).
+163 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -61,7 +61,7 @@ Waves: `reg_function_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 50 | **DUT** | RESET released: router_en=1 maxpktsize=63 |
 | 70 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 75 | reference | router_en is now 1 |
+| 75 | reference | router_en is now 1 (en_reg 0x01) |
 | 100 | hbus driver | Executed READ  addr=0x1001 data=0x01 |
 | 100 | **test** | en_reg reads 0x01 |
 | 100 | yapp driver | TX pkt #1: addr=0 len=42 parity=good delay=20 |
@@ -112,7 +112,7 @@ Waves: `reg_function_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 1820 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
 | 1820 | yapp driver | TX pkt #4: addr=0 len=8 parity=good delay=1 |
 | 1825 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 1825 | reference | router_en is now 1 |
+| 1825 | reference | router_en is now 1 (en_reg 0xff) |
 | 1845 | **DUT** | IN  pkt #4 header: addr=0 len=8 -> channel 0 |
 | 1855 | **DUT** | OUT ch2 pkt #1 done: 29 bytes in 38 cycles |
 | 1855 | ch2 monitor | ch2 RX pkt #1: addr=2 len=27 parity=good |
@@ -161,7 +161,7 @@ Waves: `reg_function_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 3870 | yapp driver | TX pkt #7 accepted by the DUT |
 | 3870 | yapp driver | TX pkt #8: addr=1 len=41 parity=good delay=12 |
 | 3880 | ch2 driver | ch2: packet consumed (response delay 6) |
-| 3905 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
+| 3910 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
 | 3960 | ch0 driver | ch0: packet consumed (response delay 9) |
 | 3995 | **DUT** | IN  pkt #8 header: addr=1 len=41 -> channel 1 |
 | 4075 | **DUT** | OUT ch0 pkt #3 done: 58 bytes in 69 cycles |
@@ -212,6 +212,7 @@ Waves: `reg_function_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 5400 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 5400 | hbus monitor | HBUS report: 2 writes, 11 reads |
 | 5400 | reference |  |
+| 5400 | reference | Coverage of the router configuration: 39.1% |
 | 5400 | scoreboard |  |
 | 5400 | yapp driver | YAPP driver report: 9 packets sent |
 | 5400 | yapp monitor | YAPP monitor report: 9 packets collected, coverage 43.3% |

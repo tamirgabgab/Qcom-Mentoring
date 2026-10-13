@@ -216,7 +216,7 @@ cd labs/lab07_integ/tb && make run TEST=simple_test
 bash scripts/setup_sim.sh
 cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1   # PASS / FAIL + waves
 make regress                                                    # every lab and test (root)
-make regress ONLY=yapp_project SEEDS=3 WAVES=1 && make sim-report   # the project, 3 seeds, logs + timelines + waves + pictures per run
+make regress ONLY=yapp_project WAVES=1 && make sim-report        # the project (4 seeds per directed test, 8 per random test), logs + timelines + waves + pictures
 
 # lint everything without a simulator (slang + the Accellera UVM source)
 pip install pyslang && make lint
@@ -257,15 +257,18 @@ yapp_project/                     the complete project — the source of truth
   uvc/                            the verification components, one class per file
     yapp/                           YAPP input UVC: yapp_packet, driver, monitor (+ coverage), sequencer, agent, env, yapp_if
       seqs/                           the sequence library (yapp_base_seq, yapp_012_seq, yapp_coverage_seq, …,
-                                      yapp_pkt_seq, yapp_boundary_seq and yapp_gap_seq for the test plan)
+                                      yapp_pkt_seq, yapp_boundary_seq and yapp_gap_seq for the test plan,
+                                      yapp_random_burst_seq for the random tests)
       README.md                       the packet structure, next to the code
     hbus/                           HBUS UVC: transaction, master agent, monitor, env, hbus_if, hbus_reg_adapter (RAL)
       seqs/                           write / read / set-default / small / large / enable / disable sequences
     channel/                        Channel UVC: channel_packet, rx agent (driver, monitor, sequencer), env, channel_if
-      seqs/                           channel_rx_resp_seq, channel_rx_fast_seq, channel_rx_slow_seq (test plan)
+      seqs/                           channel_rx_resp_seq, channel_rx_fast_seq, channel_rx_slow_seq (test plan),
+                                      channel_rx_random_seq (receiver profiles: fast, normal, slow, stalling)
     clock_and_reset/                Clock & Reset UVC: transaction, driver, agent, env, interface, clkgen module
       seqs/                           clk10_rst5_seq, clk_rst_rand_seq
-    router/                         router module UVC: router_scoreboard, router_reference, router_module_env,
+    router/                         router module UVC: router_scoreboard, router_reference (a full model of the
+                                    registers and memories; checks every HBUS read with check_reads), router_module_env,
                                     router_fifo_scoreboard (Lab 9D), packet_compare
   tb/                             the final testbench
     yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
@@ -275,17 +278,20 @@ yapp_project/                     the complete project — the source of truth
     hw_top.sv                       hardware side: the DUT, the five interface instances, clkgen
     router_tb.sv                    the environment: five UVC envs, virtual sequencer, module UVC, register model
     router_mcsequencer.sv           the virtual (multichannel) sequencer
-    mcseqs/                         router_mcseq_base, router_simple_mcseq
+    mcseqs/                         router_mcseq_base, router_simple_mcseq, router_random_mcseq (the random scenario)
     tests/                          base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
                                     reg_function_test, reg_function_check_test, reg_introspection_test,
                                     and the test-plan tests: router_disable_test, router_filter_test,
                                     pkt_mem_test, reg_bit_walk_test, hbus_protocol_test,
                                     backpressure_test, parity_error_test (+ error_pulse_checker),
-                                    counter_wrap_test, back_to_back_test
+                                    counter_wrap_test, back_to_back_test,
+                                    and the random tests: random_test, random_config_test,
+                                    random_backpressure_test, random_parity_test
     reg/                            the register model: one class per register / memory, yapp_regs_c, yapp_router_regs_t
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`
-  regression/                     GENERATED report of the last project regression (16 tests x 3 seeds, Verilator):
+  regression/                     GENERATED report of the last project regression (16 directed tests x 4 seeds,
+                                  4 random tests x 8 seeds, Verilator):
                                   index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures
 labs/                             one snapshot per lab; `make run` inside <lab>/tb
   lab01_data … lab06_vif/sv         the YAPP UVC as it grows (Labs 1–6 have their own copy)
@@ -420,6 +426,18 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
   are younger than Xcelium's; the few places this touches are handled in the
   code and listed in `docs/appendix/verilator.md`. A new test belongs in
   `regress.yaml` too.
+* **Random tests checked by a model.** `random_test` and its three variants
+  (`random_config_test`, `random_backpressure_test`, `random_parity_test`) let
+  the seed decide the shape of the test: 10..100 packets in bursts, a random
+  configuration before each burst (`maxpktsize` 0/1/62/63, the router off,
+  counter-enable masks), a receiver profile per channel that may stall, bad
+  parity on dropped packets and storms of overlapping bad packets. Nothing is
+  checked by hand: `router_reference` models every register and memory and
+  checks each HBUS read, the scoreboard checks every packet and that none is
+  left over, `error_pulse_checker` one pulse per bad packet. The storms found a
+  real DUT bug (a second bad packet took away the first one's `error` pulse);
+  the timer now schedules one pulse per packet. See
+  [`docs/components/random-tests.md`](docs/components/random-tests.md).
 * **Logs that read like a story.** The project runs at `UVM_MEDIUM`: one line
   per event, the full packet tables only at `UVM_HIGH`. `base_test` prints a
   banner with the test name and the seed, a `STAGE:` line at every step
@@ -455,19 +473,21 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Verification status
 
-Every lab and every test **runs on Verilator 5.052** and passes: 26 test classes
-over 18 benches plus one `INJECT_ERROR` build, 156 runs with two seeds (`make regress`;
-the **sim** workflow repeats it on every push, one job per lab). The first runs
-found two real bugs that slang could not see -- `set_parity()` left about half of
-the "bad parity" packets correct, and an explicit grandparent call in Lab 9's
+Every lab and every test **runs on Verilator 5.052** and passes: 30 test classes
+over 18 benches plus one `INJECT_ERROR` build, 158 runs (`make regress`: one seed
+per lab test, 4 per directed project test, 8 per random test; the **sim**
+workflow repeats it on every push, one job per lab). The first runs found two
+real bugs that slang could not see -- `set_parity()` left about half of the
+"bad parity" packets correct, and an explicit grandparent call in Lab 9's
 `scoreboard_drop_test` -- and a handful of Verilator differences that the code
-now handles (`docs/appendix/verilator.md`). Highlights: `coverage_test` closes
-`yapp_pkt_cg` at 100%, `backpressure_test` matches all packets while `in_suspend`
-toggles, `parity_error_test` sees one `error` pulse per bad packet, 2..10 cycles
-later. The project alone was also run with three seeds and waves (`make regress
-ONLY=yapp_project SEEDS=3 WAVES=1`, 48 runs, all pass) to produce the
-regression report described in
-[`docs/appendix/sim-report.md`](docs/appendix/sim-report.md).
+now handles (`docs/appendix/verilator.md`). The random tests found a third, in
+the DUT: two bad-parity packets close together got one `error` pulse; the timer
+now gives each its own. Highlights: `coverage_test` closes `yapp_pkt_cg` at
+100%, `backpressure_test` matches all packets while `in_suspend` toggles,
+`random_parity_test` sees one `error` pulse per bad packet with up to three
+owed at once, and the reference model checks every HBUS read of the random
+tests. The project's 96 runs with waves form the regression report described
+in [`docs/appendix/sim-report.md`](docs/appendix/sim-report.md).
 
 Cadence Xcelium itself has still not run the code: four-state behaviour (the
 `z` on HBUS, `x` before reset), UVM 1.1d compatibility and the IMC coverage

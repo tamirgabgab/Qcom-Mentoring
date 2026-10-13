@@ -48,7 +48,7 @@ Waves: `router_filter_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-337 events (the same list is in `timeline.csv`).
+338 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -65,7 +65,7 @@ Waves: `router_filter_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 90 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
 | 90 | yapp driver | TX pkt #1: addr=0 len=9 parity=good delay=20 |
 | 95 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 95 | reference | router_en is now 1 |
+| 95 | reference | router_en is now 1 (en_reg 0xff) |
 | 305 | **DUT** | IN  pkt #1 header: addr=0 len=9 -> channel 0 |
 | 405 | **DUT** | IN  pkt #1 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0) |
 | 405 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=9 (receiver waited 9 cycle(s)) |
@@ -224,7 +224,7 @@ Waves: `router_filter_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 6360 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 6360 | yapp driver | TX pkt #17: addr=0 len=9 parity=good delay=20 |
 | 6365 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 6365 | reference | router_en is now 1 |
+| 6365 | reference | router_en is now 1 (en_reg 0x01) |
 | 6575 | **DUT** | IN  pkt #17 header: addr=0 len=9 -> channel 0 |
 | 6645 | **DUT** | OUT ch0 pkt #3 start: addr=0 len=9 (receiver waited 6 cycle(s)) |
 | 6675 | **DUT** | IN  pkt #17 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0) |
@@ -385,6 +385,7 @@ Waves: `router_filter_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 12690 | ch2 monitor | Channel 2 report: 4 packets collected |
 | 12690 | hbus monitor | HBUS report: 4 writes, 11 reads |
 | 12690 | reference |  |
+| 12690 | reference | Coverage of the router configuration: 60.9% |
 | 12690 | scoreboard |  |
 | 12690 | yapp driver | YAPP driver report: 32 packets sent |
 | 12690 | yapp monitor | YAPP monitor report: 32 packets collected, coverage 36.7% |

@@ -85,8 +85,7 @@ module yapp_router_tracer (
   string      cur_reason;
   bit         susp_prev;
   int         susp_cycles;
-  int         cycles_since_bad;   // for the error pulse message
-  bit         bad_pending;
+  int         bad_age[$];         // cycles since each bad-parity packet still owed a pulse
 
   // Output-channel bookkeeping
   int         out_count   [3];
@@ -198,7 +197,7 @@ module yapp_router_tracer (
       in_count         = 0;
       cur_cycles       = 0;
       susp_prev        = 1'b0;
-      bad_pending      = 1'b0;
+      bad_age.delete();
       rd_pending       = 1'b0;
       cfg_known        = 1'b0;
       full_prev        = 3'b000;
@@ -224,8 +223,8 @@ module yapp_router_tracer (
     string target;
     string verdict;
     accepted = !in_suspend;
-    if (bad_pending) begin
-      cycles_since_bad++;
+    foreach (bad_age[i]) begin
+      bad_age[i]++;
     end
     if (cur_cycles > 0) begin
       cur_cycles++;
@@ -284,8 +283,7 @@ module yapp_router_tracer (
           `uvm_info("DUT", $sformatf("IN  pkt #%0d complete: addr=%0d len=%0d %s, %0d bytes in %0d cycles (held %0d)",
                                      in_count, cur_addr, cur_len, verdict, cur_len + 2, cur_cycles, cur_held), UVM_MEDIUM)
           if (bad && cur_enabled) begin
-            bad_pending      = 1'b1;
-            cycles_since_bad = 0;
+            bad_age.push_back(0);
           end
           cur_cycles = 0;
         end
@@ -353,19 +351,25 @@ module yapp_router_tracer (
   endtask : trace_channels
 
   //--------------------------------------------------------------------------
-  // Error pulse: `error` rises on the clock edge where the timer fires, after
-  // the block above counted that edge, so cycles_since_bad is the distance
-  // from the edge that accepted the bad parity byte (what error_pulse_checker
-  // measures too).
+  // Error pulse: `error` rises on the clock edge where a pulse is due, after
+  // the block above counted that edge; sampled on the falling edge, each cycle
+  // with `error` high is one pulse and pays the oldest bad packet, so its age is
+  // the distance from the edge that accepted that bad parity byte (what
+  // error_pulse_checker measures too). Bad packets may overlap: each one keeps
+  // its own pulse.
   //--------------------------------------------------------------------------
-  always @(posedge error) begin
-    if (!reset) begin
-      if (bad_pending) begin
-        `uvm_info("DUT", $sformatf("ERROR pulse, %0d cycle(s) after the bad-parity packet", cycles_since_bad), UVM_MEDIUM)
+  always @(negedge clock) begin
+    if (!reset && error === 1'b1) begin
+      if (bad_age.size() > 1) begin
+        `uvm_info("DUT", $sformatf("ERROR pulse, %0d cycle(s) after the bad-parity packet (%0d more owed)",
+                                   bad_age[0], bad_age.size() - 1), UVM_MEDIUM)
+        void'(bad_age.pop_front());
+      end else if (bad_age.size() == 1) begin
+        `uvm_info("DUT", $sformatf("ERROR pulse, %0d cycle(s) after the bad-parity packet", bad_age[0]), UVM_MEDIUM)
+        void'(bad_age.pop_front());
       end else begin
         `uvm_info("DUT", "ERROR pulse with no bad-parity packet before it", UVM_MEDIUM)
       end
-      bad_pending = 1'b0;
     end
   end
 

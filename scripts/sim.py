@@ -257,12 +257,17 @@ def load_regress():
 
 
 def regress(only=None, seeds=None, report=None, waves=False):
+    """Seeds per test: --seeds (SEEDS=) for everything, else the test's own `seeds:`,
+    else its bench's `seeds:`, else the top-level `seeds:` of regress.yaml."""
     cfg = load_regress()
-    seeds = seeds or int(cfg.get("seeds", 1))
+    default_seeds = int(cfg.get("seeds", 1))
     results, broken = [], []
     t0 = time.time()
     keys = list(cfg["benches"])
-    for rel, tests in cfg["benches"].items():
+    for rel, bench in cfg["benches"].items():
+        # a bench is a list of tests, or {seeds: N, tests: [...]}
+        tests = bench["tests"] if isinstance(bench, dict) else bench
+        bench_seeds = int(bench.get("seeds", default_seeds)) if isinstance(bench, dict) else default_seeds
         # an exact key selects that bench only; otherwise any key that contains it
         if only and not any(o == rel or (o not in keys and o in rel) for o in only):
             continue
@@ -277,7 +282,8 @@ def regress(only=None, seeds=None, report=None, waves=False):
             # a test is a name, or {test: <name>, expect: errors} for a lab whose
             # point is that the checker fires (the run must then report UVM_ERROR)
             test, expect = (entry["test"], entry.get("expect")) if isinstance(entry, dict) else (entry, None)
-            for seed in range(1, seeds + 1):
+            n_seeds = seeds or (int(entry.get("seeds", bench_seeds)) if isinstance(entry, dict) else bench_seeds)
+            for seed in range(1, n_seeds + 1):
                 r = run_one(d, None if test == "default" else test, seed, waves=waves, echo=False, defines=defines)
                 if expect == "errors":
                     if r["rc"] == 0 and r["errors"] and not r["fatals"] and r["sim_time"] != "?":
@@ -350,7 +356,7 @@ def main():
     w.add_argument("-D", "--define", action="append", default=[], help="the build made with these defines")
     g = sub.add_parser("regress", help="every bench and test of scripts/regress.yaml")
     g.add_argument("--only", action="append", help="benches whose path contains this (repeatable)")
-    g.add_argument("--seeds", type=int, help="runs per test (default: seeds: in regress.yaml)")
+    g.add_argument("--seeds", type=int, help="runs per test, for every test (default: the seeds: of regress.yaml)")
     g.add_argument("--report", help="markdown report (default build/sim/regress.md)")
     g.add_argument("--waves", action="store_true", help="record waves/<test>_s<seed>.fst and trace/<test>_s<seed>.csv for every run")
     ns = ap.parse_args()

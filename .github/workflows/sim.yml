@@ -36,7 +36,7 @@ jobs:
         run: bash scripts/setup_sim.sh
 
       - name: Compile and run every test
-        run: python3 scripts/sim.py regress --only "${{ matrix.bench }}" --seeds 2
+        run: python3 scripts/sim.py regress --only "${{ matrix.bench }}"
 
       - name: Report
         if: always()

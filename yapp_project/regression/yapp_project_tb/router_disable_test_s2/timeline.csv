@@ -8,7 +8,7 @@ time_ns,severity,who,id,event
 70,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=0 len=1 parity=good delay=11
 75,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=63
 75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfe
-75,INFO,reference,router_reference,router_en is now 0
+75,INFO,reference,router_reference,router_en is now 0 (en_reg 0xfe)
 195,INFO,DUT,DUT,IN  pkt #1 header: addr=0 len=1 -> DROP (router disabled)
 215,INFO,DUT,DUT,"IN  pkt #1 complete: addr=0 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)"
 215,INFO,yapp monitor,yapp_tx_monitor,RX pkt #1 on the input: addr=0 len=1 parity=good gap=14
@@ -56,7 +56,7 @@ time_ns,severity,who,id,event
 5150,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=0 len=62 parity=good delay=3
 5155,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
 5155,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
-5155,INFO,reference,router_reference,router_en is now 1
+5155,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
 5195,INFO,DUT,DUT,IN  pkt #4 header: addr=0 len=62 -> channel 0
 5205,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=62 (receiver waited 0 cycle(s))
 5825,INFO,DUT,DUT,"IN  pkt #4 complete: addr=0 len=62 parity=ok forwarded, 64 bytes in 64 cycles (held 0)"
@@ -87,7 +87,7 @@ time_ns,severity,who,id,event
 7115,INFO,yapp monitor,yapp_tx_monitor,RX pkt #6 on the input: addr=2 len=38 parity=bad gap=18
 7115,INFO,reference,router_reference,Packet forwarded: addr=2 len=38 -> channel 2
 7120,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
-7145,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+7150,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
 7220,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 10)
 7335,INFO,DUT,DUT,OUT ch2 pkt #1 done: 40 bytes in 51 cycles
 7335,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=38 parity=bad
@@ -109,6 +109,7 @@ time_ns,severity,who,id,event
 7650,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 1 packets collected
 7650,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
 7650,INFO,reference,router_reference,
+7650,INFO,reference,router_reference,Coverage of the router configuration: 34.8%
 7650,INFO,scoreboard,router_scoreboard,
 7650,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent
 7650,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, coverage 46.7%"

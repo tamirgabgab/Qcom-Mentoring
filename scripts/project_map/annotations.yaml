@@ -77,6 +77,14 @@ lab_overrides:
   channel_rx_slow_seq: "TP"
   counter_wrap_test: "TP"
   back_to_back_test: "TP"
+  # the random tests and their sequences
+  yapp_random_burst_seq: "TP"
+  channel_rx_random_seq: "TP"
+  router_random_mcseq: "TP"
+  random_test: "TP"
+  random_config_test: "TP"
+  random_backpressure_test: "TP"
+  random_parity_test: "TP"
   # ports and members added later than their class
   tb.yapp.agent.monitor.item_collected_port: "9A"
   yapp_tx_monitor.yapp_pkt_cg: "10"
@@ -196,6 +204,7 @@ classes:
   yapp_pkt_seq:        {summary: "One packet whose address, length and parity the test chooses (soft constraints); the packet stays in req."}
   yapp_boundary_seq:   {summary: "Lengths maxpktsize-1, maxpktsize, maxpktsize+1 and 63 to every address incl. 3; counts what it sent."}
   yapp_gap_seq:        {summary: "Short packets with gaps 0, 1, 2, 3 in turn (packet_delay = idle cycles); counts the gaps it asked for."}
+  yapp_random_burst_seq: {summary: "Random tests: per packet, address (3 included), length class (short, long, around maxpktsize), parity and gap drawn from knobs."}
   # ---------------------------------------------------------------- HBUS UVC
   hbus_transaction: {summary: "One HBUS access: haddr, hdata, hwr_rd (HBUS_READ / HBUS_WRITE)."}
   hbus_master_driver:
@@ -230,6 +239,7 @@ classes:
   channel_rx_resp_seq: {summary: "Forever: receive the next packet with a random delay 0..10."}
   channel_rx_fast_seq: {summary: "Forever: receive with no delay."}
   channel_rx_slow_seq: {summary: "Forever: answer 20..40 cycles late, so long packets fill the FIFO and the router stalls the input."}
+  channel_rx_random_seq: {summary: "Forever: a receiver with a profile -- fast, normal, slow, or stalling 50..150 cycles now and then (between packets)."}
   # ----------------------------------------------------- Clock & Reset UVC
   clock_and_reset_transaction: {summary: "clock period + number of reset cycles."}
   clock_and_reset_driver: {summary: "Calls clk_rst_if.start_clock_and_reset(period, reset_cycles)."}
@@ -271,6 +281,8 @@ classes:
     summary: "Base of the multichannel sequences; `uvm_declare_p_sequencer(router_mcsequencer)`."
   router_simple_mcseq:
     summary: "Programs maxpktsize = 20, sends 6 short packets, then maxpktsize = 63 and 6 random packets."
+  router_random_mcseq:
+    summary: "Random tests: 10..100 packets in bursts, a random configuration before each, random HBUS reads, every register read at the end."
   base_test:
     summary: "Builds router_tb, sets the clock/reset and channel default sequences, enables recording."
     description: |
@@ -299,10 +311,14 @@ classes:
   reg_bit_walk_test:   {summary: "Test plan: walking ones and zeros through the RW registers; writes ignored by every RO register."}
   hbus_protocol_test:  {summary: "Test plan: raw HBUS cycles -- write, read back, tri-state after the read, unmapped and RO addresses."}
   backpressure_test:   {summary: "Test plan: slow receivers fill the channel FIFOs; in_suspend stalls the input and no byte is lost."}
-  error_pulse_checker: {summary: "Subscriber of the YAPP monitor: one error pulse per bad-parity packet, 1..10 cycles after it."}
+  error_pulse_checker: {summary: "Subscriber of the YAPP monitor: one error pulse per bad-parity packet, 1..10 cycles after it, overlapping packets included."}
   parity_error_test:   {summary: "Test plan: bad parity -- counted when enabled, error pulses on time, packet still delivered."}
   counter_wrap_test:   {summary: "Test plan: 257 packets to address 0 -- addr0_cnt_reg reads 255, then wraps to 0, then 1."}
   back_to_back_test:   {summary: "Test plan: packets with gaps 0..3 -- the monitor measures exactly the planned gaps, nothing lost."}
+  random_test:         {summary: "Random: the seed shapes the test -- packet count, bursts, configuration, receiver profiles; checked by the reference model."}
+  random_config_test:  {summary: "Random: many short bursts under extreme configurations (maxpktsize 0/1/62/63, router off, mixed counter enables)."}
+  random_backpressure_test: {summary: "Random: slow and stalling receivers against long back-to-back packets; no byte lost or reordered."}
+  random_parity_test:  {summary: "Random: bad parity on forwarded and dropped packets, storms of overlapping bad packets -- one error pulse each."}
   # ---------------------------------------------------------- Register model
   yapp_router_regs_t: {summary: "Top register block: default_map with the yapp_regs sub-block at 0x1000."}
   yapp_regs_c: {summary: "The register file: ctrl_reg, en_reg, six RO counters, mem_size_reg, two memories."}
@@ -674,6 +690,45 @@ tests:
     expected:
       - "`gap class 0: 5 packets, as planned` and likewise 6, 6, 6 for classes 1..3; monitor report `YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer (gap coverage 100.0%)`."
 
+  random_test:
+    purpose: "Random tests: the seed decides the shape of the test, and every result is checked automatically -- no expected value is written by hand."
+    stages:
+      - {k: config,   t: "receivers",          d: "channel_rx_random_seq per channel, each with a random profile: fast, normal, slow, stalling"}
+      - {k: config,   t: "check_reads = 1",    d: "router_reference compares every HBUS read with its model; error_pulse_checker on the YAPP monitor"}
+      - {k: stimulus, t: "router_random_mcseq", d: "10..100 packets in 2..6 bursts on tb.mcseqr"}
+      - {k: program,  t: "per burst",          d: "random ctrl_reg (maxpktsize, 0/1/62/63 often) and en_reg (router on/off, counter-enable mask) over the HBUS"}
+      - {k: check,    t: "random reads",       d: "counters, mem_size_reg, yapp_pkt_mem bytes, unmapped addresses, yapp_mem write + read back"}
+      - {k: stimulus, t: "burst",              d: "yapp_random_burst_seq: address 0..3, lengths around maxpktsize, bad parity, gaps 0..20"}
+      - {k: check,    t: "final reads",        d: "every register and yapp_pkt_mem[0..mem_size], against the model"}
+      - {k: check,    t: "always on",          d: "scoreboard per packet and nothing left at the end; one error pulse per bad packet"}
+    expected:
+      - "A `STAGE: burst k/n: ctrl=... en=...` line per burst and `STAGE: done: N packets (F forwarded, D dropped) ... R HBUS reads checked, P error pulses for P bad packets`."
+      - "Reference report: `HBUS reads checked against the model: R (0 mismatches ...)` and the coverage of the configuration it reached."
+  random_config_test:
+    purpose: "Random tests: the configuration space -- every maxpktsize edge, the router off, mixed counter enables -- under many short bursts."
+    stages:
+      - {k: config,   t: "knobs",              d: "4..8 bursts, maxpktsize 0/1/62/63 70% of the time, router off 20%, address 3 15%, lengths at the boundaries 70%"}
+      - {k: check,    t: "as random_test",     d: "every read against the reference model; scoreboard; error pulses"}
+    expected:
+      - "The reference coverage report shows maxpktsize 0 and 1 and lengths equal to max and max+1 reached; `0 mismatches`."
+  random_backpressure_test:
+    purpose: "Random tests: back-pressure on a random mix of channels -- slow and stalling receivers against long packets sent back to back."
+    stages:
+      - {k: config,   t: "receivers",          d: "mostly RX_SLOW / RX_STALLY, one in four fast or normal"}
+      - {k: config,   t: "knobs",              d: "router on, maxpktsize mostly mid-range, 60% of packets 40..63 bytes, 70% back to back"}
+      - {k: check,    t: "as random_test",     d: "every byte out once and in order (scoreboard), nothing left at the end"}
+    expected:
+      - "`[DUT] SUSPEND asserted` lines in the log; scoreboard matches equal the packets the reference forwarded."
+  random_parity_test:
+    purpose: "Random tests: bad parity where it can happen -- forwarded, dropped (address 3, oversized) and ignored (router off) -- and storms of overlapping bad packets."
+    stages:
+      - {k: config,   t: "knobs",              d: "30..60% bad parity, address 3 15%, router off 15%, half of the bursts are storms"}
+      - {k: stimulus, t: "storms",             d: "1..3-byte packets, 90% back to back, half with bad parity: a new bad packet ends before the previous pulse"}
+      - {k: check,    t: "error pulses",       d: "error_pulse_checker: every bad packet received while enabled gets its own pulse 1..10 cycles later"}
+      - {k: check,    t: "parity counter",     d: "parity_err_cnt_reg against the reference model, with its enable bit"}
+    expected:
+      - "`error pulse report: N bad packets, N pulses, 0 outside 1..10 cycles, at most k owed at once` with k of 2 or more; `[DUT] ERROR pulse ... (1 more owed)` lines."
+
 # ---------------------------------------------------------------------------
 # The verification plan, feature by feature, page by page of the course's DUT
 # description (Project Overview pp. 5-11) plus the lab chapters that add
@@ -710,7 +765,7 @@ plan:
         title: "Order is kept per channel, channels are independent"
         stimulus: "Back-to-back packets to the same channel (0,1,2,0,1,2) and to different channels while the receivers are slow."
         check: "The scoreboard pops its per-channel queue in order: a swapped packet mismatches; the FIFO scoreboard (Lab 9D) blocks on the next packet of that channel."
-        tests: [router_simple_mcseq_test, coverage_test, router_filter_test, backpressure_test]
+        tests: [router_simple_mcseq_test, coverage_test, router_filter_test, backpressure_test, random_backpressure_test]
         status: covered
       - id: ROUTE-04
         title: "Packets back to back with the minimum gap"
@@ -736,14 +791,14 @@ plan:
         stimulus: "yapp_coverage_seq sends 1, 5, 20, 50 and 63 bytes; random sequences cover the rest; backpressure_test sends 40..63."
         check: "Scoreboard compare; a wrong length would shift the parity byte and the monitors would disagree."
         coverage: "length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX"
-        tests: [coverage_test, scoreboard_drop_test, backpressure_test]
+        tests: [coverage_test, scoreboard_drop_test, backpressure_test, random_test]
         status: covered
       - id: PKT-03
         title: "Address 3 is illegal"
         stimulus: "Packets with addr == 3 (c_addr_legal switched off): yapp_88_packets_seq, yapp_coverage_seq, yapp_boundary_seq."
         check: "No byte appears on any channel (scoreboard: nothing unexpected), the reference model drops it, addr3_cnt_reg counts it when addr3_cnt_en is set."
         coverage: "addr_cp.illegal_addr"
-        tests: [test_uvc_integration, coverage_test, router_filter_test]
+        tests: [test_uvc_integration, coverage_test, router_filter_test, random_config_test]
         status: covered
       - id: PKT-04
         title: "Even bitwise parity over header and payload"
@@ -757,7 +812,7 @@ plan:
         stimulus: "parity_type == BAD_PARITY flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq)."
         check: "parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md)."
         coverage: "parity_cp, len_x_addr_x_parity (REQ3)"
-        tests: [reg_function_test, parity_error_test, test_uvc_integration]
+        tests: [reg_function_test, parity_error_test, test_uvc_integration, random_parity_test]
         status: covered
   - id: IN
     title: "Input port protocol"
@@ -781,14 +836,15 @@ plan:
         title: "in_suspend: the input holds while the target FIFO is full"
         stimulus: "Slow receivers (channel_rx_slow_seq, 20..40 cycles) and 40..63-byte packets, so the 16-byte FIFO fills before the receiver starts."
         check: "in_suspend rose at least once; scoreboard 6 matched, 0 mismatched, 0 unexpected; no parity error at the monitor (every byte accepted exactly once)."
-        tests: [backpressure_test]
+        tests: [backpressure_test, random_backpressure_test]
         status: covered
         note: "Writing this test showed that yapp_if.wait_accept() sampled in_suspend on the falling edge; it now samples the rising edge, like the DUT and the monitor (see components/driver.md)."
       - id: IN-04
         title: "error asserts 1 to 10 cycles after a bad-parity packet"
-        stimulus: "12 packets with bad parity (parity_error_test)."
-        check: "error_pulse_checker: exactly one pulse per bad packet, 1..10 cycles after the parity byte was accepted; a pulse with no bad packet before it is an error."
-        tests: [parity_error_test, test_uvc_integration]
+        stimulus: "12 packets with bad parity (parity_error_test); in random_parity_test bad packets on forwarded and dropped packets and storms of 1..3-byte bad packets back to back."
+        check: "error_pulse_checker: one pulse per bad packet received while enabled, 1..10 cycles after its parity byte; overlapping bad packets each get their own pulse (owed pulses are a queue); a pulse with nothing owed, an owed pulse older than 10 cycles, or one still owed at the end is an error."
+        note: "The random storms found that a second bad packet ending before the first pulse re-armed the timer and the first pulse was lost; yapp_error_timer now schedules one pulse per packet (dut/rtl.md)."
+        tests: [parity_error_test, test_uvc_integration, random_parity_test]
         status: covered
   - id: OUT
     title: "Output port protocol"
@@ -806,7 +862,7 @@ plan:
         title: "The receiver may answer late: the header is held"
         stimulus: "channel_rx_resp_seq: response delay 0..10 cycles per packet; channel_rx_slow_seq: 20..40."
         check: "Scoreboard compare: the header read after the delay is still the header."
-        tests: [simple_test, router_simple_mcseq_test, backpressure_test]
+        tests: [simple_test, router_simple_mcseq_test, backpressure_test, random_backpressure_test]
         status: covered
       - id: OUT-03
         title: "The FIFO is 16 bytes deep"
@@ -824,7 +880,7 @@ plan:
         title: "All three channels busy at the same time"
         stimulus: "Random addresses with slow receivers: packets to channels 0, 1 and 2 are in flight together."
         check: "Scoreboard: every channel matched, nothing unexpected."
-        tests: [backpressure_test, coverage_test]
+        tests: [backpressure_test, coverage_test, random_backpressure_test]
         status: covered
   - id: REG
     title: "Registers"
@@ -860,13 +916,13 @@ plan:
         title: "Unmapped addresses read 0x00 and ignore writes"
         stimulus: "Write 0xa5 then read 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f and 0x1050 with raw HBUS sequences."
         check: "Every read returns 0x00."
-        tests: [hbus_protocol_test]
+        tests: [hbus_protocol_test, random_test]
         status: covered
       - id: REG-06
         title: "mem_size_reg holds the payload length of the last packet"
         stimulus: "A 20-byte packet, then a 9-byte packet that is dropped as oversized."
         check: "mem_size_reg reads 20, then 9 (only bits [5:0] are used)."
-        tests: [pkt_mem_test]
+        tests: [pkt_mem_test, random_test]
         status: covered
       - id: REG-07
         title: "Automatic checking on read (check_on_read + predict)"
@@ -884,25 +940,25 @@ plan:
         title: "length > maxpktsize drops the whole packet"
         stimulus: "maxpktsize = 20 with full-size packets (scoreboard_drop_test, test_uvc_integration); maxpktsize = 10 with lengths 9, 10, 11 and 63 (router_filter_test)."
         check: "Nothing of the packet appears on the channel: the reference model drops it and the scoreboard sees nothing unexpected; `ROUTER DROPS PACKET ... length > maxpktsize`; length == maxpktsize still passes."
-        tests: [router_filter_test, scoreboard_drop_test, test_uvc_integration]
+        tests: [router_filter_test, scoreboard_drop_test, test_uvc_integration, random_config_test]
         status: covered
       - id: DROP-02
         title: "router_en = 0 drops every packet"
         stimulus: "en_reg = 0xfe, then yapp_012_seq; en_reg = 0xff, yapp_012_seq again."
         check: "Channel monitors collect nothing while disabled, the reference model reports 3 dropped (router disabled), no counter and not mem_size_reg moves; after re-enabling the packets flow and the address counters read 1."
-        tests: [router_disable_test]
+        tests: [router_disable_test, random_config_test]
         status: covered
       - id: DROP-03
         title: "Address 3 drops the packet"
         stimulus: "As PKT-03."
         check: "Reference model drop, no unexpected channel packet, `ROUTER DROPS PACKET ... illegal address`."
-        tests: [router_filter_test, coverage_test, test_uvc_integration]
+        tests: [router_filter_test, coverage_test, test_uvc_integration, random_config_test]
         status: covered
       - id: DROP-04
         title: "An oversized packet to address 3 counts in both counters"
         stimulus: "The 11- and 63-byte packets to address 3 of yapp_boundary_seq."
         check: "oversized_pkt_cnt_reg counts them and addr3_cnt_reg counts them (the DUT evaluates the conditions independently -- see Decisions in dut/spec.md)."
-        tests: [router_filter_test]
+        tests: [router_filter_test, random_config_test]
         status: covered
       - id: DROP-05
         title: "Changing router_en or a counter enable in the middle of a packet"
@@ -921,31 +977,31 @@ plan:
         title: "A counter counts only while its enable bit is set"
         stimulus: "en_reg = 0x01 then 0xff around yapp_012_seq (address counters); 0xff then 0x01 around yapp_boundary_seq (oversized, addr3, addrN); 0x03 then 0x01 around bad packets (parity)."
         check: "The counters read 0 (or stay frozen) while disabled and the exact packet count while enabled."
-        tests: [reg_function_test, router_filter_test, parity_error_test]
+        tests: [reg_function_test, router_filter_test, parity_error_test, random_config_test]
         status: covered
       - id: CNT-02
         title: "addrN_cnt_reg counts every received packet with address N"
         stimulus: "yapp_boundary_seq: 4 packets per address, half of them dropped as oversized."
         check: "addr0/1/2_cnt_reg read 4 each: dropped packets are counted too (they were received -- see Decisions); yapp_012_seq twice gives 2 each."
-        tests: [router_filter_test, reg_function_test]
+        tests: [router_filter_test, reg_function_test, random_config_test]
         status: covered
       - id: CNT-03
         title: "parity_err_cnt_reg counts the bad-parity packets"
         stimulus: "yapp_012_seq twice (random parity) and 8 + 4 deliberately bad packets."
         check: "The register equals the YAPP monitor's num_bad_parity delta, then 8, then still 8 with the enable off."
-        tests: [reg_function_test, parity_error_test]
+        tests: [reg_function_test, parity_error_test, random_parity_test]
         status: covered
       - id: CNT-04
         title: "oversized_pkt_cnt_reg counts packets longer than maxpktsize"
         stimulus: "8 oversized packets of yapp_boundary_seq (11 and 63 bytes against maxpktsize 10); none in reg_function_test (maxpktsize 63)."
         check: "Reads 8, then 0 in reg_function_test."
-        tests: [router_filter_test, reg_function_test]
+        tests: [router_filter_test, reg_function_test, random_config_test]
         status: covered
       - id: CNT-05
         title: "addr3_cnt_reg counts packets to address 3"
         stimulus: "4 packets to address 3 (yapp_boundary_seq); none in yapp_012_seq."
         check: "Reads 4, and 0 in reg_function_test."
-        tests: [router_filter_test, reg_function_test]
+        tests: [router_filter_test, reg_function_test, random_config_test]
         status: covered
       - id: CNT-06
         title: "Counter overflow after 255 packets"
@@ -964,7 +1020,7 @@ plan:
         title: "yapp_pkt_mem holds the last packet, byte by byte"
         stimulus: "A 20-byte packet to address 1 whose content the sequence keeps in req."
         check: "yapp_pkt_mem[0] == {length, addr}, yapp_pkt_mem[1..20] == payload[0..19], read through the register model."
-        tests: [pkt_mem_test]
+        tests: [pkt_mem_test, random_test]
         status: covered
       - id: MEM-02
         title: "yapp_pkt_mem is read-only"
@@ -976,7 +1032,7 @@ plan:
         title: "A dropped packet is still stored"
         stimulus: "maxpktsize = 5 and a 9-byte packet."
         check: "mem_size_reg reads 9 and the bytes are in yapp_pkt_mem: the packet was received, just not forwarded (Decisions in dut/spec.md)."
-        tests: [pkt_mem_test]
+        tests: [pkt_mem_test, random_config_test]
         status: covered
       - id: MEM-04
         title: "yapp_mem: every byte can be written and read back"
@@ -1019,6 +1075,37 @@ plan:
         stimulus: "write()/read() through yapp_rm.default_map and the hbus_reg_adapter."
         check: "The HBUS monitor logs the cycles, and the reference model mirrors maxpktsize and router_en from them (the drop rules follow the model's writes in router_disable_test and router_filter_test)."
         tests: [reg_function_test, router_disable_test, router_filter_test]
+        status: covered
+  - id: RND
+    title: "Random scenarios"
+    spec: "Project Overview pp. 5-11 -- every rule at once, in random combinations"
+    doc: components/random-tests.md
+    summary: "Random tests whose seed decides the shape: packet count, bursts, configuration, receiver profiles; every result checked by the reference model, the scoreboard and the error-pulse checker."
+    items:
+      - id: RND-01
+        title: "Random configuration between bursts"
+        stimulus: "router_random_mcseq: before each burst a random ctrl_reg (maxpktsize 0, 1, 62, 63 often, bits [7:6] random) and en_reg (router off now and then, counter-enable masks all / none / random)."
+        check: "router_reference models the counters, mem_size_reg, yapp_pkt_mem and yapp_mem and checks every HBUS read (check_reads = 1): random reads after each configuration, every register and the stored packet at the end."
+        coverage: "router_reference ref_cg: maxpktsize, length vs maxpktsize, drop reason x parity, counter enables"
+        tests: [random_test, random_config_test]
+        status: covered
+      - id: RND-02
+        title: "One error pulse per bad packet when bad packets overlap"
+        stimulus: "random_parity_test storms: 1..3-byte packets, 90% back to back, half with bad parity."
+        check: "error_pulse_checker matches every cycle with error high to the oldest owed pulse (1..10 cycles); nothing owed at the end."
+        tests: [random_parity_test]
+        status: covered
+      - id: RND-03
+        title: "Bad parity on dropped and ignored packets"
+        stimulus: "Bad parity on packets to address 3, oversized packets and packets sent with the router off."
+        check: "Dropped bad packets count in parity_err_cnt_reg (enable bit) and pulse; with the router off nothing counts or pulses (reference model, error_pulse_checker)."
+        tests: [random_parity_test, random_config_test]
+        status: covered
+      - id: RND-04
+        title: "Receivers that stall, per channel"
+        stimulus: "channel_rx_random_seq per channel: fast, normal, slow (20..40) or stalling (50..150 cycles now and then), before a packet, never in the middle."
+        check: "Scoreboard: every forwarded byte out once and in order; nothing left in the queues at the end (check_phase)."
+        tests: [random_backpressure_test, random_test]
         status: covered
   - id: COV
     title: "Functional coverage"

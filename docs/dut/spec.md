@@ -177,6 +177,7 @@ and the register tests in this repository all follow the same choices:
 |---|---|
 | Does a dropped packet update `yapp_pkt_mem` / `mem_size_reg`? | **Yes** — the packet was *received*, just not forwarded. |
 | Is parity checked / counted and `error` raised for a dropped packet? | **Yes** (oversized or address 3). |
+| Two bad packets end less than 10 cycles apart? | **Each gets its own pulse**, 1..10 cycles after its parity byte; two pulses may be on adjacent cycles (every cycle with `error` high is one pulse). |
 | What happens when `router_en = 0`? | The input is "deaf": the FSM tracks the bytes to stay in sync, but nothing is forwarded, counted or stored. |
 | An oversized packet to address 3? | Counts in **both** `oversized_pkt_cnt_reg` and `addr3_cnt_reg` (each condition is evaluated independently). |
 | Do the address counters count dropped packets? | **Yes** — `addrN_cnt_reg` counts every packet received *with* address N while the router is enabled. |

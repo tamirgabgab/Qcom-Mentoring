@@ -46,6 +46,8 @@ function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
   uvm_config_int::set(this, "*", "recording_detail", 1);
+  // every packet the reference model forwarded must have come out by the end
+  uvm_config_db #(bit)::set(this, "tb.router_module.scoreboard", "check_empty", 1'b1);
   configure_sequences();
   tb = router_tb::type_id::create("tb", this);
 endfunction : build_phase

@@ -228,25 +228,36 @@ reach only `ctrl_reg`, `en_reg` and `yapp_mem`.
 
 ## `yapp_error_timer` — the `error` pulse
 
-A free-running 4-bit counter picks a 1..10 cycle delay; `start`
-(`pkt_done && pkt_parity_err`, i.e. a bad-parity packet accepted while the
-router was enabled) loads it into `err_timer`, and `error` is high for one
-cycle when the timer reaches zero.
+Every packet with bad parity received while the router is enabled
+(`start = pkt_done && pkt_parity_err`) gets its own one-cycle `error` pulse,
+1..10 cycles after its parity byte. A free-running 4-bit counter picks the
+wanted delay; the pulses still owed are a schedule, `sched[k] = 1` meaning "a
+pulse k cycles from now". Every cycle the schedule moves one step and `error`
+follows `sched[1]`; a new bad packet takes the first free slot at or after its
+wanted delay (wrapping inside 1..10).
 
 ```systemverilog
-wire [3:0] err_delay = (rnd_cnt % 4'd10) + 4'd1;
+wire [3:0]  err_delay  = (rnd_cnt % 4'd10) + 4'd1;
+wire [10:1] sched_next = sched >> 1;               // the schedule after this edge
 
-error <= 1'b0;
-if (err_timer != 4'd0) begin
-  err_timer <= err_timer - 4'd1;
-  if (err_timer == 4'd1) begin
-    error <= 1'b1;
-  end
-end
+error <= sched[1];
 if (start) begin
-  err_timer <= err_delay;   // a new bad packet re-arms the timer (load wins over decrement)
+  sched <= sched_next | (10'b1 << (free_slot(sched_next, err_delay) - 4'd1));
+end else begin
+  sched <= sched_next;
 end
 ```
+
+A packet is at least 3 cycles long, so at most 3 earlier pulses are owed when
+a new one ends and a free slot always exists. Two pulses may land on adjacent
+cycles; every cycle with `error` high is one pulse. For an isolated packet the
+timing is that of a single down-counter loaded with the delay.
+
+!!! note "Why a schedule"
+    The first version had one down-counter, re-loaded by every bad packet. The
+    storms of `random_parity_test` (1..3-byte bad packets back to back) showed
+    that a second bad packet ending before the first pulse took that pulse
+    away: one pulse for two packets. See [Random tests](../components/random-tests.md).
 
 ## The files
 

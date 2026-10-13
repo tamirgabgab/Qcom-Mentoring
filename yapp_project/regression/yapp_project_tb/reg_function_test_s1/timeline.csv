@@ -6,7 +6,7 @@ time_ns,severity,who,id,event
 50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
 70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-75,INFO,reference,router_reference,router_en is now 1
+75,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x01
 100,INFO,test,REG_FUNC,en_reg reads 0x01
 100,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=0 len=42 parity=good delay=20
@@ -57,7 +57,7 @@ time_ns,severity,who,id,event
 1820,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
 1820,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=0 len=8 parity=good delay=1
 1825,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
-1825,INFO,reference,router_reference,router_en is now 1
+1825,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
 1845,INFO,DUT,DUT,IN  pkt #4 header: addr=0 len=8 -> channel 0
 1855,INFO,DUT,DUT,OUT ch2 pkt #1 done: 29 bytes in 38 cycles
 1855,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=27 parity=good
@@ -106,7 +106,7 @@ time_ns,severity,who,id,event
 3870,INFO,yapp driver,yapp_tx_driver,TX pkt #7 accepted by the DUT
 3870,INFO,yapp driver,yapp_tx_driver,TX pkt #8: addr=1 len=41 parity=good delay=12
 3880,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 6)
-3905,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+3910,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
 3960,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 9)
 3995,INFO,DUT,DUT,IN  pkt #8 header: addr=1 len=41 -> channel 1
 4075,INFO,DUT,DUT,OUT ch0 pkt #3 done: 58 bytes in 69 cycles
@@ -157,6 +157,7 @@ time_ns,severity,who,id,event
 5400,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 3 packets collected
 5400,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
 5400,INFO,reference,router_reference,
+5400,INFO,reference,router_reference,Coverage of the router configuration: 39.1%
 5400,INFO,scoreboard,router_scoreboard,
 5400,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 9 packets sent
 5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 9 packets collected, coverage 43.3%"

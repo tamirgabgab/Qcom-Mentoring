@@ -50,7 +50,7 @@ Waves: `router_disable_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer)
 
 ## Timeline
 
-114 events (the same list is in `timeline.csv`).
+115 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -63,7 +63,7 @@ Waves: `router_disable_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 70 | yapp driver | TX pkt #1: addr=0 len=1 parity=good delay=11 |
 | 75 | **DUT** | CONFIG router_en=0 maxpktsize=63 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0xfe |
-| 75 | reference | router_en is now 0 |
+| 75 | reference | router_en is now 0 (en_reg 0xfe) |
 | 195 | **DUT** | IN  pkt #1 header: addr=0 len=1 -> DROP (router disabled) |
 | 215 | **DUT** | IN  pkt #1 complete: addr=0 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0) |
 | 215 | yapp monitor | RX pkt #1 on the input: addr=0 len=1 parity=good gap=14 |
@@ -111,7 +111,7 @@ Waves: `router_disable_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 5150 | yapp driver | TX pkt #4: addr=0 len=62 parity=good delay=3 |
 | 5155 | **DUT** | CONFIG router_en=1 maxpktsize=63 |
 | 5155 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 5155 | reference | router_en is now 1 |
+| 5155 | reference | router_en is now 1 (en_reg 0xff) |
 | 5195 | **DUT** | IN  pkt #4 header: addr=0 len=62 -> channel 0 |
 | 5205 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=62 (receiver waited 0 cycle(s)) |
 | 5825 | **DUT** | IN  pkt #4 complete: addr=0 len=62 parity=ok forwarded, 64 bytes in 64 cycles (held 0) |
@@ -142,7 +142,7 @@ Waves: `router_disable_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 7115 | yapp monitor | RX pkt #6 on the input: addr=2 len=38 parity=bad gap=18 |
 | 7115 | reference | Packet forwarded: addr=2 len=38 -> channel 2 |
 | 7120 | yapp driver | TX pkt #6 accepted by the DUT |
-| 7145 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 7150 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
 | 7220 | ch2 driver | ch2: packet consumed (response delay 10) |
 | 7335 | **DUT** | OUT ch2 pkt #1 done: 40 bytes in 51 cycles |
 | 7335 | ch2 monitor | ch2 RX pkt #1: addr=2 len=38 parity=bad |
@@ -164,6 +164,7 @@ Waves: `router_disable_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 7650 | ch2 monitor | Channel 2 report: 1 packets collected |
 | 7650 | hbus monitor | HBUS report: 2 writes, 11 reads |
 | 7650 | reference |  |
+| 7650 | reference | Coverage of the router configuration: 34.8% |
 | 7650 | scoreboard |  |
 | 7650 | yapp driver | YAPP driver report: 6 packets sent |
 | 7650 | yapp monitor | YAPP monitor report: 6 packets collected, coverage 46.7% |

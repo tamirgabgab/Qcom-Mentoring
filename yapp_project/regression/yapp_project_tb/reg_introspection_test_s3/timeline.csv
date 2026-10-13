@@ -31,7 +31,7 @@ time_ns,severity,who,id,event
 120,INFO,test,REG_ACCESS,poke            0x1a
 125,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=26
 125,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x25
-125,INFO,reference,router_reference,router_en is now 1
+125,INFO,reference,router_reference,router_en is now 1 (en_reg 0x25)
 150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x1a
 150,INFO,test,REG_ACCESS,front-door read 0x1a
 150,INFO,test,TEST,"STAGE: RO register parity_err_cnt_reg: poke 0x5a, front-door read, write 0x33 must be ignored"

@@ -7,7 +7,7 @@ time_ns,severity,who,id,event
 70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x03
 70,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=1 len=20 parity=bad delay=20
 75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x03
-75,INFO,reference,router_reference,router_en is now 1
+75,INFO,reference,router_reference,router_en is now 1 (en_reg 0x03)
 285,INFO,DUT,DUT,IN  pkt #1 header: addr=1 len=20 -> channel 1
 315,INFO,DUT,DUT,OUT ch1 pkt #1 start: addr=1 len=20 (receiver waited 2 cycle(s))
 495,INFO,DUT,DUT,"IN  pkt #1 complete: addr=1 len=20 parity=BAD forwarded, 22 bytes in 22 cycles (held 0)"
@@ -16,8 +16,8 @@ time_ns,severity,who,id,event
 500,INFO,yapp driver,yapp_tx_driver,TX pkt #1 accepted by the DUT
 500,INFO,yapp driver,yapp_tx_driver,TX pkt #2: addr=1 len=30 parity=bad delay=11
 520,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 2)
-525,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
-525,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet
+530,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+530,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
 605,INFO,DUT,DUT,OUT ch1 pkt #1 done: 22 bytes in 30 cycles
 605,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #1: addr=1 len=20 parity=bad
 605,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=20 (1 matched so far)
@@ -29,8 +29,8 @@ time_ns,severity,who,id,event
 925,INFO,reference,router_reference,Packet forwarded: addr=1 len=30 -> channel 1
 930,INFO,yapp driver,yapp_tx_driver,TX pkt #2 accepted by the DUT
 930,INFO,yapp driver,yapp_tx_driver,TX pkt #3: addr=2 len=59 parity=bad delay=8
-1005,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
-1005,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet
+1010,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
+1010,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet (0 still owed)
 1015,INFO,DUT,DUT,IN  pkt #3 header: addr=2 len=59 -> channel 2
 1035,INFO,DUT,DUT,OUT ch1 pkt #2 done: 32 bytes in 42 cycles
 1035,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #2: addr=1 len=30 parity=bad
@@ -41,8 +41,8 @@ time_ns,severity,who,id,event
 1615,INFO,reference,router_reference,Packet forwarded: addr=2 len=59 -> channel 2
 1620,INFO,yapp driver,yapp_tx_driver,TX pkt #3 accepted by the DUT
 1620,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=2 len=49 parity=bad delay=20
-1645,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
-1645,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet
+1650,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+1650,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
 1650,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
 1720,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 10)
 1825,INFO,DUT,DUT,IN  pkt #4 header: addr=2 len=49 -> channel 2
@@ -56,8 +56,8 @@ time_ns,severity,who,id,event
 2325,INFO,reference,router_reference,Packet forwarded: addr=2 len=49 -> channel 2
 2330,INFO,yapp driver,yapp_tx_driver,TX pkt #4 accepted by the DUT
 2330,INFO,yapp driver,yapp_tx_driver,TX pkt #5: addr=1 len=30 parity=bad delay=16
-2365,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
-2365,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet
+2370,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+2370,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
 2395,INFO,DUT,DUT,OUT ch2 pkt #2 done: 51 bytes in 56 cycles
 2395,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #2: addr=2 len=49 parity=bad
 2395,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=49 (4 matched so far)
@@ -69,8 +69,8 @@ time_ns,severity,who,id,event
 2805,INFO,reference,router_reference,Packet forwarded: addr=1 len=30 -> channel 1
 2810,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
 2810,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=1 len=47 parity=bad delay=14
-2845,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
-2845,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet
+2850,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+2850,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
 2890,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
 2915,INFO,DUT,DUT,OUT ch1 pkt #3 done: 32 bytes in 34 cycles
 2915,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #3: addr=1 len=30 parity=bad
@@ -84,8 +84,8 @@ time_ns,severity,who,id,event
 3435,INFO,reference,router_reference,Packet forwarded: addr=1 len=47 -> channel 1
 3440,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
 3440,INFO,yapp driver,yapp_tx_driver,TX pkt #7: addr=1 len=42 parity=bad delay=16
-3465,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
-3465,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet
+3470,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+3470,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
 3510,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 3)
 3605,INFO,DUT,DUT,IN  pkt #7 header: addr=1 len=42 -> channel 1
 3675,INFO,DUT,DUT,OUT ch1 pkt #4 done: 49 bytes in 72 cycles
@@ -100,8 +100,8 @@ time_ns,severity,who,id,event
 4065,INFO,reference,router_reference,Packet forwarded: addr=1 len=42 -> channel 1
 4070,INFO,yapp driver,yapp_tx_driver,TX pkt #7 accepted by the DUT
 4070,INFO,yapp driver,yapp_tx_driver,TX pkt #8: addr=1 len=43 parity=bad delay=20
-4085,INFO,DUT,DUT,"ERROR pulse, 2 cycle(s) after the bad-parity packet"
-4085,INFO,error checker,ERR_PULSE,error pulse 2 cycles after the bad packet
+4090,INFO,DUT,DUT,"ERROR pulse, 2 cycle(s) after the bad-parity packet"
+4090,INFO,error checker,ERR_PULSE,error pulse 2 cycles after the bad packet (0 still owed)
 4215,INFO,DUT,DUT,OUT ch1 pkt #5 done: 44 bytes in 54 cycles
 4215,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #5: addr=1 len=42 parity=bad
 4215,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=42 (7 matched so far)
@@ -115,8 +115,8 @@ time_ns,severity,who,id,event
 4735,INFO,DUT,DUT,OUT ch1 pkt #6 done: 45 bytes in 46 cycles
 4735,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #6: addr=1 len=43 parity=bad
 4735,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=43 (8 matched so far)
-4745,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
-4745,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet
+4750,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+4750,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
 4800,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 0)
 4880,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x08
 4880,INFO,test,REG_FUNC,parity_err_cnt_reg reads 8 as expected
@@ -125,7 +125,7 @@ time_ns,severity,who,id,event
 4900,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 4900,INFO,yapp driver,yapp_tx_driver,TX pkt #9: addr=2 len=17 parity=bad delay=15
 4905,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-4905,INFO,reference,router_reference,router_en is now 1
+4905,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 5065,INFO,DUT,DUT,IN  pkt #9 header: addr=2 len=17 -> channel 2
 5155,INFO,DUT,DUT,OUT ch2 pkt #3 start: addr=2 len=17 (receiver waited 8 cycle(s))
 5245,INFO,DUT,DUT,"IN  pkt #9 complete: addr=2 len=17 parity=BAD forwarded, 19 bytes in 19 cycles (held 0)"
@@ -133,8 +133,8 @@ time_ns,severity,who,id,event
 5245,INFO,reference,router_reference,Packet forwarded: addr=2 len=17 -> channel 2
 5250,INFO,yapp driver,yapp_tx_driver,TX pkt #9 accepted by the DUT
 5250,INFO,yapp driver,yapp_tx_driver,TX pkt #10: addr=1 len=49 parity=bad delay=18
-5325,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
-5325,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet
+5330,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
+5330,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet (0 still owed)
 5330,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 8)
 5375,INFO,DUT,DUT,OUT ch2 pkt #3 done: 19 bytes in 23 cycles
 5375,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #3: addr=2 len=17 parity=bad
@@ -147,8 +147,8 @@ time_ns,severity,who,id,event
 5935,INFO,reference,router_reference,Packet forwarded: addr=1 len=49 -> channel 1
 5940,INFO,yapp driver,yapp_tx_driver,TX pkt #10 accepted by the DUT
 5940,INFO,yapp driver,yapp_tx_driver,TX pkt #11: addr=0 len=2 parity=bad delay=20
-5965,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
-5965,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet
+5970,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+5970,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
 6020,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
 6055,INFO,DUT,DUT,OUT ch1 pkt #7 done: 51 bytes in 54 cycles
 6055,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #7: addr=1 len=49 parity=bad
@@ -161,8 +161,8 @@ time_ns,severity,who,id,event
 6180,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
 6180,INFO,yapp driver,yapp_tx_driver,TX pkt #11 accepted by the DUT
 6180,INFO,yapp driver,yapp_tx_driver,TX pkt #12: addr=1 len=1 parity=bad delay=16
-6225,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
-6225,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet
+6230,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+6230,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
 6265,INFO,DUT,DUT,OUT ch0 pkt #1 done: 4 bytes in 12 cycles
 6265,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #1: addr=0 len=2 parity=bad
 6265,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=2 (11 matched so far)
@@ -175,19 +175,20 @@ time_ns,severity,who,id,event
 6375,INFO,DUT,DUT,OUT ch1 pkt #8 done: 3 bytes in 3 cycles
 6375,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #8: addr=1 len=1 parity=bad
 6375,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (12 matched so far)
-6445,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
-6445,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet
+6450,INFO,DUT,DUT,"ERROR pulse, 8 cycle(s) after the bad-parity packet"
+6450,INFO,error checker,ERR_PULSE,error pulse 8 cycles after the bad packet (0 still owed)
 6450,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 7)
 6470,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 2)
 6520,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x08
 6520,INFO,test,REG_FUNC,parity_err_cnt_reg reads 8 as expected
 6525,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x08
-6720,INFO,error checker,ERR_PULSE,"error pulse report: 12 bad packets, 12 pulses, 0 outside 1..10 cycles"
+6720,INFO,error checker,ERR_PULSE,"error pulse report: 12 bad packets, 12 pulses, 0 outside 1..10 cycles, at most 1 owed at once"
 6720,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 1 packets collected
 6720,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 8 packets collected
 6720,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 3 packets collected
 6720,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 2 reads"
 6720,INFO,reference,router_reference,
+6720,INFO,reference,router_reference,Coverage of the router configuration: 30.4%
 6720,INFO,scoreboard,router_scoreboard,
 6720,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 12 packets sent
 6720,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 12 packets collected, coverage 60.0%"

@@ -183,108 +183,108 @@ Waves: `reg_bit_walk_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 1055 | hbus monitor | Collected READ  addr=0x1000 data=0x55 |
 | 1070 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 1075 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 1075 | reference | router_en is now 1 |
+| 1075 | reference | router_en is now 1 (en_reg 0x01) |
 | 1100 | hbus driver | Executed READ  addr=0x1001 data=0x01 |
 | 1105 | hbus monitor | Collected READ  addr=0x1001 data=0x01 |
 | 1120 | hbus driver | Executed WRITE addr=0x1001 data=0x02 |
 | 1125 | **DUT** | CONFIG router_en=0 maxpktsize=21 |
 | 1125 | hbus monitor | Collected WRITE addr=0x1001 data=0x02 |
-| 1125 | reference | router_en is now 0 |
+| 1125 | reference | router_en is now 0 (en_reg 0x02) |
 | 1150 | hbus driver | Executed READ  addr=0x1001 data=0x02 |
 | 1155 | hbus monitor | Collected READ  addr=0x1001 data=0x02 |
 | 1170 | hbus driver | Executed WRITE addr=0x1001 data=0x04 |
 | 1175 | hbus monitor | Collected WRITE addr=0x1001 data=0x04 |
-| 1175 | reference | router_en is now 0 |
+| 1175 | reference | router_en is now 0 (en_reg 0x04) |
 | 1200 | hbus driver | Executed READ  addr=0x1001 data=0x04 |
 | 1205 | hbus monitor | Collected READ  addr=0x1001 data=0x04 |
 | 1220 | hbus driver | Executed WRITE addr=0x1001 data=0x08 |
 | 1225 | hbus monitor | Collected WRITE addr=0x1001 data=0x08 |
-| 1225 | reference | router_en is now 0 |
+| 1225 | reference | router_en is now 0 (en_reg 0x08) |
 | 1250 | hbus driver | Executed READ  addr=0x1001 data=0x08 |
 | 1255 | hbus monitor | Collected READ  addr=0x1001 data=0x08 |
 | 1270 | hbus driver | Executed WRITE addr=0x1001 data=0x10 |
 | 1275 | hbus monitor | Collected WRITE addr=0x1001 data=0x10 |
-| 1275 | reference | router_en is now 0 |
+| 1275 | reference | router_en is now 0 (en_reg 0x10) |
 | 1300 | hbus driver | Executed READ  addr=0x1001 data=0x10 |
 | 1305 | hbus monitor | Collected READ  addr=0x1001 data=0x10 |
 | 1320 | hbus driver | Executed WRITE addr=0x1001 data=0x20 |
 | 1325 | hbus monitor | Collected WRITE addr=0x1001 data=0x20 |
-| 1325 | reference | router_en is now 0 |
+| 1325 | reference | router_en is now 0 (en_reg 0x20) |
 | 1350 | hbus driver | Executed READ  addr=0x1001 data=0x20 |
 | 1355 | hbus monitor | Collected READ  addr=0x1001 data=0x20 |
 | 1370 | hbus driver | Executed WRITE addr=0x1001 data=0x40 |
 | 1375 | hbus monitor | Collected WRITE addr=0x1001 data=0x40 |
-| 1375 | reference | router_en is now 0 |
+| 1375 | reference | router_en is now 0 (en_reg 0x40) |
 | 1400 | hbus driver | Executed READ  addr=0x1001 data=0x40 |
 | 1405 | hbus monitor | Collected READ  addr=0x1001 data=0x40 |
 | 1420 | hbus driver | Executed WRITE addr=0x1001 data=0x80 |
 | 1425 | hbus monitor | Collected WRITE addr=0x1001 data=0x80 |
-| 1425 | reference | router_en is now 0 |
+| 1425 | reference | router_en is now 0 (en_reg 0x80) |
 | 1450 | hbus driver | Executed READ  addr=0x1001 data=0x80 |
 | 1455 | hbus monitor | Collected READ  addr=0x1001 data=0x80 |
 | 1470 | hbus driver | Executed WRITE addr=0x1001 data=0xfe |
 | 1475 | hbus monitor | Collected WRITE addr=0x1001 data=0xfe |
-| 1475 | reference | router_en is now 0 |
+| 1475 | reference | router_en is now 0 (en_reg 0xfe) |
 | 1500 | hbus driver | Executed READ  addr=0x1001 data=0xfe |
 | 1505 | hbus monitor | Collected READ  addr=0x1001 data=0xfe |
 | 1520 | hbus driver | Executed WRITE addr=0x1001 data=0xfd |
 | 1525 | **DUT** | CONFIG router_en=1 maxpktsize=21 |
 | 1525 | hbus monitor | Collected WRITE addr=0x1001 data=0xfd |
-| 1525 | reference | router_en is now 1 |
+| 1525 | reference | router_en is now 1 (en_reg 0xfd) |
 | 1550 | hbus driver | Executed READ  addr=0x1001 data=0xfd |
 | 1555 | hbus monitor | Collected READ  addr=0x1001 data=0xfd |
 | 1570 | hbus driver | Executed WRITE addr=0x1001 data=0xfb |
 | 1575 | hbus monitor | Collected WRITE addr=0x1001 data=0xfb |
-| 1575 | reference | router_en is now 1 |
+| 1575 | reference | router_en is now 1 (en_reg 0xfb) |
 | 1600 | hbus driver | Executed READ  addr=0x1001 data=0xfb |
 | 1605 | hbus monitor | Collected READ  addr=0x1001 data=0xfb |
 | 1620 | hbus driver | Executed WRITE addr=0x1001 data=0xf7 |
 | 1625 | hbus monitor | Collected WRITE addr=0x1001 data=0xf7 |
-| 1625 | reference | router_en is now 1 |
+| 1625 | reference | router_en is now 1 (en_reg 0xf7) |
 | 1650 | hbus driver | Executed READ  addr=0x1001 data=0xf7 |
 | 1655 | hbus monitor | Collected READ  addr=0x1001 data=0xf7 |
 | 1670 | hbus driver | Executed WRITE addr=0x1001 data=0xef |
 | 1675 | hbus monitor | Collected WRITE addr=0x1001 data=0xef |
-| 1675 | reference | router_en is now 1 |
+| 1675 | reference | router_en is now 1 (en_reg 0xef) |
 | 1700 | hbus driver | Executed READ  addr=0x1001 data=0xef |
 | 1705 | hbus monitor | Collected READ  addr=0x1001 data=0xef |
 | 1720 | hbus driver | Executed WRITE addr=0x1001 data=0xdf |
 | 1725 | hbus monitor | Collected WRITE addr=0x1001 data=0xdf |
-| 1725 | reference | router_en is now 1 |
+| 1725 | reference | router_en is now 1 (en_reg 0xdf) |
 | 1750 | hbus driver | Executed READ  addr=0x1001 data=0xdf |
 | 1755 | hbus monitor | Collected READ  addr=0x1001 data=0xdf |
 | 1770 | hbus driver | Executed WRITE addr=0x1001 data=0xbf |
 | 1775 | hbus monitor | Collected WRITE addr=0x1001 data=0xbf |
-| 1775 | reference | router_en is now 1 |
+| 1775 | reference | router_en is now 1 (en_reg 0xbf) |
 | 1800 | hbus driver | Executed READ  addr=0x1001 data=0xbf |
 | 1805 | hbus monitor | Collected READ  addr=0x1001 data=0xbf |
 | 1820 | hbus driver | Executed WRITE addr=0x1001 data=0x7f |
 | 1825 | hbus monitor | Collected WRITE addr=0x1001 data=0x7f |
-| 1825 | reference | router_en is now 1 |
+| 1825 | reference | router_en is now 1 (en_reg 0x7f) |
 | 1850 | hbus driver | Executed READ  addr=0x1001 data=0x7f |
 | 1855 | hbus monitor | Collected READ  addr=0x1001 data=0x7f |
 | 1870 | hbus driver | Executed WRITE addr=0x1001 data=0x00 |
 | 1875 | **DUT** | CONFIG router_en=0 maxpktsize=21 |
 | 1875 | hbus monitor | Collected WRITE addr=0x1001 data=0x00 |
-| 1875 | reference | router_en is now 0 |
+| 1875 | reference | router_en is now 0 (en_reg 0x00) |
 | 1900 | hbus driver | Executed READ  addr=0x1001 data=0x00 |
 | 1905 | hbus monitor | Collected READ  addr=0x1001 data=0x00 |
 | 1920 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
 | 1925 | **DUT** | CONFIG router_en=1 maxpktsize=21 |
 | 1925 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 1925 | reference | router_en is now 1 |
+| 1925 | reference | router_en is now 1 (en_reg 0xff) |
 | 1950 | hbus driver | Executed READ  addr=0x1001 data=0xff |
 | 1955 | hbus monitor | Collected READ  addr=0x1001 data=0xff |
 | 1970 | hbus driver | Executed WRITE addr=0x1001 data=0xaa |
 | 1975 | **DUT** | CONFIG router_en=0 maxpktsize=21 |
 | 1975 | hbus monitor | Collected WRITE addr=0x1001 data=0xaa |
-| 1975 | reference | router_en is now 0 |
+| 1975 | reference | router_en is now 0 (en_reg 0xaa) |
 | 2000 | hbus driver | Executed READ  addr=0x1001 data=0xaa |
 | 2005 | hbus monitor | Collected READ  addr=0x1001 data=0xaa |
 | 2020 | hbus driver | Executed WRITE addr=0x1001 data=0x55 |
 | 2025 | **DUT** | CONFIG router_en=1 maxpktsize=21 |
 | 2025 | hbus monitor | Collected WRITE addr=0x1001 data=0x55 |
-| 2025 | reference | router_en is now 1 |
+| 2025 | reference | router_en is now 1 (en_reg 0x55) |
 | 2050 | hbus driver | Executed READ  addr=0x1001 data=0x55 |
 | 2050 | **test** | STAGE: RO register parity_err_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored |
 | 2050 | **test** | poke            0x00 |
@@ -420,7 +420,7 @@ Waves: `reg_bit_walk_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 2775 | reference | maxpktsize is now 63 |
 | 2790 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 2795 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 2795 | reference | router_en is now 1 |
+| 2795 | reference | router_en is now 1 (en_reg 0x01) |
 | 2990 | ch0 monitor | Channel 0 report: 0 packets collected |
 | 2990 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 2990 | ch2 monitor | Channel 2 report: 0 packets collected |

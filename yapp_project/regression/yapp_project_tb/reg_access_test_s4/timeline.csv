@@ -1,0 +1,34 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,"STAGE: RW register ctrl_reg: front-door write 0x25, peek, poke 0x1a, front-door read"
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x25
+70,INFO,test,REG_ACCESS,front-door write 0x25
+70,INFO,test,REG_ACCESS,peek            0x25
+70,INFO,test,REG_ACCESS,poke            0x1a
+75,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=26
+75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x25
+75,INFO,reference,router_reference,maxpktsize is now 37
+100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x1a
+100,INFO,test,REG_ACCESS,front-door read 0x1a
+100,INFO,test,TEST,"STAGE: RO register addr0_cnt_reg: poke 0x5a, front-door read, write 0x33 must be ignored"
+100,INFO,test,REG_ACCESS,poke            0x5a
+105,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x1a
+130,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x5a
+130,INFO,test,REG_ACCESS,front-door read 0x5a
+135,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x5a
+150,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1009 data=0x33
+150,INFO,test,REG_ACCESS,front-door write 0x33 (RO: must be ignored)
+150,INFO,test,REG_ACCESS,peek            0x5a
+155,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1009 data=0x33
+350,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 0 packets collected
+350,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
+350,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
+350,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 2 reads"
+350,INFO,reference,router_reference,
+350,INFO,scoreboard,router_scoreboard,
+350,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent
+350,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, coverage 0.0%"
+350,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)"

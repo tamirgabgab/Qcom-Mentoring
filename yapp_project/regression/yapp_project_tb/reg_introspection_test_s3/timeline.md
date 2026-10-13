@@ -82,7 +82,7 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 | 120 | **test** | poke            0x1a |
 | 125 | **DUT** | CONFIG router_en=0 maxpktsize=26 |
 | 125 | hbus monitor | Collected WRITE addr=0x1001 data=0x25 |
-| 125 | reference | router_en is now 1 |
+| 125 | reference | router_en is now 1 (en_reg 0x25) |
 | 150 | hbus driver | Executed READ  addr=0x1001 data=0x1a |
 | 150 | **test** | front-door read 0x1a |
 | 150 | **test** | STAGE: RO register parity_err_cnt_reg: poke 0x5a, front-door read, write 0x33 must be ignored |

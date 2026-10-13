@@ -10,3 +10,4 @@
 
 `include "mcseqs/router_mcseq_base.sv"
 `include "mcseqs/router_simple_mcseq.sv"
+`include "mcseqs/router_random_mcseq.sv"

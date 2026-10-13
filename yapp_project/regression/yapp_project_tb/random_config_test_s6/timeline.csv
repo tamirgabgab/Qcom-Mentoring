@@ -1,0 +1,632 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,"STAGE: receivers: ch0 RX_FAST, ch1 RX_NORMAL, ch2 RX_STALLY"
+0,INFO,test,TEST,STAGE: random scenario: 24 packets in 7 bursts
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x3f
+75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x3f
+75,INFO,reference,router_reference,maxpktsize is now 63
+90,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
+95,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
+95,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
+120,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1002 data=0x00
+125,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1002 data=0x00
+150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101b data=0x00
+155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101b data=0x00
+170,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x115c data=0xc3
+175,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x115c data=0xc3
+200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x115c data=0xc3
+205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x115c data=0xc3
+230,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x00
+235,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x00
+250,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11ea data=0xef
+255,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11ea data=0xef
+280,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11ea data=0xef
+285,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11ea data=0xef
+300,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x117c data=0xd4
+305,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x117c data=0xd4
+330,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x117c data=0xd4
+335,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x117c data=0xd4
+350,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x114d data=0x33
+355,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x114d data=0x33
+380,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x114d data=0x33
+385,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x114d data=0x33
+400,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x111d data=0x8d
+405,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x111d data=0x8d
+430,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x111d data=0x8d
+435,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x111d data=0x8d
+450,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11ce data=0x42
+455,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11ce data=0x42
+480,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11ce data=0x42
+485,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11ce data=0x42
+510,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x00
+515,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x00
+530,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11c6 data=0x03
+535,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11c6 data=0x03
+560,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11c6 data=0x03
+560,INFO,test,TEST,"STAGE: burst 1/7: ctrl=0x3f (maxpktsize 63) en=0xff (router on, counter enables 1111111), 4 packet(s)"
+560,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=1 len=20 parity=good delay=3
+565,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11c6 data=0x03
+605,INFO,DUT,DUT,IN  pkt #1 header: addr=1 len=20 -> channel 1
+695,INFO,DUT,DUT,OUT ch1 pkt #1 start: addr=1 len=20 (receiver waited 8 cycle(s))
+815,INFO,DUT,DUT,"IN  pkt #1 complete: addr=1 len=20 parity=ok forwarded, 22 bytes in 22 cycles (held 0)"
+815,INFO,yapp monitor,yapp_tx_monitor,RX pkt #1 on the input: addr=1 len=20 parity=good gap=55
+815,INFO,reference,router_reference,Packet forwarded: addr=1 len=20 -> channel 1
+820,INFO,yapp driver,yapp_tx_driver,TX pkt #1 accepted by the DUT
+820,INFO,yapp driver,yapp_tx_driver,TX pkt #2: addr=2 len=25 parity=good delay=16
+900,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
+975,INFO,DUT,DUT,OUT ch1 pkt #1 done: 22 bytes in 29 cycles
+975,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #1: addr=1 len=20 parity=good
+975,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=20 (1 matched so far)
+985,INFO,DUT,DUT,IN  pkt #2 header: addr=2 len=25 -> channel 2
+1145,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xc9 held (pkt #2)"
+1270,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 6)
+1675,INFO,DUT,DUT,OUT ch2 pkt #1 start: addr=2 len=25 (receiver waited 68 cycle(s))
+1685,INFO,DUT,DUT,SUSPEND released after 54 cycle(s)
+1785,INFO,DUT,DUT,"IN  pkt #2 complete: addr=2 len=25 parity=ok forwarded, 27 bytes in 81 cycles (held 54)"
+1785,INFO,yapp monitor,yapp_tx_monitor,RX pkt #2 on the input: addr=2 len=25 parity=good gap=16
+1785,INFO,reference,router_reference,Packet forwarded: addr=2 len=25 -> channel 2
+1790,INFO,yapp driver,yapp_tx_driver,TX pkt #2 accepted by the DUT
+1790,INFO,yapp driver,yapp_tx_driver,TX pkt #3: addr=2 len=56 parity=good delay=3
+1825,INFO,DUT,DUT,IN  pkt #3 header: addr=2 len=56 -> channel 2
+1930,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 68)
+1975,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x6b held (pkt #3)"
+2045,INFO,DUT,DUT,OUT ch2 pkt #1 done: 27 bytes in 38 cycles
+2045,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=25 parity=good
+2045,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=25 (2 matched so far)
+2055,INFO,DUT,DUT,SUSPEND released after 8 cycle(s)
+2055,INFO,DUT,DUT,OUT ch2 pkt #2 start: addr=2 len=56 (receiver waited 0 cycle(s))
+2130,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 10)
+2145,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xf6 held (pkt #3)"
+2185,INFO,DUT,DUT,SUSPEND released after 4 cycle(s)
+2400,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 3)
+2415,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x7b held (pkt #3)"
+2515,INFO,DUT,DUT,SUSPEND released after 10 cycle(s)
+2615,INFO,DUT,DUT,"IN  pkt #3 complete: addr=2 len=56 parity=ok forwarded, 58 bytes in 80 cycles (held 22)"
+2615,INFO,yapp monitor,yapp_tx_monitor,RX pkt #3 on the input: addr=2 len=56 parity=good gap=3
+2615,INFO,reference,router_reference,Packet forwarded: addr=2 len=56 -> channel 2
+2620,INFO,yapp driver,yapp_tx_driver,TX pkt #3 accepted by the DUT
+2620,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=3 len=63 parity=good delay=0
+2625,INFO,DUT,DUT,IN  pkt #4 header: addr=3 len=63 -> DROP (illegal address 3)
+2765,INFO,DUT,DUT,OUT ch2 pkt #2 done: 58 bytes in 72 cycles
+2765,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #2: addr=2 len=56 parity=good
+2765,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=56 (3 matched so far)
+3060,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 9)
+3265,INFO,DUT,DUT,"IN  pkt #4 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+3265,INFO,yapp monitor,yapp_tx_monitor,RX pkt #4 on the input: addr=3 len=63 parity=good gap=0
+3265,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=63)
+3265,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=63 (    illegal address)
+3270,INFO,yapp driver,yapp_tx_driver,TX pkt #4 accepted by the DUT
+3270,INFO,test,TEST,"STAGE: burst 1/7 sent: addr0..3 0/1/2/1, bad parity 0, gap 0 1, length 20..63"
+3290,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x2a
+3295,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=42
+3295,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x2a
+3295,INFO,reference,router_reference,maxpktsize is now 42
+3310,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x8b
+3315,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x8b
+3315,INFO,reference,router_reference,router_en is now 1 (en_reg 0x8b)
+3340,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x107f data=0x00
+3345,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x107f data=0x00
+3370,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x10f1 data=0x00
+3375,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x10f1 data=0x00
+3390,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1135 data=0x4e
+3395,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1135 data=0x4e
+3420,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1135 data=0x4e
+3425,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1135 data=0x4e
+3440,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11fe data=0x21
+3445,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11fe data=0x21
+3470,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11fe data=0x21
+3475,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11fe data=0x21
+3500,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x10f9 data=0x00
+3505,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x10f9 data=0x00
+3520,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11c1 data=0xcf
+3525,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11c1 data=0xcf
+3550,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11c1 data=0xcf
+3550,INFO,test,TEST,"STAGE: burst 2/7: ctrl=0x2a (maxpktsize 42) en=0x8b (router on, counter enables 1000101), 4 packet(s)"
+3550,INFO,yapp driver,yapp_tx_driver,TX pkt #5: addr=2 len=1 parity=bad delay=3
+3555,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11c1 data=0xcf
+3595,INFO,DUT,DUT,IN  pkt #5 header: addr=2 len=1 -> channel 2
+3605,INFO,DUT,DUT,OUT ch2 pkt #3 start: addr=2 len=1 (receiver waited 0 cycle(s))
+3615,INFO,DUT,DUT,"IN  pkt #5 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+3615,INFO,yapp monitor,yapp_tx_monitor,RX pkt #5 on the input: addr=2 len=1 parity=bad gap=32
+3615,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+3620,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 0)
+3620,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
+3620,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=0 len=63 parity=good delay=0
+3625,INFO,DUT,DUT,IN  pkt #6 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 42)
+3670,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+3670,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+3725,INFO,DUT,DUT,OUT ch2 pkt #3 done: 3 bytes in 13 cycles
+3725,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #3: addr=2 len=1 parity=bad
+3725,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (4 matched so far)
+3890,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 9)
+4265,INFO,DUT,DUT,"IN  pkt #6 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+4265,INFO,yapp monitor,yapp_tx_monitor,RX pkt #6 on the input: addr=0 len=63 parity=good gap=0
+4265,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 42 (addr=0)
+4265,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+4270,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
+4270,INFO,yapp driver,yapp_tx_driver,TX pkt #7: addr=0 len=63 parity=good delay=0
+4275,INFO,DUT,DUT,IN  pkt #7 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 42)
+4915,INFO,DUT,DUT,"IN  pkt #7 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+4915,INFO,yapp monitor,yapp_tx_monitor,RX pkt #7 on the input: addr=0 len=63 parity=good gap=0
+4915,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 42 (addr=0)
+4915,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+4920,INFO,yapp driver,yapp_tx_driver,TX pkt #7 accepted by the DUT
+4920,INFO,yapp driver,yapp_tx_driver,TX pkt #8: addr=0 len=60 parity=good delay=1
+4935,INFO,DUT,DUT,IN  pkt #8 header: addr=0 len=60 -> DROP (oversized: len 60 > maxpktsize 42)
+5545,INFO,DUT,DUT,"IN  pkt #8 complete: addr=0 len=60 parity=ok dropped, 62 bytes in 62 cycles (held 0)"
+5545,INFO,yapp monitor,yapp_tx_monitor,RX pkt #8 on the input: addr=0 len=60 parity=good gap=1
+5545,INFO,reference,router_reference,Packet dropped: length 60 > maxpktsize 42 (addr=0)
+5545,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=60 (length > maxpktsize)
+5550,INFO,yapp driver,yapp_tx_driver,TX pkt #8 accepted by the DUT
+5550,INFO,test,TEST,"STAGE: burst 2/7 sent: addr0..3 3/0/1/0, bad parity 1, gap 0 2, length 1..63"
+5570,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x3e
+5575,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=62
+5575,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x3e
+5575,INFO,reference,router_reference,maxpktsize is now 62
+5590,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xd5
+5595,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xd5
+5595,INFO,reference,router_reference,router_en is now 1 (en_reg 0xd5)
+5620,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101a data=0xa6
+5625,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101a data=0xa6
+5640,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11ec data=0xc2
+5645,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11ec data=0xc2
+5670,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11ec data=0xc2
+5675,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11ec data=0xc2
+5690,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1101 data=0x94
+5695,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1101 data=0x94
+5720,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1101 data=0x94
+5725,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1101 data=0x94
+5740,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11ab data=0x6d
+5745,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11ab data=0x6d
+5770,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11ab data=0x6d
+5775,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11ab data=0x6d
+5790,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x118c data=0xea
+5795,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x118c data=0xea
+5820,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x118c data=0xea
+5820,INFO,test,TEST,"STAGE: burst 3/7: ctrl=0x3e (maxpktsize 62) en=0xd5 (router on, counter enables 1101010), 3 packet(s)"
+5820,INFO,yapp driver,yapp_tx_driver,TX pkt #9: addr=0 len=63 parity=good delay=1
+5825,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x118c data=0xea
+5845,INFO,DUT,DUT,IN  pkt #9 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 62)
+6485,INFO,DUT,DUT,"IN  pkt #9 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+6485,INFO,yapp monitor,yapp_tx_monitor,RX pkt #9 on the input: addr=0 len=63 parity=good gap=29
+6485,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 62 (addr=0)
+6485,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+6490,INFO,yapp driver,yapp_tx_driver,TX pkt #9 accepted by the DUT
+6490,INFO,yapp driver,yapp_tx_driver,TX pkt #10: addr=1 len=38 parity=good delay=3
+6525,INFO,DUT,DUT,IN  pkt #10 header: addr=1 len=38 -> channel 1
+6545,INFO,DUT,DUT,OUT ch1 pkt #2 start: addr=1 len=38 (receiver waited 1 cycle(s))
+6915,INFO,DUT,DUT,"IN  pkt #10 complete: addr=1 len=38 parity=ok forwarded, 40 bytes in 40 cycles (held 0)"
+6915,INFO,yapp monitor,yapp_tx_monitor,RX pkt #10 on the input: addr=1 len=38 parity=good gap=3
+6915,INFO,reference,router_reference,Packet forwarded: addr=1 len=38 -> channel 1
+6920,INFO,yapp driver,yapp_tx_driver,TX pkt #10 accepted by the DUT
+6920,INFO,yapp driver,yapp_tx_driver,TX pkt #11: addr=2 len=1 parity=good delay=1
+6930,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 1)
+6935,INFO,DUT,DUT,IN  pkt #11 header: addr=2 len=1 -> channel 2
+6955,INFO,DUT,DUT,"IN  pkt #11 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+6955,INFO,DUT,DUT,OUT ch2 pkt #4 start: addr=2 len=1 (receiver waited 1 cycle(s))
+6955,INFO,yapp monitor,yapp_tx_monitor,RX pkt #11 on the input: addr=2 len=1 parity=good gap=1
+6955,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+6960,INFO,yapp driver,yapp_tx_driver,TX pkt #11 accepted by the DUT
+6960,INFO,test,TEST,"STAGE: burst 3/7 sent: addr0..3 1/1/1/0, bad parity 0, gap 0 0, length 1..63"
+6970,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 1)
+6980,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x00
+6985,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=0
+6985,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x00
+6985,INFO,reference,router_reference,maxpktsize is now 0
+7000,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xe8
+7005,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=0
+7005,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xe8
+7005,INFO,reference,router_reference,router_en is now 0 (en_reg 0xe8)
+7025,INFO,DUT,DUT,OUT ch1 pkt #2 done: 40 bytes in 49 cycles
+7025,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #2: addr=1 len=38 parity=good
+7025,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=38 (5 matched so far)
+7030,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1083 data=0x00
+7035,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1083 data=0x00
+7050,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1199 data=0xe7
+7055,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1199 data=0xe7
+7080,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1199 data=0xe7
+7085,INFO,DUT,DUT,OUT ch2 pkt #4 done: 3 bytes in 14 cycles
+7085,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #4: addr=2 len=1 parity=good
+7085,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (6 matched so far)
+7085,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1199 data=0xe7
+7110,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1019 data=0x76
+7115,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1019 data=0x76
+7130,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11a7 data=0x80
+7135,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11a7 data=0x80
+7160,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11a7 data=0x80
+7165,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11a7 data=0x80
+7190,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x01
+7195,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x01
+7220,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x01
+7225,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x01
+7240,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x117e data=0x28
+7245,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x117e data=0x28
+7270,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x117e data=0x28
+7270,INFO,test,TEST,"STAGE: burst 4/7: ctrl=0x00 (maxpktsize 0) en=0xe8 (router OFF, counter enables 1110100), 3 packet(s)"
+7270,INFO,yapp driver,yapp_tx_driver,TX pkt #12: addr=2 len=63 parity=bad delay=2
+7275,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x117e data=0x28
+7305,INFO,DUT,DUT,IN  pkt #12 header: addr=2 len=63 -> DROP (router disabled)
+7370,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
+7530,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 10)
+7945,INFO,DUT,DUT,"IN  pkt #12 complete: addr=2 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)"
+7945,INFO,yapp monitor,yapp_tx_monitor,RX pkt #12 on the input: addr=2 len=63 parity=bad gap=34
+7945,INFO,reference,router_reference,Packet dropped: router disabled (addr=2 len=63)
+7945,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=63 (router disabled)
+7950,INFO,yapp driver,yapp_tx_driver,TX pkt #12 accepted by the DUT
+7950,INFO,yapp driver,yapp_tx_driver,TX pkt #13: addr=1 len=63 parity=good delay=19
+8145,INFO,DUT,DUT,IN  pkt #13 header: addr=1 len=63 -> DROP (router disabled)
+8785,INFO,DUT,DUT,"IN  pkt #13 complete: addr=1 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+8785,INFO,yapp monitor,yapp_tx_monitor,RX pkt #13 on the input: addr=1 len=63 parity=good gap=19
+8785,INFO,reference,router_reference,Packet dropped: router disabled (addr=1 len=63)
+8785,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=63 (router disabled)
+8790,INFO,yapp driver,yapp_tx_driver,TX pkt #13 accepted by the DUT
+8790,INFO,yapp driver,yapp_tx_driver,TX pkt #14: addr=2 len=35 parity=good delay=0
+8795,INFO,DUT,DUT,IN  pkt #14 header: addr=2 len=35 -> DROP (router disabled)
+9155,INFO,DUT,DUT,"IN  pkt #14 complete: addr=2 len=35 parity=ok dropped, 37 bytes in 37 cycles (held 0)"
+9155,INFO,yapp monitor,yapp_tx_monitor,RX pkt #14 on the input: addr=2 len=35 parity=good gap=0
+9155,INFO,reference,router_reference,Packet dropped: router disabled (addr=2 len=35)
+9155,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=35 (router disabled)
+9160,INFO,yapp driver,yapp_tx_driver,TX pkt #14 accepted by the DUT
+9160,INFO,test,TEST,"STAGE: burst 4/7 sent: addr0..3 0/1/2/0, bad parity 1, gap 0 1, length 35..63"
+9180,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x3e
+9185,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=62
+9185,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x3e
+9185,INFO,reference,router_reference,maxpktsize is now 62
+9200,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfd
+9205,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=62
+9205,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfd
+9205,INFO,reference,router_reference,router_en is now 1 (en_reg 0xfd)
+9220,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1192 data=0x1e
+9225,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1192 data=0x1e
+9250,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1192 data=0x1e
+9255,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1192 data=0x1e
+9280,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1041 data=0x91
+9285,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1041 data=0x91
+9310,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x106a data=0x00
+9315,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x106a data=0x00
+9330,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1162 data=0xd5
+9335,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1162 data=0xd5
+9360,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1162 data=0xd5
+9365,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1162 data=0xd5
+9380,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11c8 data=0x3c
+9385,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11c8 data=0x3c
+9410,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11c8 data=0x3c
+9415,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11c8 data=0x3c
+9430,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1134 data=0xce
+9435,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1134 data=0xce
+9460,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1134 data=0xce
+9465,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1134 data=0xce
+9480,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1169 data=0x25
+9485,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1169 data=0x25
+9510,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1169 data=0x25
+9515,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1169 data=0x25
+9540,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100e data=0x00
+9545,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100e data=0x00
+9570,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101f data=0x9d
+9575,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101f data=0x9d
+9600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x01
+9605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x01
+9630,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfd
+9635,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfd
+9650,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11b7 data=0x76
+9655,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11b7 data=0x76
+9680,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11b7 data=0x76
+9680,INFO,test,TEST,"STAGE: burst 5/7: ctrl=0x3e (maxpktsize 62) en=0xfd (router on, counter enables 1111110), 3 packet(s)"
+9680,INFO,yapp driver,yapp_tx_driver,TX pkt #15: addr=3 len=6 parity=good delay=3
+9685,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11b7 data=0x76
+9725,INFO,DUT,DUT,IN  pkt #15 header: addr=3 len=6 -> DROP (illegal address 3)
+9795,INFO,DUT,DUT,"IN  pkt #15 complete: addr=3 len=6 parity=ok dropped, 8 bytes in 8 cycles (held 0)"
+9795,INFO,yapp monitor,yapp_tx_monitor,RX pkt #15 on the input: addr=3 len=6 parity=good gap=56
+9795,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=6)
+9795,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=6 (    illegal address)
+9800,INFO,yapp driver,yapp_tx_driver,TX pkt #15 accepted by the DUT
+9800,INFO,yapp driver,yapp_tx_driver,TX pkt #16: addr=1 len=58 parity=good delay=10
+9905,INFO,DUT,DUT,IN  pkt #16 header: addr=1 len=58 -> channel 1
+9985,INFO,DUT,DUT,OUT ch1 pkt #3 start: addr=1 len=58 (receiver waited 7 cycle(s))
+10495,INFO,DUT,DUT,"IN  pkt #16 complete: addr=1 len=58 parity=ok forwarded, 60 bytes in 60 cycles (held 0)"
+10495,INFO,yapp monitor,yapp_tx_monitor,RX pkt #16 on the input: addr=1 len=58 parity=good gap=10
+10495,INFO,reference,router_reference,Packet forwarded: addr=1 len=58 -> channel 1
+10500,INFO,yapp driver,yapp_tx_driver,TX pkt #16 accepted by the DUT
+10500,INFO,yapp driver,yapp_tx_driver,TX pkt #17: addr=3 len=33 parity=good delay=0
+10505,INFO,DUT,DUT,IN  pkt #17 header: addr=3 len=33 -> DROP (illegal address 3)
+10570,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 7)
+10685,INFO,DUT,DUT,OUT ch1 pkt #3 done: 60 bytes in 71 cycles
+10685,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #3: addr=1 len=58 parity=good
+10685,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=58 (7 matched so far)
+10845,INFO,DUT,DUT,"IN  pkt #17 complete: addr=3 len=33 parity=ok dropped, 35 bytes in 35 cycles (held 0)"
+10845,INFO,yapp monitor,yapp_tx_monitor,RX pkt #17 on the input: addr=3 len=33 parity=good gap=0
+10845,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=33)
+10845,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=33 (    illegal address)
+10850,INFO,yapp driver,yapp_tx_driver,TX pkt #17 accepted by the DUT
+10850,INFO,test,TEST,"STAGE: burst 5/7 sent: addr0..3 0/1/0/2, bad parity 0, gap 0 1, length 6..58"
+10870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x81
+10875,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=1
+10875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x81
+10875,INFO,reference,router_reference,maxpktsize is now 1
+10890,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
+10895,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
+10895,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
+10910,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1120 data=0x4b
+10915,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1120 data=0x4b
+10940,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1120 data=0x4b
+10945,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1120 data=0x4b
+10960,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x118b data=0x2d
+10965,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x118b data=0x2d
+10990,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x118b data=0x2d
+10995,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x118b data=0x2d
+11010,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1115 data=0x22
+11015,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1115 data=0x22
+11040,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1115 data=0x22
+11045,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1115 data=0x22
+11060,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1172 data=0x37
+11065,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1172 data=0x37
+11090,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1172 data=0x37
+11095,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1172 data=0x37
+11110,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
+11110,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1195 data=0x8a
+11115,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1195 data=0x8a
+11140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1195 data=0x8a
+11145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1195 data=0x8a
+11160,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11d8 data=0xcf
+11165,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11d8 data=0xcf
+11190,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11d8 data=0xcf
+11195,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11d8 data=0xcf
+11210,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x114e data=0xc0
+11215,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x114e data=0xc0
+11240,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x114e data=0xc0
+11240,INFO,test,TEST,"STAGE: burst 6/7: ctrl=0x81 (maxpktsize 1) en=0xff (router on, counter enables 1111111), 4 packet(s)"
+11240,INFO,yapp driver,yapp_tx_driver,TX pkt #18: addr=1 len=16 parity=good delay=1
+11245,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x114e data=0xc0
+11265,INFO,DUT,DUT,IN  pkt #18 header: addr=1 len=16 -> DROP (oversized: len 16 > maxpktsize 1)
+11435,INFO,DUT,DUT,"IN  pkt #18 complete: addr=1 len=16 parity=ok dropped, 18 bytes in 18 cycles (held 0)"
+11435,INFO,yapp monitor,yapp_tx_monitor,RX pkt #18 on the input: addr=1 len=16 parity=good gap=41
+11435,INFO,reference,router_reference,Packet dropped: length 16 > maxpktsize 1 (addr=1)
+11435,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=16 (length > maxpktsize)
+11440,INFO,yapp driver,yapp_tx_driver,TX pkt #18 accepted by the DUT
+11440,INFO,yapp driver,yapp_tx_driver,TX pkt #19: addr=3 len=63 parity=good delay=3
+11475,INFO,DUT,DUT,IN  pkt #19 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 1)
+12115,INFO,DUT,DUT,"IN  pkt #19 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+12115,INFO,yapp monitor,yapp_tx_monitor,RX pkt #19 on the input: addr=3 len=63 parity=good gap=3
+12115,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=63)
+12115,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=63 (    illegal address)
+12120,INFO,yapp driver,yapp_tx_driver,TX pkt #19 accepted by the DUT
+12120,INFO,yapp driver,yapp_tx_driver,TX pkt #20: addr=0 len=1 parity=good delay=11
+12235,INFO,DUT,DUT,IN  pkt #20 header: addr=0 len=1 -> channel 0
+12245,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=1 (receiver waited 0 cycle(s))
+12255,INFO,DUT,DUT,"IN  pkt #20 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+12255,INFO,yapp monitor,yapp_tx_monitor,RX pkt #20 on the input: addr=0 len=1 parity=good gap=11
+12255,INFO,reference,router_reference,Packet forwarded: addr=0 len=1 -> channel 0
+12260,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+12260,INFO,yapp driver,yapp_tx_driver,TX pkt #20 accepted by the DUT
+12260,INFO,yapp driver,yapp_tx_driver,TX pkt #21: addr=1 len=61 parity=good delay=1
+12275,INFO,DUT,DUT,IN  pkt #21 header: addr=1 len=61 -> DROP (oversized: len 61 > maxpktsize 1)
+12275,INFO,DUT,DUT,OUT ch0 pkt #1 done: 3 bytes in 4 cycles
+12275,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #1: addr=0 len=1 parity=good
+12275,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=1 (8 matched so far)
+12460,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+12895,INFO,DUT,DUT,"IN  pkt #21 complete: addr=1 len=61 parity=ok dropped, 63 bytes in 63 cycles (held 0)"
+12895,INFO,yapp monitor,yapp_tx_monitor,RX pkt #21 on the input: addr=1 len=61 parity=good gap=1
+12895,INFO,reference,router_reference,Packet dropped: length 61 > maxpktsize 1 (addr=1)
+12895,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=61 (length > maxpktsize)
+12900,INFO,yapp driver,yapp_tx_driver,TX pkt #21 accepted by the DUT
+12900,INFO,test,TEST,"STAGE: burst 6/7 sent: addr0..3 1/2/0/1, bad parity 0, gap 0 0, length 1..63"
+12920,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xff
+12925,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+12925,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xff
+12925,INFO,reference,router_reference,maxpktsize is now 63
+12940,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xcb
+12945,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xcb
+12945,INFO,reference,router_reference,router_en is now 1 (en_reg 0xcb)
+12970,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1002 data=0x00
+12975,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1002 data=0x00
+13000,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x10f5 data=0x00
+13005,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x10f5 data=0x00
+13030,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x3d
+13035,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x3d
+13060,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x3d
+13065,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x3d
+13080,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x116f data=0x06
+13085,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x116f data=0x06
+13110,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x116f data=0x06
+13115,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x116f data=0x06
+13140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x3d
+13140,INFO,test,TEST,"STAGE: burst 7/7: ctrl=0xff (maxpktsize 63) en=0xcb (router on, counter enables 1100101), 3 packet(s)"
+13140,INFO,yapp driver,yapp_tx_driver,TX pkt #22: addr=0 len=44 parity=good delay=9
+13145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x3d
+13245,INFO,DUT,DUT,IN  pkt #22 header: addr=0 len=44 -> channel 0
+13255,INFO,DUT,DUT,OUT ch0 pkt #2 start: addr=0 len=44 (receiver waited 0 cycle(s))
+13695,INFO,DUT,DUT,"IN  pkt #22 complete: addr=0 len=44 parity=ok forwarded, 46 bytes in 46 cycles (held 0)"
+13695,INFO,yapp monitor,yapp_tx_monitor,RX pkt #22 on the input: addr=0 len=44 parity=good gap=34
+13695,INFO,reference,router_reference,Packet forwarded: addr=0 len=44 -> channel 0
+13700,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+13700,INFO,yapp driver,yapp_tx_driver,TX pkt #22 accepted by the DUT
+13700,INFO,yapp driver,yapp_tx_driver,TX pkt #23: addr=1 len=63 parity=good delay=5
+13715,INFO,DUT,DUT,OUT ch0 pkt #2 done: 46 bytes in 47 cycles
+13715,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #2: addr=0 len=44 parity=good
+13715,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=44 (9 matched so far)
+13755,INFO,DUT,DUT,IN  pkt #23 header: addr=1 len=63 -> channel 1
+13855,INFO,DUT,DUT,OUT ch1 pkt #4 start: addr=1 len=63 (receiver waited 9 cycle(s))
+14090,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+14395,INFO,DUT,DUT,"IN  pkt #23 complete: addr=1 len=63 parity=ok forwarded, 65 bytes in 65 cycles (held 0)"
+14395,INFO,yapp monitor,yapp_tx_monitor,RX pkt #23 on the input: addr=1 len=63 parity=good gap=5
+14395,INFO,reference,router_reference,Packet forwarded: addr=1 len=63 -> channel 1
+14400,INFO,yapp driver,yapp_tx_driver,TX pkt #23 accepted by the DUT
+14400,INFO,yapp driver,yapp_tx_driver,TX pkt #24: addr=0 len=62 parity=good delay=2
+14425,INFO,DUT,DUT,IN  pkt #24 header: addr=0 len=62 -> channel 0
+14435,INFO,DUT,DUT,OUT ch0 pkt #3 start: addr=0 len=62 (receiver waited 0 cycle(s))
+14490,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
+14565,INFO,DUT,DUT,OUT ch1 pkt #4 done: 65 bytes in 72 cycles
+14565,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #4: addr=1 len=63 parity=good
+14565,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=63 (10 matched so far)
+14750,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 6)
+15055,INFO,DUT,DUT,"IN  pkt #24 complete: addr=0 len=62 parity=ok forwarded, 64 bytes in 64 cycles (held 0)"
+15055,INFO,yapp monitor,yapp_tx_monitor,RX pkt #24 on the input: addr=0 len=62 parity=good gap=2
+15055,INFO,reference,router_reference,Packet forwarded: addr=0 len=62 -> channel 0
+15060,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+15060,INFO,yapp driver,yapp_tx_driver,TX pkt #24 accepted by the DUT
+15060,INFO,test,TEST,"STAGE: burst 7/7 sent: addr0..3 2/1/0/0, bad parity 0, gap 0 0, length 44..63"
+15060,INFO,test,TEST,"STAGE: final reads: every register and the stored packet, checked against the reference model"
+15075,INFO,DUT,DUT,OUT ch0 pkt #3 done: 64 bytes in 65 cycles
+15075,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #3: addr=0 len=62 parity=good
+15075,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=62 (11 matched so far)
+15090,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xff
+15095,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xff
+15120,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xcb
+15125,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xcb
+15150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x01
+15155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x01
+15180,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0x04
+15185,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0x04
+15210,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x04
+15215,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x04
+15240,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x02
+15245,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x02
+15270,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x04
+15275,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x04
+15300,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x03
+15305,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x03
+15330,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x3e
+15335,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x3e
+15360,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1010 data=0xf8
+15365,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1010 data=0xf8
+15390,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1011 data=0xc0
+15395,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1011 data=0xc0
+15420,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1012 data=0x7c
+15425,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1012 data=0x7c
+15450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1013 data=0xc9
+15455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1013 data=0xc9
+15480,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1014 data=0x4f
+15485,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1014 data=0x4f
+15510,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1015 data=0x9f
+15515,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1015 data=0x9f
+15540,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1016 data=0xe2
+15545,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1016 data=0xe2
+15570,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1017 data=0x14
+15575,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1017 data=0x14
+15600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1018 data=0x0a
+15605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1018 data=0x0a
+15630,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1019 data=0xf2
+15635,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1019 data=0xf2
+15660,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101a data=0x49
+15665,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101a data=0x49
+15690,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 0)
+15690,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101b data=0xfd
+15695,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101b data=0xfd
+15720,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101c data=0x6a
+15725,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101c data=0x6a
+15750,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101d data=0xcc
+15755,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101d data=0xcc
+15780,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101e data=0xa8
+15785,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101e data=0xa8
+15810,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101f data=0x8e
+15815,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101f data=0x8e
+15840,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1020 data=0xa6
+15845,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1020 data=0xa6
+15870,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1021 data=0xa3
+15875,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1021 data=0xa3
+15900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1022 data=0x5e
+15905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1022 data=0x5e
+15930,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1023 data=0xe0
+15935,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1023 data=0xe0
+15960,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1024 data=0x6c
+15965,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1024 data=0x6c
+15990,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1025 data=0x00
+15995,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1025 data=0x00
+16020,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1026 data=0x05
+16025,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1026 data=0x05
+16050,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1027 data=0xbf
+16055,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1027 data=0xbf
+16080,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1028 data=0x64
+16085,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1028 data=0x64
+16110,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1029 data=0x29
+16115,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1029 data=0x29
+16140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102a data=0xd7
+16145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102a data=0xd7
+16170,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102b data=0xeb
+16175,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102b data=0xeb
+16200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102c data=0x94
+16205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102c data=0x94
+16230,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102d data=0xe7
+16235,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102d data=0xe7
+16260,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102e data=0x4e
+16265,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102e data=0x4e
+16290,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102f data=0x01
+16295,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102f data=0x01
+16320,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1030 data=0x91
+16325,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1030 data=0x91
+16350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1031 data=0x1b
+16355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1031 data=0x1b
+16380,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1032 data=0x91
+16385,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1032 data=0x91
+16410,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1033 data=0x2a
+16415,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1033 data=0x2a
+16440,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1034 data=0xa7
+16445,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1034 data=0xa7
+16470,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1035 data=0x80
+16475,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1035 data=0x80
+16500,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1036 data=0x60
+16505,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1036 data=0x60
+16530,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1037 data=0x4d
+16535,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1037 data=0x4d
+16560,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1038 data=0x43
+16565,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1038 data=0x43
+16590,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1039 data=0x51
+16595,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1039 data=0x51
+16620,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103a data=0xc1
+16625,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103a data=0xc1
+16650,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103b data=0xe2
+16655,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103b data=0xe2
+16680,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103c data=0xd2
+16685,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103c data=0xd2
+16710,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103d data=0xd0
+16715,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103d data=0xd0
+16740,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103e data=0xe2
+16745,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103e data=0xe2
+16770,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103f data=0x7b
+16775,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103f data=0x7b
+16800,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1040 data=0x9f
+16805,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1040 data=0x9f
+16830,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1041 data=0xf0
+16835,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1041 data=0xf0
+16860,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1042 data=0xc8
+16865,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1042 data=0xc8
+16890,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1043 data=0xaa
+16895,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1043 data=0xaa
+16920,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1044 data=0x61
+16925,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1044 data=0x61
+16950,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1045 data=0xf1
+16955,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1045 data=0xf1
+16980,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1046 data=0xd3
+16985,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1046 data=0xd3
+17010,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1047 data=0xdd
+17015,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1047 data=0xdd
+17040,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1048 data=0xcf
+17045,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1048 data=0xcf
+17070,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1049 data=0x79
+17075,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1049 data=0x79
+17100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104a data=0xb2
+17105,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104a data=0xb2
+17130,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104b data=0xf0
+17135,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104b data=0xf0
+17160,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104c data=0x12
+17165,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104c data=0x12
+17190,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104d data=0xcb
+17195,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104d data=0xcb
+17220,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104e data=0x9c
+17225,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104e data=0x9c
+17335,INFO,test,TEST,"STAGE: done: 24 packets (11 forwarded, 13 dropped), 0 storm burst(s), 11 scoreboard matches, 125 HBUS reads checked, 1 error pulses for 1 bad packets"
+17535,INFO,error checker,ERR_PULSE,"error pulse report: 1 bad packets, 1 pulses, 0 outside 1..10 cycles, at most 1 owed at once"
+17535,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 3 packets collected
+17535,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 4 packets collected
+17535,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 4 packets collected
+17535,INFO,hbus monitor,hbus_monitor,"HBUS report: 45 writes, 126 reads"
+17535,INFO,reference,router_reference,
+17535,INFO,reference,router_reference,"HBUS reads checked against the model: 125 (0 mismatches, 1 of memory bytes never written)"
+17535,INFO,reference,router_reference,Coverage of the router configuration: 82.6%
+17535,INFO,scoreboard,router_scoreboard,
+17535,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 24 packets sent
+17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 24 packets collected, coverage 56.7%"
+17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 5 back to back, 3 of 1 cycle, 1 of 2, 14 longer (gap coverage 100.0%)"

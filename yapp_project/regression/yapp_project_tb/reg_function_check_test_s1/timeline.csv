@@ -7,7 +7,7 @@ time_ns,severity,who,id,event
 50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
 70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
 75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
-75,INFO,reference,router_reference,router_en is now 1
+75,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
 100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x01
 100,INFO,test,REG_FUNC,en_reg reads 0x01
 100,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=0 len=42 parity=good delay=20
@@ -58,7 +58,7 @@ time_ns,severity,who,id,event
 1820,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
 1820,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=0 len=8 parity=good delay=1
 1825,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
-1825,INFO,reference,router_reference,router_en is now 1
+1825,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
 1845,INFO,DUT,DUT,IN  pkt #4 header: addr=0 len=8 -> channel 0
 1855,INFO,DUT,DUT,OUT ch2 pkt #1 done: 29 bytes in 38 cycles
 1855,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=27 parity=good
@@ -84,7 +84,7 @@ time_ns,severity,who,id,event
 2360,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
 2360,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=2 len=56 parity=good delay=16
 2420,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 6)
-2425,INFO,DUT,DUT,"ERROR pulse, 7 cycle(s) after the bad-parity packet"
+2430,INFO,DUT,DUT,"ERROR pulse, 7 cycle(s) after the bad-parity packet"
 2525,INFO,DUT,DUT,IN  pkt #6 header: addr=2 len=56 -> channel 2
 2535,INFO,DUT,DUT,OUT ch1 pkt #2 done: 23 bytes in 34 cycles
 2535,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #2: addr=1 len=21 parity=bad
@@ -120,7 +120,7 @@ time_ns,severity,who,id,event
 4415,INFO,reference,router_reference,Packet forwarded: addr=1 len=41 -> channel 1
 4420,INFO,yapp driver,yapp_tx_driver,TX pkt #8 accepted by the DUT
 4420,INFO,yapp driver,yapp_tx_driver,TX pkt #9: addr=2 len=38 parity=good delay=20
-4465,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+4470,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
 4520,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
 4625,INFO,DUT,DUT,IN  pkt #9 header: addr=2 len=38 -> channel 2
 4625,INFO,DUT,DUT,OUT ch1 pkt #3 done: 43 bytes in 53 cycles
@@ -159,6 +159,7 @@ time_ns,severity,who,id,event
 5400,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 3 packets collected
 5400,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
 5400,INFO,reference,router_reference,
+5400,INFO,reference,router_reference,Coverage of the router configuration: 39.1%
 5400,INFO,scoreboard,router_scoreboard,
 5400,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 9 packets sent
 5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 9 packets collected, coverage 46.7%"

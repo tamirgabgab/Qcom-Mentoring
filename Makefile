@@ -10,7 +10,7 @@
 #   make setup-sim            install Verilator + UVM for the free flow (scripts/setup_sim.sh)
 #   make sim LAB=lab07_integ TEST=simple_test [WAVES=1]   run one lab test with Verilator
 #   make sim-project TEST=reg_function_test [WAVES=1]     run a project test with Verilator
-#   make regress              every lab and test with Verilator (scripts/regress.yaml) [SEEDS=3] [ONLY=lab09] [WAVES=1]
+#   make regress              every lab and test with Verilator (scripts/regress.yaml, its seeds) [SEEDS=3 for all] [ONLY=lab09] [WAVES=1]
 #   make sim-report           bundle the logs of the last regression: one folder per run with the log,
 #                             a timeline, the waves and wave pictures (scripts/sim_report.py) [ONLY=yapp_project]
 #                             [OUT=yapp_project/regression] writes the committed report of the project

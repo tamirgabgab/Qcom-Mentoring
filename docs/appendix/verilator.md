@@ -77,8 +77,10 @@ From the root: `make sim LAB=lab07_integ TEST=simple_test`,
 ## The regression
 
 `make regress` compiles every simulation directory listed in
-`scripts/regress.yaml` once and runs each of its tests (`SEEDS=3` for more
-seeds, `ONLY=lab09` for some directories, `WAVES=1` to record the waves and the
+`scripts/regress.yaml` once and runs each of its tests with the seeds the file
+gives it (one per lab test; 4 per directed project test and 8 per random test,
+`{seeds: N, tests: [...]}` per bench or `{test: x, seeds: N}` per test;
+`SEEDS=3` gives every test 3 instead), `ONLY=lab09` for some directories, `WAVES=1` to record the waves and the
 signal trace of every run). The table goes to `build/sim/regress.md`;
 `make sim-report` then bundles the logs, timelines, waves and pictures of every
 run into `build/sim/report/` ([Logs, timelines and waves](sim-report.md)).

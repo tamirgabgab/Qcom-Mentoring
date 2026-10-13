@@ -1,0 +1,1220 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,"STAGE: receivers: ch0 RX_SLOW, ch1 RX_NORMAL, ch2 RX_SLOW"
+0,INFO,test,TEST,STAGE: random scenario: 95 packets in 4 bursts
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x59
+75,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=25
+75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x59
+75,INFO,reference,router_reference,maxpktsize is now 25
+90,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x8f
+95,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x8f
+95,INFO,reference,router_reference,router_en is now 1 (en_reg 0x8f)
+110,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1102 data=0x2d
+115,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1102 data=0x2d
+140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1102 data=0x2d
+145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1102 data=0x2d
+160,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1127 data=0xc7
+165,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1127 data=0xc7
+190,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1127 data=0xc7
+195,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1127 data=0xc7
+210,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11c0 data=0xa4
+215,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11c0 data=0xa4
+240,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11c0 data=0xa4
+245,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11c0 data=0xa4
+270,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x00
+275,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x00
+290,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1119 data=0x78
+295,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1119 data=0x78
+320,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1119 data=0x78
+325,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1119 data=0x78
+350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100c data=0x00
+355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100c data=0x00
+370,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1189 data=0x59
+375,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1189 data=0x59
+400,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1189 data=0x59
+400,INFO,test,TEST,"STAGE: burst 1/4: ctrl=0x59 (maxpktsize 25) en=0x8f (router on, counter enables 1000111), 24 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity"
+400,INFO,yapp driver,yapp_tx_driver,TX pkt #1: addr=3 len=2 parity=good delay=0
+405,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1189 data=0x59
+415,INFO,DUT,DUT,IN  pkt #1 header: addr=3 len=2 -> DROP (illegal address 3)
+445,INFO,DUT,DUT,"IN  pkt #1 complete: addr=3 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)"
+445,INFO,yapp monitor,yapp_tx_monitor,RX pkt #1 on the input: addr=3 len=2 parity=good gap=36
+445,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=2)
+445,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=2 (    illegal address)
+450,INFO,yapp driver,yapp_tx_driver,TX pkt #1 accepted by the DUT
+450,INFO,yapp driver,yapp_tx_driver,TX pkt #2: addr=2 len=1 parity=good delay=0
+455,INFO,DUT,DUT,IN  pkt #2 header: addr=2 len=1 -> channel 2
+475,INFO,DUT,DUT,"IN  pkt #2 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+475,INFO,yapp monitor,yapp_tx_monitor,RX pkt #2 on the input: addr=2 len=1 parity=good gap=0
+475,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+480,INFO,yapp driver,yapp_tx_driver,TX pkt #2 accepted by the DUT
+480,INFO,yapp driver,yapp_tx_driver,TX pkt #3: addr=0 len=2 parity=good delay=2
+505,INFO,DUT,DUT,IN  pkt #3 header: addr=0 len=2 -> channel 0
+535,INFO,DUT,DUT,"IN  pkt #3 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+535,INFO,yapp monitor,yapp_tx_monitor,RX pkt #3 on the input: addr=0 len=2 parity=good gap=2
+535,INFO,reference,router_reference,Packet forwarded: addr=0 len=2 -> channel 0
+540,INFO,yapp driver,yapp_tx_driver,TX pkt #3 accepted by the DUT
+540,INFO,yapp driver,yapp_tx_driver,TX pkt #4: addr=1 len=1 parity=good delay=0
+545,INFO,DUT,DUT,IN  pkt #4 header: addr=1 len=1 -> channel 1
+565,INFO,DUT,DUT,"IN  pkt #4 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+565,INFO,yapp monitor,yapp_tx_monitor,RX pkt #4 on the input: addr=1 len=1 parity=good gap=0
+565,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+570,INFO,yapp driver,yapp_tx_driver,TX pkt #4 accepted by the DUT
+570,INFO,yapp driver,yapp_tx_driver,TX pkt #5: addr=1 len=2 parity=good delay=0
+575,INFO,DUT,DUT,IN  pkt #5 header: addr=1 len=2 -> channel 1
+605,INFO,DUT,DUT,"IN  pkt #5 complete: addr=1 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+605,INFO,yapp monitor,yapp_tx_monitor,RX pkt #5 on the input: addr=1 len=2 parity=good gap=0
+605,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+610,INFO,yapp driver,yapp_tx_driver,TX pkt #5 accepted by the DUT
+610,INFO,yapp driver,yapp_tx_driver,TX pkt #6: addr=1 len=2 parity=good delay=0
+615,INFO,DUT,DUT,IN  pkt #6 header: addr=1 len=2 -> channel 1
+615,INFO,DUT,DUT,OUT ch1 pkt #1 start: addr=1 len=1 (receiver waited 6 cycle(s))
+630,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 6)
+645,INFO,DUT,DUT,"IN  pkt #6 complete: addr=1 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+645,INFO,yapp monitor,yapp_tx_monitor,RX pkt #6 on the input: addr=1 len=2 parity=good gap=0
+645,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+650,INFO,yapp driver,yapp_tx_driver,TX pkt #6 accepted by the DUT
+650,INFO,yapp driver,yapp_tx_driver,TX pkt #7: addr=2 len=2 parity=bad delay=0
+655,INFO,DUT,DUT,IN  pkt #7 header: addr=2 len=2 -> channel 2
+685,INFO,DUT,DUT,"IN  pkt #7 complete: addr=2 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+685,INFO,yapp monitor,yapp_tx_monitor,RX pkt #7 on the input: addr=2 len=2 parity=bad gap=0
+685,INFO,reference,router_reference,Packet forwarded: addr=2 len=2 -> channel 2
+690,INFO,yapp driver,yapp_tx_driver,TX pkt #7 accepted by the DUT
+690,INFO,yapp driver,yapp_tx_driver,TX pkt #8: addr=2 len=1 parity=bad delay=0
+695,INFO,DUT,DUT,IN  pkt #8 header: addr=2 len=1 -> channel 2
+715,INFO,DUT,DUT,"IN  pkt #8 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+715,INFO,yapp monitor,yapp_tx_monitor,RX pkt #8 on the input: addr=2 len=1 parity=bad gap=0
+715,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+720,INFO,yapp driver,yapp_tx_driver,TX pkt #8 accepted by the DUT
+720,INFO,yapp driver,yapp_tx_driver,TX pkt #9: addr=3 len=1 parity=good delay=0
+725,INFO,DUT,DUT,IN  pkt #9 header: addr=3 len=1 -> DROP (illegal address 3)
+735,INFO,DUT,DUT,OUT ch1 pkt #1 done: 3 bytes in 13 cycles
+735,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #1: addr=1 len=1 parity=good
+735,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (1 matched so far)
+745,INFO,DUT,DUT,"IN  pkt #9 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)"
+745,INFO,DUT,DUT,OUT ch1 pkt #2 start: addr=1 len=2 (receiver waited 0 cycle(s))
+745,INFO,yapp monitor,yapp_tx_monitor,RX pkt #9 on the input: addr=3 len=1 parity=good gap=0
+745,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=1)
+745,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=1 (    illegal address)
+750,INFO,DUT,DUT,"ERROR pulse, 6 cycle(s) after the bad-parity packet (1 more owed)"
+750,INFO,error checker,ERR_PULSE,error pulse 6 cycles after the bad packet (1 still owed)
+750,INFO,yapp driver,yapp_tx_driver,TX pkt #9 accepted by the DUT
+750,INFO,yapp driver,yapp_tx_driver,TX pkt #10: addr=0 len=2 parity=good delay=1
+760,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+760,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+765,INFO,DUT,DUT,IN  pkt #10 header: addr=0 len=2 -> channel 0
+775,INFO,DUT,DUT,OUT ch1 pkt #2 done: 4 bytes in 4 cycles
+775,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #2: addr=1 len=2 parity=good
+775,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (2 matched so far)
+785,INFO,DUT,DUT,OUT ch1 pkt #3 start: addr=1 len=2 (receiver waited 0 cycle(s))
+795,INFO,DUT,DUT,"IN  pkt #10 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+795,INFO,DUT,DUT,OUT ch0 pkt #1 start: addr=0 len=2 (receiver waited 28 cycle(s))
+795,INFO,yapp monitor,yapp_tx_monitor,RX pkt #10 on the input: addr=0 len=2 parity=good gap=1
+795,INFO,reference,router_reference,Packet forwarded: addr=0 len=2 -> channel 0
+800,INFO,yapp driver,yapp_tx_driver,TX pkt #10 accepted by the DUT
+800,INFO,yapp driver,yapp_tx_driver,TX pkt #11: addr=1 len=2 parity=bad delay=0
+805,INFO,DUT,DUT,IN  pkt #11 header: addr=1 len=2 -> channel 1
+805,INFO,DUT,DUT,OUT ch2 pkt #1 start: addr=2 len=1 (receiver waited 34 cycle(s))
+815,INFO,DUT,DUT,OUT ch1 pkt #3 done: 4 bytes in 4 cycles
+815,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #3: addr=1 len=2 parity=good
+815,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (3 matched so far)
+820,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 28)
+820,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 34)
+825,INFO,DUT,DUT,OUT ch1 pkt #4 start: addr=1 len=2 (receiver waited 0 cycle(s))
+835,INFO,DUT,DUT,"IN  pkt #11 complete: addr=1 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+835,INFO,yapp monitor,yapp_tx_monitor,RX pkt #11 on the input: addr=1 len=2 parity=bad gap=0
+835,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+840,INFO,yapp driver,yapp_tx_driver,TX pkt #11 accepted by the DUT
+840,INFO,yapp driver,yapp_tx_driver,TX pkt #12: addr=2 len=1 parity=bad delay=0
+845,INFO,DUT,DUT,IN  pkt #12 header: addr=2 len=1 -> channel 2
+855,INFO,DUT,DUT,OUT ch1 pkt #4 done: 4 bytes in 4 cycles
+855,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #4: addr=1 len=2 parity=bad
+855,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (4 matched so far)
+865,INFO,DUT,DUT,"IN  pkt #12 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+865,INFO,yapp monitor,yapp_tx_monitor,RX pkt #12 on the input: addr=2 len=1 parity=bad gap=0
+865,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+870,INFO,yapp driver,yapp_tx_driver,TX pkt #12 accepted by the DUT
+870,INFO,yapp driver,yapp_tx_driver,TX pkt #13: addr=1 len=2 parity=bad delay=0
+875,INFO,DUT,DUT,IN  pkt #13 header: addr=1 len=2 -> channel 1
+885,INFO,DUT,DUT,OUT ch1 pkt #5 start: addr=1 len=2 (receiver waited 0 cycle(s))
+890,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet (1 more owed)"
+890,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (1 still owed)
+900,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+900,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
+905,INFO,DUT,DUT,"IN  pkt #13 complete: addr=1 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+905,INFO,yapp monitor,yapp_tx_monitor,RX pkt #13 on the input: addr=1 len=2 parity=bad gap=0
+905,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+910,INFO,yapp driver,yapp_tx_driver,TX pkt #13 accepted by the DUT
+910,INFO,yapp driver,yapp_tx_driver,TX pkt #14: addr=2 len=1 parity=good delay=0
+915,INFO,DUT,DUT,IN  pkt #14 header: addr=2 len=1 -> channel 2
+915,INFO,DUT,DUT,OUT ch1 pkt #5 done: 4 bytes in 4 cycles
+915,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #5: addr=1 len=2 parity=bad
+915,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (5 matched so far)
+935,INFO,DUT,DUT,"IN  pkt #14 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+935,INFO,yapp monitor,yapp_tx_monitor,RX pkt #14 on the input: addr=2 len=1 parity=good gap=0
+935,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+940,INFO,yapp driver,yapp_tx_driver,TX pkt #14 accepted by the DUT
+940,INFO,yapp driver,yapp_tx_driver,TX pkt #15: addr=1 len=1 parity=good delay=0
+945,INFO,DUT,DUT,IN  pkt #15 header: addr=1 len=1 -> channel 1
+955,INFO,DUT,DUT,OUT ch1 pkt #6 start: addr=1 len=1 (receiver waited 0 cycle(s))
+965,INFO,DUT,DUT,"IN  pkt #15 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+965,INFO,yapp monitor,yapp_tx_monitor,RX pkt #15 on the input: addr=1 len=1 parity=good gap=0
+965,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+970,INFO,DUT,DUT,"ERROR pulse, 6 cycle(s) after the bad-parity packet"
+970,INFO,error checker,ERR_PULSE,error pulse 6 cycles after the bad packet (0 still owed)
+970,INFO,yapp driver,yapp_tx_driver,TX pkt #15 accepted by the DUT
+970,INFO,yapp driver,yapp_tx_driver,TX pkt #16: addr=3 len=3 parity=good delay=0
+975,INFO,DUT,DUT,IN  pkt #16 header: addr=3 len=3 -> DROP (illegal address 3)
+975,INFO,DUT,DUT,OUT ch1 pkt #6 done: 3 bytes in 3 cycles
+975,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #6: addr=1 len=1 parity=good
+975,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (6 matched so far)
+1015,INFO,DUT,DUT,"IN  pkt #16 complete: addr=3 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)"
+1015,INFO,yapp monitor,yapp_tx_monitor,RX pkt #16 on the input: addr=3 len=3 parity=good gap=0
+1015,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=3)
+1015,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=3 (    illegal address)
+1020,INFO,yapp driver,yapp_tx_driver,TX pkt #16 accepted by the DUT
+1020,INFO,yapp driver,yapp_tx_driver,TX pkt #17: addr=3 len=1 parity=good delay=0
+1025,INFO,DUT,DUT,IN  pkt #17 header: addr=3 len=1 -> DROP (illegal address 3)
+1045,INFO,DUT,DUT,"IN  pkt #17 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)"
+1045,INFO,yapp monitor,yapp_tx_monitor,RX pkt #17 on the input: addr=3 len=1 parity=good gap=0
+1045,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=1)
+1045,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=1 (    illegal address)
+1050,INFO,yapp driver,yapp_tx_driver,TX pkt #17 accepted by the DUT
+1050,INFO,yapp driver,yapp_tx_driver,TX pkt #18: addr=2 len=1 parity=good delay=2
+1075,INFO,DUT,DUT,IN  pkt #18 header: addr=2 len=1 -> channel 2
+1075,INFO,DUT,DUT,OUT ch0 pkt #1 done: 4 bytes in 29 cycles
+1075,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #1: addr=0 len=2 parity=good
+1075,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=2 (7 matched so far)
+1085,INFO,DUT,DUT,OUT ch0 pkt #2 start: addr=0 len=2 (receiver waited 0 cycle(s))
+1095,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xb5 held (pkt #18)"
+1115,INFO,DUT,DUT,OUT ch0 pkt #2 done: 4 bytes in 4 cycles
+1115,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #2: addr=0 len=2 parity=good
+1115,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=2 (8 matched so far)
+1130,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
+1165,INFO,DUT,DUT,OUT ch2 pkt #1 done: 3 bytes in 37 cycles
+1165,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #1: addr=2 len=1 parity=good
+1165,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (9 matched so far)
+1175,INFO,DUT,DUT,"IN  pkt #18 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 11 cycles (held 8)"
+1175,INFO,DUT,DUT,SUSPEND released after 8 cycle(s)
+1175,INFO,DUT,DUT,OUT ch2 pkt #2 start: addr=2 len=2 (receiver waited 0 cycle(s))
+1175,INFO,yapp monitor,yapp_tx_monitor,RX pkt #18 on the input: addr=2 len=1 parity=good gap=2
+1175,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+1180,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 24)
+1180,INFO,yapp driver,yapp_tx_driver,TX pkt #18 accepted by the DUT
+1180,INFO,yapp driver,yapp_tx_driver,TX pkt #19: addr=1 len=1 parity=good delay=0
+1185,INFO,DUT,DUT,IN  pkt #19 header: addr=1 len=1 -> channel 1
+1205,INFO,DUT,DUT,"IN  pkt #19 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1205,INFO,DUT,DUT,OUT ch2 pkt #2 done: 4 bytes in 4 cycles
+1205,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #2: addr=2 len=2 parity=bad
+1205,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=2 (10 matched so far)
+1205,INFO,yapp monitor,yapp_tx_monitor,RX pkt #19 on the input: addr=1 len=1 parity=good gap=0
+1205,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+1210,INFO,yapp driver,yapp_tx_driver,TX pkt #19 accepted by the DUT
+1210,INFO,yapp driver,yapp_tx_driver,TX pkt #20: addr=3 len=2 parity=good delay=0
+1215,INFO,DUT,DUT,IN  pkt #20 header: addr=3 len=2 -> DROP (illegal address 3)
+1215,INFO,DUT,DUT,OUT ch2 pkt #3 start: addr=2 len=1 (receiver waited 0 cycle(s))
+1225,INFO,DUT,DUT,OUT ch1 pkt #7 start: addr=1 len=1 (receiver waited 3 cycle(s))
+1235,INFO,DUT,DUT,OUT ch2 pkt #3 done: 3 bytes in 3 cycles
+1235,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #3: addr=2 len=1 parity=bad
+1235,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (11 matched so far)
+1240,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 3)
+1245,INFO,DUT,DUT,"IN  pkt #20 complete: addr=3 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)"
+1245,INFO,DUT,DUT,OUT ch2 pkt #4 start: addr=2 len=1 (receiver waited 0 cycle(s))
+1245,INFO,yapp monitor,yapp_tx_monitor,RX pkt #20 on the input: addr=3 len=2 parity=good gap=0
+1245,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=2)
+1245,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=2 (    illegal address)
+1250,INFO,yapp driver,yapp_tx_driver,TX pkt #20 accepted by the DUT
+1250,INFO,yapp driver,yapp_tx_driver,TX pkt #21: addr=0 len=1 parity=bad delay=0
+1255,INFO,DUT,DUT,IN  pkt #21 header: addr=0 len=1 -> channel 0
+1265,INFO,DUT,DUT,OUT ch2 pkt #4 done: 3 bytes in 3 cycles
+1265,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #4: addr=2 len=1 parity=bad
+1265,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (12 matched so far)
+1275,INFO,DUT,DUT,"IN  pkt #21 complete: addr=0 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1275,INFO,DUT,DUT,OUT ch2 pkt #5 start: addr=2 len=1 (receiver waited 0 cycle(s))
+1275,INFO,yapp monitor,yapp_tx_monitor,RX pkt #21 on the input: addr=0 len=1 parity=bad gap=0
+1275,INFO,reference,router_reference,Packet forwarded: addr=0 len=1 -> channel 0
+1280,INFO,yapp driver,yapp_tx_driver,TX pkt #21 accepted by the DUT
+1280,INFO,yapp driver,yapp_tx_driver,TX pkt #22: addr=1 len=1 parity=good delay=0
+1285,INFO,DUT,DUT,IN  pkt #22 header: addr=1 len=1 -> channel 1
+1290,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+1290,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+1295,INFO,DUT,DUT,OUT ch2 pkt #5 done: 3 bytes in 3 cycles
+1295,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #5: addr=2 len=1 parity=good
+1295,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (13 matched so far)
+1305,INFO,DUT,DUT,"IN  pkt #22 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1305,INFO,DUT,DUT,OUT ch2 pkt #6 start: addr=2 len=1 (receiver waited 0 cycle(s))
+1305,INFO,yapp monitor,yapp_tx_monitor,RX pkt #22 on the input: addr=1 len=1 parity=good gap=0
+1305,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+1310,INFO,yapp driver,yapp_tx_driver,TX pkt #22 accepted by the DUT
+1310,INFO,yapp driver,yapp_tx_driver,TX pkt #23: addr=3 len=3 parity=bad delay=0
+1315,INFO,DUT,DUT,IN  pkt #23 header: addr=3 len=3 -> DROP (illegal address 3)
+1315,INFO,DUT,DUT,OUT ch1 pkt #7 done: 3 bytes in 10 cycles
+1315,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #7: addr=1 len=1 parity=good
+1315,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (14 matched so far)
+1325,INFO,DUT,DUT,OUT ch1 pkt #8 start: addr=1 len=1 (receiver waited 0 cycle(s))
+1325,INFO,DUT,DUT,OUT ch2 pkt #6 done: 3 bytes in 3 cycles
+1325,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #6: addr=2 len=1 parity=good
+1325,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (15 matched so far)
+1345,INFO,DUT,DUT,OUT ch1 pkt #8 done: 3 bytes in 3 cycles
+1345,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #8: addr=1 len=1 parity=good
+1345,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (16 matched so far)
+1355,INFO,DUT,DUT,"IN  pkt #23 complete: addr=3 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0)"
+1355,INFO,yapp monitor,yapp_tx_monitor,RX pkt #23 on the input: addr=3 len=3 parity=bad gap=0
+1355,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=3)
+1355,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=3 (    illegal address)
+1360,INFO,yapp driver,yapp_tx_driver,TX pkt #23 accepted by the DUT
+1360,INFO,yapp driver,yapp_tx_driver,TX pkt #24: addr=1 len=2 parity=good delay=0
+1365,INFO,DUT,DUT,IN  pkt #24 header: addr=1 len=2 -> channel 1
+1375,INFO,DUT,DUT,OUT ch1 pkt #9 start: addr=1 len=2 (receiver waited 0 cycle(s))
+1390,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+1390,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
+1395,INFO,DUT,DUT,"IN  pkt #24 complete: addr=1 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+1395,INFO,yapp monitor,yapp_tx_monitor,RX pkt #24 on the input: addr=1 len=2 parity=good gap=0
+1395,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+1400,INFO,yapp driver,yapp_tx_driver,TX pkt #24 accepted by the DUT
+1400,INFO,test,TEST,"STAGE: burst 1/4 sent: addr0..3 3/9/6/6, bad parity 7, gap 0 21, length 1..3"
+1405,INFO,DUT,DUT,OUT ch1 pkt #9 done: 4 bytes in 4 cycles
+1405,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #9: addr=1 len=2 parity=good
+1405,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (17 matched so far)
+1420,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xff
+1425,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+1425,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xff
+1425,INFO,reference,router_reference,maxpktsize is now 63
+1440,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x55
+1445,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x55
+1445,INFO,reference,router_reference,router_en is now 1 (en_reg 0x55)
+1465,INFO,DUT,DUT,OUT ch0 pkt #3 start: addr=0 len=1 (receiver waited 20 cycle(s))
+1470,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 33)
+1470,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x104f data=0x00
+1475,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x104f data=0x00
+1480,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 20)
+1490,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x11d8 data=0xe0
+1495,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x11d8 data=0xe0
+1520,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x11d8 data=0xe0
+1525,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x11d8 data=0xe0
+1540,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x110e data=0xbd
+1545,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x110e data=0xbd
+1570,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x110e data=0xbd
+1575,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x110e data=0xbd
+1590,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1128 data=0xd9
+1595,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1128 data=0xd9
+1620,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1128 data=0xd9
+1620,INFO,test,TEST,"STAGE: burst 2/4: ctrl=0xff (maxpktsize 63) en=0x55 (router on, counter enables 0101010), 24 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity"
+1620,INFO,yapp driver,yapp_tx_driver,TX pkt #25: addr=0 len=1 parity=bad delay=0
+1625,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1128 data=0xd9
+1635,INFO,DUT,DUT,IN  pkt #25 header: addr=0 len=1 -> channel 0
+1655,INFO,DUT,DUT,"IN  pkt #25 complete: addr=0 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1655,INFO,yapp monitor,yapp_tx_monitor,RX pkt #25 on the input: addr=0 len=1 parity=bad gap=23
+1655,INFO,reference,router_reference,Packet forwarded: addr=0 len=1 -> channel 0
+1660,INFO,yapp driver,yapp_tx_driver,TX pkt #25 accepted by the DUT
+1660,INFO,yapp driver,yapp_tx_driver,TX pkt #26: addr=0 len=1 parity=good delay=0
+1665,INFO,DUT,DUT,IN  pkt #26 header: addr=0 len=1 -> channel 0
+1670,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+1670,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+1685,INFO,DUT,DUT,"IN  pkt #26 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1685,INFO,yapp monitor,yapp_tx_monitor,RX pkt #26 on the input: addr=0 len=1 parity=good gap=0
+1685,INFO,reference,router_reference,Packet forwarded: addr=0 len=1 -> channel 0
+1690,INFO,yapp driver,yapp_tx_driver,TX pkt #26 accepted by the DUT
+1690,INFO,yapp driver,yapp_tx_driver,TX pkt #27: addr=0 len=2 parity=good delay=0
+1695,INFO,DUT,DUT,IN  pkt #27 header: addr=0 len=2 -> channel 0
+1705,INFO,DUT,DUT,OUT ch0 pkt #3 done: 3 bytes in 25 cycles
+1705,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #3: addr=0 len=1 parity=bad
+1705,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=1 (18 matched so far)
+1715,INFO,DUT,DUT,OUT ch0 pkt #4 start: addr=0 len=1 (receiver waited 0 cycle(s))
+1725,INFO,DUT,DUT,"IN  pkt #27 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)"
+1725,INFO,yapp monitor,yapp_tx_monitor,RX pkt #27 on the input: addr=0 len=2 parity=good gap=0
+1725,INFO,reference,router_reference,Packet forwarded: addr=0 len=2 -> channel 0
+1730,INFO,yapp driver,yapp_tx_driver,TX pkt #27 accepted by the DUT
+1730,INFO,yapp driver,yapp_tx_driver,TX pkt #28: addr=2 len=1 parity=good delay=0
+1735,INFO,DUT,DUT,IN  pkt #28 header: addr=2 len=1 -> channel 2
+1735,INFO,DUT,DUT,OUT ch0 pkt #4 done: 3 bytes in 3 cycles
+1735,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #4: addr=0 len=1 parity=bad
+1735,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=1 (19 matched so far)
+1745,INFO,DUT,DUT,OUT ch0 pkt #5 start: addr=0 len=1 (receiver waited 0 cycle(s))
+1755,INFO,DUT,DUT,"IN  pkt #28 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1755,INFO,yapp monitor,yapp_tx_monitor,RX pkt #28 on the input: addr=2 len=1 parity=good gap=0
+1755,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+1760,INFO,yapp driver,yapp_tx_driver,TX pkt #28 accepted by the DUT
+1760,INFO,yapp driver,yapp_tx_driver,TX pkt #29: addr=0 len=1 parity=bad delay=0
+1765,INFO,DUT,DUT,IN  pkt #29 header: addr=0 len=1 -> channel 0
+1765,INFO,DUT,DUT,OUT ch0 pkt #5 done: 3 bytes in 3 cycles
+1765,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #5: addr=0 len=1 parity=good
+1765,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=1 (20 matched so far)
+1775,INFO,DUT,DUT,OUT ch0 pkt #6 start: addr=0 len=2 (receiver waited 0 cycle(s))
+1785,INFO,DUT,DUT,"IN  pkt #29 complete: addr=0 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1785,INFO,yapp monitor,yapp_tx_monitor,RX pkt #29 on the input: addr=0 len=1 parity=bad gap=0
+1785,INFO,reference,router_reference,Packet forwarded: addr=0 len=1 -> channel 0
+1790,INFO,yapp driver,yapp_tx_driver,TX pkt #29 accepted by the DUT
+1790,INFO,yapp driver,yapp_tx_driver,TX pkt #30: addr=2 len=1 parity=bad delay=0
+1795,INFO,DUT,DUT,IN  pkt #30 header: addr=2 len=1 -> channel 2
+1805,INFO,DUT,DUT,OUT ch0 pkt #6 done: 4 bytes in 4 cycles
+1805,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #6: addr=0 len=2 parity=good
+1805,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=2 (21 matched so far)
+1815,INFO,DUT,DUT,"IN  pkt #30 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1815,INFO,DUT,DUT,OUT ch0 pkt #7 start: addr=0 len=1 (receiver waited 0 cycle(s))
+1815,INFO,yapp monitor,yapp_tx_monitor,RX pkt #30 on the input: addr=2 len=1 parity=bad gap=0
+1815,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+1820,INFO,yapp driver,yapp_tx_driver,TX pkt #30 accepted by the DUT
+1820,INFO,yapp driver,yapp_tx_driver,TX pkt #31: addr=1 len=1 parity=bad delay=0
+1825,INFO,DUT,DUT,IN  pkt #31 header: addr=1 len=1 -> channel 1
+1830,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet (1 more owed)"
+1830,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (1 still owed)
+1835,INFO,DUT,DUT,OUT ch0 pkt #7 done: 3 bytes in 3 cycles
+1835,INFO,DUT,DUT,OUT ch1 pkt #10 start: addr=1 len=1 (receiver waited 0 cycle(s))
+1835,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #7: addr=0 len=1 parity=bad
+1835,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=1 (22 matched so far)
+1840,INFO,DUT,DUT,"ERROR pulse, 2 cycle(s) after the bad-parity packet"
+1840,INFO,error checker,ERR_PULSE,error pulse 2 cycles after the bad packet (0 still owed)
+1845,INFO,DUT,DUT,"IN  pkt #31 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1845,INFO,yapp monitor,yapp_tx_monitor,RX pkt #31 on the input: addr=1 len=1 parity=bad gap=0
+1845,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+1850,INFO,yapp driver,yapp_tx_driver,TX pkt #31 accepted by the DUT
+1850,INFO,yapp driver,yapp_tx_driver,TX pkt #32: addr=1 len=1 parity=good delay=0
+1855,INFO,DUT,DUT,IN  pkt #32 header: addr=1 len=1 -> channel 1
+1855,INFO,DUT,DUT,OUT ch1 pkt #10 done: 3 bytes in 3 cycles
+1855,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #10: addr=1 len=1 parity=bad
+1855,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (23 matched so far)
+1860,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 6)
+1875,INFO,DUT,DUT,"IN  pkt #32 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1875,INFO,yapp monitor,yapp_tx_monitor,RX pkt #32 on the input: addr=1 len=1 parity=good gap=0
+1875,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+1880,INFO,yapp driver,yapp_tx_driver,TX pkt #32 accepted by the DUT
+1880,INFO,yapp driver,yapp_tx_driver,TX pkt #33: addr=2 len=1 parity=bad delay=0
+1885,INFO,DUT,DUT,IN  pkt #33 header: addr=2 len=1 -> channel 2
+1890,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+1890,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+1905,INFO,DUT,DUT,"IN  pkt #33 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1905,INFO,DUT,DUT,OUT ch1 pkt #11 start: addr=1 len=1 (receiver waited 4 cycle(s))
+1905,INFO,yapp monitor,yapp_tx_monitor,RX pkt #33 on the input: addr=2 len=1 parity=bad gap=0
+1905,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+1910,INFO,yapp driver,yapp_tx_driver,TX pkt #33 accepted by the DUT
+1910,INFO,yapp driver,yapp_tx_driver,TX pkt #34: addr=1 len=1 parity=good delay=0
+1915,INFO,DUT,DUT,IN  pkt #34 header: addr=1 len=1 -> channel 1
+1920,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 3)
+1935,INFO,DUT,DUT,"IN  pkt #34 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+1935,INFO,yapp monitor,yapp_tx_monitor,RX pkt #34 on the input: addr=1 len=1 parity=good gap=0
+1935,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+1940,INFO,yapp driver,yapp_tx_driver,TX pkt #34 accepted by the DUT
+1940,INFO,yapp driver,yapp_tx_driver,TX pkt #35: addr=2 len=1 parity=bad delay=0
+1945,INFO,DUT,DUT,IN  pkt #35 header: addr=2 len=1 -> channel 2
+1965,INFO,DUT,DUT,"IN  pkt #35 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+1965,INFO,yapp monitor,yapp_tx_monitor,RX pkt #35 on the input: addr=2 len=1 parity=bad gap=0
+1965,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+1970,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 21)
+1970,INFO,yapp driver,yapp_tx_driver,TX pkt #35 accepted by the DUT
+1970,INFO,yapp driver,yapp_tx_driver,TX pkt #36: addr=1 len=2 parity=bad delay=0
+1975,INFO,DUT,DUT,IN  pkt #36 header: addr=1 len=2 -> channel 1
+2005,INFO,DUT,DUT,"IN  pkt #36 complete: addr=1 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+2005,INFO,yapp monitor,yapp_tx_monitor,RX pkt #36 on the input: addr=1 len=2 parity=bad gap=0
+2005,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+2010,INFO,DUT,DUT,"ERROR pulse, 10 cycle(s) after the bad-parity packet (2 more owed)"
+2010,INFO,error checker,ERR_PULSE,error pulse 10 cycles after the bad packet (2 still owed)
+2010,INFO,yapp driver,yapp_tx_driver,TX pkt #36 accepted by the DUT
+2010,INFO,yapp driver,yapp_tx_driver,TX pkt #37: addr=2 len=1 parity=bad delay=0
+2015,INFO,DUT,DUT,IN  pkt #37 header: addr=2 len=1 -> channel 2
+2030,INFO,DUT,DUT,"ERROR pulse, 6 cycle(s) after the bad-parity packet (1 more owed)"
+2030,INFO,error checker,ERR_PULSE,error pulse 6 cycles after the bad packet (1 still owed)
+2035,INFO,DUT,DUT,"IN  pkt #37 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+2035,INFO,DUT,DUT,OUT ch1 pkt #11 done: 3 bytes in 14 cycles
+2035,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #11: addr=1 len=1 parity=good
+2035,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (24 matched so far)
+2035,INFO,yapp monitor,yapp_tx_monitor,RX pkt #37 on the input: addr=2 len=1 parity=bad gap=0
+2035,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+2040,INFO,yapp driver,yapp_tx_driver,TX pkt #37 accepted by the DUT
+2040,INFO,yapp driver,yapp_tx_driver,TX pkt #38: addr=1 len=2 parity=bad delay=1
+2045,INFO,DUT,DUT,OUT ch1 pkt #12 start: addr=1 len=1 (receiver waited 0 cycle(s))
+2050,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet (1 more owed)"
+2050,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (1 still owed)
+2055,INFO,DUT,DUT,IN  pkt #38 header: addr=1 len=2 -> channel 1
+2065,INFO,DUT,DUT,OUT ch1 pkt #12 done: 3 bytes in 3 cycles
+2065,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #12: addr=1 len=1 parity=good
+2065,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (25 matched so far)
+2075,INFO,DUT,DUT,OUT ch1 pkt #13 start: addr=1 len=2 (receiver waited 0 cycle(s))
+2085,INFO,DUT,DUT,"IN  pkt #38 complete: addr=1 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+2085,INFO,yapp monitor,yapp_tx_monitor,RX pkt #38 on the input: addr=1 len=2 parity=bad gap=1
+2085,INFO,reference,router_reference,Packet forwarded: addr=1 len=2 -> channel 1
+2090,INFO,yapp driver,yapp_tx_driver,TX pkt #38 accepted by the DUT
+2090,INFO,yapp driver,yapp_tx_driver,TX pkt #39: addr=2 len=3 parity=bad delay=0
+2095,INFO,DUT,DUT,IN  pkt #39 header: addr=2 len=3 -> channel 2
+2095,INFO,DUT,DUT,OUT ch2 pkt #7 start: addr=2 len=1 (receiver waited 35 cycle(s))
+2105,INFO,DUT,DUT,OUT ch1 pkt #13 done: 4 bytes in 4 cycles
+2105,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #13: addr=1 len=2 parity=bad
+2105,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (26 matched so far)
+2110,INFO,DUT,DUT,"ERROR pulse, 7 cycle(s) after the bad-parity packet (1 more owed)"
+2110,INFO,error checker,ERR_PULSE,error pulse 7 cycles after the bad packet (1 still owed)
+2110,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 35)
+2115,INFO,DUT,DUT,OUT ch1 pkt #14 start: addr=1 len=2 (receiver waited 0 cycle(s))
+2120,INFO,DUT,DUT,"ERROR pulse, 3 cycle(s) after the bad-parity packet"
+2120,INFO,error checker,ERR_PULSE,error pulse 3 cycles after the bad packet (0 still owed)
+2125,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x48 held (pkt #39)"
+2145,INFO,DUT,DUT,OUT ch1 pkt #14 done: 4 bytes in 4 cycles
+2145,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #14: addr=1 len=2 parity=bad
+2145,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=2 (27 matched so far)
+2330,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
+2365,INFO,DUT,DUT,OUT ch2 pkt #7 done: 3 bytes in 28 cycles
+2365,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #7: addr=2 len=1 parity=good
+2365,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (28 matched so far)
+2375,INFO,DUT,DUT,SUSPEND released after 25 cycle(s)
+2375,INFO,DUT,DUT,OUT ch2 pkt #8 start: addr=2 len=1 (receiver waited 0 cycle(s))
+2385,INFO,DUT,DUT,"IN  pkt #39 complete: addr=2 len=3 parity=BAD forwarded, 5 bytes in 30 cycles (held 25)"
+2385,INFO,yapp monitor,yapp_tx_monitor,RX pkt #39 on the input: addr=2 len=3 parity=bad gap=0
+2385,INFO,reference,router_reference,Packet forwarded: addr=2 len=3 -> channel 2
+2390,INFO,yapp driver,yapp_tx_driver,TX pkt #39 accepted by the DUT
+2390,INFO,yapp driver,yapp_tx_driver,TX pkt #40: addr=0 len=2 parity=bad delay=1
+2395,INFO,DUT,DUT,OUT ch2 pkt #8 done: 3 bytes in 3 cycles
+2395,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #8: addr=2 len=1 parity=bad
+2395,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (29 matched so far)
+2405,INFO,DUT,DUT,IN  pkt #40 header: addr=0 len=2 -> channel 0
+2405,INFO,DUT,DUT,OUT ch2 pkt #9 start: addr=2 len=1 (receiver waited 0 cycle(s))
+2425,INFO,DUT,DUT,OUT ch2 pkt #9 done: 3 bytes in 3 cycles
+2425,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #9: addr=2 len=1 parity=bad
+2425,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (30 matched so far)
+2435,INFO,DUT,DUT,"IN  pkt #40 complete: addr=0 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)"
+2435,INFO,DUT,DUT,OUT ch2 pkt #10 start: addr=2 len=1 (receiver waited 0 cycle(s))
+2435,INFO,yapp monitor,yapp_tx_monitor,RX pkt #40 on the input: addr=0 len=2 parity=bad gap=1
+2435,INFO,reference,router_reference,Packet forwarded: addr=0 len=2 -> channel 0
+2440,INFO,yapp driver,yapp_tx_driver,TX pkt #40 accepted by the DUT
+2440,INFO,yapp driver,yapp_tx_driver,TX pkt #41: addr=3 len=3 parity=bad delay=0
+2445,INFO,DUT,DUT,IN  pkt #41 header: addr=3 len=3 -> DROP (illegal address 3)
+2455,INFO,DUT,DUT,OUT ch2 pkt #10 done: 3 bytes in 3 cycles
+2455,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #10: addr=2 len=1 parity=bad
+2455,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (31 matched so far)
+2465,INFO,DUT,DUT,OUT ch2 pkt #11 start: addr=2 len=1 (receiver waited 0 cycle(s))
+2485,INFO,DUT,DUT,"IN  pkt #41 complete: addr=3 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0)"
+2485,INFO,DUT,DUT,OUT ch2 pkt #11 done: 3 bytes in 3 cycles
+2485,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #11: addr=2 len=1 parity=bad
+2485,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (32 matched so far)
+2485,INFO,yapp monitor,yapp_tx_monitor,RX pkt #41 on the input: addr=3 len=3 parity=bad gap=0
+2485,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=3)
+2485,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=3 (    illegal address)
+2490,INFO,DUT,DUT,"ERROR pulse, 10 cycle(s) after the bad-parity packet (2 more owed)"
+2490,INFO,error checker,ERR_PULSE,error pulse 10 cycles after the bad packet (2 still owed)
+2490,INFO,yapp driver,yapp_tx_driver,TX pkt #41 accepted by the DUT
+2490,INFO,yapp driver,yapp_tx_driver,TX pkt #42: addr=2 len=1 parity=good delay=0
+2495,INFO,DUT,DUT,IN  pkt #42 header: addr=2 len=1 -> channel 2
+2495,INFO,DUT,DUT,OUT ch2 pkt #12 start: addr=2 len=3 (receiver waited 0 cycle(s))
+2500,INFO,DUT,DUT,"ERROR pulse, 6 cycle(s) after the bad-parity packet (1 more owed)"
+2500,INFO,error checker,ERR_PULSE,error pulse 6 cycles after the bad packet (1 still owed)
+2515,INFO,DUT,DUT,"IN  pkt #42 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+2515,INFO,yapp monitor,yapp_tx_monitor,RX pkt #42 on the input: addr=2 len=1 parity=good gap=0
+2515,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+2520,INFO,yapp driver,yapp_tx_driver,TX pkt #42 accepted by the DUT
+2520,INFO,yapp driver,yapp_tx_driver,TX pkt #43: addr=1 len=1 parity=bad delay=2
+2530,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+2530,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+2535,INFO,DUT,DUT,OUT ch2 pkt #12 done: 5 bytes in 5 cycles
+2535,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #12: addr=2 len=3 parity=bad
+2535,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=3 (33 matched so far)
+2545,INFO,DUT,DUT,IN  pkt #43 header: addr=1 len=1 -> channel 1
+2545,INFO,DUT,DUT,OUT ch2 pkt #13 start: addr=2 len=1 (receiver waited 0 cycle(s))
+2565,INFO,DUT,DUT,"IN  pkt #43 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+2565,INFO,DUT,DUT,OUT ch2 pkt #13 done: 3 bytes in 3 cycles
+2565,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #13: addr=2 len=1 parity=good
+2565,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (34 matched so far)
+2565,INFO,yapp monitor,yapp_tx_monitor,RX pkt #43 on the input: addr=1 len=1 parity=bad gap=2
+2565,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+2570,INFO,yapp driver,yapp_tx_driver,TX pkt #43 accepted by the DUT
+2570,INFO,yapp driver,yapp_tx_driver,TX pkt #44: addr=1 len=1 parity=bad delay=0
+2575,INFO,DUT,DUT,IN  pkt #44 header: addr=1 len=1 -> channel 1
+2590,INFO,DUT,DUT,"ERROR pulse, 2 cycle(s) after the bad-parity packet"
+2590,INFO,error checker,ERR_PULSE,error pulse 2 cycles after the bad packet (0 still owed)
+2595,INFO,DUT,DUT,"IN  pkt #44 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)"
+2595,INFO,yapp monitor,yapp_tx_monitor,RX pkt #44 on the input: addr=1 len=1 parity=bad gap=0
+2595,INFO,reference,router_reference,Packet forwarded: addr=1 len=1 -> channel 1
+2600,INFO,yapp driver,yapp_tx_driver,TX pkt #44 accepted by the DUT
+2600,INFO,yapp driver,yapp_tx_driver,TX pkt #45: addr=3 len=1 parity=good delay=0
+2605,INFO,DUT,DUT,IN  pkt #45 header: addr=3 len=1 -> DROP (illegal address 3)
+2615,INFO,DUT,DUT,OUT ch0 pkt #8 start: addr=0 len=2 (receiver waited 20 cycle(s))
+2625,INFO,DUT,DUT,"IN  pkt #45 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)"
+2625,INFO,yapp monitor,yapp_tx_monitor,RX pkt #45 on the input: addr=3 len=1 parity=good gap=0
+2625,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=1)
+2625,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=1 (    illegal address)
+2630,INFO,yapp driver,yapp_tx_driver,TX pkt #45 accepted by the DUT
+2630,INFO,yapp driver,yapp_tx_driver,TX pkt #46: addr=3 len=1 parity=good delay=1
+2640,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 20)
+2645,INFO,DUT,DUT,IN  pkt #46 header: addr=3 len=1 -> DROP (illegal address 3)
+2650,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+2650,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+2655,INFO,DUT,DUT,OUT ch1 pkt #15 start: addr=1 len=1 (receiver waited 10 cycle(s))
+2665,INFO,DUT,DUT,"IN  pkt #46 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)"
+2665,INFO,yapp monitor,yapp_tx_monitor,RX pkt #46 on the input: addr=3 len=1 parity=good gap=1
+2665,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=1)
+2665,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=1 (    illegal address)
+2670,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
+2670,INFO,yapp driver,yapp_tx_driver,TX pkt #46 accepted by the DUT
+2670,INFO,yapp driver,yapp_tx_driver,TX pkt #47: addr=1 len=3 parity=bad delay=0
+2675,INFO,DUT,DUT,IN  pkt #47 header: addr=1 len=3 -> channel 1
+2700,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 24)
+2715,INFO,DUT,DUT,"IN  pkt #47 complete: addr=1 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0)"
+2715,INFO,DUT,DUT,OUT ch1 pkt #15 done: 3 bytes in 7 cycles
+2715,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #15: addr=1 len=1 parity=bad
+2715,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (35 matched so far)
+2715,INFO,yapp monitor,yapp_tx_monitor,RX pkt #47 on the input: addr=1 len=3 parity=bad gap=0
+2715,INFO,reference,router_reference,Packet forwarded: addr=1 len=3 -> channel 1
+2720,INFO,yapp driver,yapp_tx_driver,TX pkt #47 accepted by the DUT
+2720,INFO,yapp driver,yapp_tx_driver,TX pkt #48: addr=2 len=1 parity=good delay=0
+2725,INFO,DUT,DUT,IN  pkt #48 header: addr=2 len=1 -> channel 2
+2725,INFO,DUT,DUT,OUT ch1 pkt #16 start: addr=1 len=1 (receiver waited 0 cycle(s))
+2730,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+2730,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+2745,INFO,DUT,DUT,"IN  pkt #48 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+2745,INFO,DUT,DUT,OUT ch1 pkt #16 done: 3 bytes in 3 cycles
+2745,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #16: addr=1 len=1 parity=bad
+2745,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=1 (36 matched so far)
+2745,INFO,yapp monitor,yapp_tx_monitor,RX pkt #48 on the input: addr=2 len=1 parity=good gap=0
+2745,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+2750,INFO,yapp driver,yapp_tx_driver,TX pkt #48 accepted by the DUT
+2750,INFO,test,TEST,"STAGE: burst 2/4 sent: addr0..3 5/8/8/3, bad parity 15, gap 0 20, length 1..3"
+2755,INFO,DUT,DUT,OUT ch1 pkt #17 start: addr=1 len=3 (receiver waited 0 cycle(s))
+2770,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xd0
+2775,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=16
+2775,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xd0
+2775,INFO,reference,router_reference,maxpktsize is now 16
+2790,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xed
+2795,INFO,DUT,DUT,OUT ch1 pkt #17 done: 5 bytes in 5 cycles
+2795,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #17: addr=1 len=3 parity=bad
+2795,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=3 (37 matched so far)
+2795,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xed
+2795,INFO,reference,router_reference,router_en is now 1 (en_reg 0xed)
+2820,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xed
+2825,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xed
+2850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x06
+2855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x06
+2870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x119b data=0xf6
+2875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x119b data=0xf6
+2900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x119b data=0xf6
+2905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x119b data=0xf6
+2915,INFO,DUT,DUT,OUT ch0 pkt #8 done: 4 bytes in 31 cycles
+2915,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #8: addr=0 len=2 parity=bad
+2915,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=2 (38 matched so far)
+2930,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x10d7 data=0x00
+2930,INFO,test,TEST,"STAGE: burst 3/4: ctrl=0xd0 (maxpktsize 16) en=0xed (router on, counter enables 1110110), 24 packet(s)"
+2930,INFO,yapp driver,yapp_tx_driver,TX pkt #49: addr=3 len=63 parity=good delay=2
+2935,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x10d7 data=0x00
+2965,INFO,DUT,DUT,IN  pkt #49 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+2970,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 26)
+3030,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 3)
+3075,INFO,DUT,DUT,OUT ch2 pkt #14 start: addr=2 len=1 (receiver waited 34 cycle(s))
+3090,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 34)
+3315,INFO,DUT,DUT,OUT ch2 pkt #14 done: 3 bytes in 25 cycles
+3315,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #14: addr=2 len=1 parity=good
+3315,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (39 matched so far)
+3330,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 21)
+3605,INFO,DUT,DUT,"IN  pkt #49 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+3605,INFO,yapp monitor,yapp_tx_monitor,RX pkt #49 on the input: addr=3 len=63 parity=good gap=21
+3605,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=63)
+3605,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=63 (    illegal address)
+3610,INFO,yapp driver,yapp_tx_driver,TX pkt #49 accepted by the DUT
+3610,INFO,yapp driver,yapp_tx_driver,TX pkt #50: addr=1 len=24 parity=bad delay=1
+3625,INFO,DUT,DUT,IN  pkt #50 header: addr=1 len=24 -> DROP (oversized: len 24 > maxpktsize 16)
+3875,INFO,DUT,DUT,"IN  pkt #50 complete: addr=1 len=24 parity=BAD dropped, 26 bytes in 26 cycles (held 0)"
+3875,INFO,yapp monitor,yapp_tx_monitor,RX pkt #50 on the input: addr=1 len=24 parity=bad gap=1
+3875,INFO,reference,router_reference,Packet dropped: length 24 > maxpktsize 16 (addr=1)
+3875,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=24 (length > maxpktsize)
+3880,INFO,yapp driver,yapp_tx_driver,TX pkt #50 accepted by the DUT
+3880,INFO,yapp driver,yapp_tx_driver,TX pkt #51: addr=1 len=5 parity=good delay=0
+3885,INFO,DUT,DUT,IN  pkt #51 header: addr=1 len=5 -> channel 1
+3905,INFO,DUT,DUT,OUT ch1 pkt #18 start: addr=1 len=5 (receiver waited 1 cycle(s))
+3930,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+3930,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+3945,INFO,DUT,DUT,"IN  pkt #51 complete: addr=1 len=5 parity=ok forwarded, 7 bytes in 7 cycles (held 0)"
+3945,INFO,yapp monitor,yapp_tx_monitor,RX pkt #51 on the input: addr=1 len=5 parity=good gap=0
+3945,INFO,reference,router_reference,Packet forwarded: addr=1 len=5 -> channel 1
+3950,INFO,yapp driver,yapp_tx_driver,TX pkt #51 accepted by the DUT
+3950,INFO,yapp driver,yapp_tx_driver,TX pkt #52: addr=3 len=58 parity=good delay=1
+3960,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 1)
+3965,INFO,DUT,DUT,IN  pkt #52 header: addr=3 len=58 -> DROP (oversized: len 58 > maxpktsize 16)
+4075,INFO,DUT,DUT,OUT ch1 pkt #18 done: 7 bytes in 18 cycles
+4075,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #18: addr=1 len=5 parity=good
+4075,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=5 (40 matched so far)
+4555,INFO,DUT,DUT,"IN  pkt #52 complete: addr=3 len=58 parity=ok dropped, 60 bytes in 60 cycles (held 0)"
+4555,INFO,yapp monitor,yapp_tx_monitor,RX pkt #52 on the input: addr=3 len=58 parity=good gap=1
+4555,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=58)
+4555,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=58 (    illegal address)
+4560,INFO,yapp driver,yapp_tx_driver,TX pkt #52 accepted by the DUT
+4560,INFO,yapp driver,yapp_tx_driver,TX pkt #53: addr=2 len=63 parity=bad delay=0
+4565,INFO,DUT,DUT,IN  pkt #53 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+4690,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
+5205,INFO,DUT,DUT,"IN  pkt #53 complete: addr=2 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)"
+5205,INFO,yapp monitor,yapp_tx_monitor,RX pkt #53 on the input: addr=2 len=63 parity=bad gap=0
+5205,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 16 (addr=2)
+5205,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
+5210,INFO,yapp driver,yapp_tx_driver,TX pkt #53 accepted by the DUT
+5210,INFO,yapp driver,yapp_tx_driver,TX pkt #54: addr=2 len=41 parity=bad delay=16
+5250,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+5250,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+5375,INFO,DUT,DUT,IN  pkt #54 header: addr=2 len=41 -> DROP (oversized: len 41 > maxpktsize 16)
+5795,INFO,DUT,DUT,"IN  pkt #54 complete: addr=2 len=41 parity=BAD dropped, 43 bytes in 43 cycles (held 0)"
+5795,INFO,yapp monitor,yapp_tx_monitor,RX pkt #54 on the input: addr=2 len=41 parity=bad gap=16
+5795,INFO,reference,router_reference,Packet dropped: length 41 > maxpktsize 16 (addr=2)
+5795,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=41 (length > maxpktsize)
+5800,INFO,yapp driver,yapp_tx_driver,TX pkt #54 accepted by the DUT
+5800,INFO,yapp driver,yapp_tx_driver,TX pkt #55: addr=0 len=3 parity=bad delay=1
+5815,INFO,DUT,DUT,IN  pkt #55 header: addr=0 len=3 -> channel 0
+5850,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+5850,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+5855,INFO,DUT,DUT,"IN  pkt #55 complete: addr=0 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0)"
+5855,INFO,yapp monitor,yapp_tx_monitor,RX pkt #55 on the input: addr=0 len=3 parity=bad gap=1
+5855,INFO,reference,router_reference,Packet forwarded: addr=0 len=3 -> channel 0
+5860,INFO,yapp driver,yapp_tx_driver,TX pkt #55 accepted by the DUT
+5860,INFO,yapp driver,yapp_tx_driver,TX pkt #56: addr=1 len=15 parity=good delay=3
+5895,INFO,DUT,DUT,IN  pkt #56 header: addr=1 len=15 -> channel 1
+5910,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+5910,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+5995,INFO,DUT,DUT,OUT ch1 pkt #19 start: addr=1 len=15 (receiver waited 9 cycle(s))
+6055,INFO,DUT,DUT,"IN  pkt #56 complete: addr=1 len=15 parity=ok forwarded, 17 bytes in 17 cycles (held 0)"
+6055,INFO,yapp monitor,yapp_tx_monitor,RX pkt #56 on the input: addr=1 len=15 parity=good gap=3
+6055,INFO,reference,router_reference,Packet forwarded: addr=1 len=15 -> channel 1
+6060,INFO,yapp driver,yapp_tx_driver,TX pkt #56 accepted by the DUT
+6060,INFO,yapp driver,yapp_tx_driver,TX pkt #57: addr=0 len=63 parity=bad delay=0
+6065,INFO,DUT,DUT,IN  pkt #57 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+6150,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
+6205,INFO,DUT,DUT,OUT ch1 pkt #19 done: 17 bytes in 22 cycles
+6205,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #19: addr=1 len=15 parity=good
+6205,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=15 (41 matched so far)
+6225,INFO,DUT,DUT,OUT ch0 pkt #9 start: addr=0 len=3 (receiver waited 40 cycle(s))
+6260,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 40)
+6675,INFO,DUT,DUT,OUT ch0 pkt #9 done: 5 bytes in 46 cycles
+6675,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #9: addr=0 len=3 parity=bad
+6675,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=3 (42 matched so far)
+6705,INFO,DUT,DUT,"IN  pkt #57 complete: addr=0 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)"
+6705,INFO,yapp monitor,yapp_tx_monitor,RX pkt #57 on the input: addr=0 len=63 parity=bad gap=0
+6705,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 16 (addr=0)
+6705,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+6710,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 40)
+6710,INFO,yapp driver,yapp_tx_driver,TX pkt #57 accepted by the DUT
+6710,INFO,yapp driver,yapp_tx_driver,TX pkt #58: addr=0 len=17 parity=bad delay=1
+6725,INFO,DUT,DUT,IN  pkt #58 header: addr=0 len=17 -> DROP (oversized: len 17 > maxpktsize 16)
+6800,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 4)
+6810,INFO,DUT,DUT,"ERROR pulse, 10 cycle(s) after the bad-parity packet"
+6810,INFO,error checker,ERR_PULSE,error pulse 10 cycles after the bad packet (0 still owed)
+6905,INFO,DUT,DUT,"IN  pkt #58 complete: addr=0 len=17 parity=BAD dropped, 19 bytes in 19 cycles (held 0)"
+6905,INFO,yapp monitor,yapp_tx_monitor,RX pkt #58 on the input: addr=0 len=17 parity=bad gap=1
+6905,INFO,reference,router_reference,Packet dropped: length 17 > maxpktsize 16 (addr=0)
+6905,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=17 (length > maxpktsize)
+6910,INFO,yapp driver,yapp_tx_driver,TX pkt #58 accepted by the DUT
+6910,INFO,yapp driver,yapp_tx_driver,TX pkt #59: addr=0 len=44 parity=good delay=19
+6950,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+6950,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+7105,INFO,DUT,DUT,IN  pkt #59 header: addr=0 len=44 -> DROP (oversized: len 44 > maxpktsize 16)
+7555,INFO,DUT,DUT,"IN  pkt #59 complete: addr=0 len=44 parity=ok dropped, 46 bytes in 46 cycles (held 0)"
+7555,INFO,yapp monitor,yapp_tx_monitor,RX pkt #59 on the input: addr=0 len=44 parity=good gap=19
+7555,INFO,reference,router_reference,Packet dropped: length 44 > maxpktsize 16 (addr=0)
+7555,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=44 (length > maxpktsize)
+7560,INFO,yapp driver,yapp_tx_driver,TX pkt #59 accepted by the DUT
+7560,INFO,yapp driver,yapp_tx_driver,TX pkt #60: addr=2 len=60 parity=bad delay=20
+7765,INFO,DUT,DUT,IN  pkt #60 header: addr=2 len=60 -> DROP (oversized: len 60 > maxpktsize 16)
+8375,INFO,DUT,DUT,"IN  pkt #60 complete: addr=2 len=60 parity=BAD dropped, 62 bytes in 62 cycles (held 0)"
+8375,INFO,yapp monitor,yapp_tx_monitor,RX pkt #60 on the input: addr=2 len=60 parity=bad gap=20
+8375,INFO,reference,router_reference,Packet dropped: length 60 > maxpktsize 16 (addr=2)
+8375,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=60 (length > maxpktsize)
+8380,INFO,yapp driver,yapp_tx_driver,TX pkt #60 accepted by the DUT
+8380,INFO,yapp driver,yapp_tx_driver,TX pkt #61: addr=1 len=6 parity=good delay=0
+8385,INFO,DUT,DUT,IN  pkt #61 header: addr=1 len=6 -> channel 1
+8390,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+8390,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+8415,INFO,DUT,DUT,OUT ch1 pkt #20 start: addr=1 len=6 (receiver waited 2 cycle(s))
+8455,INFO,DUT,DUT,"IN  pkt #61 complete: addr=1 len=6 parity=ok forwarded, 8 bytes in 8 cycles (held 0)"
+8455,INFO,yapp monitor,yapp_tx_monitor,RX pkt #61 on the input: addr=1 len=6 parity=good gap=0
+8455,INFO,reference,router_reference,Packet forwarded: addr=1 len=6 -> channel 1
+8460,INFO,yapp driver,yapp_tx_driver,TX pkt #61 accepted by the DUT
+8460,INFO,yapp driver,yapp_tx_driver,TX pkt #62: addr=2 len=1 parity=good delay=0
+8465,INFO,DUT,DUT,IN  pkt #62 header: addr=2 len=1 -> channel 2
+8480,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 2)
+8485,INFO,DUT,DUT,"IN  pkt #62 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)"
+8485,INFO,yapp monitor,yapp_tx_monitor,RX pkt #62 on the input: addr=2 len=1 parity=good gap=0
+8485,INFO,reference,router_reference,Packet forwarded: addr=2 len=1 -> channel 2
+8490,INFO,yapp driver,yapp_tx_driver,TX pkt #62 accepted by the DUT
+8490,INFO,yapp driver,yapp_tx_driver,TX pkt #63: addr=1 len=63 parity=bad delay=19
+8585,INFO,DUT,DUT,OUT ch1 pkt #20 done: 8 bytes in 18 cycles
+8585,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #20: addr=1 len=6 parity=good
+8585,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=6 (43 matched so far)
+8685,INFO,DUT,DUT,IN  pkt #63 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+8775,INFO,DUT,DUT,OUT ch2 pkt #15 start: addr=2 len=1 (receiver waited 30 cycle(s))
+8790,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 30)
+9005,INFO,DUT,DUT,OUT ch2 pkt #15 done: 3 bytes in 24 cycles
+9005,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #15: addr=2 len=1 parity=good
+9005,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=1 (44 matched so far)
+9070,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
+9170,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 20)
+9325,INFO,DUT,DUT,"IN  pkt #63 complete: addr=1 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)"
+9325,INFO,yapp monitor,yapp_tx_monitor,RX pkt #63 on the input: addr=1 len=63 parity=bad gap=19
+9325,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 16 (addr=1)
+9325,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize)
+9330,INFO,yapp driver,yapp_tx_driver,TX pkt #63 accepted by the DUT
+9330,INFO,yapp driver,yapp_tx_driver,TX pkt #64: addr=2 len=58 parity=good delay=0
+9335,INFO,DUT,DUT,IN  pkt #64 header: addr=2 len=58 -> DROP (oversized: len 58 > maxpktsize 16)
+9390,INFO,DUT,DUT,"ERROR pulse, 6 cycle(s) after the bad-parity packet"
+9390,INFO,error checker,ERR_PULSE,error pulse 6 cycles after the bad packet (0 still owed)
+9925,INFO,DUT,DUT,"IN  pkt #64 complete: addr=2 len=58 parity=ok dropped, 60 bytes in 60 cycles (held 0)"
+9925,INFO,yapp monitor,yapp_tx_monitor,RX pkt #64 on the input: addr=2 len=58 parity=good gap=0
+9925,INFO,reference,router_reference,Packet dropped: length 58 > maxpktsize 16 (addr=2)
+9925,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=58 (length > maxpktsize)
+9930,INFO,yapp driver,yapp_tx_driver,TX pkt #64 accepted by the DUT
+9930,INFO,yapp driver,yapp_tx_driver,TX pkt #65: addr=3 len=15 parity=good delay=1
+9945,INFO,DUT,DUT,IN  pkt #65 header: addr=3 len=15 -> DROP (illegal address 3)
+10105,INFO,DUT,DUT,"IN  pkt #65 complete: addr=3 len=15 parity=ok dropped, 17 bytes in 17 cycles (held 0)"
+10105,INFO,yapp monitor,yapp_tx_monitor,RX pkt #65 on the input: addr=3 len=15 parity=good gap=1
+10105,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=15)
+10105,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=15 (    illegal address)
+10110,INFO,yapp driver,yapp_tx_driver,TX pkt #65 accepted by the DUT
+10110,INFO,yapp driver,yapp_tx_driver,TX pkt #66: addr=0 len=46 parity=good delay=0
+10115,INFO,DUT,DUT,IN  pkt #66 header: addr=0 len=46 -> DROP (oversized: len 46 > maxpktsize 16)
+10585,INFO,DUT,DUT,"IN  pkt #66 complete: addr=0 len=46 parity=ok dropped, 48 bytes in 48 cycles (held 0)"
+10585,INFO,yapp monitor,yapp_tx_monitor,RX pkt #66 on the input: addr=0 len=46 parity=good gap=0
+10585,INFO,reference,router_reference,Packet dropped: length 46 > maxpktsize 16 (addr=0)
+10585,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=46 (length > maxpktsize)
+10590,INFO,yapp driver,yapp_tx_driver,TX pkt #66 accepted by the DUT
+10590,INFO,yapp driver,yapp_tx_driver,TX pkt #67: addr=0 len=63 parity=good delay=1
+10605,INFO,DUT,DUT,IN  pkt #67 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+11245,INFO,DUT,DUT,"IN  pkt #67 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+11245,INFO,yapp monitor,yapp_tx_monitor,RX pkt #67 on the input: addr=0 len=63 parity=good gap=1
+11245,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 16 (addr=0)
+11245,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+11250,INFO,yapp driver,yapp_tx_driver,TX pkt #67 accepted by the DUT
+11250,INFO,yapp driver,yapp_tx_driver,TX pkt #68: addr=3 len=17 parity=good delay=20
+11455,INFO,DUT,DUT,IN  pkt #68 header: addr=3 len=17 -> DROP (oversized: len 17 > maxpktsize 16)
+11635,INFO,DUT,DUT,"IN  pkt #68 complete: addr=3 len=17 parity=ok dropped, 19 bytes in 19 cycles (held 0)"
+11635,INFO,yapp monitor,yapp_tx_monitor,RX pkt #68 on the input: addr=3 len=17 parity=good gap=20
+11635,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=17)
+11635,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=17 (    illegal address)
+11640,INFO,yapp driver,yapp_tx_driver,TX pkt #68 accepted by the DUT
+11640,INFO,yapp driver,yapp_tx_driver,TX pkt #69: addr=1 len=56 parity=bad delay=0
+11645,INFO,DUT,DUT,IN  pkt #69 header: addr=1 len=56 -> DROP (oversized: len 56 > maxpktsize 16)
+12215,INFO,DUT,DUT,"IN  pkt #69 complete: addr=1 len=56 parity=BAD dropped, 58 bytes in 58 cycles (held 0)"
+12215,INFO,yapp monitor,yapp_tx_monitor,RX pkt #69 on the input: addr=1 len=56 parity=bad gap=0
+12215,INFO,reference,router_reference,Packet dropped: length 56 > maxpktsize 16 (addr=1)
+12215,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=56 (length > maxpktsize)
+12220,INFO,yapp driver,yapp_tx_driver,TX pkt #69 accepted by the DUT
+12220,INFO,yapp driver,yapp_tx_driver,TX pkt #70: addr=0 len=63 parity=good delay=2
+12230,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+12230,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+12245,INFO,DUT,DUT,IN  pkt #70 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 16)
+12885,INFO,DUT,DUT,"IN  pkt #70 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+12885,INFO,yapp monitor,yapp_tx_monitor,RX pkt #70 on the input: addr=0 len=63 parity=good gap=2
+12885,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 16 (addr=0)
+12885,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+12890,INFO,yapp driver,yapp_tx_driver,TX pkt #70 accepted by the DUT
+12890,INFO,yapp driver,yapp_tx_driver,TX pkt #71: addr=0 len=22 parity=good delay=0
+12895,INFO,DUT,DUT,IN  pkt #71 header: addr=0 len=22 -> DROP (oversized: len 22 > maxpktsize 16)
+13125,INFO,DUT,DUT,"IN  pkt #71 complete: addr=0 len=22 parity=ok dropped, 24 bytes in 24 cycles (held 0)"
+13125,INFO,yapp monitor,yapp_tx_monitor,RX pkt #71 on the input: addr=0 len=22 parity=good gap=0
+13125,INFO,reference,router_reference,Packet dropped: length 22 > maxpktsize 16 (addr=0)
+13125,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=22 (length > maxpktsize)
+13130,INFO,yapp driver,yapp_tx_driver,TX pkt #71 accepted by the DUT
+13130,INFO,yapp driver,yapp_tx_driver,TX pkt #72: addr=2 len=20 parity=bad delay=0
+13135,INFO,DUT,DUT,IN  pkt #72 header: addr=2 len=20 -> DROP (oversized: len 20 > maxpktsize 16)
+13345,INFO,DUT,DUT,"IN  pkt #72 complete: addr=2 len=20 parity=BAD dropped, 22 bytes in 22 cycles (held 0)"
+13345,INFO,yapp monitor,yapp_tx_monitor,RX pkt #72 on the input: addr=2 len=20 parity=bad gap=0
+13345,INFO,reference,router_reference,Packet dropped: length 20 > maxpktsize 16 (addr=2)
+13345,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=20 (length > maxpktsize)
+13350,INFO,yapp driver,yapp_tx_driver,TX pkt #72 accepted by the DUT
+13350,INFO,test,TEST,"STAGE: burst 3/4 sent: addr0..3 8/6/6/4, bad parity 10, gap 0 10, length 1..63"
+13370,INFO,DUT,DUT,"ERROR pulse, 2 cycle(s) after the bad-parity packet"
+13370,INFO,error checker,ERR_PULSE,error pulse 2 cycles after the bad packet (0 still owed)
+13370,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x39
+13375,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=57
+13375,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x39
+13375,INFO,reference,router_reference,maxpktsize is now 57
+13390,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x97
+13395,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x97
+13395,INFO,reference,router_reference,router_en is now 1 (en_reg 0x97)
+13420,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x14
+13425,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x14
+13450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1024 data=0xf3
+13455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1024 data=0xf3
+13480,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1019 data=0x86
+13485,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1019 data=0x86
+13510,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x0a
+13510,INFO,test,TEST,"STAGE: burst 4/4: ctrl=0x39 (maxpktsize 57) en=0x97 (router on, counter enables 1001011), 23 packet(s)"
+13510,INFO,yapp driver,yapp_tx_driver,TX pkt #73: addr=0 len=6 parity=good delay=0
+13515,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x0a
+13525,INFO,DUT,DUT,IN  pkt #73 header: addr=0 len=6 -> channel 0
+13595,INFO,DUT,DUT,"IN  pkt #73 complete: addr=0 len=6 parity=ok forwarded, 8 bytes in 8 cycles (held 0)"
+13595,INFO,yapp monitor,yapp_tx_monitor,RX pkt #73 on the input: addr=0 len=6 parity=good gap=17
+13595,INFO,reference,router_reference,Packet forwarded: addr=0 len=6 -> channel 0
+13600,INFO,yapp driver,yapp_tx_driver,TX pkt #73 accepted by the DUT
+13600,INFO,yapp driver,yapp_tx_driver,TX pkt #74: addr=1 len=7 parity=good delay=20
+13805,INFO,DUT,DUT,IN  pkt #74 header: addr=1 len=7 -> channel 1
+13885,INFO,DUT,DUT,"IN  pkt #74 complete: addr=1 len=7 parity=ok forwarded, 9 bytes in 9 cycles (held 0)"
+13885,INFO,yapp monitor,yapp_tx_monitor,RX pkt #74 on the input: addr=1 len=7 parity=good gap=20
+13885,INFO,reference,router_reference,Packet forwarded: addr=1 len=7 -> channel 1
+13890,INFO,yapp driver,yapp_tx_driver,TX pkt #74 accepted by the DUT
+13890,INFO,yapp driver,yapp_tx_driver,TX pkt #75: addr=0 len=29 parity=good delay=0
+13895,INFO,DUT,DUT,IN  pkt #75 header: addr=0 len=29 -> channel 0
+13905,INFO,DUT,DUT,OUT ch1 pkt #21 start: addr=1 len=7 (receiver waited 9 cycle(s))
+13935,INFO,DUT,DUT,OUT ch0 pkt #10 start: addr=0 len=6 (receiver waited 40 cycle(s))
+13980,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 9)
+14000,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 40)
+14045,INFO,DUT,DUT,"SUSPEND asserted: FIFO 0 full, byte 0x81 held (pkt #75)"
+14095,INFO,DUT,DUT,OUT ch1 pkt #21 done: 9 bytes in 20 cycles
+14095,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #21: addr=1 len=7 parity=good
+14095,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=7 (45 matched so far)
+14365,INFO,DUT,DUT,OUT ch0 pkt #10 done: 8 bytes in 44 cycles
+14365,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #10: addr=0 len=6 parity=good
+14365,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=6 (46 matched so far)
+14375,INFO,DUT,DUT,SUSPEND released after 33 cycle(s)
+14375,INFO,DUT,DUT,OUT ch0 pkt #11 start: addr=0 len=29 (receiver waited 0 cycle(s))
+14490,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 35)
+14505,INFO,DUT,DUT,"SUSPEND asserted: FIFO 0 full, byte 0x67 held (pkt #75)"
+14700,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 10)
+14725,INFO,DUT,DUT,SUSPEND released after 22 cycle(s)
+14745,INFO,DUT,DUT,"IN  pkt #75 complete: addr=0 len=29 parity=ok forwarded, 31 bytes in 86 cycles (held 55)"
+14745,INFO,yapp monitor,yapp_tx_monitor,RX pkt #75 on the input: addr=0 len=29 parity=good gap=0
+14745,INFO,reference,router_reference,Packet forwarded: addr=0 len=29 -> channel 0
+14750,INFO,yapp driver,yapp_tx_driver,TX pkt #75 accepted by the DUT
+14750,INFO,yapp driver,yapp_tx_driver,TX pkt #76: addr=2 len=56 parity=good delay=2
+14775,INFO,DUT,DUT,IN  pkt #76 header: addr=2 len=56 -> channel 2
+14895,INFO,DUT,DUT,OUT ch0 pkt #11 done: 31 bytes in 53 cycles
+14895,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #11: addr=0 len=29 parity=good
+14895,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=29 (47 matched so far)
+14935,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xe3 held (pkt #76)"
+14940,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 21)
+15005,INFO,DUT,DUT,OUT ch2 pkt #16 start: addr=2 len=56 (receiver waited 22 cycle(s))
+15015,INFO,DUT,DUT,SUSPEND released after 8 cycle(s)
+15425,INFO,DUT,DUT,"IN  pkt #76 complete: addr=2 len=56 parity=ok forwarded, 58 bytes in 66 cycles (held 8)"
+15425,INFO,yapp monitor,yapp_tx_monitor,RX pkt #76 on the input: addr=2 len=56 parity=good gap=2
+15425,INFO,reference,router_reference,Packet forwarded: addr=2 len=56 -> channel 2
+15430,INFO,yapp driver,yapp_tx_driver,TX pkt #76 accepted by the DUT
+15430,INFO,yapp driver,yapp_tx_driver,TX pkt #77: addr=0 len=58 parity=good delay=3
+15465,INFO,DUT,DUT,IN  pkt #77 header: addr=0 len=58 -> DROP (oversized: len 58 > maxpktsize 57)
+15570,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 22)
+15815,INFO,DUT,DUT,OUT ch2 pkt #16 done: 58 bytes in 82 cycles
+15815,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #16: addr=2 len=56 parity=good
+15815,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=56 (48 matched so far)
+15920,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 23)
+16055,INFO,DUT,DUT,"IN  pkt #77 complete: addr=0 len=58 parity=ok dropped, 60 bytes in 60 cycles (held 0)"
+16055,INFO,yapp monitor,yapp_tx_monitor,RX pkt #77 on the input: addr=0 len=58 parity=good gap=3
+16055,INFO,reference,router_reference,Packet dropped: length 58 > maxpktsize 57 (addr=0)
+16055,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=58 (length > maxpktsize)
+16060,INFO,yapp driver,yapp_tx_driver,TX pkt #77 accepted by the DUT
+16060,INFO,yapp driver,yapp_tx_driver,TX pkt #78: addr=0 len=63 parity=good delay=17
+16235,INFO,DUT,DUT,IN  pkt #78 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 57)
+16875,INFO,DUT,DUT,"IN  pkt #78 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+16875,INFO,yapp monitor,yapp_tx_monitor,RX pkt #78 on the input: addr=0 len=63 parity=good gap=17
+16875,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 57 (addr=0)
+16875,INFO,DUT,RTL,ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
+16880,INFO,yapp driver,yapp_tx_driver,TX pkt #78 accepted by the DUT
+16880,INFO,yapp driver,yapp_tx_driver,TX pkt #79: addr=3 len=40 parity=good delay=0
+16885,INFO,DUT,DUT,IN  pkt #79 header: addr=3 len=40 -> DROP (illegal address 3)
+17295,INFO,DUT,DUT,"IN  pkt #79 complete: addr=3 len=40 parity=ok dropped, 42 bytes in 42 cycles (held 0)"
+17295,INFO,yapp monitor,yapp_tx_monitor,RX pkt #79 on the input: addr=3 len=40 parity=good gap=0
+17295,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=40)
+17295,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=40 (    illegal address)
+17300,INFO,yapp driver,yapp_tx_driver,TX pkt #79 accepted by the DUT
+17300,INFO,yapp driver,yapp_tx_driver,TX pkt #80: addr=2 len=54 parity=good delay=0
+17305,INFO,DUT,DUT,IN  pkt #80 header: addr=2 len=54 -> channel 2
+17465,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x59 held (pkt #80)"
+17645,INFO,DUT,DUT,OUT ch2 pkt #17 start: addr=2 len=54 (receiver waited 33 cycle(s))
+17655,INFO,DUT,DUT,SUSPEND released after 19 cycle(s)
+18045,INFO,DUT,DUT,"IN  pkt #80 complete: addr=2 len=54 parity=ok forwarded, 56 bytes in 75 cycles (held 19)"
+18045,INFO,yapp monitor,yapp_tx_monitor,RX pkt #80 on the input: addr=2 len=54 parity=good gap=0
+18045,INFO,reference,router_reference,Packet forwarded: addr=2 len=54 -> channel 2
+18050,INFO,yapp driver,yapp_tx_driver,TX pkt #80 accepted by the DUT
+18050,INFO,yapp driver,yapp_tx_driver,TX pkt #81: addr=2 len=38 parity=good delay=18
+18190,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 33)
+18235,INFO,DUT,DUT,IN  pkt #81 header: addr=2 len=38 -> channel 2
+18385,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xf7 held (pkt #81)"
+18525,INFO,DUT,DUT,OUT ch2 pkt #17 done: 56 bytes in 89 cycles
+18525,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #17: addr=2 len=54 parity=good
+18525,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=54 (49 matched so far)
+18535,INFO,DUT,DUT,SUSPEND released after 15 cycle(s)
+18535,INFO,DUT,DUT,OUT ch2 pkt #18 start: addr=2 len=38 (receiver waited 0 cycle(s))
+18775,INFO,DUT,DUT,"IN  pkt #81 complete: addr=2 len=38 parity=ok forwarded, 40 bytes in 55 cycles (held 15)"
+18775,INFO,yapp monitor,yapp_tx_monitor,RX pkt #81 on the input: addr=2 len=38 parity=good gap=18
+18775,INFO,reference,router_reference,Packet forwarded: addr=2 len=38 -> channel 2
+18780,INFO,yapp driver,yapp_tx_driver,TX pkt #81 accepted by the DUT
+18780,INFO,yapp driver,yapp_tx_driver,TX pkt #82: addr=1 len=63 parity=good delay=0
+18785,INFO,DUT,DUT,IN  pkt #82 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 57)
+18925,INFO,DUT,DUT,OUT ch2 pkt #18 done: 40 bytes in 40 cycles
+18925,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #18: addr=2 len=38 parity=good
+18925,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=38 (50 matched so far)
+19060,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 32)
+19425,INFO,DUT,DUT,"IN  pkt #82 complete: addr=1 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+19425,INFO,yapp monitor,yapp_tx_monitor,RX pkt #82 on the input: addr=1 len=63 parity=good gap=0
+19425,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 57 (addr=1)
+19425,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize)
+19430,INFO,yapp driver,yapp_tx_driver,TX pkt #82 accepted by the DUT
+19430,INFO,yapp driver,yapp_tx_driver,TX pkt #83: addr=1 len=59 parity=bad delay=0
+19435,INFO,DUT,DUT,IN  pkt #83 header: addr=1 len=59 -> DROP (oversized: len 59 > maxpktsize 57)
+20035,INFO,DUT,DUT,"IN  pkt #83 complete: addr=1 len=59 parity=BAD dropped, 61 bytes in 61 cycles (held 0)"
+20035,INFO,yapp monitor,yapp_tx_monitor,RX pkt #83 on the input: addr=1 len=59 parity=bad gap=0
+20035,INFO,reference,router_reference,Packet dropped: length 59 > maxpktsize 57 (addr=1)
+20035,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=59 (length > maxpktsize)
+20040,INFO,yapp driver,yapp_tx_driver,TX pkt #83 accepted by the DUT
+20040,INFO,yapp driver,yapp_tx_driver,TX pkt #84: addr=3 len=43 parity=good delay=10
+20090,INFO,DUT,DUT,"ERROR pulse, 5 cycle(s) after the bad-parity packet"
+20090,INFO,error checker,ERR_PULSE,error pulse 5 cycles after the bad packet (0 still owed)
+20145,INFO,DUT,DUT,IN  pkt #84 header: addr=3 len=43 -> DROP (illegal address 3)
+20585,INFO,DUT,DUT,"IN  pkt #84 complete: addr=3 len=43 parity=ok dropped, 45 bytes in 45 cycles (held 0)"
+20585,INFO,yapp monitor,yapp_tx_monitor,RX pkt #84 on the input: addr=3 len=43 parity=good gap=10
+20585,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=43)
+20585,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=43 (    illegal address)
+20590,INFO,yapp driver,yapp_tx_driver,TX pkt #84 accepted by the DUT
+20590,INFO,yapp driver,yapp_tx_driver,TX pkt #85: addr=2 len=58 parity=good delay=5
+20645,INFO,DUT,DUT,IN  pkt #85 header: addr=2 len=58 -> DROP (oversized: len 58 > maxpktsize 57)
+21235,INFO,DUT,DUT,"IN  pkt #85 complete: addr=2 len=58 parity=ok dropped, 60 bytes in 60 cycles (held 0)"
+21235,INFO,yapp monitor,yapp_tx_monitor,RX pkt #85 on the input: addr=2 len=58 parity=good gap=5
+21235,INFO,reference,router_reference,Packet dropped: length 58 > maxpktsize 57 (addr=2)
+21235,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=58 (length > maxpktsize)
+21240,INFO,yapp driver,yapp_tx_driver,TX pkt #85 accepted by the DUT
+21240,INFO,yapp driver,yapp_tx_driver,TX pkt #86: addr=2 len=17 parity=good delay=3
+21275,INFO,DUT,DUT,IN  pkt #86 header: addr=2 len=17 -> channel 2
+21435,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0xde held (pkt #86)"
+21575,INFO,DUT,DUT,OUT ch2 pkt #19 start: addr=2 len=17 (receiver waited 29 cycle(s))
+21585,INFO,DUT,DUT,SUSPEND released after 15 cycle(s)
+21605,INFO,DUT,DUT,"IN  pkt #86 complete: addr=2 len=17 parity=ok forwarded, 19 bytes in 34 cycles (held 15)"
+21605,INFO,yapp monitor,yapp_tx_monitor,RX pkt #86 on the input: addr=2 len=17 parity=good gap=3
+21605,INFO,reference,router_reference,Packet forwarded: addr=2 len=17 -> channel 2
+21610,INFO,yapp driver,yapp_tx_driver,TX pkt #86 accepted by the DUT
+21610,INFO,yapp driver,yapp_tx_driver,TX pkt #87: addr=0 len=5 parity=bad delay=1
+21625,INFO,DUT,DUT,IN  pkt #87 header: addr=0 len=5 -> channel 0
+21685,INFO,DUT,DUT,"IN  pkt #87 complete: addr=0 len=5 parity=BAD forwarded, 7 bytes in 7 cycles (held 0)"
+21685,INFO,yapp monitor,yapp_tx_monitor,RX pkt #87 on the input: addr=0 len=5 parity=bad gap=1
+21685,INFO,reference,router_reference,Packet forwarded: addr=0 len=5 -> channel 0
+21690,INFO,yapp driver,yapp_tx_driver,TX pkt #87 accepted by the DUT
+21690,INFO,yapp driver,yapp_tx_driver,TX pkt #88: addr=3 len=29 parity=good delay=2
+21715,INFO,DUT,DUT,IN  pkt #88 header: addr=3 len=29 -> DROP (illegal address 3)
+21730,INFO,DUT,DUT,"ERROR pulse, 4 cycle(s) after the bad-parity packet"
+21730,INFO,error checker,ERR_PULSE,error pulse 4 cycles after the bad packet (0 still owed)
+21750,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 29)
+21995,INFO,DUT,DUT,OUT ch0 pkt #12 start: addr=0 len=5 (receiver waited 36 cycle(s))
+22015,INFO,DUT,DUT,"IN  pkt #88 complete: addr=3 len=29 parity=ok dropped, 31 bytes in 31 cycles (held 0)"
+22015,INFO,yapp monitor,yapp_tx_monitor,RX pkt #88 on the input: addr=3 len=29 parity=good gap=2
+22015,INFO,reference,router_reference,Packet dropped: illegal address 3 (len=29)
+22015,INFO,DUT,RTL,ROUTER DROPS PACKET addr=3 length=29 (    illegal address)
+22020,INFO,yapp driver,yapp_tx_driver,TX pkt #88 accepted by the DUT
+22020,INFO,yapp driver,yapp_tx_driver,TX pkt #89: addr=1 len=63 parity=good delay=3
+22050,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 36)
+22055,INFO,DUT,DUT,IN  pkt #89 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 57)
+22115,INFO,DUT,DUT,OUT ch2 pkt #19 done: 19 bytes in 55 cycles
+22115,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #19: addr=2 len=17 parity=good
+22115,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=17 (51 matched so far)
+22370,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 35)
+22405,INFO,DUT,DUT,OUT ch0 pkt #12 done: 7 bytes in 42 cycles
+22405,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #12: addr=0 len=5 parity=bad
+22405,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=5 (52 matched so far)
+22695,INFO,DUT,DUT,"IN  pkt #89 complete: addr=1 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+22695,INFO,yapp monitor,yapp_tx_monitor,RX pkt #89 on the input: addr=1 len=63 parity=good gap=3
+22695,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 57 (addr=1)
+22695,INFO,DUT,RTL,ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize)
+22700,INFO,yapp driver,yapp_tx_driver,TX pkt #89 accepted by the DUT
+22700,INFO,yapp driver,yapp_tx_driver,TX pkt #90: addr=0 len=3 parity=good delay=2
+22725,INFO,DUT,DUT,IN  pkt #90 header: addr=0 len=3 -> channel 0
+22735,INFO,DUT,DUT,OUT ch0 pkt #13 start: addr=0 len=3 (receiver waited 0 cycle(s))
+22765,INFO,DUT,DUT,"IN  pkt #90 complete: addr=0 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0)"
+22765,INFO,yapp monitor,yapp_tx_monitor,RX pkt #90 on the input: addr=0 len=3 parity=good gap=2
+22765,INFO,reference,router_reference,Packet forwarded: addr=0 len=3 -> channel 0
+22770,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 34)
+22770,INFO,yapp driver,yapp_tx_driver,TX pkt #90 accepted by the DUT
+22770,INFO,yapp driver,yapp_tx_driver,TX pkt #91: addr=2 len=45 parity=good delay=20
+22975,INFO,DUT,DUT,IN  pkt #91 header: addr=2 len=45 -> channel 2
+23095,INFO,DUT,DUT,OUT ch0 pkt #13 done: 5 bytes in 37 cycles
+23095,INFO,ch0 monitor,channel_rx_monitor,ch0 RX pkt #13: addr=0 len=3 parity=good
+23095,INFO,scoreboard,router_scoreboard,ch0 pkt matched: addr=0 len=3 (53 matched so far)
+23135,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x3b held (pkt #91)"
+23225,INFO,DUT,DUT,OUT ch2 pkt #20 start: addr=2 len=45 (receiver waited 24 cycle(s))
+23235,INFO,DUT,DUT,SUSPEND released after 10 cycle(s)
+23390,INFO,ch0 driver,channel_rx_driver,ch0: packet consumed (response delay 31)
+23535,INFO,DUT,DUT,"IN  pkt #91 complete: addr=2 len=45 parity=ok forwarded, 47 bytes in 57 cycles (held 10)"
+23535,INFO,yapp monitor,yapp_tx_monitor,RX pkt #91 on the input: addr=2 len=45 parity=good gap=20
+23535,INFO,reference,router_reference,Packet forwarded: addr=2 len=45 -> channel 2
+23540,INFO,yapp driver,yapp_tx_driver,TX pkt #91 accepted by the DUT
+23540,INFO,yapp driver,yapp_tx_driver,TX pkt #92: addr=2 len=63 parity=good delay=2
+23565,INFO,DUT,DUT,IN  pkt #92 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 57)
+23680,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 24)
+24015,INFO,DUT,DUT,OUT ch2 pkt #20 done: 47 bytes in 80 cycles
+24015,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #20: addr=2 len=45 parity=good
+24015,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=45 (54 matched so far)
+24205,INFO,DUT,DUT,"IN  pkt #92 complete: addr=2 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)"
+24205,INFO,yapp monitor,yapp_tx_monitor,RX pkt #92 on the input: addr=2 len=63 parity=good gap=2
+24205,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 57 (addr=2)
+24205,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
+24210,INFO,yapp driver,yapp_tx_driver,TX pkt #92 accepted by the DUT
+24210,INFO,yapp driver,yapp_tx_driver,TX pkt #93: addr=2 len=63 parity=bad delay=0
+24215,INFO,DUT,DUT,IN  pkt #93 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 57)
+24390,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 32)
+24855,INFO,DUT,DUT,"IN  pkt #93 complete: addr=2 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)"
+24855,INFO,yapp monitor,yapp_tx_monitor,RX pkt #93 on the input: addr=2 len=63 parity=bad gap=0
+24855,INFO,reference,router_reference,Packet dropped: length 63 > maxpktsize 57 (addr=2)
+24855,INFO,DUT,RTL,ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
+24860,INFO,yapp driver,yapp_tx_driver,TX pkt #93 accepted by the DUT
+24860,INFO,yapp driver,yapp_tx_driver,TX pkt #94: addr=1 len=56 parity=good delay=19
+24870,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+24870,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+25055,INFO,DUT,DUT,IN  pkt #94 header: addr=1 len=56 -> channel 1
+25105,INFO,DUT,DUT,OUT ch1 pkt #22 start: addr=1 len=56 (receiver waited 4 cycle(s))
+25625,INFO,DUT,DUT,"IN  pkt #94 complete: addr=1 len=56 parity=ok forwarded, 58 bytes in 58 cycles (held 0)"
+25625,INFO,yapp monitor,yapp_tx_monitor,RX pkt #94 on the input: addr=1 len=56 parity=good gap=19
+25625,INFO,reference,router_reference,Packet forwarded: addr=1 len=56 -> channel 1
+25630,INFO,yapp driver,yapp_tx_driver,TX pkt #94 accepted by the DUT
+25630,INFO,yapp driver,yapp_tx_driver,TX pkt #95: addr=2 len=56 parity=bad delay=1
+25645,INFO,DUT,DUT,IN  pkt #95 header: addr=2 len=56 -> channel 2
+25670,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 4)
+25765,INFO,DUT,DUT,OUT ch1 pkt #22 done: 58 bytes in 67 cycles
+25765,INFO,ch1 monitor,channel_rx_monitor,ch1 RX pkt #22: addr=1 len=56 parity=good
+25765,INFO,scoreboard,router_scoreboard,ch1 pkt matched: addr=1 len=56 (55 matched so far)
+25805,INFO,DUT,DUT,"SUSPEND asserted: FIFO 2 full, byte 0x70 held (pkt #95)"
+25830,INFO,ch1 driver,channel_rx_driver,ch1: packet consumed (response delay 8)
+26035,INFO,DUT,DUT,OUT ch2 pkt #21 start: addr=2 len=56 (receiver waited 38 cycle(s))
+26045,INFO,DUT,DUT,SUSPEND released after 24 cycle(s)
+26455,INFO,DUT,DUT,"IN  pkt #95 complete: addr=2 len=56 parity=BAD forwarded, 58 bytes in 82 cycles (held 24)"
+26455,INFO,yapp monitor,yapp_tx_monitor,RX pkt #95 on the input: addr=2 len=56 parity=bad gap=1
+26455,INFO,reference,router_reference,Packet forwarded: addr=2 len=56 -> channel 2
+26460,INFO,yapp driver,yapp_tx_driver,TX pkt #95 accepted by the DUT
+26460,INFO,test,TEST,"STAGE: burst 4/4 sent: addr0..3 6/5/9/3, bad parity 4, gap 0 7, length 3..63"
+26460,INFO,test,TEST,"STAGE: final reads: every register and the stored packet, checked against the reference model"
+26470,INFO,DUT,DUT,"ERROR pulse, 1 cycle(s) after the bad-parity packet"
+26470,INFO,error checker,ERR_PULSE,error pulse 1 cycles after the bad packet (0 still owed)
+26490,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x39
+26495,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x39
+26520,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x97
+26525,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x97
+26550,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x0b
+26555,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x0b
+26580,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0x1a
+26585,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0x1a
+26600,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 38)
+26610,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x0d
+26615,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x0d
+26640,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x0b
+26645,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x0b
+26670,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x06
+26675,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x06
+26700,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x0e
+26705,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x0e
+26730,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x38
+26735,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x38
+26760,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1010 data=0xe2
+26765,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1010 data=0xe2
+26790,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1011 data=0x6b
+26795,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1011 data=0x6b
+26820,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1012 data=0x9f
+26825,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1012 data=0x9f
+26850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1013 data=0x5f
+26855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1013 data=0x5f
+26880,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1014 data=0xc7
+26885,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1014 data=0xc7
+26910,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1015 data=0xfc
+26915,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1015 data=0xfc
+26925,INFO,DUT,DUT,OUT ch2 pkt #21 done: 58 bytes in 90 cycles
+26925,INFO,ch2 monitor,channel_rx_monitor,ch2 RX pkt #21: addr=2 len=56 parity=bad
+26925,INFO,scoreboard,router_scoreboard,ch2 pkt matched: addr=2 len=56 (56 matched so far)
+26940,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1016 data=0x44
+26945,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1016 data=0x44
+26970,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1017 data=0xcb
+26975,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1017 data=0xcb
+27000,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1018 data=0x4d
+27005,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1018 data=0x4d
+27030,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1019 data=0xeb
+27035,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1019 data=0xeb
+27060,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101a data=0xe4
+27065,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101a data=0xe4
+27090,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101b data=0x79
+27095,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101b data=0x79
+27120,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101c data=0x86
+27125,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101c data=0x86
+27150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101d data=0x41
+27155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101d data=0x41
+27180,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101e data=0xac
+27185,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101e data=0xac
+27210,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x101f data=0xd0
+27215,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x101f data=0xd0
+27240,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1020 data=0x70
+27245,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1020 data=0x70
+27270,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1021 data=0x2c
+27275,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1021 data=0x2c
+27300,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1022 data=0x9b
+27305,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1022 data=0x9b
+27330,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1023 data=0x5e
+27335,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1023 data=0x5e
+27360,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1024 data=0xc5
+27365,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1024 data=0xc5
+27390,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1025 data=0x2b
+27395,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1025 data=0x2b
+27420,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1026 data=0xbd
+27425,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1026 data=0xbd
+27450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1027 data=0xc4
+27455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1027 data=0xc4
+27480,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1028 data=0x0d
+27485,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1028 data=0x0d
+27510,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1029 data=0x20
+27515,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1029 data=0x20
+27540,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102a data=0x65
+27545,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102a data=0x65
+27550,INFO,ch2 driver,channel_rx_driver,ch2: packet consumed (response delay 31)
+27570,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102b data=0x2e
+27575,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102b data=0x2e
+27600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102c data=0x58
+27605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102c data=0x58
+27630,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102d data=0xde
+27635,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102d data=0xde
+27660,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102e data=0xde
+27665,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102e data=0xde
+27690,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x102f data=0xe3
+27695,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x102f data=0xe3
+27720,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1030 data=0xa3
+27725,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1030 data=0xa3
+27750,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1031 data=0xa7
+27755,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1031 data=0xa7
+27780,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1032 data=0xb3
+27785,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1032 data=0xb3
+27810,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1033 data=0x8c
+27815,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1033 data=0x8c
+27840,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1034 data=0xbb
+27845,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1034 data=0xbb
+27870,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1035 data=0x3e
+27875,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1035 data=0x3e
+27900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1036 data=0xf2
+27905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1036 data=0xf2
+27930,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1037 data=0x80
+27935,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1037 data=0x80
+27960,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1038 data=0x0f
+27965,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1038 data=0x0f
+27990,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1039 data=0x55
+27995,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1039 data=0x55
+28020,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103a data=0xbb
+28025,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103a data=0xbb
+28050,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103b data=0xec
+28055,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103b data=0xec
+28080,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103c data=0xd7
+28085,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103c data=0xd7
+28110,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103d data=0x6e
+28115,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103d data=0x6e
+28140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103e data=0xb1
+28145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103e data=0xb1
+28170,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x103f data=0x15
+28175,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x103f data=0x15
+28200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1040 data=0xab
+28205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1040 data=0xab
+28230,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1041 data=0x27
+28235,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1041 data=0x27
+28260,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1042 data=0x22
+28265,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1042 data=0x22
+28290,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1043 data=0xd8
+28295,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1043 data=0xd8
+28320,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1044 data=0x5b
+28325,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1044 data=0x5b
+28350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1045 data=0x6f
+28355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1045 data=0x6f
+28380,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1046 data=0xf4
+28385,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1046 data=0xf4
+28410,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1047 data=0xf0
+28415,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1047 data=0xf0
+28440,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1048 data=0xc9
+28445,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1048 data=0xc9
+28555,INFO,test,TEST,"STAGE: done: 95 packets (56 forwarded, 39 dropped), 2 storm burst(s), 56 scoreboard matches, 84 HBUS reads checked, 36 error pulses for 36 bad packets"
+28755,INFO,error checker,ERR_PULSE,"error pulse report: 36 bad packets, 36 pulses, 0 outside 1..10 cycles, at most 3 owed at once"
+28755,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 13 packets collected
+28755,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 22 packets collected
+28755,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 21 packets collected
+28755,INFO,hbus monitor,hbus_monitor,"HBUS report: 17 writes, 85 reads"
+28755,INFO,reference,router_reference,
+28755,INFO,reference,router_reference,"HBUS reads checked against the model: 84 (0 mismatches, 1 of memory bytes never written)"
+28755,INFO,reference,router_reference,Coverage of the router configuration: 73.9%
+28755,INFO,scoreboard,router_scoreboard,
+28755,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 95 packets sent
+28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 95 packets collected, coverage 96.7%"
+28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 55 back to back, 12 of 1 cycle, 8 of 2, 19 longer (gap coverage 100.0%)"

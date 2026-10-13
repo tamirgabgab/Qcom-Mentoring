@@ -46,7 +46,7 @@ Waves: `router_disable_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer)
 
 ## Timeline
 
-113 events (the same list is in `timeline.csv`).
+114 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -59,7 +59,7 @@ Waves: `router_disable_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 70 | yapp driver | TX pkt #1: addr=0 len=42 parity=good delay=20 |
 | 75 | **DUT** | CONFIG router_en=0 maxpktsize=63 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0xfe |
-| 75 | reference | router_en is now 0 |
+| 75 | reference | router_en is now 0 (en_reg 0xfe) |
 | 285 | **DUT** | IN  pkt #1 header: addr=0 len=42 -> DROP (router disabled) |
 | 715 | **DUT** | IN  pkt #1 complete: addr=0 len=42 parity=ok dropped, 44 bytes in 44 cycles (held 0) |
 | 715 | yapp monitor | RX pkt #1 on the input: addr=0 len=42 parity=good gap=23 |
@@ -107,7 +107,7 @@ Waves: `router_disable_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 5870 | yapp driver | TX pkt #4: addr=0 len=8 parity=good delay=1 |
 | 5875 | **DUT** | CONFIG router_en=1 maxpktsize=63 |
 | 5875 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 5875 | reference | router_en is now 1 |
+| 5875 | reference | router_en is now 1 (en_reg 0xff) |
 | 5895 | **DUT** | IN  pkt #4 header: addr=0 len=8 -> channel 0 |
 | 5935 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=8 (receiver waited 3 cycle(s)) |
 | 5985 | **DUT** | IN  pkt #4 complete: addr=0 len=8 parity=ok forwarded, 10 bytes in 10 cycles (held 0) |
@@ -159,6 +159,7 @@ Waves: `router_disable_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 7640 | ch2 monitor | Channel 2 report: 1 packets collected |
 | 7640 | hbus monitor | HBUS report: 2 writes, 11 reads |
 | 7640 | reference |  |
+| 7640 | reference | Coverage of the router configuration: 26.1% |
 | 7640 | scoreboard |  |
 | 7640 | yapp driver | YAPP driver report: 6 packets sent |
 | 7640 | yapp monitor | YAPP monitor report: 6 packets collected, coverage 33.3% |

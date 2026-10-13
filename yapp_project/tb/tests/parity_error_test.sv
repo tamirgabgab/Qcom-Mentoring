@@ -46,6 +46,7 @@ endfunction : build_phase
 function void parity_error_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   tb.yapp.agent.monitor.item_collected_port.connect(err_chk.analysis_export);
+  err_chk.reference = tb.router_module.reference;   // router_en mirror
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------

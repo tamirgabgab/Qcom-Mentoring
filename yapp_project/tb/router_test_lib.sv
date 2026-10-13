@@ -30,3 +30,7 @@
 `include "tests/parity_error_test.sv"
 `include "tests/counter_wrap_test.sv"
 `include "tests/back_to_back_test.sv"
+`include "tests/random_test.sv"
+`include "tests/random_config_test.sv"
+`include "tests/random_backpressure_test.sv"
+`include "tests/random_parity_test.sv"

@@ -46,7 +46,7 @@ Waves: `router_disable_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer)
 
 ## Timeline
 
-113 events (the same list is in `timeline.csv`).
+114 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -59,7 +59,7 @@ Waves: `router_disable_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 70 | yapp driver | TX pkt #1: addr=0 len=16 parity=good delay=20 |
 | 75 | **DUT** | CONFIG router_en=0 maxpktsize=63 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0xfe |
-| 75 | reference | router_en is now 0 |
+| 75 | reference | router_en is now 0 (en_reg 0xfe) |
 | 285 | **DUT** | IN  pkt #1 header: addr=0 len=16 -> DROP (router disabled) |
 | 455 | **DUT** | IN  pkt #1 complete: addr=0 len=16 parity=ok dropped, 18 bytes in 18 cycles (held 0) |
 | 455 | yapp monitor | RX pkt #1 on the input: addr=0 len=16 parity=good gap=23 |
@@ -107,7 +107,7 @@ Waves: `router_disable_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 5590 | yapp driver | TX pkt #4: addr=0 len=29 parity=good delay=7 |
 | 5595 | **DUT** | CONFIG router_en=1 maxpktsize=63 |
 | 5595 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 5595 | reference | router_en is now 1 |
+| 5595 | reference | router_en is now 1 (en_reg 0xff) |
 | 5675 | **DUT** | IN  pkt #4 header: addr=0 len=29 -> channel 0 |
 | 5775 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=29 (receiver waited 9 cycle(s)) |
 | 5975 | **DUT** | IN  pkt #4 complete: addr=0 len=29 parity=ok forwarded, 31 bytes in 31 cycles (held 0) |
@@ -159,6 +159,7 @@ Waves: `router_disable_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer)
 | 7650 | ch2 monitor | Channel 2 report: 1 packets collected |
 | 7650 | hbus monitor | HBUS report: 2 writes, 11 reads |
 | 7650 | reference |  |
+| 7650 | reference | Coverage of the router configuration: 26.1% |
 | 7650 | scoreboard |  |
 | 7650 | yapp driver | YAPP driver report: 6 packets sent |
 | 7650 | yapp monitor | YAPP monitor report: 6 packets collected, coverage 40.0% |

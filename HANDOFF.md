@@ -99,7 +99,7 @@
   ב-Verilator 5.052 (מקומית ב-seed 1–2 וב-CI ב-2 seeds). `coverage_test` סוגר `yapp_pkt_cg` ב-100%,
   `backpressure_test`: in_suspend עלה 7 פעמים, 6/6 matched; `parity_error_test`: 12 פולסים ל-12 פקטות, 2..10 מחזורים.
   workflow `sim` ב-GitHub: job לכל ספרייה, ~3–4 דקות בסך הכול.
-- **לוגים ודוח (סשן 7):** `make regress ONLY=yapp_project SEEDS=3 WAVES=1` → 48/48 PASS בדקה אחת (אחרי קימפול של ~4 דק');
+- **לוגים ודוח (סשן 7):** `make regress ONLY=yapp_project WAVES=1` → 96 ריצות (16 מכוונים × 4 seeds + 4 אקראיים × 8);
   `make sim-report ONLY=yapp_project` → `build/sim/report/index.md`, תיקייה לכל ריצה (`<test>_s<seed>.log`, `timeline.md/.csv`,
   `<test>_s<seed>.fst`, `signals.csv`, `wave_*.svg`), `all_logs.log`, ו-`build/sim/regression_report.zip` (~2 MB, 18 MB פרוס).
   **הדוח committed ב-`yapp_project/regression/`** (בקשת תמיר, סבב 2 של סשן 7; `.gitignore` מחריג את ה-`*.log` שם). אחרי
@@ -495,6 +495,32 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    מכניס `STATE_SETTINGS` ומאפס את `source` ל-`DragAndDrop(None)`. נבדק: `surfer <fst אחר> -s yapp_router.surf.ron` →
    עץ hierarchy עם אייקונים, בלי מילוי, הגלים של הקובץ הפתוח עם הקבוצות.
    `verilator.md`, README (quick start, layout, bullet "Logs that read like a story", verification status) עודכנו.
+13. **טסטים אקראיים (סבב 5, בקשת תמיר "לרנדם יותר את הטסטים, מקרי קצה").** שאלות מנחות → תשובותיו: **מודל מלא ברפרנס**;
+   מספר פקטות אקראי 10..100, קונפיגורציה אקראית, back-pressure אקראי (receiver שעוצר **בין** פקטות, לא באמצע), parity
+   ושגיאות; **בלי** reset באמצע טסט ובלי suspend באמצע פקטה (להמשך); seeds: **4 למכוונים, 8 לאקראיים**; באג ה-error timer
+   (פקטה bad שנייה לפני הפולס של הראשונה מוחקת אותו) → **תיקון ב-RTL**. תוכנית: `/root/.claude/plans/swift-conjuring-stearns.md`.
+   - **RTL:** `yapp_error_timer.sv` — `sched[10:1]` (ביט k = פולס בעוד k מחזורים), `error <= sched[1]`, פקטה חדשה תופסת את
+     הסלוט הפנוי הראשון מ-`want` (עטיפה בתוך 1..10). פקטה ≥3 מחזורים ⇒ לכל היותר 3 פולסים ממתינים ⇒ תמיד יש סלוט. פקטה
+     בודדת: אותו תזמון בדיוק (נבדק מול ה-RTL הישן, parity_error_test 4 seeds). spec Decisions + rtl.md עודכנו.
+   - **בדיקה:** `router_reference` = מודל מלא (ctrl/en, 6 מונים עם enable חי ו-wrap, mem_size, pkt_mem עם זנב ישן, yapp_mem,
+     valid-bits לזיכרונות שלא אופסו) ובודק **כל קריאת HBUS** כש-`check_reads` (config_db #(bit), ברירת מחדל 0 כי טסטי RAL עושים
+     poke). covergroup `ref_cg` + ספירה ידנית לפירוט (Verilator לא תומך ב-`get_inst_coverage()` של coverpoint בודד).
+     `error_pulse_checker`: תור פולסים חייבים, דגימה ב-negedge, router_en מה-reference. `router_scoreboard::check_phase`: שגיאה
+     על פקטות שנשארו בתור, תחת knob `check_empty` (config_db #(bit)) ש-`base_test` של הפרויקט מדליק; במעבדות 10/11b הוא
+     כבוי: `router_simple_mcseq_test` שלהן נגמר 200ns אחרי הפקטה האחרונה (drain של הקורס) ופקטה אחת עוד יוצאת — נמצא בהרצה
+     הראשונה. ה-tracer סופר פולסים חופפים (`bad_age[$]`).
+   - **סטימולוס:** `yapp_random_burst_seq` (knobs: addr3/bad/short/long/boundary/gap0/gap_short pct; ערכים מ-`rnd::` ו-`==`),
+     `channel_rx_random_seq` (`channel_rx_profile_e`: FAST/NORMAL/SLOW/STALLY), `router_random_mcseq` על `tb.mcseqr` (סוף
+     סוף בשימוש): N פקטות ב-bursts, קונפיגורציה אקראית לפני כל burst, קריאות אקראיות, storms, קריאת הכול בסוף; שורות
+     `[TEST] STAGE` לכל burst. Verilator: מחרוזות ב-`?:` מתרפדות — if/else.
+   - **טסטים:** `random_test` (בסיס: `configure_scenario()`, `pick_profile()`, default_sequence **אובייקט** לכל ערוץ),
+     `random_config_test`, `random_backpressure_test`, `random_parity_test`. `regress.yaml`: bench יכול להיות
+     `{seeds: N, tests: [...]}`, טסט `{test: x, seeds: N}`; `SEEDS=` דורס הכול; `yapp_project/tb` = 4/8 → 96 ריצות. CI
+     (`sim.yml`) כבר לא מעביר `--seeds 2` אלא את ה-seeds של הקובץ.
+   - **אימות מוטציות:** ה-timer הישן → `random_parity_test` נכשל ("no error pulse within 10 cycles"); מונה addr2 שבור →
+     `random_test` נכשל ("HBUS read 0x100b returned 0x03, the model expects 0x04"). הוחזר.
+   - תיעוד: `docs/components/random-tests.md` (חדש, nav "Random tests"), Test plan: קבוצה חדשה **RND-01..04** + הטסטים
+     האקראיים תחת IN-03/04, OUT-02/05, DROP-01..04, CNT-01..05, MEM-01/03, REG-05/06, PKT-02/03/05, ROUTE-03.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. סבבים 4–5 (UX) נדחפו; מה שנשאר מרשימת ה-UX — סעיף 8 פריט 3.

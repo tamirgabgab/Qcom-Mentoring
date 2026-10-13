@@ -8,3 +8,4 @@
 `include "seqs/channel_rx_resp_seq.sv"
 `include "seqs/channel_rx_fast_seq.sv"
 `include "seqs/channel_rx_slow_seq.sv"
+`include "seqs/channel_rx_random_seq.sv"

@@ -50,7 +50,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-163 events (the same list is in `timeline.csv`).
+164 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -61,7 +61,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 50 | **DUT** | RESET released: router_en=1 maxpktsize=63 |
 | 70 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 75 | reference | router_en is now 1 |
+| 75 | reference | router_en is now 1 (en_reg 0x01) |
 | 100 | hbus driver | Executed READ  addr=0x1001 data=0x01 |
 | 100 | **test** | en_reg reads 0x01 |
 | 100 | yapp driver | TX pkt #1: addr=0 len=1 parity=good delay=11 |
@@ -113,7 +113,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 1100 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
 | 1100 | yapp driver | TX pkt #4: addr=0 len=62 parity=bad delay=3 |
 | 1105 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 1105 | reference | router_en is now 1 |
+| 1105 | reference | router_en is now 1 (en_reg 0xff) |
 | 1145 | **DUT** | IN  pkt #4 header: addr=0 len=62 -> channel 0 |
 | 1175 | **DUT** | OUT ch2 pkt #1 done: 11 bytes in 22 cycles |
 | 1175 | ch2 monitor | ch2 RX pkt #1: addr=2 len=9 parity=good |
@@ -125,7 +125,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 1775 | reference | Packet forwarded: addr=0 len=62 -> channel 0 |
 | 1780 | yapp driver | TX pkt #4 accepted by the DUT |
 | 1780 | yapp driver | TX pkt #5: addr=1 len=49 parity=good delay=20 |
-| 1805 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 1810 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
 | 1830 | ch0 driver | ch0: packet consumed (response delay 5) |
 | 1945 | **DUT** | OUT ch0 pkt #2 done: 64 bytes in 75 cycles |
 | 1945 | ch0 monitor | ch0 RX pkt #2: addr=0 len=62 parity=bad |
@@ -163,7 +163,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 3500 | yapp driver | TX pkt #8: addr=1 len=34 parity=good delay=8 |
 | 3520 | ch0 driver | ch0: packet consumed (response delay 2) |
 | 3585 | **DUT** | IN  pkt #8 header: addr=1 len=34 -> channel 1 |
-| 3585 | **DUT** | ERROR pulse, 9 cycle(s) after the bad-parity packet |
+| 3590 | **DUT** | ERROR pulse, 9 cycle(s) after the bad-parity packet |
 | 3605 | **DUT** | OUT ch1 pkt #3 start: addr=1 len=34 (receiver waited 1 cycle(s)) |
 | 3635 | **DUT** | OUT ch0 pkt #3 done: 27 bytes in 38 cycles |
 | 3635 | ch0 monitor | ch0 RX pkt #3: addr=0 len=25 parity=bad |
@@ -213,6 +213,7 @@ Waves: `reg_function_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 4730 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 4730 | hbus monitor | HBUS report: 2 writes, 11 reads |
 | 4730 | reference |  |
+| 4730 | reference | Coverage of the router configuration: 39.1% |
 | 4730 | scoreboard |  |
 | 4730 | yapp driver | YAPP driver report: 9 packets sent |
 | 4730 | yapp monitor | YAPP monitor report: 9 packets collected, coverage 50.0% |

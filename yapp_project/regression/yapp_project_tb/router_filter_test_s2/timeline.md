@@ -48,7 +48,7 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-337 events (the same list is in `timeline.csv`).
+338 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -65,7 +65,7 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 90 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
 | 90 | yapp driver | TX pkt #1: addr=0 len=9 parity=good delay=1 |
 | 95 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 95 | reference | router_en is now 1 |
+| 95 | reference | router_en is now 1 (en_reg 0xff) |
 | 115 | **DUT** | IN  pkt #1 header: addr=0 len=9 -> channel 0 |
 | 125 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=9 (receiver waited 0 cycle(s)) |
 | 215 | **DUT** | IN  pkt #1 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0) |
@@ -224,7 +224,7 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 6580 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 6580 | yapp driver | TX pkt #17: addr=0 len=9 parity=good delay=20 |
 | 6585 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 6585 | reference | router_en is now 1 |
+| 6585 | reference | router_en is now 1 (en_reg 0x01) |
 | 6795 | **DUT** | IN  pkt #17 header: addr=0 len=9 -> channel 0 |
 | 6855 | **DUT** | OUT ch0 pkt #3 start: addr=0 len=9 (receiver waited 5 cycle(s)) |
 | 6895 | **DUT** | IN  pkt #17 complete: addr=0 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0) |
@@ -385,6 +385,7 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 12900 | ch2 monitor | Channel 2 report: 4 packets collected |
 | 12900 | hbus monitor | HBUS report: 4 writes, 11 reads |
 | 12900 | reference |  |
+| 12900 | reference | Coverage of the router configuration: 60.9% |
 | 12900 | scoreboard |  |
 | 12900 | yapp driver | YAPP driver report: 32 packets sent |
 | 12900 | yapp monitor | YAPP monitor report: 32 packets collected, coverage 36.7% |

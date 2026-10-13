@@ -54,7 +54,7 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-193 events (the same list is in `timeline.csv`).
+194 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -66,7 +66,7 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 70 | hbus driver | Executed WRITE addr=0x1001 data=0x03 |
 | 70 | yapp driver | TX pkt #1: addr=1 len=20 parity=bad delay=20 |
 | 75 | hbus monitor | Collected WRITE addr=0x1001 data=0x03 |
-| 75 | reference | router_en is now 1 |
+| 75 | reference | router_en is now 1 (en_reg 0x03) |
 | 285 | **DUT** | IN  pkt #1 header: addr=1 len=20 -> channel 1 |
 | 315 | **DUT** | OUT ch1 pkt #1 start: addr=1 len=20 (receiver waited 2 cycle(s)) |
 | 495 | **DUT** | IN  pkt #1 complete: addr=1 len=20 parity=BAD forwarded, 22 bytes in 22 cycles (held 0) |
@@ -75,8 +75,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 500 | yapp driver | TX pkt #1 accepted by the DUT |
 | 500 | yapp driver | TX pkt #2: addr=1 len=30 parity=bad delay=11 |
 | 520 | ch1 driver | ch1: packet consumed (response delay 2) |
-| 525 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 525 | error checker | error pulse 3 cycles after the bad packet |
+| 530 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 530 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
 | 605 | **DUT** | OUT ch1 pkt #1 done: 22 bytes in 30 cycles |
 | 605 | ch1 monitor | ch1 RX pkt #1: addr=1 len=20 parity=bad |
 | 605 | scoreboard | ch1 pkt matched: addr=1 len=20 (1 matched so far) |
@@ -88,8 +88,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 925 | reference | Packet forwarded: addr=1 len=30 -> channel 1 |
 | 930 | yapp driver | TX pkt #2 accepted by the DUT |
 | 930 | yapp driver | TX pkt #3: addr=2 len=59 parity=bad delay=8 |
-| 1005 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
-| 1005 | error checker | error pulse 8 cycles after the bad packet |
+| 1010 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
+| 1010 | error checker | error pulse 8 cycles after the bad packet (0 still owed) |
 | 1015 | **DUT** | IN  pkt #3 header: addr=2 len=59 -> channel 2 |
 | 1035 | **DUT** | OUT ch1 pkt #2 done: 32 bytes in 42 cycles |
 | 1035 | ch1 monitor | ch1 RX pkt #2: addr=1 len=30 parity=bad |
@@ -100,8 +100,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 1615 | reference | Packet forwarded: addr=2 len=59 -> channel 2 |
 | 1620 | yapp driver | TX pkt #3 accepted by the DUT |
 | 1620 | yapp driver | TX pkt #4: addr=2 len=49 parity=bad delay=20 |
-| 1645 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 1645 | error checker | error pulse 3 cycles after the bad packet |
+| 1650 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 1650 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
 | 1650 | ch1 driver | ch1: packet consumed (response delay 9) |
 | 1720 | ch2 driver | ch2: packet consumed (response delay 10) |
 | 1825 | **DUT** | IN  pkt #4 header: addr=2 len=49 -> channel 2 |
@@ -115,8 +115,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 2325 | reference | Packet forwarded: addr=2 len=49 -> channel 2 |
 | 2330 | yapp driver | TX pkt #4 accepted by the DUT |
 | 2330 | yapp driver | TX pkt #5: addr=1 len=30 parity=bad delay=16 |
-| 2365 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
-| 2365 | error checker | error pulse 4 cycles after the bad packet |
+| 2370 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
+| 2370 | error checker | error pulse 4 cycles after the bad packet (0 still owed) |
 | 2395 | **DUT** | OUT ch2 pkt #2 done: 51 bytes in 56 cycles |
 | 2395 | ch2 monitor | ch2 RX pkt #2: addr=2 len=49 parity=bad |
 | 2395 | scoreboard | ch2 pkt matched: addr=2 len=49 (4 matched so far) |
@@ -128,8 +128,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 2805 | reference | Packet forwarded: addr=1 len=30 -> channel 1 |
 | 2810 | yapp driver | TX pkt #5 accepted by the DUT |
 | 2810 | yapp driver | TX pkt #6: addr=1 len=47 parity=bad delay=14 |
-| 2845 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
-| 2845 | error checker | error pulse 4 cycles after the bad packet |
+| 2850 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
+| 2850 | error checker | error pulse 4 cycles after the bad packet (0 still owed) |
 | 2890 | ch1 driver | ch1: packet consumed (response delay 8) |
 | 2915 | **DUT** | OUT ch1 pkt #3 done: 32 bytes in 34 cycles |
 | 2915 | ch1 monitor | ch1 RX pkt #3: addr=1 len=30 parity=bad |
@@ -143,8 +143,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 3435 | reference | Packet forwarded: addr=1 len=47 -> channel 1 |
 | 3440 | yapp driver | TX pkt #6 accepted by the DUT |
 | 3440 | yapp driver | TX pkt #7: addr=1 len=42 parity=bad delay=16 |
-| 3465 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 3465 | error checker | error pulse 3 cycles after the bad packet |
+| 3470 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 3470 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
 | 3510 | ch1 driver | ch1: packet consumed (response delay 3) |
 | 3605 | **DUT** | IN  pkt #7 header: addr=1 len=42 -> channel 1 |
 | 3675 | **DUT** | OUT ch1 pkt #4 done: 49 bytes in 72 cycles |
@@ -159,8 +159,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 4065 | reference | Packet forwarded: addr=1 len=42 -> channel 1 |
 | 4070 | yapp driver | TX pkt #7 accepted by the DUT |
 | 4070 | yapp driver | TX pkt #8: addr=1 len=43 parity=bad delay=20 |
-| 4085 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
-| 4085 | error checker | error pulse 2 cycles after the bad packet |
+| 4090 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
+| 4090 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
 | 4215 | **DUT** | OUT ch1 pkt #5 done: 44 bytes in 54 cycles |
 | 4215 | ch1 monitor | ch1 RX pkt #5: addr=1 len=42 parity=bad |
 | 4215 | scoreboard | ch1 pkt matched: addr=1 len=42 (7 matched so far) |
@@ -174,8 +174,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 4735 | **DUT** | OUT ch1 pkt #6 done: 45 bytes in 46 cycles |
 | 4735 | ch1 monitor | ch1 RX pkt #6: addr=1 len=43 parity=bad |
 | 4735 | scoreboard | ch1 pkt matched: addr=1 len=43 (8 matched so far) |
-| 4745 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 4745 | error checker | error pulse 3 cycles after the bad packet |
+| 4750 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 4750 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
 | 4800 | ch1 driver | ch1: packet consumed (response delay 0) |
 | 4880 | hbus driver | Executed READ  addr=0x1004 data=0x08 |
 | 4880 | **test** | parity_err_cnt_reg reads 8 as expected |
@@ -184,7 +184,7 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 4900 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
 | 4900 | yapp driver | TX pkt #9: addr=2 len=17 parity=bad delay=15 |
 | 4905 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
-| 4905 | reference | router_en is now 1 |
+| 4905 | reference | router_en is now 1 (en_reg 0x01) |
 | 5065 | **DUT** | IN  pkt #9 header: addr=2 len=17 -> channel 2 |
 | 5155 | **DUT** | OUT ch2 pkt #3 start: addr=2 len=17 (receiver waited 8 cycle(s)) |
 | 5245 | **DUT** | IN  pkt #9 complete: addr=2 len=17 parity=BAD forwarded, 19 bytes in 19 cycles (held 0) |
@@ -192,8 +192,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 5245 | reference | Packet forwarded: addr=2 len=17 -> channel 2 |
 | 5250 | yapp driver | TX pkt #9 accepted by the DUT |
 | 5250 | yapp driver | TX pkt #10: addr=1 len=49 parity=bad delay=18 |
-| 5325 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
-| 5325 | error checker | error pulse 8 cycles after the bad packet |
+| 5330 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
+| 5330 | error checker | error pulse 8 cycles after the bad packet (0 still owed) |
 | 5330 | ch2 driver | ch2: packet consumed (response delay 8) |
 | 5375 | **DUT** | OUT ch2 pkt #3 done: 19 bytes in 23 cycles |
 | 5375 | ch2 monitor | ch2 RX pkt #3: addr=2 len=17 parity=bad |
@@ -206,8 +206,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 5935 | reference | Packet forwarded: addr=1 len=49 -> channel 1 |
 | 5940 | yapp driver | TX pkt #10 accepted by the DUT |
 | 5940 | yapp driver | TX pkt #11: addr=0 len=2 parity=bad delay=20 |
-| 5965 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 5965 | error checker | error pulse 3 cycles after the bad packet |
+| 5970 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 5970 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
 | 6020 | ch1 driver | ch1: packet consumed (response delay 8) |
 | 6055 | **DUT** | OUT ch1 pkt #7 done: 51 bytes in 54 cycles |
 | 6055 | ch1 monitor | ch1 RX pkt #7: addr=1 len=49 parity=bad |
@@ -220,8 +220,8 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 6180 | ch0 driver | ch0: packet consumed (response delay 0) |
 | 6180 | yapp driver | TX pkt #11 accepted by the DUT |
 | 6180 | yapp driver | TX pkt #12: addr=1 len=1 parity=bad delay=16 |
-| 6225 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet |
-| 6225 | error checker | error pulse 5 cycles after the bad packet |
+| 6230 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet |
+| 6230 | error checker | error pulse 5 cycles after the bad packet (0 still owed) |
 | 6265 | **DUT** | OUT ch0 pkt #1 done: 4 bytes in 12 cycles |
 | 6265 | ch0 monitor | ch0 RX pkt #1: addr=0 len=2 parity=bad |
 | 6265 | scoreboard | ch0 pkt matched: addr=0 len=2 (11 matched so far) |
@@ -234,19 +234,20 @@ Waves: `parity_error_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 6375 | **DUT** | OUT ch1 pkt #8 done: 3 bytes in 3 cycles |
 | 6375 | ch1 monitor | ch1 RX pkt #8: addr=1 len=1 parity=bad |
 | 6375 | scoreboard | ch1 pkt matched: addr=1 len=1 (12 matched so far) |
-| 6445 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
-| 6445 | error checker | error pulse 8 cycles after the bad packet |
+| 6450 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
+| 6450 | error checker | error pulse 8 cycles after the bad packet (0 still owed) |
 | 6450 | ch0 driver | ch0: packet consumed (response delay 7) |
 | 6470 | ch1 driver | ch1: packet consumed (response delay 2) |
 | 6520 | hbus driver | Executed READ  addr=0x1004 data=0x08 |
 | 6520 | **test** | parity_err_cnt_reg reads 8 as expected |
 | 6525 | hbus monitor | Collected READ  addr=0x1004 data=0x08 |
-| 6720 | error checker | error pulse report: 12 bad packets, 12 pulses, 0 outside 1..10 cycles |
+| 6720 | error checker | error pulse report: 12 bad packets, 12 pulses, 0 outside 1..10 cycles, at most 1 owed at once |
 | 6720 | ch0 monitor | Channel 0 report: 1 packets collected |
 | 6720 | ch1 monitor | Channel 1 report: 8 packets collected |
 | 6720 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 6720 | hbus monitor | HBUS report: 2 writes, 2 reads |
 | 6720 | reference |  |
+| 6720 | reference | Coverage of the router configuration: 30.4% |
 | 6720 | scoreboard |  |
 | 6720 | yapp driver | YAPP driver report: 12 packets sent |
 | 6720 | yapp monitor | YAPP monitor report: 12 packets collected, coverage 60.0% |

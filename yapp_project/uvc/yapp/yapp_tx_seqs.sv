@@ -34,3 +34,4 @@
 `include "seqs/yapp_pkt_seq.sv"
 `include "seqs/yapp_boundary_seq.sv"
 `include "seqs/yapp_gap_seq.sv"
+`include "seqs/yapp_random_burst_seq.sv"

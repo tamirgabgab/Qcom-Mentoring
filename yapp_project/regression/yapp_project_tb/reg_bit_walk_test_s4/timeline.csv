@@ -1,0 +1,374 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,"STAGE: RW register ctrl_reg: walking ones, walking zeros, 0x00 0xff 0xaa 0x55"
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+70,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x01
+75,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=1
+75,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x01
+75,INFO,reference,router_reference,maxpktsize is now 1
+100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x01
+105,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x01
+120,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x02
+125,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=2
+125,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x02
+125,INFO,reference,router_reference,maxpktsize is now 2
+150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x02
+155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x02
+170,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x04
+175,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=4
+175,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x04
+175,INFO,reference,router_reference,maxpktsize is now 4
+200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x04
+205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x04
+220,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x08
+225,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=8
+225,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x08
+225,INFO,reference,router_reference,maxpktsize is now 8
+250,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x08
+255,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x08
+270,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x10
+275,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=16
+275,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x10
+275,INFO,reference,router_reference,maxpktsize is now 16
+300,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x10
+305,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x10
+320,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x20
+325,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=32
+325,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x20
+325,INFO,reference,router_reference,maxpktsize is now 32
+350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x20
+355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x20
+370,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x40
+375,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=0
+375,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x40
+375,INFO,reference,router_reference,maxpktsize is now 0
+400,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x40
+405,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x40
+420,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x80
+425,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x80
+425,INFO,reference,router_reference,maxpktsize is now 0
+450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x80
+455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x80
+470,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xfe
+475,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=62
+475,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xfe
+475,INFO,reference,router_reference,maxpktsize is now 62
+500,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xfe
+505,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xfe
+520,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xfd
+525,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=61
+525,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xfd
+525,INFO,reference,router_reference,maxpktsize is now 61
+550,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xfd
+555,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xfd
+570,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xfb
+575,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=59
+575,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xfb
+575,INFO,reference,router_reference,maxpktsize is now 59
+600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xfb
+605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xfb
+620,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xf7
+625,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=55
+625,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xf7
+625,INFO,reference,router_reference,maxpktsize is now 55
+650,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xf7
+655,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xf7
+670,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xef
+675,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=47
+675,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xef
+675,INFO,reference,router_reference,maxpktsize is now 47
+700,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xef
+705,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xef
+720,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xdf
+725,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=31
+725,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xdf
+725,INFO,reference,router_reference,maxpktsize is now 31
+750,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xdf
+755,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xdf
+770,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xbf
+775,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+775,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xbf
+775,INFO,reference,router_reference,maxpktsize is now 63
+800,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xbf
+805,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xbf
+820,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x7f
+825,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x7f
+825,INFO,reference,router_reference,maxpktsize is now 63
+850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x7f
+855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x7f
+870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x00
+875,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=0
+875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x00
+875,INFO,reference,router_reference,maxpktsize is now 0
+900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x00
+905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x00
+920,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xff
+925,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+925,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xff
+925,INFO,reference,router_reference,maxpktsize is now 63
+950,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xff
+955,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xff
+970,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0xaa
+975,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=42
+975,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0xaa
+975,INFO,reference,router_reference,maxpktsize is now 42
+1000,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0xaa
+1005,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0xaa
+1020,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x55
+1025,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
+1025,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x55
+1025,INFO,reference,router_reference,maxpktsize is now 21
+1050,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x55
+1050,INFO,test,TEST,"STAGE: RW register en_reg: walking ones, walking zeros, 0x00 0xff 0xaa 0x55"
+1055,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x55
+1070,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
+1075,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
+1075,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
+1100,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x01
+1105,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x01
+1120,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x02
+1125,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
+1125,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x02
+1125,INFO,reference,router_reference,router_en is now 0 (en_reg 0x02)
+1150,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x02
+1155,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x02
+1170,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x04
+1175,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x04
+1175,INFO,reference,router_reference,router_en is now 0 (en_reg 0x04)
+1200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x04
+1205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x04
+1220,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x08
+1225,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x08
+1225,INFO,reference,router_reference,router_en is now 0 (en_reg 0x08)
+1250,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x08
+1255,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x08
+1270,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x10
+1275,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x10
+1275,INFO,reference,router_reference,router_en is now 0 (en_reg 0x10)
+1300,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x10
+1305,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x10
+1320,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x20
+1325,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x20
+1325,INFO,reference,router_reference,router_en is now 0 (en_reg 0x20)
+1350,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x20
+1355,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x20
+1370,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x40
+1375,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x40
+1375,INFO,reference,router_reference,router_en is now 0 (en_reg 0x40)
+1400,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x40
+1405,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x40
+1420,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x80
+1425,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x80
+1425,INFO,reference,router_reference,router_en is now 0 (en_reg 0x80)
+1450,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x80
+1455,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x80
+1470,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfe
+1475,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfe
+1475,INFO,reference,router_reference,router_en is now 0 (en_reg 0xfe)
+1500,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfe
+1505,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfe
+1520,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfd
+1525,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
+1525,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfd
+1525,INFO,reference,router_reference,router_en is now 1 (en_reg 0xfd)
+1550,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfd
+1555,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfd
+1570,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xfb
+1575,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xfb
+1575,INFO,reference,router_reference,router_en is now 1 (en_reg 0xfb)
+1600,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xfb
+1605,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xfb
+1620,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xf7
+1625,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xf7
+1625,INFO,reference,router_reference,router_en is now 1 (en_reg 0xf7)
+1650,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xf7
+1655,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xf7
+1670,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xef
+1675,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xef
+1675,INFO,reference,router_reference,router_en is now 1 (en_reg 0xef)
+1700,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xef
+1705,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xef
+1720,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xdf
+1725,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xdf
+1725,INFO,reference,router_reference,router_en is now 1 (en_reg 0xdf)
+1750,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xdf
+1755,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xdf
+1770,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xbf
+1775,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xbf
+1775,INFO,reference,router_reference,router_en is now 1 (en_reg 0xbf)
+1800,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xbf
+1805,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xbf
+1820,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x7f
+1825,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x7f
+1825,INFO,reference,router_reference,router_en is now 1 (en_reg 0x7f)
+1850,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x7f
+1855,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x7f
+1870,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x00
+1875,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
+1875,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x00
+1875,INFO,reference,router_reference,router_en is now 0 (en_reg 0x00)
+1900,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x00
+1905,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x00
+1920,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xff
+1925,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
+1925,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xff
+1925,INFO,reference,router_reference,router_en is now 1 (en_reg 0xff)
+1950,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xff
+1955,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xff
+1970,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0xaa
+1975,INFO,DUT,DUT,CONFIG router_en=0 maxpktsize=21
+1975,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0xaa
+1975,INFO,reference,router_reference,router_en is now 0 (en_reg 0xaa)
+2000,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0xaa
+2005,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0xaa
+2020,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x55
+2025,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=21
+2025,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x55
+2025,INFO,reference,router_reference,router_en is now 1 (en_reg 0x55)
+2050,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x55
+2050,INFO,test,TEST,"STAGE: RO register parity_err_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2050,INFO,test,REG_ACCESS,poke            0x00
+2055,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x55
+2080,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x00
+2080,INFO,test,REG_ACCESS,front-door read 0x00
+2085,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x00
+2100,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1004 data=0xff
+2100,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2100,INFO,test,REG_ACCESS,peek            0x00
+2100,INFO,test,TEST,"STAGE: RO register parity_err_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2100,INFO,test,REG_ACCESS,poke            0xff
+2105,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1004 data=0xff
+2130,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0xff
+2130,INFO,test,REG_ACCESS,front-door read 0xff
+2135,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0xff
+2150,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1004 data=0x00
+2150,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2150,INFO,test,REG_ACCESS,peek            0xff
+2150,INFO,test,TEST,"STAGE: RO register oversized_pkt_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2150,INFO,test,REG_ACCESS,poke            0x00
+2155,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1004 data=0x00
+2180,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0x00
+2180,INFO,test,REG_ACCESS,front-door read 0x00
+2185,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0x00
+2200,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1005 data=0xff
+2200,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2200,INFO,test,REG_ACCESS,peek            0x00
+2200,INFO,test,TEST,"STAGE: RO register oversized_pkt_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2200,INFO,test,REG_ACCESS,poke            0xff
+2205,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1005 data=0xff
+2230,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0xff
+2230,INFO,test,REG_ACCESS,front-door read 0xff
+2235,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0xff
+2250,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1005 data=0x00
+2250,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2250,INFO,test,REG_ACCESS,peek            0xff
+2250,INFO,test,TEST,"STAGE: RO register addr3_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2250,INFO,test,REG_ACCESS,poke            0x00
+2255,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1005 data=0x00
+2280,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x00
+2280,INFO,test,REG_ACCESS,front-door read 0x00
+2285,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x00
+2300,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1006 data=0xff
+2300,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2300,INFO,test,REG_ACCESS,peek            0x00
+2300,INFO,test,TEST,"STAGE: RO register addr3_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2300,INFO,test,REG_ACCESS,poke            0xff
+2305,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1006 data=0xff
+2330,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0xff
+2330,INFO,test,REG_ACCESS,front-door read 0xff
+2335,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0xff
+2350,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1006 data=0x00
+2350,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2350,INFO,test,REG_ACCESS,peek            0xff
+2350,INFO,test,TEST,"STAGE: RO register addr0_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2350,INFO,test,REG_ACCESS,poke            0x00
+2355,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1006 data=0x00
+2380,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x00
+2380,INFO,test,REG_ACCESS,front-door read 0x00
+2385,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x00
+2400,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1009 data=0xff
+2400,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2400,INFO,test,REG_ACCESS,peek            0x00
+2400,INFO,test,TEST,"STAGE: RO register addr0_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2400,INFO,test,REG_ACCESS,poke            0xff
+2405,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1009 data=0xff
+2430,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0xff
+2430,INFO,test,REG_ACCESS,front-door read 0xff
+2435,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0xff
+2450,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1009 data=0x00
+2450,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2450,INFO,test,REG_ACCESS,peek            0xff
+2450,INFO,test,TEST,"STAGE: RO register addr1_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2450,INFO,test,REG_ACCESS,poke            0x00
+2455,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1009 data=0x00
+2480,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x00
+2480,INFO,test,REG_ACCESS,front-door read 0x00
+2485,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x00
+2500,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100a data=0xff
+2500,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2500,INFO,test,REG_ACCESS,peek            0x00
+2500,INFO,test,TEST,"STAGE: RO register addr1_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2500,INFO,test,REG_ACCESS,poke            0xff
+2505,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100a data=0xff
+2530,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0xff
+2530,INFO,test,REG_ACCESS,front-door read 0xff
+2535,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0xff
+2550,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100a data=0x00
+2550,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2550,INFO,test,REG_ACCESS,peek            0xff
+2550,INFO,test,TEST,"STAGE: RO register addr2_cnt_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2550,INFO,test,REG_ACCESS,poke            0x00
+2555,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100a data=0x00
+2580,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x00
+2580,INFO,test,REG_ACCESS,front-door read 0x00
+2585,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x00
+2600,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100b data=0xff
+2600,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2600,INFO,test,REG_ACCESS,peek            0x00
+2600,INFO,test,TEST,"STAGE: RO register addr2_cnt_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2600,INFO,test,REG_ACCESS,poke            0xff
+2605,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100b data=0xff
+2630,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0xff
+2630,INFO,test,REG_ACCESS,front-door read 0xff
+2635,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0xff
+2650,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100b data=0x00
+2650,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2650,INFO,test,REG_ACCESS,peek            0xff
+2650,INFO,test,TEST,"STAGE: RO register mem_size_reg: poke 0x00, front-door read, write 0xff must be ignored"
+2650,INFO,test,REG_ACCESS,poke            0x00
+2655,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100b data=0x00
+2680,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x00
+2680,INFO,test,REG_ACCESS,front-door read 0x00
+2685,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x00
+2700,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100d data=0xff
+2700,INFO,test,REG_ACCESS,front-door write 0xff (RO: must be ignored)
+2700,INFO,test,REG_ACCESS,peek            0x00
+2700,INFO,test,TEST,"STAGE: RO register mem_size_reg: poke 0xff, front-door read, write 0x00 must be ignored"
+2700,INFO,test,REG_ACCESS,poke            0xff
+2705,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100d data=0xff
+2730,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0xff
+2730,INFO,test,REG_ACCESS,front-door read 0xff
+2735,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0xff
+2750,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x100d data=0x00
+2750,INFO,test,REG_ACCESS,front-door write 0x00 (RO: must be ignored)
+2750,INFO,test,REG_ACCESS,peek            0xff
+2750,INFO,test,TEST,STAGE: ctrl_reg and en_reg back to their reset values
+2755,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x100d data=0x00
+2770,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1000 data=0x3f
+2775,INFO,DUT,DUT,CONFIG router_en=1 maxpktsize=63
+2775,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1000 data=0x3f
+2775,INFO,reference,router_reference,maxpktsize is now 63
+2790,INFO,hbus driver,hbus_master_driver,Executed WRITE addr=0x1001 data=0x01
+2795,INFO,hbus monitor,hbus_monitor,Collected WRITE addr=0x1001 data=0x01
+2795,INFO,reference,router_reference,router_en is now 1 (en_reg 0x01)
+2990,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 0 packets collected
+2990,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
+2990,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
+2990,INFO,hbus monitor,hbus_monitor,"HBUS report: 56 writes, 54 reads"
+2990,INFO,reference,router_reference,
+2990,INFO,scoreboard,router_scoreboard,
+2990,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent
+2990,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, coverage 0.0%"
+2990,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)"

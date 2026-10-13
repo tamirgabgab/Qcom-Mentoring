@@ -1,0 +1,33 @@
+time_ns,severity,who,id,event
+0,INFO,yapp monitor,yapp_tx_monitor,YAPP monitor running
+0,INFO,test,TEST,STAGE: uvm_reg_hw_reset_seq: read every register through the front door and compare with its reset value
+0,INFO,clk/rst driver,clock_and_reset_driver,Starting clock (period 10) and holding reset for 5 cycles
+0,INFO,DUT,DUT,RESET asserted
+50,INFO,DUT,DUT,RESET released: router_en=1 maxpktsize=63
+80,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1000 data=0x3f
+85,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1000 data=0x3f
+110,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1001 data=0x01
+115,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1001 data=0x01
+140,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1004 data=0x00
+145,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1004 data=0x00
+170,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1005 data=0x00
+175,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1005 data=0x00
+200,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1006 data=0x00
+205,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1006 data=0x00
+230,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x1009 data=0x00
+235,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x1009 data=0x00
+260,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100a data=0x00
+265,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100a data=0x00
+290,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100b data=0x00
+295,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100b data=0x00
+320,INFO,hbus driver,hbus_master_driver,Executed READ  addr=0x100d data=0x00
+325,INFO,hbus monitor,hbus_monitor,Collected READ  addr=0x100d data=0x00
+520,INFO,ch0 monitor,channel_rx_monitor,Channel 0 report: 0 packets collected
+520,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
+520,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
+520,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 9 reads"
+520,INFO,reference,router_reference,
+520,INFO,scoreboard,router_scoreboard,
+520,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent
+520,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, coverage 0.0%"
+520,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)"

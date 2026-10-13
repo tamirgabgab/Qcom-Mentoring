@@ -52,6 +52,19 @@ class router_scoreboard extends uvm_scoreboard;
   extern function void write_chan2(channel_packet packet);
   extern function void check_channel(int ch, channel_packet cp);
 
+  // Knob (uvm_config_db #(bit) "check_empty"): an expected packet still queued
+  // at the end of the test is an error. The project tests set it; the lab tests
+  // keep the course's 200 ns drain time, in which the last packet may still be
+  // on its way out, so they leave it off.
+  bit check_empty;
+
+  extern function void build_phase(uvm_phase phase);
+
+  //--------------------------------------------------------------------------
+  // End of test: every expected packet must have come out of its channel
+  //--------------------------------------------------------------------------
+  extern function void check_phase(uvm_phase phase);
+
   //--------------------------------------------------------------------------
   // End of test: the numbers must add up
   //   packets_in == matched + mismatched + left in queues (+ addr 3)
@@ -126,6 +139,25 @@ function void router_scoreboard::check_channel(int ch, channel_packet cp);
                          ch, expected.sprint(), cp.sprint()))
   end
 endfunction : check_channel
+
+//------------------------------------------------------------------------------
+function void router_scoreboard::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  void'(uvm_config_db #(bit)::get(this, "", "check_empty", check_empty));
+endfunction : build_phase
+
+//------------------------------------------------------------------------------
+function void router_scoreboard::check_phase(uvm_phase phase);
+  if (!check_empty) begin
+    return;
+  end
+  for (int ch = 0; ch < 3; ch++) begin
+    if (pkt_q[ch].size() > 0) begin
+      `uvm_error(get_type_name(), $sformatf("%0d packet(s) expected on channel %0d never came out (first: addr=%0d len=%0d)",
+                                            pkt_q[ch].size(), ch, pkt_q[ch][0].addr, pkt_q[ch][0].length))
+    end
+  end
+endfunction : check_phase
 
 //------------------------------------------------------------------------------
 function void router_scoreboard::report_phase(uvm_phase phase);
