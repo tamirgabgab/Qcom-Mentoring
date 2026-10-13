@@ -13,7 +13,10 @@
 #   make regress              every lab and test with Verilator (scripts/regress.yaml, its seeds) [SEEDS=3 for all] [ONLY=lab09] [WAVES=1]
 #   make sim-report           bundle the logs of the last regression: one folder per run with the log,
 #                             a timeline, the waves and wave pictures (scripts/sim_report.py) [ONLY=yapp_project]
-#                             [OUT=yapp_project/regression] writes the committed report of the project
+#                             [OUT=yapp_project/regression] writes the committed report of the project;
+#                             also coverage.md, the functional coverage merged over every run (+ HTML)
+#   make coverage             print the merged functional coverage of the last regression and its holes
+#                             (scripts/coverage_report.py) [ONLY=yapp_project]
 #   make docs                 build the teaching site into site/
 #   make serve                serve the teaching site locally
 #   make map                  regenerate the interactive project map (pyslang + pyyaml + jinja2)
@@ -32,7 +35,7 @@ SEEDS     ?=
 ONLY      ?=
 SIM       := $(PYTHON) scripts/sim.py
 
-.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report docs serve map map-check map-export readme-shots clean
+.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report coverage docs serve map map-check map-export readme-shots clean
 
 help:
 	@sed -n '2,21p' $(MAKEFILE_LIST)
@@ -79,6 +82,9 @@ regress: uvm-src
 
 sim-report:
 	$(PYTHON) scripts/sim_report.py $(foreach o,$(ONLY),--only $(o)) $(if $(OUT),--out $(OUT)) --zip
+
+coverage:
+	$(PYTHON) scripts/coverage_report.py $(foreach o,$(ONLY),--only $(o))
 
 docs:
 	mkdocs build --strict

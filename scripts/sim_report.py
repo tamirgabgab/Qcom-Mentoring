@@ -24,6 +24,11 @@ Writes
         <test>_s<seed>.fst            the waves (GTKWave, Surfer, VS Code)
         signals.csv                   the per-cycle signal trace
         wave_*.svg                    the pictures
+      coverage.md                     the functional coverage merged over every run
+      coverage.json                   the same data (the site page and the map read it)
+      <bench>/merged.dat, merged.info the merged coverage database (verilator_coverage, lcov)
+      coverage_html/<bench>/          genhtml of merged.info (docs/coverage/<bench>/ for the
+                                      committed report, so the site serves it)
     build/sim/regression_report.zip   with --zip
 
 The committed report of the project lives in yapp_project/regression/
@@ -35,6 +40,7 @@ import argparse
 import bisect
 import csv
 import glob
+import json
 import os
 import re
 import shutil
@@ -43,6 +49,7 @@ import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import coverage_report  # noqa: E402  (the merged functional coverage: coverage.md, json, HTML)
 import gen_waves  # noqa: E402  (render(): the SVG timing-diagram drawer of the docs)
 import surfer_layout  # noqa: E402  (surfer_url(): one-click link to the waves in Surfer's web app)
 
@@ -65,6 +72,8 @@ WHO = [
     (re.compile(r"\.router_module\.reference$"),   "reference"),
     (re.compile(r"\.clk_rst\.agent\.driver$"),     "clk/rst driver"),
     (re.compile(r"\.err_chk$"),                    "error checker"),
+    (re.compile(r"\.yapp\.agent\.(pkt|gap)_cov$"),  "coverage"),
+    (re.compile(r"\.router_module\.coverage$"),   "coverage"),
 ]
 
 
@@ -500,6 +509,10 @@ def build_report(only=None, out=None, make_zip=False):
                         + "#" * 78 + "\n" + r["text"] + "\n")
         print(f"    {'PASS' if r['ok'] else 'FAIL'}  {r['test']:<26} seed {r['seed']}  {len(events):>5} events"
               f"  {len(pics)} picture(s)")
+    cov = write_coverage(runs, out, committed)
+    if cov:
+        index[2:2] = ["Functional coverage merged over every run: [coverage.md](coverage.md) ("
+                      + "; ".join(f"{d['bench']} {d['covered']} / {d['total']} bins" for d in cov) + ").", ""]
     with open(os.path.join(out, "index.md"), "w") as fh:
         fh.write("\n".join(index) + "\n")
     with open(os.path.join(out, "all_logs.log"), "w") as fh:
@@ -515,6 +528,38 @@ def build_report(only=None, out=None, make_zip=False):
                     z.write(p, os.path.join("regression_report", os.path.relpath(p, out)))
         print(f"zip: {os.path.relpath(zpath, ROOT)}  ({os.path.getsize(zpath) / 1e6:.1f} MB)")
     return all(r["ok"] for r in runs)
+
+
+def write_coverage(runs, out, committed):
+    """coverage.md / coverage.json / <bench>/merged.* / the HTML, for the benches of the report."""
+    benches = {}
+    for r in runs:
+        benches.setdefault(r["bench"], set()).add((r["test"], r["seed"]))
+    html_root = os.path.join(ROOT, "docs", "coverage") if committed else os.path.join(out, "coverage_html")
+    src_prefix = os.path.relpath(ROOT, out) + "/"
+    all_data, sections = [], []
+    for bench, keep in sorted(benches.items()):
+        data = coverage_report.collect(os.path.join(BUILD, bench), keep)
+        if not data:
+            continue
+        all_data.append(data)
+        info = coverage_report.write_merged(os.path.join(BUILD, bench), keep, os.path.join(out, bench))
+        html = None
+        if info and coverage_report.write_html(info, os.path.join(html_root, bench),
+                                               f"YAPP functional coverage ({bench}, {data['runs']} runs)"):
+            html = os.path.relpath(os.path.join(html_root, bench, "index.html"), out)
+        sections.append(coverage_report.markdown(data, html, src_prefix=src_prefix))
+        print(f"    coverage {bench}: {data['covered']} / {data['total']} bins over {data['runs']} runs"
+              + (f", HTML in {os.path.relpath(os.path.join(html_root, bench), ROOT)}" if html else ""))
+    if not all_data:
+        return []
+    with open(os.path.join(out, "coverage.md"), "w") as fh:
+        fh.write("# Functional coverage\n\nThe covergroups of every run, merged (`scripts/coverage_report.py`). "
+                 "How to read it: docs/components/coverage.md.\n\n" + "\n".join(sections))
+    with open(os.path.join(out, "coverage.json"), "w") as fh:
+        json.dump(all_data, fh, indent=1)
+        fh.write("\n")
+    return all_data
 
 
 def main():

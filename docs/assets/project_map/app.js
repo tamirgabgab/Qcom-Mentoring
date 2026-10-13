@@ -1707,6 +1707,28 @@
     }
     // A feature group of the test plan: where it comes from, then every item with its
     // stimulus, check, coverage, the tests that cover it and its status.
+    // The merged bins of the committed regression (yapp_project/regression/coverage.json)
+    renderCoverage(body, n) {
+      const add = (h) => body.insertAdjacentHTML("beforeend", h);
+      n.coverage.forEach(g => {
+        add(`<h3>Coverage: <code>${esc(g.name)}</code> ${g.pct.toFixed(1)}%</h3>`);
+        add(`<p class="pm-spec">${g.covered} of ${g.total} bins hit, merged over the ${g.runs} runs of the committed regression. ` +
+            `Every run: <code>make regress</code>, then <code>make sim-report</code> writes coverage.md and the HTML.</p>`);
+        const t = el("table", { class: "members pm-cov" });
+        t.innerHTML = "<tr><th>coverpoint</th><th>bin</th><th>hits</th><th>tests</th><th></th></tr>";
+        g.points.forEach(p => p.bins.forEach((b, i) => {
+          const tr = el("tr", { class: b.hits ? "" : "hole" });
+          const label = i ? "" : `<code>${esc(p.name)}</code>${p.cross ? " <span class='role'>cross</span>" : ""} <span class='role'>${p.covered}/${p.total}</span>`;
+          const tests = b.tests.join(", ") + (b.n_tests > b.tests.length ? ` +${b.n_tests - b.tests.length}` : "");
+          tr.innerHTML = `<td>${label}</td><td><code>${esc(b.name)}</code></td><td>${b.hits ? b.hits : "<b>hole</b>"}</td>` +
+                         `<td class="role">${esc(tests)}</td><td class="ln">L${b.line}</td>`;
+          tr.classList.add("jump"); tr.title = "show this bin in the source";
+          tr.addEventListener("click", () => this.showCodeAt(n, b.line));
+          t.append(tr);
+        }));
+        body.append(t);
+      });
+    }
     renderFeature(body, n) {
       const add = (h) => body.insertAdjacentHTML("beforeend", h);
       if (n.spec) add(`<p class="pm-spec">Source: ${esc(n.spec)}</p>`);
@@ -1752,6 +1774,7 @@
       if (n.lab) { const lk = (n.docs || []).find(d => d.title.startsWith("Lab") || d.title === "Test plan"); row(n.lab === "TP" ? "belongs to" : "introduced", lk ? el("a", { href: this.docUrl(lk.url), target: "_top" }, [labTxt(n)]) : labTxt(n)); }
       if (n.file && n.scope !== "cls") row("source", el("code", {}, [`${n.file}:${n.line}`]));
       if (facts.children.length) { add("<h3>Facts</h3>"); body.append(facts); }
+      if (n.coverage) this.renderCoverage(body, n);
       if (n.alternatives && n.alternatives.length) {
         add("<h3>Other tests (+UVM_TESTNAME)</h3>");
         const ul = el("ul"); n.alternatives.forEach(t => ul.append(el("li", {}, [this.nodeLink(`cls:${t}`, t), " — ", el("span", { style: "color:var(--pm-muted)" }, [this.N[`cls:${t}`] ? this.N[`cls:${t}`].summary : ""])]))); body.append(ul);

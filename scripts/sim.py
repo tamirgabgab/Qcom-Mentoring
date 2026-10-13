@@ -152,7 +152,10 @@ def compile_dir(d, quiet=False, defines=()):
     os.makedirs(obj, exist_ok=True)
     # --trace-max-array: Verilator skips unpacked arrays above 32 elements in the waves
     # by default; yapp_pkt_mem has 64 and yapp_mem 256.
+    # --coverage-user: the covergroup bins go to the coverage database (functional
+    # coverage only, no line/toggle); every run writes it, see run_one().
     cmd = [verilator(), "--binary", "--timing", "--trace-fst", "--trace-max-array", "256", "--vpi",
+           "--coverage-user",
            "-j", str(os.cpu_count() or 2), "--Mdir", obj, "--prefix", "Vsim",
            "-Wno-fatal", "-Wno-lint", "-Wno-style", "-Wno-MULTITOP",
            "--timescale", "1ns/1ns",
@@ -214,6 +217,9 @@ def run_one(d, test=None, seed=1, waves=False, extra=(), echo=True, defines=()):
     if test:
         plus = [p for p in plus if not p.startswith("+UVM_TESTNAME=")] + [f"+UVM_TESTNAME={test}"]
     plus += [f"+verilator+seed+{seed}", f"+SEED={seed}", "+UVM_NO_RELNOTES"]
+    # the coverage database of this run (Verilator writes coverage.dat in the cwd otherwise)
+    os.makedirs(os.path.join(bd, "coverage"), exist_ok=True)
+    plus.append("+verilator+coverage+file+" + os.path.join(bd, "coverage", f"{name}_s{seed}.dat"))
     if waves:
         os.makedirs(os.path.join(bd, "waves"), exist_ok=True)
         os.makedirs(os.path.join(bd, "trace"), exist_ok=True)
@@ -278,6 +284,9 @@ def regress(only=None, seeds=None, report=None, waves=False):
         if not compile_dir(d, defines=defines):
             broken.append(rel)
             continue
+        # the merged coverage of a bench covers this regression only
+        for f in glob.glob(os.path.join(build_dir(d, defines), "coverage", "*.dat")):
+            os.remove(f)
         for entry in tests:
             # a test is a name, or {test: <name>, expect: errors} for a lab whose
             # point is that the checker fires (the run must then report UVM_ERROR)
@@ -294,6 +303,7 @@ def regress(only=None, seeds=None, report=None, waves=False):
                 mark = "PASS" if r["ok"] else "FAIL"
                 print(f"    {mark}  {r['test']:<26} seed {seed}  sim {r['sim_time']:>8}  "
                       f"{r['wall']:5.1f}s  {r['reason']}", flush=True)
+        merge_coverage(build_dir(d, defines))
     failed = [r for r in results if not r["ok"]]
     lines = ["# Verilator regression", "",
              f"{len(results) - len(failed)} of {len(results)} runs passed"
@@ -318,6 +328,26 @@ def regress(only=None, seeds=None, report=None, waves=False):
         print(f"  FAIL  {r['dir']}  {r['test']} (seed {r['seed']}): {r['reason']}  -> {r['log']}")
     print(f"report: {os.path.relpath(out, ROOT)}")
     return not failed and not broken
+
+
+# ------------------------------------------------------------------ coverage
+def merge_coverage(bd, quiet=False):
+    """<bd>/coverage/merged.dat (+ merged.info for lcov) from the runs' <test>_s<seed>.dat."""
+    cdir = os.path.join(bd, "coverage")
+    runs = sorted(f for f in glob.glob(os.path.join(cdir, "*_s*.dat")))
+    if not runs:
+        return None
+    vc = os.path.join(os.path.dirname(verilator()), "verilator_coverage")
+    vc = vc if os.path.isfile(vc) else (shutil.which("verilator_coverage") or "verilator_coverage")
+    merged = os.path.join(cdir, "merged.dat")
+    rc = subprocess.call([vc, "--write", merged, "--write-info", os.path.join(cdir, "merged.info")] + runs,
+                         stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    if rc != 0:
+        print(f"    coverage merge failed ({vc} exit {rc})")
+        return None
+    if not quiet:
+        print(f"    coverage: {len(runs)} run(s) merged into {os.path.relpath(merged, ROOT)}")
+    return merged
 
 
 # ------------------------------------------------------------------ waves

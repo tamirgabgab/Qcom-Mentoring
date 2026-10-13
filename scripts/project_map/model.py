@@ -10,6 +10,7 @@ Node ids
 """
 import fnmatch
 import glob
+import json
 import os
 import re
 import sys
@@ -19,6 +20,9 @@ from . import extract
 
 ROOT = extract.ROOT
 HERE = os.path.dirname(os.path.abspath(__file__))
+# the merged functional coverage of the committed regression report (scripts/coverage_report.py)
+COVERAGE_JSON = os.path.join(ROOT, "yapp_project", "regression", "coverage.json")
+COVERAGE_BENCH = "yapp_project_tb"
 
 UVM_COMPONENT_KINDS = [
     ("uvm_test", "test"), ("uvm_env", "env"), ("uvm_agent", "agent"), ("uvm_driver", "driver"),
@@ -61,6 +65,8 @@ def class_kind(cls):
         return "reference"
     if "scoreboard" in name and "uvm_component" in chain and "uvm_env" not in chain:
         return "scoreboard"
+    if name.endswith("_coverage") and "uvm_component" in chain:
+        return "coverage"
     for base, kind in UVM_COMPONENT_KINDS:
         if base in chain:
             return kind
@@ -306,6 +312,11 @@ class ModelBuilder:
         if kind == "sequencer" and f"{path}.seq_item_export" not in self.nodes:
             self.add_node(f"{path}.seq_item_export", kind="seq_item_port", name="seq_item_export",
                           type="uvm_seq_item_pull_imp #(REQ, RSP, this)", parent=parent_id, scope="tb", port=True,
+                          implicit=True, lab=self.lab_for(cls["name"]))
+        # a uvm_subscriber's analysis_export (an imp bound to its write())
+        if "uvm_subscriber" in cls.get("chain_names", []) and f"{path}.analysis_export" not in self.nodes:
+            self.add_node(f"{path}.analysis_export", kind="tlm_imp", name="analysis_export",
+                          type="uvm_analysis_imp #(T, this)", parent=parent_id, scope="tb", port=True,
                           implicit=True, lab=self.lab_for(cls["name"]))
 
     def add_component_node(self, nid, name, cls, parent, kind=None):
@@ -763,6 +774,29 @@ class ModelBuilder:
                     if n is not None:
                         n.setdefault("covers", []).append({"id": it["id"], "title": it["title"], "group": g["node"], "status": it["status"]})
 
+    def attach_coverage(self):
+        """The merged bins of the committed regression on the coverage collectors (class and instance)."""
+        try:
+            with open(COVERAGE_JSON) as fh:
+                benches = json.load(fh)
+        except OSError:
+            return
+        by_file = {}
+        for bench in benches:
+            if bench["bench"] != COVERAGE_BENCH:
+                continue
+            for g in bench["covergroups"]:
+                points = [{"name": p["name"], "cross": p["cross"], "covered": p["covered"], "total": p["total"],
+                           "bins": [{"name": b["name"], "hits": b["hits"], "runs": b["runs"], "line": b["line"],
+                                     "tests": b["tests"][:3], "n_tests": len(b["tests"])} for b in p["bins"]]}
+                          for p in g["points"]]
+                by_file.setdefault(g["file"], []).append(
+                    {"name": g["name"], "covered": g["covered"], "total": g["total"], "pct": g["pct"],
+                     "runs": bench["runs"], "points": points})
+        for n in self.nodes.values():
+            if n["kind"] == "coverage" and n.get("file") in by_file:
+                n["coverage"] = by_file[n["file"]]
+
     def build(self):
         self.build_instances()
         self.build_hardware()
@@ -770,6 +804,7 @@ class ModelBuilder:
         self.build_classes()
         self.build_plan()
         self.finish()
+        self.attach_coverage()
         return {
             "meta": {"sources": [r["source"] for r in self.raws], "pyslang": __import__("pyslang").__version__},
             "kinds": self.ann["kinds"],

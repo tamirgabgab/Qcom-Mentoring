@@ -3,7 +3,9 @@
 //
 //   * watches the interface through a virtual interface (Lab 6)
 //   * publishes every packet on item_collected_port (Lab 9A)
-//   * collects functional coverage of the input traffic (Lab 10)
+// The functional coverage of the input traffic (Lab 10) is not here: it lives
+// in yapp_pkt_coverage and yapp_gap_coverage, subscribers of
+// item_collected_port (see yapp_tx_agent).
 //------------------------------------------------------------------------------
 class yapp_tx_monitor extends uvm_monitor;
 
@@ -18,62 +20,12 @@ class yapp_tx_monitor extends uvm_monitor;
   int num_bad_parity;   // packets seen with a wrong parity byte (Lab 11C uses it)
 
   // Gap before each packet: idle cycles since the previous packet's parity
-  // byte (test plan ROUTE-04). num_gap[0..2] count gaps of 0, 1 and 2 cycles,
-  // num_gap[3] the longer ones; the first packet after reset is not counted.
+  // byte (test plan ROUTE-04), also written into the collected packet's
+  // packet_delay (-1 for the first packet after reset). num_gap[0..2] count
+  // gaps of 0, 1 and 2 cycles, num_gap[3] the longer ones; the first packet
+  // after reset is not counted.
   int last_gap = -1;
   int num_gap[4];
-
-  //--------------------------------------------------------------------------
-  // Functional coverage (Lab 10)
-  //   REQ1 all packet lengths, bucketed
-  //   REQ2 all addresses, including the illegal one
-  //   REQ3 every length bucket to every legal address with a parity error
-  //--------------------------------------------------------------------------
-  covergroup yapp_pkt_cg with function sample(bit [5:0] length,
-                                              bit [1:0] addr,
-                                              parity_type_e parity_type);
-    option.per_instance = 1;
-    length_cp : coverpoint length {
-      bins MIN    = {1};
-      bins SMALL  = {[2:10]};
-      bins MEDIUM = {[11:40]};
-      bins LARGE  = {[41:62]};
-      bins MAX    = {63};
-    }
-    addr_cp : coverpoint addr {
-      bins legal[]      = {[0:2]};
-      bins illegal_addr = {3};
-    }
-    // one bin per enum value, written out (Verilator 5.052 bins an enum by range)
-    parity_cp : coverpoint parity_type {
-      bins good = {GOOD_PARITY};
-      bins bad  = {BAD_PARITY};
-    }
-    // REQ3: only legal addresses and only BAD_PARITY are interesting
-`ifdef VERILATOR
-    // (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is
-    // built from coverpoints that hold only the interesting bins: same 15 bins)
-    legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }
-    bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }
-    len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;
-`else
-    len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
-      ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
-      ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);
-    }
-`endif
-  endgroup : yapp_pkt_cg
-
-  // ROUTE-04: packets back to back (gap 0) and with short gaps
-  covergroup yapp_gap_cg with function sample(int gap);
-    option.per_instance = 1;
-    gap_cp : coverpoint gap {
-      bins back_to_back = {0};
-      bins one          = {1};
-      bins two          = {2};
-      bins longer       = {[3:$]};
-    }
-  endgroup : yapp_gap_cg
 
   `uvm_component_utils(yapp_tx_monitor)
 
@@ -97,8 +49,6 @@ endclass : yapp_tx_monitor
 function yapp_tx_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
   item_collected_port = new("item_collected_port", this);
-  yapp_pkt_cg = new();   // a covergroup inside a class is created with new()
-  yapp_gap_cg = new();
 endfunction : new
 
 //------------------------------------------------------------------------------
@@ -127,10 +77,12 @@ task yapp_tx_monitor::collect_packets();
     // do not clone), so re-using one object would corrupt earlier packets.
     pkt = yapp_packet::type_id::create("pkt", this);
     vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles);
-    if (!first) begin
+    if (first) begin
+      pkt.packet_delay = -1;                // no previous packet: no gap
+    end else begin
+      pkt.packet_delay = idle_cycles;
       last_gap = idle_cycles;
       num_gap[(idle_cycles > 3) ? 3 : idle_cycles]++;
-      yapp_gap_cg.sample(idle_cycles);
     end
     first = 1'b0;
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
@@ -143,7 +95,6 @@ task yapp_tx_monitor::collect_packets();
               $sformatf("RX pkt #%0d on the input: addr=%0d len=%0d parity=%s gap=%0d", num_pkt_col, pkt.addr,
                         pkt.length, pkt.parity_text(), idle_cycles), UVM_MEDIUM)
     `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_HIGH)
-    yapp_pkt_cg.sample(pkt.length, pkt.addr, pkt.parity_type);
     item_collected_port.write(pkt);
     end_tr(pkt);
   end
@@ -152,11 +103,11 @@ endtask : collect_packets
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
-            $sformatf("YAPP monitor report: %0d packets collected, coverage %.1f%%",
-                      num_pkt_col, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
+            $sformatf("YAPP monitor report: %0d packets collected, %0d with bad parity",
+                      num_pkt_col, num_bad_parity), UVM_LOW)
   `uvm_info(get_type_name(),
-            $sformatf("YAPP gaps: %0d back to back, %0d of 1 cycle, %0d of 2, %0d longer (gap coverage %.1f%%)",
-                      num_gap[0], num_gap[1], num_gap[2], num_gap[3], yapp_gap_cg.get_inst_coverage()), UVM_LOW)
+            $sformatf("YAPP gaps: %0d back to back, %0d of 1 cycle, %0d of 2, %0d longer",
+                      num_gap[0], num_gap[1], num_gap[2], num_gap[3]), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------

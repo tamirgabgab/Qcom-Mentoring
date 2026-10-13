@@ -15,7 +15,9 @@
 //
 // Control knobs (not part of the packet on the wire):
 //   parity_type  -- GOOD_PARITY / BAD_PARITY, decides what set_parity() writes
-//   packet_delay -- idle clock cycles the driver inserts before the packet
+//   packet_delay -- idle clock cycles the driver inserts before the packet; on
+//                   a packet the monitor collected, the gap it measured (-1
+//                   for the first packet after reset)
 //------------------------------------------------------------------------------
 
 // Declared OUTSIDE the class so sequences and tests can use the literals

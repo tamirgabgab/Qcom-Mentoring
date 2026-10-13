@@ -37,7 +37,10 @@ arrives. It must agree with the DUT on the corner cases listed in the
 
 `router_module_env` is the module UVC: an `uvm_env` that builds the reference
 and the scoreboard, connects them, and (Lab 9C) exposes **exports** so the
-testbench never reaches inside.
+testbench never reaches inside. The reference also publishes every packet it
+received while enabled, with its decision, on `decision_out`; the
+`router_coverage` collector subscribes
+([Functional coverage](coverage.md#where-the-covergroups-live)).
 
 ```systemverilog
 --8<-- "yapp_project/uvc/router/router_module_env.sv"

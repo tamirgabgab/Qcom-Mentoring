@@ -1,9 +1,10 @@
 # Lab 10 — A simple functional coverage model *(optional)*
 
-[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_tx_monitor){ .pm-link }
+[Open on the project map →](../project-map.md#view=classes&node=cls:yapp_pkt_coverage){ .pm-link }
 
 
-**Directory:** `labs/lab10_cov` · **Changed:** `yapp_project/uvc/yapp/yapp_tx_monitor.sv` (covergroup),
+**Directory:** `labs/lab10_cov` · **Changed:** `yapp_project/uvc/yapp/yapp_pkt_coverage.sv` (covergroup, a subscriber of the monitor),
+`yapp_project/uvc/yapp/yapp_tx_agent.sv` (builds and connects it),
 `yapp_project/uvc/yapp/yapp_tx_seqs.sv` (`yapp_coverage_seq`), `tb/router_test_lib.sv`, `run.f` (`-coverage U`)
 
 ## Objective
@@ -22,7 +23,15 @@ stimulus.
 
 ## Solution
 
-### 1. The covergroup in `yapp_tx_monitor`
+### 1. The covergroup in `yapp_pkt_coverage`
+
+The Cadence lab writes the covergroup **inside the monitor**. This repository
+puts it in its own file: `yapp_pkt_coverage`, a `uvm_subscriber
+#(yapp_packet)` that the agent connects to the monitor's
+`item_collected_port`. The bins are the same, so the percentage is the same;
+the monitor only observes and publishes, and the coverage model can be
+replaced or left out without touching it (see
+[Functional coverage](../components/coverage.md#where-the-covergroups-live)).
 
 ```systemverilog
 covergroup yapp_pkt_cg with function sample(bit [5:0] length,
@@ -50,13 +59,17 @@ covergroup yapp_pkt_cg with function sample(bit [5:0] length,
   }
 endgroup
 
-function new(string name, uvm_component parent);
+function yapp_pkt_coverage::new(string name, uvm_component parent);
   super.new(name, parent);
-  item_collected_port = new("item_collected_port", this);
   yapp_pkt_cg = new();              // a class covergroup is created with new()
 endfunction
-...
-yapp_pkt_cg.sample(pkt.length, pkt.addr, pkt.parity_type);   // in collect_packets()
+
+function void yapp_pkt_coverage::write(yapp_packet t);   // every packet the monitor publishes
+  yapp_pkt_cg.sample(t.length, t.addr, t.parity_type);
+endfunction
+
+// yapp_tx_agent::connect_phase
+monitor.item_collected_port.connect(pkt_cov.analysis_export);
 ```
 
 ### 2. Stimulus that closes the model — `yapp_coverage_seq`
@@ -107,20 +120,26 @@ make gui TEST=coverage_test              # Windows -> Tools -> Coverage
 imc -load cov_work/scope/coverage_test   # or IMC standalone
 ```
 
-In IMC: *Verification Hierarchy → uvm_pkg → … yapp_tx_monitor* → right-click →
+With Verilator every run writes its bins to a coverage database;
+`make regress` then `make sim-report` merges them into `coverage.md` and an
+HTML page (see [Functional coverage](../components/coverage.md#seeing-the-results-verilator)).
+
+In IMC: *Verification Hierarchy → uvm_pkg → … yapp_pkt_coverage* → right-click →
 *Cover Group Analysis* → *Items* of `yapp_pkt_cg`.
 
 **Expected:** with `router_simple_mcseq_test` (short packets) `LARGE`, `MAX`
-and `illegal_addr` are empty and most of the cross is uncovered; the monitor's
-report line shows the percentage. With `coverage_test` all 5 length bins, all
+and `illegal_addr` are empty and most of the cross is uncovered; the
+collector's report line (`YAPP packet coverage: ... coverage N%`) shows the
+percentage. With `coverage_test` all 5 length bins, all
 4 address bins, both parity values and all 15 cross bins are hit: 100%.
 
 ## Checkpoint questions
 
-??? question "Why is the covergroup in the monitor and not in the sequence or the driver?"
+??? question "Why is the covergroup fed by the monitor and not by the sequence or the driver?"
     The monitor records what *actually* went across the interface — including
     traffic from other sources, dropped or corrupted items — and it exists in
-    passive agents too. Sequences only know what they *intended* to send.
+    passive agents too. Sequences only know what they *intended* to send. The
+    collector subscribes to the monitor, so it sees exactly that.
 
 ??? question "Why `bins illegal_addr = {3}` and not `illegal_bins`?"
     `illegal_bins` turns every hit into an error. REQ2 asks whether address 3
@@ -132,13 +151,14 @@ report line shows the percentage. With `coverage_test` all 5 length bins, all
     legal address with a parity error".
 
 ??? question "Why `option.per_instance = 1`?"
-    Coverage is reported per monitor instance rather than merged for the type.
-    With one YAPP monitor it makes no difference, but a UVC with several
+    Coverage is reported per collector instance rather than merged for the type.
+    With one YAPP agent it makes no difference, but a UVC with several
     instances (the channel monitor) would want it.
 
 ## What changed since the previous lab
 
 ```bash
-diff labs/lab06_vif/sv/yapp_tx_monitor.sv yapp_project/uvc/yapp/yapp_tx_monitor.sv   # covergroup + analysis port
+diff labs/lab06_vif/sv/yapp_tx_monitor.sv yapp_project/uvc/yapp/yapp_tx_monitor.sv   # analysis port, gap in packet_delay
+cat yapp_project/uvc/yapp/yapp_pkt_coverage.sv                                         # the covergroup
 diff -r labs/lab09_sbc/tb labs/lab10_cov/tb
 ```

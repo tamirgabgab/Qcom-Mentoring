@@ -3,10 +3,14 @@
 //
 //   is_active == UVM_ACTIVE  : monitor + driver + sequencer (generates traffic)
 //   is_active == UVM_PASSIVE : monitor only (just watches the bus)
+// Both modes: the coverage subscribers pkt_cov (yapp_pkt_cg, Lab 10) and
+// gap_cov (yapp_gap_cg) on the monitor's item_collected_port.
 //------------------------------------------------------------------------------
 class yapp_tx_agent extends uvm_agent;
 
   yapp_tx_monitor   monitor;
+  yapp_pkt_coverage pkt_cov;
+  yapp_gap_coverage gap_cov;
   yapp_tx_driver    driver;
   yapp_tx_sequencer sequencer;
 
@@ -41,6 +45,8 @@ function void yapp_tx_agent::build_phase(uvm_phase phase);
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
   monitor = yapp_tx_monitor::type_id::create("monitor", this);
+  pkt_cov = yapp_pkt_coverage::type_id::create("pkt_cov", this);
+  gap_cov = yapp_gap_coverage::type_id::create("gap_cov", this);
   if (is_active == UVM_ACTIVE) begin
     driver    = yapp_tx_driver::type_id::create("driver", this);
     sequencer = yapp_tx_sequencer::type_id::create("sequencer", this);
@@ -49,6 +55,8 @@ endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_agent::connect_phase(uvm_phase phase);
+  monitor.item_collected_port.connect(pkt_cov.analysis_export);
+  monitor.item_collected_port.connect(gap_cov.analysis_export);
   if (is_active == UVM_ACTIVE) begin
     driver.seq_item_port.connect(sequencer.seq_item_export);
   end

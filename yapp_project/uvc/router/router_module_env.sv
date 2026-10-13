@@ -8,11 +8,13 @@
 //   hbus_export ──► reference.hbus_in       chan1_export ──► scoreboard.chan1_in
 //                                           chan2_export ──► scoreboard.chan2_in
 //   reference.yapp_valid_out ──► scoreboard.yapp_in   (internal, unchanged)
+//   reference.decision_out   ──► coverage             (router_coverage)
 //------------------------------------------------------------------------------
 class router_module_env extends uvm_env;
 
   router_reference  reference;
   router_scoreboard scoreboard;
+  router_coverage   coverage;
 
   // Top-level connection points
   uvm_analysis_export #(yapp_packet)      yapp_export;
@@ -48,6 +50,7 @@ function void router_module_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
   reference  = router_reference::type_id::create("reference", this);
   scoreboard = router_scoreboard::type_id::create("scoreboard", this);
+  coverage   = router_coverage::type_id::create("coverage", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
@@ -60,4 +63,5 @@ function void router_module_env::connect_phase(uvm_phase phase);
   chan2_export.connect(scoreboard.chan2_in);
   // internal link stays as in Lab 9B
   reference.yapp_valid_out.connect(scoreboard.yapp_in);
+  reference.decision_out.connect(coverage.analysis_export);
 endfunction : connect_phase

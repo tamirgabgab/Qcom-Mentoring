@@ -216,7 +216,8 @@ cd labs/lab07_integ/tb && make run TEST=simple_test
 bash scripts/setup_sim.sh
 cd yapp_project/tb && make sim TEST=backpressure_test WAVES=1   # PASS / FAIL + waves
 make regress                                                    # every lab and test (root)
-make regress ONLY=yapp_project WAVES=1 && make sim-report        # the project (4 seeds per directed test, 8 per random test), logs + timelines + waves + pictures
+make regress ONLY=yapp_project WAVES=1 && make sim-report        # the project (4 seeds per directed test, 8 per random test), logs + timelines + waves + pictures + coverage
+make coverage ONLY=yapp_project                                 # the functional coverage merged over every run, and its holes
 
 # lint everything without a simulator (slang + the Accellera UVM source)
 pip install pyslang && make lint
@@ -239,6 +240,9 @@ UVC, `[DUT]` lines for what happens inside the router -- and `make sim-report`
 bundles a regression into one folder per run with the log, a timeline, the
 waves and wave pictures: see
 [Logs, timelines and waves](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/sim-report/).
+Every run also writes its functional coverage; the report merges it over every
+test and seed into `coverage.md` and an HTML page, published as
+[Coverage results](https://tamirgabgab.github.io/Qcom-Mentoring/coverage-results/).
 
 ---
 
@@ -255,7 +259,9 @@ yapp_project/                     the complete project — the source of truth
     yapp_error_timer.sv             the `error` pulse 1..10 cycles after a bad-parity packet
     yapp_router.f                   file list, used as `-F ../rtl/yapp_router.f`
   uvc/                            the verification components, one class per file
-    yapp/                           YAPP input UVC: yapp_packet, driver, monitor (+ coverage), sequencer, agent, env, yapp_if
+    yapp/                           YAPP input UVC: yapp_packet, driver, monitor, sequencer, agent, env, yapp_if,
+                                    and the coverage collectors yapp_pkt_coverage (yapp_pkt_cg) and
+                                    yapp_gap_coverage (yapp_gap_cg), subscribers of the monitor
       seqs/                           the sequence library (yapp_base_seq, yapp_012_seq, yapp_coverage_seq, …,
                                       yapp_pkt_seq, yapp_boundary_seq and yapp_gap_seq for the test plan,
                                       yapp_random_burst_seq for the random tests)
@@ -269,7 +275,8 @@ yapp_project/                     the complete project — the source of truth
       seqs/                           clk10_rst5_seq, clk_rst_rand_seq
     router/                         router module UVC: router_scoreboard, router_reference (a full model of the
                                     registers and memories; checks every HBUS read with check_reads), router_module_env,
-                                    router_fifo_scoreboard (Lab 9D), packet_compare
+                                    router_fifo_scoreboard (Lab 9D), packet_compare, router_decision and
+                                    router_coverage (router_cfg_cg, a subscriber of the reference's decision_out)
   tb/                             the final testbench
     yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
     yapp_router.sucl                Surfer command file: the router signals in 10 colored groups (scripts/surfer_layout.py)
@@ -292,7 +299,8 @@ yapp_project/                     the complete project — the source of truth
     run.f, Makefile                 `make run TEST=…`
   regression/                     GENERATED report of the last project regression (16 directed tests x 4 seeds,
                                   4 random tests x 8 seeds, Verilator):
-                                  index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures
+                                  index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures,
+                                  coverage.md / coverage.json (the merged functional coverage), merged.dat / .info
 labs/                             one snapshot per lab; `make run` inside <lab>/tb
   lab01_data … lab06_vif/sv         the YAPP UVC as it grows (Labs 1–6 have their own copy)
   lab07_integ … lab11c_rm_sim       compile the UVCs and the DUT from yapp_project/
@@ -305,6 +313,8 @@ docs/                             the course site (MkDocs Material) — see mkdo
   components/                       one guide per component (packet.md hosts the packet playground)
   labs/                             one page per lab + the session plan
   test-plan.md                      GENERATED from annotations.yaml (plan + tests): the feature matrix and the tests
+  coverage-results.md               GENERATED from yapp_project/regression/coverage.json: the merged coverage, the holes
+  coverage/yapp_project_tb/         GENERATED genhtml page: the covergroup sources with a count on every bin
   appendix/                         index tables, concept map, pitfalls, xrun options, Verilator, logs/timelines/waves, verification status
   assets/
     wave_*.svg                      protocol waveforms (generated by scripts/gen_waves.py)
@@ -322,9 +332,10 @@ scripts/
   get_uvm.sh                        fetches the Accellera UVM source (2020.3.1) into scripts/uvm_src/ (not committed)
   sim.py                            Verilator flow: compile / run / waves / regress from the same run.f (`make sim`)
   sim_report.py                     bundles a regression: log + timeline + waves + pictures per run (`make sim-report`)
+  coverage_report.py                merges the runs' coverage databases: coverage.md / .json, genhtml (`make coverage`)
   surfer_layout.py                  the Surfer signal layout of the waves → yapp_project/tb/yapp_router.sucl
   regress.yaml                      every simulation directory and its tests (`make regress`)
-  setup_sim.sh                      installs Verilator 5.052 + UVM's DPI code for Verilator (`make setup-sim`)
+  setup_sim.sh                      installs Verilator 5.052 + UVM's DPI code for Verilator + lcov (`make setup-sim`)
   sv_style.py                       the code-style checker / fixer (`make style-check`, `make style`)
   gen_waves.py                      renders the waveform SVGs and packet_structure.svg
   readme_shots.mjs                  takes the README screenshots with headless Chromium
@@ -332,7 +343,8 @@ scripts/
     extract.py                      pyslang → classes, methods, modules, ports, connect() calls
     model.py                        + annotations.yaml → nodes, edges, TLM paths, source files
     layout.py                       the geometry of every scene (hierarchy, TLM, UML, the DUT block diagram)
-    build.py                        writes model.json, regmap.js and the standalone HTML (`make map`, `--check`)
+    build.py                        writes model.json, regmap.js, the standalone HTML, test-plan.md and
+                                    coverage-results.md (`make map`, `--check`)
     test_model.py                   consistency checks, incl. regmap.yaml ⇔ RTL ⇔ register model
     test_sim.mjs                    behavioural checks of sim.js (RouterModel) with node (`make map-check`)
     annotations.yaml                the hand-written half: roles, labs, layout hints, the test plans and the feature plan
@@ -403,7 +415,7 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
   `make map` (pyslang reads the classes, ports, `connect()` calls and the
   module tree; `annotations.yaml` adds the prose and the layout hints) and
   `make map-check` fails when the committed `model.json`, `regmap.js`,
-  standalone HTML or `docs/test-plan.md` no longer match the code — so the map and
+  standalone HTML, `docs/test-plan.md` or `docs/coverage-results.md` no longer match the code — so the map and
   the test plan never drift. After
   changing any `.sv` file, `app.js`, `sim.js` or `regmap.yaml`: `make map` and
   commit the results; `make map-export` refreshes the pictures.
@@ -438,6 +450,19 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
   real DUT bug (a second bad packet took away the first one's `error` pulse);
   the timer now schedules one pulse per packet. See
   [`docs/components/random-tests.md`](docs/components/random-tests.md).
+* **Functional coverage you can see.** Every covergroup has its own file: a
+  *coverage collector*, a `uvm_subscriber` with one covergroup
+  (`yapp_pkt_coverage`, `yapp_gap_coverage` on the YAPP monitor,
+  `router_coverage` on the reference model's `decision_out`); the monitor and
+  the reference only publish. `sim.py` compiles with `--coverage-user`, so
+  every run writes its bins to `build/sim/<bench>/coverage/<test>_s<seed>.dat`.
+  `scripts/coverage_report.py` merges them (`make coverage` prints the summary
+  and the holes); `make sim-report` writes `coverage.md` (every bin with its
+  hits and tests, the holes, what each test adds) and a `genhtml` page of the
+  annotated sources; `make map` turns the committed `coverage.json` into the
+  site page *Coverage results* and the bin tables in the map's panels of the
+  three collectors. See
+  [`docs/components/coverage.md`](docs/components/coverage.md).
 * **Logs that read like a story.** The project runs at `UVM_MEDIUM`: one line
   per event, the full packet tables only at `UVM_HIGH`. `base_test` prints a
   banner with the test name and the seed, a `STAGE:` line at every step

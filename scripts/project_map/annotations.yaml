@@ -87,8 +87,13 @@ lab_overrides:
   random_parity_test: "TP"
   # ports and members added later than their class
   tb.yapp.agent.monitor.item_collected_port: "9A"
-  yapp_tx_monitor.yapp_pkt_cg: "10"
-  yapp_tx_monitor.yapp_gap_cg: "TP"
+  tb.router_module.reference.decision_out: "TP"
+  # the coverage collectors: one covergroup each, outside the monitor and the reference
+  yapp_pkt_coverage: "10"
+  yapp_gap_coverage: "TP"
+  router_coverage: "TP"
+  router_decision: "TP"
+  router_reason_e: "TP"
   # provided UVCs appear with the integration lab
   hbus_slave_agent: "7"
   # DUT and interfaces
@@ -134,9 +139,10 @@ kinds:
   driver:        {label: "Driver",           doc: components/driver.md,            role: "Transaction -> pins, through the virtual interface"}
   sequencer:     {label: "Sequencer",        doc: components/sequences.md,         role: "Arbitrates sequences and hands items to the driver"}
   vsequencer:    {label: "Virtual sequencer", doc: components/virtual-sequencer.md, role: "Holds handles to other sequencers so one sequence can coordinate several interfaces"}
-  monitor:       {label: "Monitor",          doc: components/monitor.md,           role: "Pins -> transaction; publishes on an analysis port; collects coverage"}
+  monitor:       {label: "Monitor",          doc: components/monitor.md,           role: "Pins -> transaction; publishes on an analysis port"}
   scoreboard:    {label: "Scoreboard",       doc: components/scoreboard.md,        role: "Compares what came out with what was expected"}
   reference:     {label: "Reference model",  doc: components/reference-model.md,   role: "Predicts what the DUT should do"}
+  coverage:      {label: "Coverage collector", doc: components/coverage.md,        role: "A subscriber with one covergroup: samples what a monitor (or the reference model) publishes"}
   component:     {label: "Component",        doc: uvm/big-picture.md,              role: "A uvm_component"}
   sequence:      {label: "Sequence",         doc: components/sequences.md,         role: "Generates transactions (or runs other sequences)"}
   sequence_item: {label: "Sequence item",    doc: components/packet.md,            role: "The transaction: random fields, constraints, utility methods"}
@@ -179,11 +185,27 @@ classes:
   yapp_tx_sequencer:
     summary: "uvm_sequencer #(yapp_packet): arbitrates YAPP sequences for the driver."
   yapp_tx_monitor:
-    summary: "Samples yapp_if on the rising edge, rebuilds packets, publishes them and collects coverage."
+    summary: "Samples yapp_if on the rising edge, rebuilds packets and publishes them; the coverage collectors subscribe."
     description: |
       `collect_packets` runs forever: one new `yapp_packet` per packet, published on
-      `item_collected_port` (Lab 9A) and sampled by `yapp_pkt_cg` (Lab 10). Counts packets
-      and bad-parity packets; `num_bad_parity` is read by the register tests.
+      `item_collected_port` (Lab 9A). Its `packet_delay` carries the gap the monitor measured
+      (-1 for the first packet). Counts packets and bad-parity packets; `num_bad_parity` is
+      read by the register tests. The covergroups are not here: `pkt_cov` (`yapp_pkt_cg`,
+      Lab 10) and `gap_cov` (`yapp_gap_cg`) subscribe to `item_collected_port`.
+  yapp_pkt_coverage:
+    summary: "Coverage collector of the input packets: yapp_pkt_cg (length buckets, every address, length x legal address x bad parity)."
+    description: |
+      A `uvm_subscriber #(yapp_packet)` on the monitor's `item_collected_port`: `write()`
+      samples `yapp_pkt_cg` with the packet's length, address and parity type. The Cadence
+      lab writes the covergroup inside the monitor; here it has its own file, so the monitor
+      only observes and the coverage model can be added or replaced without touching it.
+      `report_phase` prints `YAPP packet coverage: ... coverage N%`.
+  yapp_gap_coverage:
+    summary: "Coverage collector of the gap between input packets: yapp_gap_cg (0, 1, 2, longer)."
+    description: |
+      A `uvm_subscriber #(yapp_packet)` on the monitor's port: samples the gap the monitor
+      wrote into `packet_delay` (skips the first packet after reset). `back_to_back_test`
+      requires 100 %.
   yapp_tx_agent:
     summary: "Monitor always; driver + sequencer only when is_active == UVM_ACTIVE."
   yapp_env:
@@ -258,13 +280,23 @@ classes:
       unexpected; `report_phase` prints the totals. Packets to address 3 are dropped here
       in Lab 9A; from Lab 9B the reference model filters them first.
   router_reference:
-    summary: "Mirrors maxpktsize and router_en from the HBUS traffic and forwards only the packets the router will route."
+    summary: "Mirrors the registers from the HBUS traffic, forwards only the packets the router will route and checks the HBUS reads."
     description: |
-      `write_hbus` updates the mirrored registers on every write to 0x1000/0x1001.
-      `write_yapp` applies the DUT's drop rules (disabled, length > maxpktsize, addr == 3)
-      and publishes survivors on `yapp_valid_out` -> scoreboard.
+      `write_hbus` updates the mirrored registers on every write to 0x1000/0x1001 and, with
+      `check_reads`, compares every read with its model. `write_yapp` applies the DUT's drop
+      rules (disabled, length > maxpktsize, addr == 3), publishes survivors on
+      `yapp_valid_out` -> scoreboard, and every packet received while enabled, with its
+      decision, on `decision_out` -> `router_coverage`.
+  router_decision:
+    summary: "What router_reference decided for one packet: the packet, maxpktsize, en_reg and the reason (forwarded, address 3, oversized)."
+  router_coverage:
+    summary: "Coverage collector of the configuration the packets met: router_cfg_cg (maxpktsize, length vs maxpktsize, reason x parity, counter enables)."
+    description: |
+      A `uvm_subscriber #(router_decision)` on `router_reference.decision_out`. `report_phase`
+      prints the percentage and a breakdown counted by hand (Verilator has no per-coverpoint
+      `get_inst_coverage()`). Informative: no test fails on it.
   router_module_env:
-    summary: "The router module UVC: reference + scoreboard, with exports as the only connection points."
+    summary: "The router module UVC: reference + scoreboard + coverage, with exports as the only connection points."
   router_fifo_scoreboard:
     summary: "Lab 9D: the same checks built on uvm_tlm_analysis_fifo and blocking get() in run_phase threads."
   # ------------------------------------------------------- Testbench & tests
@@ -511,7 +543,7 @@ tests:
       - {k: reset,    t: "clk10_rst5_seq",      d: "clock and reset"}
       - {k: stimulus, t: "yapp_coverage_seq",   d: "every length bin to every address, with and without parity errors"}
       - {k: check,    t: "router drops",        d: "only the address-3 packets are dropped (the reference model expects that)"}
-      - {k: report,   t: "yapp_pkt_cg",         d: "the covergroup in yapp_tx_monitor; the monitor report prints the percentage"}
+      - {k: report,   t: "yapp_pkt_cg",         d: "the covergroup in yapp_pkt_coverage (pkt_cov, a subscriber of the monitor); its report prints the percentage"}
     expected:
       - "All 5 length bins, all 4 address bins, both parity values and all 15 cross bins are hit: 100 %."
       - "router_simple_mcseq_test (short packets) leaves LARGE, MAX and illegal_addr empty; this test closes them."
@@ -688,7 +720,7 @@ tests:
       - {k: check,    t: "gap coverage",        d: "yapp_gap_cg (gap_cp: back_to_back, one, two, longer) at 100 %"}
       - {k: check,    t: "scoreboard",          d: "24 matched, 0 unexpected"}
     expected:
-      - "`gap class 0: 5 packets, as planned` and likewise 6, 6, 6 for classes 1..3; monitor report `YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer (gap coverage 100.0%)`."
+      - "`gap class 0: 5 packets, as planned` and likewise 6, 6, 6 for classes 1..3; monitor report `YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer`, and `YAPP gap coverage: 23 gaps sampled, coverage 100.0%`."
 
   random_test:
     purpose: "Random tests: the seed decides the shape of the test, and every result is checked automatically -- no expected value is written by hand."
@@ -1086,7 +1118,7 @@ plan:
         title: "Random configuration between bursts"
         stimulus: "router_random_mcseq: before each burst a random ctrl_reg (maxpktsize 0, 1, 62, 63 often, bits [7:6] random) and en_reg (router off now and then, counter-enable masks all / none / random)."
         check: "router_reference models the counters, mem_size_reg, yapp_pkt_mem and yapp_mem and checks every HBUS read (check_reads = 1): random reads after each configuration, every register and the stored packet at the end."
-        coverage: "router_reference ref_cg: maxpktsize, length vs maxpktsize, drop reason x parity, counter enables"
+        coverage: "router_coverage router_cfg_cg: maxpktsize, length vs maxpktsize, drop reason x parity, counter enables"
         tests: [random_test, random_config_test]
         status: covered
       - id: RND-02
@@ -1111,12 +1143,12 @@ plan:
     title: "Functional coverage"
     spec: "Lab 10 p. 47 -- REQ1, REQ2, REQ3"
     doc: labs/lab10.md
-    summary: "The coverage model in yapp_tx_monitor: length buckets, every address including the illegal one, and every length to every legal address with bad parity."
+    summary: "The coverage model in yapp_pkt_coverage (a subscriber of the YAPP monitor): length buckets, every address including the illegal one, and every length to every legal address with bad parity."
     items:
       - id: COV-01
         title: "REQ1: all packet lengths, bucketed"
         stimulus: "yapp_coverage_seq: 1, 5, 20, 50, 63."
-        check: "length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX all hit; the monitor report prints 100 %."
+        check: "length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX all hit; the pkt_cov report prints 100 %."
         coverage: "length_cp"
         tests: [coverage_test]
         status: covered

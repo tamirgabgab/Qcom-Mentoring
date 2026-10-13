@@ -104,6 +104,8 @@ runs unchanged on Xcelium.
 | `'z` on a wire (two-state) | `hdata_w !== 8'bz` is always true | `hbus_protocol_test`, under `` `ifdef VERILATOR ``: no driver enabled |
 | Enum coverpoint without bins | binned by value range, not one bin per value | `parity_cp` lists its two bins |
 | `ignore_bins ... binsof() intersect` in a cross | ignored (warning `COVERIGN`) | `yapp_pkt_cg`, under `` `ifdef VERILATOR ``: the cross is built from coverpoints that hold only the wanted bins (same 15 bins) |
+| `get_inst_coverage()` of one coverpoint; `get_coverage()` of the type | not supported; returns 0 | the collectors call `get_inst_coverage()` of the covergroup; `router_coverage` counts its breakdown by hand |
+| Coverage database | written only when compiled with a `--coverage*` flag | `sim.py` compiles with `--coverage-user` (covergroup bins only) and passes `+verilator+coverage+file+<bd>/coverage/<test>_s<seed>.dat`; `verilator_coverage` merges, `genhtml` draws |
 | `--public-flat-rw` on the whole design | does not compile with UVM | `common/verilator/public.vlt` opens only the register block (RAL backdoor) |
 | A comment that starts with the word `verilator` | read as a Verilator directive | avoid it |
 

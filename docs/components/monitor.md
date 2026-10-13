@@ -6,13 +6,13 @@
 The monitor is the **passive** half of an agent: it watches the interface,
 rebuilds transactions and publishes them. It never drives anything, it is
 always built (active *and* passive agents), and everything that checks or
-measures — scoreboard, reference model, coverage — hangs off it.
+measures — scoreboard, reference model, coverage collectors — hangs off it.
 
 ```mermaid
 flowchart LR
     IF["yapp_if<br/>in_data, in_data_vld, in_suspend"] -->|"vif.collect_packets(...)"| MON["yapp_tx_monitor"]
     MON -->|"item_collected_port.write(pkt)"| SB["scoreboard / reference"]
-    MON -->|"yapp_pkt_cg.sample(...)"| COV[("coverage")]
+    MON -->|"item_collected_port.write(pkt)"| COV["pkt_cov / gap_cov<br/>coverage collectors"]
     MON -->|"begin_tr / end_tr"| WAVE["Monitor_YAPP_Packet<br/>transaction stream"]
 ```
 
@@ -22,7 +22,7 @@ flowchart LR
 |---|---|---|
 | **collect** | `vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles)` on the rising edge; a byte counts when `in_data_vld && !in_suspend`; `idle_cycles` is the gap before the header | 6 (gap: test plan) |
 | **publish** | `uvm_analysis_port #(yapp_packet) item_collected_port;` constructed in `new()`, `write(pkt)` after each packet | 9A |
-| **cover** | `covergroup yapp_pkt_cg with function sample(...)`, created with `new()` in the constructor, sampled after each packet; `yapp_gap_cg` covers the gap (0, 1, 2, 3+ idle cycles) | 10 (gap: test plan) |
+| **cover** | not in the monitor: `yapp_pkt_coverage` (`yapp_pkt_cg`) and `yapp_gap_coverage` (`yapp_gap_cg`) subscribe to `item_collected_port`; the monitor writes the gap it measured into the packet's `packet_delay` (-1 for the first packet) so the gap collector can sample it — see [Functional coverage](coverage.md) | 10 (gap: test plan) |
 
 ## The reference implementation
 

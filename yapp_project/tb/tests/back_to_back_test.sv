@@ -61,8 +61,8 @@ task back_to_back_test::access_checks();
       `uvm_info("GAP", $sformatf("gap class %0d: %0d packets, as planned", i, measured), UVM_NONE)
     end
   end
-  if (tb.yapp.agent.monitor.yapp_gap_cg.get_inst_coverage() < 100.0) begin
-    `uvm_error("GAP", $sformatf("gap coverage %.1f%%, expected 100%%", tb.yapp.agent.monitor.yapp_gap_cg.get_inst_coverage()))
+  if (tb.yapp.agent.gap_cov.yapp_gap_cg.get_inst_coverage() < 100.0) begin
+    `uvm_error("GAP", $sformatf("gap coverage %.1f%%, expected 100%%", tb.yapp.agent.gap_cov.yapp_gap_cg.get_inst_coverage()))
   end
   if (tb.router_module.scoreboard.packets_matched != 24 || tb.router_module.scoreboard.packets_unexpected != 0) begin
     `uvm_error("GAP", $sformatf("scoreboard: %0d matched (expected 24), %0d unexpected",

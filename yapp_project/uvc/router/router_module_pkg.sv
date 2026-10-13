@@ -2,13 +2,16 @@
 // router_module_pkg.sv -- router module UVC package (final: Labs 9A-9D)
 //
 //   router_scoreboard       imp-based scoreboard (9A)
-//   router_reference        register-aware packet filter (9B)
+//   router_decision         what the reference decided for one packet
+//   router_reference        register-aware packet filter (9B), full model
+//   router_coverage         coverage of the configuration the packets met
 //   router_module_env       env with top-level exports (9B/9C)
 //   router_fifo_scoreboard  alternative scoreboard on analysis FIFOs (9D)
 //
 // Needs the packet types of the interface UVCs, hence the imports.
 // Include order: scoreboard first (declares the _yapp/_chanN imps), then the
-// reference model (declares _hbus), then the env that holds both.
+// decision object, the reference model (declares _hbus), its coverage
+// subscriber, then the env that holds them.
 //------------------------------------------------------------------------------
 package router_module_pkg;
 
@@ -20,7 +23,9 @@ package router_module_pkg;
   import hbus_pkg::*;
 
   `include "router_scoreboard.sv"
+  `include "router_decision.sv"
   `include "router_reference.sv"
+  `include "router_coverage.sv"
   `include "router_module_env.sv"
   `include "router_fifo_scoreboard.sv"
 

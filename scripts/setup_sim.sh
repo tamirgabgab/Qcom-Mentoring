@@ -3,6 +3,7 @@
 #   * Verilator (the version below; built from source unless already installed)
 #   * UVM's DPI code in its Verilator flavour (uvm_hdl_verilator.c), next to Verilator
 #   * the Accellera UVM source (scripts/get_uvm.sh) and PyYAML
+#   * lcov (genhtml: the HTML page of the merged functional coverage)
 #
 #   bash scripts/setup_sim.sh                        # Verilator into /usr/local (sudo if needed)
 #   PREFIX=$HOME/.local bash scripts/setup_sim.sh
@@ -25,12 +26,13 @@ if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null; then SUDO="sudo"; fi
 echo "==> system packages"
 if command -v apt-get >/dev/null; then
   $SUDO apt-get update -qq
-  # build tools for Verilator; lz4 for FST waves; z3 solves the constraints of randomize()
+  # build tools for Verilator; lz4 for FST waves; z3 solves the constraints of randomize();
+  # lcov for the coverage HTML (scripts/coverage_report.py)
   DEBIAN_FRONTEND=noninteractive $SUDO apt-get install -y -qq --no-install-recommends \
     ca-certificates git make autoconf g++ flex bison help2man perl python3 python3-yaml ccache \
-    libfl2 libfl-dev zlib1g-dev liblz4-dev z3 >/dev/null
+    libfl2 libfl-dev zlib1g-dev liblz4-dev z3 lcov >/dev/null
 else
-  echo "    no apt-get: install git make autoconf g++ flex bison perl python3 PyYAML zlib lz4 z3 yourself"
+  echo "    no apt-get: install git make autoconf g++ flex bison perl python3 PyYAML zlib lz4 z3 lcov yourself"
 fi
 
 VL="$(command -v verilator || true)"

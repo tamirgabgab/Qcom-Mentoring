@@ -1,0 +1,118 @@
+//------------------------------------------------------------------------------
+// router_coverage.sv -- coverage of the router configuration the packets met
+// (test plan RND-01..04)
+//
+//   router_reference.decision_out ──► analysis_export (write)
+//
+// One sample per packet received while the router is enabled: the maxpktsize
+// in force, the length against it, why it was dropped (or forwarded) and its
+// parity, and the counter enables. Informative: report_phase prints what the
+// run reached, no test fails on it.
+//------------------------------------------------------------------------------
+class router_coverage extends uvm_subscriber #(router_decision);
+
+  int num_sampled;
+
+  covergroup router_cfg_cg with function sample(bit [5:0] max, int len_vs_max, router_reason_e reason, bit bad,
+                                                bit [6:0] cnt_en);
+    option.per_instance = 1;
+    max_cp : coverpoint max {
+      bins zero  = {0};
+      bins one   = {1};
+      bins mid   = {[2:61]};
+      bins max62 = {62};
+      bins max63 = {63};
+    }
+    len_cp : coverpoint len_vs_max {
+      bins below    = {0};
+      bins equal    = {1};
+      bins plus_one = {2};
+      bins above    = {3};
+    }
+    // one bin per enum value, written out (Verilator 5.052 bins an enum by range)
+    reason_cp : coverpoint reason {
+      bins forwarded = {DECIDE_FORWARDED};
+      bins addr3     = {DECIDE_ADDR3};
+      bins oversized = {DECIDE_OVERSIZED};
+    }
+    parity_cp : coverpoint bad {
+      bins good = {0};
+      bins bad  = {1};
+    }
+    cnt_en_cp : coverpoint cnt_en {
+      bins none  = {7'h00};
+      bins mixed = {[7'h01:7'h7e]};
+      bins all   = {7'h7f};
+    }
+    reason_x_parity : cross reason_cp, parity_cp;
+  endgroup : router_cfg_cg
+
+  // The same bins, counted by hand for the breakdown in the report (Verilator
+  // does not support get_inst_coverage() on a single coverpoint)
+  int hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63
+  int hits_len[4];                          // length below / equal / max+1 / above max
+  int hits_reason_parity[3][2];             // forwarded, address 3, oversized x good, bad
+  int hits_cnt_en[3];                       // counter enables none / mixed / all
+
+  `uvm_component_utils(router_coverage)
+
+  extern function new(string name, uvm_component parent);
+
+  // One decision of the reference model
+  extern function void write(router_decision t);
+
+  extern function void report_phase(uvm_phase phase);
+
+endclass : router_coverage
+
+//------------------------------------------------------------------------------
+// router_coverage -- method implementations
+//------------------------------------------------------------------------------
+
+function router_coverage::new(string name, uvm_component parent);
+  super.new(name, parent);
+  router_cfg_cg = new();
+endfunction : new
+
+//------------------------------------------------------------------------------
+function void router_coverage::write(router_decision t);
+  int len_vs_max;
+  bit bad;
+  bad = (t.pkt.parity_type == BAD_PARITY);
+  if (t.pkt.length < t.maxpktsize) begin
+    len_vs_max = 0;
+  end else if (t.pkt.length == t.maxpktsize) begin
+    len_vs_max = 1;
+  end else if (t.pkt.length == t.maxpktsize + 1) begin
+    len_vs_max = 2;
+  end else begin
+    len_vs_max = 3;
+  end
+  num_sampled++;
+  router_cfg_cg.sample(t.maxpktsize, len_vs_max, t.reason, bad, t.en_reg[7:1]);
+  hits_max[(t.maxpktsize == 0) ? 0 : (t.maxpktsize == 1) ? 1 : (t.maxpktsize == 62) ? 3 : (t.maxpktsize == 63) ? 4 : 2]++;
+  hits_len[len_vs_max]++;
+  hits_reason_parity[t.reason][bad]++;
+  hits_cnt_en[(t.en_reg[7:1] == 7'h00) ? 0 : (t.en_reg[7:1] == 7'h7f) ? 2 : 1]++;
+endfunction : write
+
+//------------------------------------------------------------------------------
+function void router_coverage::report_phase(uvm_phase phase);
+  if (num_sampled == 0) begin
+    return;
+  end
+  `uvm_info(get_type_name(), $sformatf({"Coverage of the router configuration: %0.1f%%\n",
+    "  maxpktsize 0 / 1 / 2..61 / 62 / 63       : %0d / %0d / %0d / %0d / %0d packets\n",
+    "  length < max / = max / max+1 / > max+1   : %0d / %0d / %0d / %0d\n",
+    "  forwarded good / bad                     : %0d / %0d\n",
+    "  dropped address 3 good / bad             : %0d / %0d\n",
+    "  dropped oversized good / bad             : %0d / %0d\n",
+    "  counter enables none / mixed / all       : %0d / %0d / %0d"},
+    router_cfg_cg.get_inst_coverage(),
+    hits_max[0], hits_max[1], hits_max[2], hits_max[3], hits_max[4],
+    hits_len[0], hits_len[1], hits_len[2], hits_len[3],
+    hits_reason_parity[DECIDE_FORWARDED][0], hits_reason_parity[DECIDE_FORWARDED][1],
+    hits_reason_parity[DECIDE_ADDR3][0], hits_reason_parity[DECIDE_ADDR3][1],
+    hits_reason_parity[DECIDE_OVERSIZED][0], hits_reason_parity[DECIDE_OVERSIZED][1],
+    hits_cnt_en[0], hits_cnt_en[1], hits_cnt_en[2]), UVM_LOW)
+endfunction : report_phase

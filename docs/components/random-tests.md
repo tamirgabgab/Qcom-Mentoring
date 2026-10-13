@@ -125,10 +125,11 @@ cycles of the bad packet`.
 
 ### Coverage
 
-The reference model samples a covergroup per packet received while enabled and
-prints what the test reached; nothing fails on it, it shows whether a seed
-hit the corners (`random_config_test`, one seed; only packets received with the
-router on are counted):
+The reference model publishes a `router_decision` per packet received while
+enabled; `router_coverage` (its own file, a subscriber of `decision_out`)
+samples `router_cfg_cg` and prints what the test reached. Nothing fails on it,
+it shows whether a seed hit the corners (`random_config_test`, one seed; only
+packets received with the router on are counted):
 
 ```text
 Coverage of the router configuration: 78.3%
@@ -139,6 +140,9 @@ Coverage of the router configuration: 78.3%
   dropped oversized good / bad             : 8 / 1
   counter enables none / mixed / all       : 13 / 12 / 0
 ```
+
+The coverage of all the seeds together, with the bins no seed hit, is in
+[Coverage results](../coverage-results.md).
 
 ## Running one seed again
 

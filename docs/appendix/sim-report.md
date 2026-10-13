@@ -68,7 +68,13 @@ report/
   index.md                      every run: result, packets in / forwarded / dropped,
                                 packets out per channel, suspends, errors, link
   all_logs.log                  every log in one file, each under a banner
+  coverage.md                   the functional coverage merged over every run: holes,
+                                every bin with its hits and tests, what each test adds
+  coverage.json                 the same data (the site page and the project map read it)
+  coverage_html/<bench>/        genhtml: the covergroup sources with a count per bin
+                                (docs/coverage/<bench>/ for the committed report)
   yapp_project_tb/
+    merged.dat, merged.info     the merged coverage database (verilator_coverage, lcov)
     backpressure_test_s1/
       backpressure_test_s1.log  the log, named after the test and the seed
       timeline.md               summary · stages · pictures · every event in order
@@ -85,6 +91,10 @@ report/
 matches, back-pressure events, error pulses, HBUS accesses), lists the stages
 of the test with their times, shows the pictures, and ends with the full
 timeline: one row per event, `UVM_ERROR` rows marked.
+
+`coverage.md` comes from the coverage database every run writes
+(`build/sim/<bench>/coverage/<test>_s<seed>.dat`); how to read it is in
+[Functional coverage](../components/coverage.md#seeing-the-results-verilator).
 
 ## The pictures
 

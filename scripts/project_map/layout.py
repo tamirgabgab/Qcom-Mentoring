@@ -1169,7 +1169,7 @@ class UmlLayout(Layout):
                 boxes[nid] = b
         # order roots: UVM bases first (components, then objects), then free classes
         BASE_ORDER = ["uvm_test", "uvm_env", "uvm_agent", "uvm_sequencer", "uvm_driver", "uvm_monitor",
-                      "uvm_scoreboard", "uvm_component", "uvm_sequence_item", "uvm_sequence", "uvm_reg_block",
+                      "uvm_scoreboard", "uvm_subscriber", "uvm_component", "uvm_sequence_item", "uvm_sequence", "uvm_reg_block",
                       "uvm_reg", "uvm_mem", "uvm_reg_adapter", "uvm_object"]
 
         def root_key(r):
