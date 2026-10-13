@@ -1,0 +1,3414 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Reference solutions, DUT and teaching material for the SystemVerilog/UVM YAPP router project">
+      
+      
+      
+      
+        <link rel="prev" href="components/random-tests.html">
+      
+      
+        <link rel="next" href="coverage-results.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Test plan - YAPP Router — UVM Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="assets/vendor/iframe-worker.js"></script>
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="assets/extra.css">
+    
+      <link rel="stylesheet" href="assets/project_map/sim.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#test-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="YAPP Router — UVM Course" class="md-header__button md-logo" aria-label="YAPP Router — UVM Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YAPP Router — UVM Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Test plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/tamirgabgab/Qcom-Mentoring" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tamirgabgab/Qcom-Mentoring
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="YAPP Router — UVM Course" class="md-nav__button md-logo" aria-label="YAPP Router — UVM Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YAPP Router — UVM Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/tamirgabgab/Qcom-Mentoring" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tamirgabgab/Qcom-Mentoring
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting-started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="project-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The DUT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    The DUT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dut/spec.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dut/register-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dut/rtl.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTL walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/big-picture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The big picture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/phases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phases and objections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/factory-config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Factory and configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/tlm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="components/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Component guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/packet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packet (sequence item)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/driver.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Driver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/sequences.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequencer and sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/monitor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/agent-env.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent and env
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/scoreboard.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scoreboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/reference-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference model and module UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/virtual-sequencer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Virtual sequencer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/register-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register model (RAL)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/random.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/random-tests.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test plan
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="test-plan.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#route-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROUTE — Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pkt-packet-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PKT — Packet format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#in-input-port-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IN — Input port protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-output-port-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUT — Output port protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reg-registers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REG — Registers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drop-drop-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DROP — Drop rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnt-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNT — Counters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mem-memories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MEM — Memories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hbus-host-port-hbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HBUS — Host port (HBUS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnd-random-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RND — Random scenarios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cov-functional-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COV — Functional coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tb-testbench-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TB — Testbench mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coverage-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-new-test-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing a new test — checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="coverage-results.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coverage results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="regression/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Regression results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="labs/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab01.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — Stimulus model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab02.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — Test and testbench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab03.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — A simple UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab04.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — Factories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab05.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — Sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab06.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Virtual interfaces and the DUT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab07.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Integrating UVCs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab08.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — Multichannel sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab09a.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9A — Scoreboard (TLM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab09b.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9B — Router module UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab09c.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9C — TLM exports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab09d.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9D — Analysis FIFOs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab10.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Functional coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab11a.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11A — Register model generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab11b.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11B — Register model integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="labs/lab11c.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11C — Register tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/index-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files, classes, tests, sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/concept-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UVM concept → lab map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/pitfalls.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/xrun.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xrun options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/verilator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simulating with Verilator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/sim-report.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logs, timelines and waves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix/unverified.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verification status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#route-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROUTE — Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pkt-packet-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PKT — Packet format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#in-input-port-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IN — Input port protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-output-port-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUT — Output port protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reg-registers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REG — Registers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drop-drop-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DROP — Drop rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnt-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNT — Counters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mem-memories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MEM — Memories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hbus-host-port-hbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HBUS — Host port (HBUS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnd-random-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RND — Random scenarios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cov-functional-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COV — Functional coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tb-testbench-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TB — Testbench mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coverage-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-new-test-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing a new test — checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="test-plan">Test plan<a class="headerlink" href="#test-plan" title="Permanent link">&para;</a></h1>
+<!-- generated by scripts/project_map/build.py from scripts/project_map/annotations.yaml (plan: and tests:) -- edit the YAML and run `make map`; do not edit this file -->
+
+<p><a class="pm-link" href="project-map.html#view=plan">Open the Test plan view of the project map →</a></p>
+<p>A verification plan links every <strong>feature</strong> of the DUT to the <strong>stimulus</strong> that exercises it, the <strong>checker</strong> that judges it and the <strong>coverage</strong> that proves it happened. This plan follows the pages of the course's DUT description (packet format, input and output protocols, registers, drop rules, counters, memories, host port) and the lab chapters that add requirements of their own (scoreboard, functional coverage, register tests). <strong>12 feature groups, 64 items</strong>: 63 <span class="st st-covered">covered</span>, 1 <span class="st st-excluded">excluded</span>.</p>
+<p>Every item says what is driven, what is checked and by which test; a <em>partial</em> item is exercised but not fully checked, a <em>gap</em> has no test yet (the note says what one would do), an <em>excluded</em> item is left out on purpose. The same data drives the <strong>Test plan</strong> view of the <a href="project-map.html">project map</a>, where every test card lists the items it verifies.</p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<h3 id="route-routing">ROUTE — Routing<a class="headerlink" href="#route-routing" title="Permanent link">&para;</a></h3>
+<p>One input port, three output channels: the address in the header picks the channel and the packet comes out unchanged. <em>Project Overview p. 5 -- YAPP Router Description.</em> <a href="dut/spec.html">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:ROUTE">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ROUTE-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The address selects the output channel</strong><br><em>Stimulus:</em> Packets to addresses 0, 1 and 2 (yapp_012_seq, random sequences, yapp_boundary_seq).<br><em>Check:</em> Each channel monitor raises UVM_ERROR when a packet with another address appears on its channel; the scoreboard keeps one expected queue per channel.<br><em>Coverage:</em> <code>addr_cp.legal (yapp_pkt_cg)</code></td>
+<td><code>yapp_012_test</code><br><code>simple_test</code><br><code>router_simple_mcseq_test</code><br><code>reg_function_test</code><br><code>router_filter_test</code></td>
+</tr>
+<tr>
+<td><strong>ROUTE-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Payload and parity arrive unchanged</strong><br><em>Stimulus:</em> Every packet that is forwarded.<br><em>Check:</em> comp_equal() in the scoreboard: address, length, every payload byte and the parity byte of the channel packet equal the YAPP packet; one UVM_ERROR per difference.<br><em>Coverage:</em> <code>length_cp</code></td>
+<td><code>router_simple_mcseq_test</code><br><code>scoreboard_drop_test</code><br><code>coverage_test</code><br><code>backpressure_test</code><br><code>router_filter_test</code></td>
+</tr>
+<tr>
+<td><strong>ROUTE-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Order is kept per channel, channels are independent</strong><br><em>Stimulus:</em> Back-to-back packets to the same channel (0,1,2,0,1,2) and to different channels while the receivers are slow.<br><em>Check:</em> The scoreboard pops its per-channel queue in order: a swapped packet mismatches; the FIFO scoreboard (Lab 9D) blocks on the next packet of that channel.</td>
+<td><code>router_simple_mcseq_test</code><br><code>coverage_test</code><br><code>router_filter_test</code><br><code>backpressure_test</code><br><code>random_backpressure_test</code></td>
+</tr>
+<tr>
+<td><strong>ROUTE-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Packets back to back with the minimum gap</strong><br><em>Stimulus:</em> yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; packet_delay is the number of idle cycles. Random traffic keeps 1..20.<br><em>Check:</em> The YAPP monitor counts the idle cycles before every packet; the test compares them with the gaps the sequence asked for. Scoreboard: every packet delivered.<br><em>Coverage:</em> <code>gap_cp (yapp_gap_cg): back_to_back, one, two, longer</code></td>
+<td><code>back_to_back_test</code><br><code>coverage_test</code><br><code>scoreboard_drop_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="pkt-packet-format">PKT — Packet format<a class="headerlink" href="#pkt-packet-format" title="Permanent link">&para;</a></h3>
+<p>Header {length[7:2], addr[1:0]}, 1..63 payload bytes, one even-parity byte over header and payload; address 3 is illegal. <em>Project Overview p. 6 -- Packet Data Specification.</em> <a href="dut/spec.html#packet-format">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:PKT">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PKT-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Header: length in [7:2], address in [1:0]</strong><br><em>Stimulus:</em> Every packet; the driver packs {length, addr}, the channel monitor unpacks it again.<br><em>Check:</em> The channel monitor's length and address equal the YAPP packet's (scoreboard compare, channel address check); the DUT reads length + 2 bytes exactly, so the next header is found where the monitor expects it.</td>
+<td><code>simple_test</code><br><code>router_simple_mcseq_test</code><br><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>PKT-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Every payload length 1..63, including both extremes</strong><br><em>Stimulus:</em> yapp_coverage_seq sends 1, 5, 20, 50 and 63 bytes; random sequences cover the rest; backpressure_test sends 40..63.<br><em>Check:</em> Scoreboard compare; a wrong length would shift the parity byte and the monitors would disagree.<br><em>Coverage:</em> <code>length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX</code></td>
+<td><code>coverage_test</code><br><code>scoreboard_drop_test</code><br><code>backpressure_test</code><br><code>random_test</code></td>
+</tr>
+<tr>
+<td><strong>PKT-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Address 3 is illegal</strong><br><em>Stimulus:</em> Packets with addr == 3 (c_addr_legal switched off): yapp_88_packets_seq, yapp_coverage_seq, yapp_boundary_seq.<br><em>Check:</em> No byte appears on any channel (scoreboard: nothing unexpected), the reference model drops it, addr3_cnt_reg counts it when addr3_cnt_en is set.<br><em>Coverage:</em> <code>addr_cp.illegal_addr</code></td>
+<td><code>test_uvc_integration</code><br><code>coverage_test</code><br><code>router_filter_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>PKT-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Even bitwise parity over header and payload</strong><br><em>Stimulus:</em> Every good packet: parity = XOR of the header and all payload bytes (yapp_packet::calc_parity).<br><em>Check:</em> The channel monitor recomputes the parity and tags the packet CHANNEL_GOOD_PARITY; the DUT counts nothing in parity_err_cnt_reg; no error pulse.<br><em>Coverage:</em> <code>parity_cp</code></td>
+<td><code>reg_function_test</code><br><code>coverage_test</code><br><code>router_filter_test</code></td>
+</tr>
+<tr>
+<td><strong>PKT-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>A wrong parity byte is detected -- and the packet still delivered</strong><br><em>Stimulus:</em> parity_type == BAD_PARITY flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq).<br><em>Check:</em> parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md).<br><em>Coverage:</em> <code>parity_cp, len_x_addr_x_parity (REQ3)</code></td>
+<td><code>reg_function_test</code><br><code>parity_error_test</code><br><code>test_uvc_integration</code><br><code>random_parity_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-input-port-protocol">IN — Input port protocol<a class="headerlink" href="#in-input-port-protocol" title="Permanent link">&para;</a></h3>
+<p>Driven on the falling edge, sampled on the rising edge; in_data_vld frames header and payload; in_suspend stalls the sender; error pulses 1..10 cycles after a bad packet. <em>Project Overview p. 7 -- Input Port Protocol.</em> <a href="dut/spec.html#input-port-protocol">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:IN">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IN-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>in_data_vld rises with the header; one byte per falling edge</strong><br><em>Stimulus:</em> yapp_if.send_to_dut in every packet test.<br><em>Check:</em> DUT, driver and monitor agree on one rule -- a byte is accepted at a rising edge with in_suspend low; a disagreement shows as a parity error or a scoreboard mismatch.</td>
+<td><code>yapp_012_test</code><br><code>simple_test</code><br><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>IN-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>in_data_vld is low with the parity byte</strong><br><em>Stimulus:</em> Every packet: the driver drops in_data_vld on the falling edge after the last payload byte.<br><em>Check:</em> The DUT's PARITY state takes the next accepted byte regardless of in_data_vld; the monitor samples the parity the same way; the packet count in the DUT (mem_size_reg, counters) matches.</td>
+<td><code>simple_test</code><br><code>reg_function_test</code><br><code>pkt_mem_test</code></td>
+</tr>
+<tr>
+<td><strong>IN-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>in_suspend: the input holds while the target FIFO is full</strong><br><em>Stimulus:</em> Slow receivers (channel_rx_slow_seq, 20..40 cycles) and 40..63-byte packets, so the 16-byte FIFO fills before the receiver starts.<br><em>Check:</em> in_suspend rose at least once; scoreboard 6 matched, 0 mismatched, 0 unexpected; no parity error at the monitor (every byte accepted exactly once).<br><em>Note:</em> Writing this test showed that yapp_if.wait_accept() sampled in_suspend on the falling edge; it now samples the rising edge, like the DUT and the monitor (see components/driver.md).</td>
+<td><code>backpressure_test</code><br><code>random_backpressure_test</code></td>
+</tr>
+<tr>
+<td><strong>IN-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>error asserts 1 to 10 cycles after a bad-parity packet</strong><br><em>Stimulus:</em> 12 packets with bad parity (parity_error_test); in random_parity_test bad packets on forwarded and dropped packets and storms of 1..3-byte bad packets back to back.<br><em>Check:</em> error_pulse_checker: one pulse per bad packet received while enabled, 1..10 cycles after its parity byte; overlapping bad packets each get their own pulse (owed pulses are a queue); a pulse with nothing owed, an owed pulse older than 10 cycles, or one still owed at the end is an error.<br><em>Note:</em> The random storms found that a second bad packet ending before the first pulse re-armed the timer and the first pulse was lost; yapp_error_timer now schedules one pulse per packet (dut/rtl.md).</td>
+<td><code>parity_error_test</code><br><code>test_uvc_integration</code><br><code>random_parity_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="out-output-port-protocol">OUT — Output port protocol<a class="headerlink" href="#out-output-port-protocol" title="Permanent link">&para;</a></h3>
+<p>16-byte FIFO per channel; data_vld_x with the byte, the receiver reads on the falling edge and de-asserts suspend_x; a new byte every rising edge while suspend_x is low. <em>Project Overview p. 8 -- Output Port Protocol (Channel Ports).</em> <a href="dut/spec.html#output-channel-protocol">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:OUT">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OUT-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>data_vld_x, suspend_x and one byte per rising edge</strong><br><em>Stimulus:</em> channel_if.receive_packet in every scoreboard test: the receiver reads length + 2 bytes after it drops suspend_x.<br><em>Check:</em> The channel monitor collects exactly length + 2 bytes (a wrong handshake would duplicate or skip a byte and the scoreboard would mismatch); the address check never fires.</td>
+<td><code>simple_test</code><br><code>router_simple_mcseq_test</code><br><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>OUT-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The receiver may answer late: the header is held</strong><br><em>Stimulus:</em> channel_rx_resp_seq: response delay 0..10 cycles per packet; channel_rx_slow_seq: 20..40.<br><em>Check:</em> Scoreboard compare: the header read after the delay is still the header.</td>
+<td><code>simple_test</code><br><code>router_simple_mcseq_test</code><br><code>backpressure_test</code><br><code>random_backpressure_test</code></td>
+</tr>
+<tr>
+<td><strong>OUT-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The FIFO is 16 bytes deep</strong><br><em>Stimulus:</em> Packets longer than 16 bytes with a receiver that waits 20..40 cycles: the FIFO fills, the router stalls the input.<br><em>Check:</em> in_suspend seen (backpressure_test); no byte lost (scoreboard); the FIFO never overflows (a lost byte would show as a parity error).</td>
+<td><code>backpressure_test</code><br><code>scoreboard_drop_test</code></td>
+</tr>
+<tr>
+<td><strong>OUT-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>suspend_x is re-asserted at the parity byte: the next packet waits</strong><br><em>Stimulus:</em> Back-to-back packets to the same channel (0,1,2,0,1,2 and the boundary sequence).<br><em>Check:</em> The second packet's header is held in the FIFO until the receiver answers again; the scoreboard matches both in order.</td>
+<td><code>router_simple_mcseq_test</code><br><code>router_filter_test</code><br><code>backpressure_test</code></td>
+</tr>
+<tr>
+<td><strong>OUT-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>All three channels busy at the same time</strong><br><em>Stimulus:</em> Random addresses with slow receivers: packets to channels 0, 1 and 2 are in flight together.<br><em>Check:</em> Scoreboard: every channel matched, nothing unexpected.</td>
+<td><code>backpressure_test</code><br><code>coverage_test</code><br><code>random_backpressure_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="reg-registers">REG — Registers<a class="headerlink" href="#reg-registers" title="Permanent link">&para;</a></h3>
+<p>ctrl_reg (maxpktsize) and en_reg are RW, the six counters and mem_size_reg are RO; reset values 0x3f, 0x01 and 0x00. <em>Project Overview p. 9, Lab 11 p. 49 -- Packet Router DUT Registers.</em> <a href="dut/spec.html#registers">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:REG">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>REG-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Reset values</strong><br><em>Stimulus:</em> uvm_reg_hw_reset_seq reads every register right after reset.<br><em>Check:</em> The built-in sequence compares each read with the model's reset value: ctrl_reg 0x3f, en_reg 0x01, counters and mem_size_reg 0x00.</td>
+<td><code>uvm_reset_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>RW registers: every bit can be written and read back</strong><br><em>Stimulus:</em> Walking one, walking zero, 0x00, 0xff, 0xaa, 0x55 through ctrl_reg and en_reg (20 patterns each).<br><em>Check:</em> After each write the front-door read and the backdoor peek return the pattern; the reserved bits ctrl_reg[7:6] and en_reg[3] hold their value (they are RW in the router).</td>
+<td><code>reg_bit_walk_test</code><br><code>reg_access_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>RO registers ignore writes</strong><br><em>Stimulus:</em> Front-door writes to every counter and to mem_size_reg (register model) and a raw HBUS write to 0x1004.<br><em>Check:</em> peek after the write shows the poked value, the read shows 0x00 after the raw write.</td>
+<td><code>reg_access_test</code><br><code>reg_introspection_test</code><br><code>reg_bit_walk_test</code><br><code>hbus_protocol_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Front door and backdoor see the same flip-flops</strong><br><em>Stimulus:</em> write -&gt; peek and poke -&gt; read on a RW register; poke -&gt; read on a RO register (-access +rwc).<br><em>Check:</em> The values agree; the HDL paths of the model (hw_top.dut.u_regs.<reg>) resolve.</td>
+<td><code>reg_access_test</code><br><code>reg_introspection_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Unmapped addresses read 0x00 and ignore writes</strong><br><em>Stimulus:</em> Write 0xa5 then read 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f and 0x1050 with raw HBUS sequences.<br><em>Check:</em> Every read returns 0x00.</td>
+<td><code>hbus_protocol_test</code><br><code>random_test</code><br><code>hbus_sweep_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-06</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>mem_size_reg holds the payload length of the last packet</strong><br><em>Stimulus:</em> A 20-byte packet, then a 9-byte packet that is dropped as oversized.<br><em>Check:</em> mem_size_reg reads 20, then 9 (only bits [5:0] are used).</td>
+<td><code>pkt_mem_test</code><br><code>random_test</code></td>
+</tr>
+<tr>
+<td><strong>REG-07</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Automatic checking on read (check_on_read + predict)</strong><br><em>Stimulus:</em> The reg_function_test stimulus with set_check_on_read(1); predict() loads the expected counter before each read.<br><em>Check:</em> The map compares every read with the mirror and raises UVM_ERROR on a difference.</td>
+<td><code>reg_function_check_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="drop-drop-rules">DROP — Drop rules<a class="headerlink" href="#drop-drop-rules" title="Permanent link">&para;</a></h3>
+<p>The whole packet is dropped when length &gt; maxpktsize, when the router is disabled, or when the address is 3; changing the enables mid-packet is undefined. <em>Project Overview p. 10 -- maxpktsize, router_en, counters.</em> <a href="dut/spec.html#behaviour-rules">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:DROP">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DROP-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>length &gt; maxpktsize drops the whole packet</strong><br><em>Stimulus:</em> maxpktsize = 20 with full-size packets (scoreboard_drop_test, test_uvc_integration); maxpktsize = 10 with lengths 9, 10, 11 and 63 (router_filter_test).<br><em>Check:</em> Nothing of the packet appears on the channel: the reference model drops it and the scoreboard sees nothing unexpected; <code>ROUTER DROPS PACKET ... length &gt; maxpktsize</code>; length == maxpktsize still passes.</td>
+<td><code>router_filter_test</code><br><code>scoreboard_drop_test</code><br><code>test_uvc_integration</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>DROP-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>router_en = 0 drops every packet</strong><br><em>Stimulus:</em> en_reg = 0xfe, then yapp_012_seq; en_reg = 0xff, yapp_012_seq again.<br><em>Check:</em> Channel monitors collect nothing while disabled, the reference model reports 3 dropped (router disabled), no counter and not mem_size_reg moves; after re-enabling the packets flow and the address counters read 1.</td>
+<td><code>router_disable_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>DROP-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Address 3 drops the packet</strong><br><em>Stimulus:</em> As PKT-03.<br><em>Check:</em> Reference model drop, no unexpected channel packet, <code>ROUTER DROPS PACKET ... illegal address</code>.</td>
+<td><code>router_filter_test</code><br><code>coverage_test</code><br><code>test_uvc_integration</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>DROP-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>An oversized packet to address 3 counts in both counters</strong><br><em>Stimulus:</em> The 11- and 63-byte packets to address 3 of yapp_boundary_seq.<br><em>Check:</em> oversized_pkt_cnt_reg counts them and addr3_cnt_reg counts them (the DUT evaluates the conditions independently -- see Decisions in dut/spec.md).</td>
+<td><code>router_filter_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>DROP-05</strong><br><span class="st st-excluded">excluded</span></td>
+<td><strong>Changing router_en or a counter enable in the middle of a packet</strong><br><em>Note:</em> The specification declares the behaviour undefined, so no test drives it; every test programs the registers between packets.</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cnt-counters">CNT — Counters<a class="headerlink" href="#cnt-counters" title="Permanent link">&para;</a></h3>
+<p>Six 8-bit counters, each behind an enable bit of en_reg: parity errors, oversized packets, and one per address including the illegal 3. <em>Project Overview p. 10 -- The router counters.</em> <a href="dut/spec.html#registers">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:CNT">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CNT-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>A counter counts only while its enable bit is set</strong><br><em>Stimulus:</em> en_reg = 0x01 then 0xff around yapp_012_seq (address counters); 0xff then 0x01 around yapp_boundary_seq (oversized, addr3, addrN); 0x03 then 0x01 around bad packets (parity).<br><em>Check:</em> The counters read 0 (or stay frozen) while disabled and the exact packet count while enabled.</td>
+<td><code>reg_function_test</code><br><code>router_filter_test</code><br><code>parity_error_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>CNT-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>addrN_cnt_reg counts every received packet with address N</strong><br><em>Stimulus:</em> yapp_boundary_seq: 4 packets per address, half of them dropped as oversized.<br><em>Check:</em> addr0/1/2_cnt_reg read 4 each: dropped packets are counted too (they were received -- see Decisions); yapp_012_seq twice gives 2 each.</td>
+<td><code>router_filter_test</code><br><code>reg_function_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>CNT-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>parity_err_cnt_reg counts the bad-parity packets</strong><br><em>Stimulus:</em> yapp_012_seq twice (random parity) and 8 + 4 deliberately bad packets.<br><em>Check:</em> The register equals the YAPP monitor's num_bad_parity delta, then 8, then still 8 with the enable off.</td>
+<td><code>reg_function_test</code><br><code>parity_error_test</code><br><code>random_parity_test</code></td>
+</tr>
+<tr>
+<td><strong>CNT-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>oversized_pkt_cnt_reg counts packets longer than maxpktsize</strong><br><em>Stimulus:</em> 8 oversized packets of yapp_boundary_seq (11 and 63 bytes against maxpktsize 10); none in reg_function_test (maxpktsize 63).<br><em>Check:</em> Reads 8, then 0 in reg_function_test.</td>
+<td><code>router_filter_test</code><br><code>reg_function_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>CNT-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>addr3_cnt_reg counts packets to address 3</strong><br><em>Stimulus:</em> 4 packets to address 3 (yapp_boundary_seq); none in yapp_012_seq.<br><em>Check:</em> Reads 4, and 0 in reg_function_test.</td>
+<td><code>router_filter_test</code><br><code>reg_function_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>CNT-06</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Counter overflow after 255 packets</strong><br><em>Stimulus:</em> 257 one-byte packets to address 0 with every counter enabled.<br><em>Check:</em> addr0_cnt_reg reads 255 after 255 packets, 0 after the 256th (it wraps, it does not saturate), 1 after the 257th.<br><em>Note:</em> The specification is silent; wrapping is the decision recorded in dut/spec.md. Every counter is the same <code>+ 8'd1</code> in yapp_hbus_regs, so one counter stands for all six.</td>
+<td><code>counter_wrap_test</code><br><code>hbus_sweep_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mem-memories">MEM — Memories<a class="headerlink" href="#mem-memories" title="Permanent link">&para;</a></h3>
+<p>yapp_pkt_mem (64 bytes, RO) holds the last packet received; yapp_mem (256 bytes, RW) is scratch memory. <em>Project Overview p. 10, Lab 11 p. 50 -- Router Memories.</em> <a href="dut/spec.html#memories">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:MEM">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MEM-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>yapp_pkt_mem holds the last packet, byte by byte</strong><br><em>Stimulus:</em> A 20-byte packet to address 1 whose content the sequence keeps in req.<br><em>Check:</em> yapp_pkt_mem[0] == {length, addr}, yapp_pkt_mem[1..20] == payload[0..19], read through the register model.</td>
+<td><code>pkt_mem_test</code><br><code>random_test</code></td>
+</tr>
+<tr>
+<td><strong>MEM-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>yapp_pkt_mem is read-only</strong><br><em>Stimulus:</em> A raw HBUS write to 0x1010 with the inverted header.<br><em>Check:</em> yapp_pkt_mem[0] still reads the header.</td>
+<td><code>pkt_mem_test</code><br><code>hbus_sweep_test</code></td>
+</tr>
+<tr>
+<td><strong>MEM-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>A dropped packet is still stored</strong><br><em>Stimulus:</em> maxpktsize = 5 and a 9-byte packet.<br><em>Check:</em> mem_size_reg reads 9 and the bytes are in yapp_pkt_mem: the packet was received, just not forwarded (Decisions in dut/spec.md).</td>
+<td><code>pkt_mem_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>MEM-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>yapp_mem: every byte can be written and read back</strong><br><em>Stimulus:</em> uvm_mem_walk_seq: writes and reads the 256 bytes with a walking pattern; with +define+INJECT_ERROR the RTL flips bit 3 of address 0x2a.<br><em>Check:</em> The built-in sequence compares; 0 errors without the define, one UVM_ERROR with it (yapp_mem[42]). The regression runs both builds; the second one passes only if the error is reported.</td>
+<td><code>uvm_mem_walk_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="hbus-host-port-hbus">HBUS — Host port (HBUS)<a class="headerlink" href="#hbus-host-port-hbus" title="Permanent link">&para;</a></h3>
+<p>One-cycle writes and two-cycle reads driven on the falling edge; hdata is bidirectional and tri-stated by the DUT when hen is low. <em>Project Overview p. 11 -- Host Interface Port Protocol.</em> <a href="dut/spec.html#hbus-host-protocol">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:HBUS">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HBUS-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Write: hen and hwr_rd for one cycle, data latched on the rising edge</strong><br><em>Stimulus:</em> Every register write (hbus_if.hbus_write): raw sequences and the register model's front door.<br><em>Check:</em> The value is read back (hbus_protocol_test, every reg test); the HBUS monitor decodes one WRITE per access.</td>
+<td><code>hbus_protocol_test</code><br><code>router_simple_mcseq_test</code><br><code>reg_access_test</code></td>
+</tr>
+<tr>
+<td><strong>HBUS-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Read: haddr sampled in cycle 1, hdata driven by the DUT in cycle 2</strong><br><em>Stimulus:</em> Every register read (hbus_if.hbus_read); hbus_read_max_pkt_seq after each maxpktsize write.<br><em>Check:</em> The value read equals what was written or poked (20 and 63 in router_simple_mcseq_test, 0x2a in hbus_protocol_test); the monitor decodes one READ.</td>
+<td><code>hbus_protocol_test</code><br><code>router_simple_mcseq_test</code><br><code>reg_access_test</code></td>
+</tr>
+<tr>
+<td><strong>HBUS-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>hdata is tri-stated when hen drops</strong><br><em>Stimulus:</em> A read, then two idle cycles.<br><em>Check:</em> hbus_if.hdata_w reads 'z (the master's output enable is off, so only the DUT could still drive it).</td>
+<td><code>hbus_protocol_test</code></td>
+</tr>
+<tr>
+<td><strong>HBUS-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Back-to-back accesses</strong><br><em>Stimulus:</em> uvm_mem_walk_seq (511 writes and 255 reads with no gap), the 20-pattern walks of reg_bit_walk_test.<br><em>Check:</em> Every read returns the expected value; the monitor count equals the number of accesses.</td>
+<td><code>uvm_mem_walk_test</code><br><code>reg_bit_walk_test</code></td>
+</tr>
+<tr>
+<td><strong>HBUS-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The register model's front door is HBUS traffic</strong><br><em>Stimulus:</em> write()/read() through yapp_rm.default_map and the hbus_reg_adapter.<br><em>Check:</em> The HBUS monitor logs the cycles, and the reference model mirrors maxpktsize and router_en from them (the drop rules follow the model's writes in router_disable_test and router_filter_test).</td>
+<td><code>reg_function_test</code><br><code>router_disable_test</code><br><code>router_filter_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="rnd-random-scenarios">RND — Random scenarios<a class="headerlink" href="#rnd-random-scenarios" title="Permanent link">&para;</a></h3>
+<p>Random tests whose seed decides the shape: packet count, bursts, configuration, receiver profiles; every result checked by the reference model, the scoreboard and the error-pulse checker. <em>Project Overview pp. 5-11 -- every rule at once, in random combinations.</em> <a href="components/random-tests.html">Read the specification →</a> <a href="project-map.html#view=plan&amp;node=plan:RND">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RND-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Random configuration between bursts</strong><br><em>Stimulus:</em> router_random_mcseq: before each burst a random ctrl_reg (maxpktsize 0, 1, 62, 63 often, bits [7:6] random) and en_reg (router off now and then, counter-enable masks all / none / random).<br><em>Check:</em> router_reference models the counters, mem_size_reg, yapp_pkt_mem and yapp_mem and checks every HBUS read (check_reads = 1): random reads after each configuration, every register and the stored packet at the end.<br><em>Coverage:</em> <code>router_coverage router_cfg_cg: maxpktsize, length vs maxpktsize, drop reason x parity, counter enables</code></td>
+<td><code>random_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>RND-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>One error pulse per bad packet when bad packets overlap</strong><br><em>Stimulus:</em> random_parity_test storms: 1..3-byte packets, 90% back to back, half with bad parity.<br><em>Check:</em> error_pulse_checker matches every cycle with error high to the oldest owed pulse (1..10 cycles); nothing owed at the end.</td>
+<td><code>random_parity_test</code></td>
+</tr>
+<tr>
+<td><strong>RND-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Bad parity on dropped and ignored packets</strong><br><em>Stimulus:</em> Bad parity on packets to address 3, oversized packets and packets sent with the router off.<br><em>Check:</em> Dropped bad packets count in parity_err_cnt_reg (enable bit) and pulse; with the router off nothing counts or pulses (reference model, error_pulse_checker).</td>
+<td><code>random_parity_test</code><br><code>random_config_test</code></td>
+</tr>
+<tr>
+<td><strong>RND-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Receivers that stall, per channel</strong><br><em>Stimulus:</em> channel_rx_random_seq per channel: fast, normal, slow (20..40) or stalling (50..150 cycles now and then), before a packet, never in the middle.<br><em>Check:</em> Scoreboard: every forwarded byte out once and in order; nothing left in the queues at the end (check_phase).</td>
+<td><code>random_backpressure_test</code><br><code>random_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cov-functional-coverage">COV — Functional coverage<a class="headerlink" href="#cov-functional-coverage" title="Permanent link">&para;</a></h3>
+<p>The coverage models: yapp_pkt_coverage (Lab 10: length buckets, every address including the illegal one, every length to every legal address with bad parity) and the HBUS collectors of the router module (address map, register bits, yapp_mem data, counter values). <em>Lab 10 p. 47 -- REQ1, REQ2, REQ3.</em> <a href="labs/lab10.html">The lab →</a> <a href="project-map.html#view=plan&amp;node=plan:COV">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>COV-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>REQ1: all packet lengths, bucketed</strong><br><em>Stimulus:</em> yapp_coverage_seq: 1, 5, 20, 50, 63.<br><em>Check:</em> length_cp bins MIN, SMALL, MEDIUM, LARGE, MAX all hit; the pkt_cov report prints 100 %.<br><em>Coverage:</em> <code>length_cp</code></td>
+<td><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>REQ2: every address received a packet, including the illegal one</strong><br><em>Stimulus:</em> yapp_coverage_seq: addresses 0..3.<br><em>Check:</em> addr_cp bins legal[0..2] and illegal_addr hit.<br><em>Coverage:</em> <code>addr_cp</code></td>
+<td><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>REQ3: every length bucket to every legal address with a parity error</strong><br><em>Stimulus:</em> yapp_coverage_seq: each length with BAD_PARITY to addresses 0..2.<br><em>Check:</em> The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins.<br><em>Coverage:</em> <code>len_x_addr_x_parity</code></td>
+<td><code>coverage_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>HBUS: every address of the router read and written</strong><br><em>Stimulus:</em> router_hbus_sweep_mcseq: every address 0x1000..0x100f, every byte of yapp_pkt_mem and yapp_mem, the edges and some middle addresses of 0x1050..0x10ff.<br><em>Check:</em> router_reference checks every read (check_reads = 1): read-only and unmapped addresses ignore writes, the register window is read back after each write.<br><em>Coverage:</em> <code>hbus_addr_cg: addr_cp (9 registers, 7 holes, first / middle / last of yapp_pkt_mem, the unmapped range and yapp_mem) x rw_cp</code></td>
+<td><code>hbus_sweep_test</code><br><code>random_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>HBUS: every bit of ctrl_reg and en_reg written as 0 and as 1</strong><br><em>Stimulus:</em> Patterns 0x00, 0xff, 0x55, 0xaa and walking one / walking zero on both registers.<br><em>Check:</em> Each write read back and compared with the model.<br><em>Coverage:</em> <code>hbus_bits_cg: reg_cp x bit_cp[0:7] x val_cp</code></td>
+<td><code>hbus_sweep_test</code><br><code>reg_bit_walk_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-06</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>HBUS: data patterns in yapp_mem</strong><br><em>Stimulus:</em> Every byte of yapp_mem written and read back with 0x00, 0xff, 0x55, 0xaa and a random value.<br><em>Check:</em> Every read equals what was written (reference model).<br><em>Coverage:</em> <code>hbus_data_cg: rw_cp x pattern_cp</code></td>
+<td><code>hbus_sweep_test</code></td>
+</tr>
+<tr>
+<td><strong>COV-07</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>HBUS: every counter read at 0, in between and at 255</strong><br><em>Stimulus:</em> maxpktsize = 1 and 2-byte bad-parity packets (oversized, dropped): 255 per address with the enables of the counters under test.<br><em>Check:</em> Every counter read compared with the reference model (enables, wrap).<br><em>Coverage:</em> <code>hbus_counter_cg: counter_cp x value_cp (0, 1..254, 255)</code></td>
+<td><code>hbus_sweep_test</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tb-testbench-mechanics">TB — Testbench mechanics<a class="headerlink" href="#tb-testbench-mechanics" title="Permanent link">&para;</a></h3>
+<p>What the lab tests prove about the environment itself: topology, factory, configuration, sequences, virtual interfaces, the virtual sequencer and the scoreboard. <em>Labs 2-9 -- the course's own tests.</em> <a href="labs/index.html">The lab →</a> <a href="project-map.html#view=plan&amp;node=plan:TB">On the map →</a></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What is verified, and how</th>
+<th>Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TB-01</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The test builds the testbench and the run ends cleanly</strong><br><em>Stimulus:</em> base_test alone: no sequence, drain time 200 ns.<br><em>Check:</em> print_topology shows uvm_test_top with router_tb below; UVM_ERROR : 0; check_config_usage reports nothing unused.</td>
+<td><code>base_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-02</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>A factory type override replaces the packet type everywhere</strong><br><em>Stimulus:</em> set_type_override_by_type(yapp_packet, short_yapp_packet) before the environment is built.<br><em>Check:</em> Every printed packet is a short_yapp_packet with length &lt; 15; the sequences were not touched.</td>
+<td><code>short_packet_test</code><br><code>incr_payload_test</code><br><code>exhaustive_seq_test</code><br><code>simple_test</code><br><code>router_simple_mcseq_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-03</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>Configuration through the database, checked for use</strong><br><em>Stimulus:</em> is_active = UVM_PASSIVE on the YAPP agent; configure_sequences() overridden to set nothing.<br><em>Check:</em> The topology has no driver and no sequencer under the agent; no <code>never used</code> configuration report.</td>
+<td><code>set_config_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-04</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The sequence library: sub-sequences and post_randomize shaping</strong><br><em>Stimulus:</em> yapp_exhaustive_seq starts every library sequence once; yapp_incr_payload_seq rewrites the payload to 0 1 2 ...<br><em>Check:</em> One <code>Executing</code> line per sequence, the expected packet counts, the incrementing payload.</td>
+<td><code>exhaustive_seq_test</code><br><code>incr_payload_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-05</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The virtual interface connects the driver to the DUT</strong><br><em>Stimulus:</em> yapp_012_seq through yapp_if into hw_top.dut.<br><em>Check:</em> Each packet appears on data_0, data_1, data_2 in the waveform; later the channel monitors confirm it.</td>
+<td><code>yapp_012_test</code><br><code>simple_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-06</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>A multichannel sequence coordinates HBUS and YAPP</strong><br><em>Stimulus:</em> router_simple_mcseq on the virtual sequencer: program, read back, send, reprogram, send.<br><em>Check:</em> The log shows the sub-sequences in order; the read-backs return 20 and 63.</td>
+<td><code>router_simple_mcseq_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-07</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The scoreboard notices a wrong packet</strong><br><em>Stimulus:</em> Full-size packets while maxpktsize is 20, without the reference model (Lab 9A).<br><em>Check:</em> Expected PKT_COMPARE errors and packets left in the queues: the negative test of the checker itself.</td>
+<td><code>scoreboard_drop_test</code></td>
+</tr>
+<tr>
+<td><strong>TB-08</strong><br><span class="st st-covered">covered</span></td>
+<td><strong>The register model describes itself</strong><br><em>Stimulus:</em> get_registers() and find() by get_rights().<br><em>Check:</em> 2 RW and 7 RO registers listed, then the access checks run on all of them.</td>
+<td><code>reg_introspection_test</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="coverage-matrix">Coverage matrix<a class="headerlink" href="#coverage-matrix" title="Permanent link">&para;</a></h2>
+<p>Who verifies what, at a glance: one row per plan item, one column per test (in course order, the test-plan tests last); a dot where the test covers the item, in the colour of the item's status. The last column counts the tests of an item, the last row the items of a test. Hover a dot for the pair.</p>
+<div class="mx-wrap" markdown="0">
+<table class="mx">
+<thead><tr>
+<th class="mx-item">Item</th>
+<th class="mx-t"><span>base_test</span></th>
+<th class="mx-t"><span>set_config_test</span></th>
+<th class="mx-t"><span>short_packet_test</span></th>
+<th class="mx-t"><span>exhaustive_seq_test</span></th>
+<th class="mx-t"><span>incr_payload_test</span></th>
+<th class="mx-t"><span>yapp_012_test</span></th>
+<th class="mx-t"><span>simple_test</span></th>
+<th class="mx-t"><span>test_uvc_integration</span></th>
+<th class="mx-t"><span>router_simple_mcseq_test</span></th>
+<th class="mx-t"><span>scoreboard_drop_test</span></th>
+<th class="mx-t"><span>coverage_test</span></th>
+<th class="mx-t"><span>uvm_mem_walk_test</span></th>
+<th class="mx-t"><span>uvm_reset_test</span></th>
+<th class="mx-t"><span>reg_access_test</span></th>
+<th class="mx-t"><span>reg_function_check_test</span></th>
+<th class="mx-t"><span>reg_function_test</span></th>
+<th class="mx-t"><span>reg_introspection_test</span></th>
+<th class="mx-t"><span>back_to_back_test</span></th>
+<th class="mx-t"><span>backpressure_test</span></th>
+<th class="mx-t"><span>counter_wrap_test</span></th>
+<th class="mx-t"><span>hbus_protocol_test</span></th>
+<th class="mx-t"><span>hbus_sweep_test</span></th>
+<th class="mx-t"><span>parity_error_test</span></th>
+<th class="mx-t"><span>pkt_mem_test</span></th>
+<th class="mx-t"><span>random_backpressure_test</span></th>
+<th class="mx-t"><span>random_config_test</span></th>
+<th class="mx-t"><span>random_parity_test</span></th>
+<th class="mx-t"><span>random_test</span></th>
+<th class="mx-t"><span>reg_bit_walk_test</span></th>
+<th class="mx-t"><span>router_disable_test</span></th>
+<th class="mx-t"><span>router_filter_test</span></th>
+<th class="mx-n">tests</th>
+</tr></thead>
+<tbody>
+<tr class="mx-g"><th colspan="33">ROUTE · Routing</th></tr>
+<tr><th class="mx-item st-covered" title="The address selects the output channel"><b>ROUTE-01</b> <span>The address selects the output channel</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-01 ← yapp_012_test">●</td><td class="mx-c st-covered" title="ROUTE-01 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-01 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-01 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-01 ← router_filter_test">●</td><td class="mx-n">5</td></tr>
+<tr><th class="mx-item st-covered" title="Payload and parity arrive unchanged"><b>ROUTE-02</b> <span>Payload and parity arrive unchanged</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-02 ← router_simple_mcseq_test">●</td><td class="mx-c st-covered" title="ROUTE-02 ← scoreboard_drop_test">●</td><td class="mx-c st-covered" title="ROUTE-02 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-02 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-02 ← router_filter_test">●</td><td class="mx-n">5</td></tr>
+<tr><th class="mx-item st-covered" title="Order is kept per channel, channels are independent"><b>ROUTE-03</b> <span>Order is kept per channel, channels are independent</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-03 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-03 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-03 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-03 ← random_backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-03 ← router_filter_test">●</td><td class="mx-n">5</td></tr>
+<tr><th class="mx-item st-covered" title="Packets back to back with the minimum gap"><b>ROUTE-04</b> <span>Packets back to back with the minimum gap</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-04 ← scoreboard_drop_test">●</td><td class="mx-c st-covered" title="ROUTE-04 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="ROUTE-04 ← back_to_back_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr class="mx-g"><th colspan="33">PKT · Packet format</th></tr>
+<tr><th class="mx-item st-covered" title="Header: length in [7:2], address in [1:0]"><b>PKT-01</b> <span>Header: length in [7:2], address in [1:0]</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-01 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-01 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-01 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="Every payload length 1..63, including both extremes"><b>PKT-02</b> <span>Every payload length 1..63, including both extremes</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-02 ← scoreboard_drop_test">●</td><td class="mx-c st-covered" title="PKT-02 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-02 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-02 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="Address 3 is illegal"><b>PKT-03</b> <span>Address 3 is illegal</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-03 ← test_uvc_integration">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-03 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-03 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-03 ← router_filter_test">●</td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="Even bitwise parity over header and payload"><b>PKT-04</b> <span>Even bitwise parity over header and payload</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-04 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-04 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-04 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="A wrong parity byte is detected -- and the packet still delivered"><b>PKT-05</b> <span>A wrong parity byte is detected -- and the packet still delivered</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-05 ← test_uvc_integration">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-05 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-05 ← parity_error_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="PKT-05 ← random_parity_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">4</td></tr>
+<tr class="mx-g"><th colspan="33">IN · Input port protocol</th></tr>
+<tr><th class="mx-item st-covered" title="in_data_vld rises with the header; one byte per falling edge"><b>IN-01</b> <span>in_data_vld rises with the header; one byte per falling edge</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-01 ← yapp_012_test">●</td><td class="mx-c st-covered" title="IN-01 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-01 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="in_data_vld is low with the parity byte"><b>IN-02</b> <span>in_data_vld is low with the parity byte</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-02 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-02 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-02 ← pkt_mem_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="in_suspend: the input holds while the target FIFO is full"><b>IN-03</b> <span>in_suspend: the input holds while the target FIFO is full</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-03 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-03 ← random_backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="error asserts 1 to 10 cycles after a bad-parity packet"><b>IN-04</b> <span>error asserts 1 to 10 cycles after a bad-parity packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-04 ← test_uvc_integration">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-04 ← parity_error_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="IN-04 ← random_parity_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr class="mx-g"><th colspan="33">OUT · Output port protocol</th></tr>
+<tr><th class="mx-item st-covered" title="data_vld_x, suspend_x and one byte per rising edge"><b>OUT-01</b> <span>data_vld_x, suspend_x and one byte per rising edge</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-01 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-01 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-01 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="The receiver may answer late: the header is held"><b>OUT-02</b> <span>The receiver may answer late: the header is held</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-02 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-02 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-02 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-02 ← random_backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="The FIFO is 16 bytes deep"><b>OUT-03</b> <span>The FIFO is 16 bytes deep</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-03 ← scoreboard_drop_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-03 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="suspend_x is re-asserted at the parity byte: the next packet waits"><b>OUT-04</b> <span>suspend_x is re-asserted at the parity byte: the next packet waits</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-04 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-04 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-04 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="All three channels busy at the same time"><b>OUT-05</b> <span>All three channels busy at the same time</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-05 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-05 ← backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="OUT-05 ← random_backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr class="mx-g"><th colspan="33">REG · Registers</th></tr>
+<tr><th class="mx-item st-covered" title="Reset values"><b>REG-01</b> <span>Reset values</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-01 ← uvm_reset_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="RW registers: every bit can be written and read back"><b>REG-02</b> <span>RW registers: every bit can be written and read back</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-02 ← reg_access_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-02 ← reg_bit_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="RO registers ignore writes"><b>REG-03</b> <span>RO registers ignore writes</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-03 ← reg_access_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-03 ← reg_introspection_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-03 ← hbus_protocol_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-03 ← reg_bit_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="Front door and backdoor see the same flip-flops"><b>REG-04</b> <span>Front door and backdoor see the same flip-flops</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-04 ← reg_access_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-04 ← reg_introspection_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="Unmapped addresses read 0x00 and ignore writes"><b>REG-05</b> <span>Unmapped addresses read 0x00 and ignore writes</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-05 ← hbus_protocol_test">●</td><td class="mx-c st-covered" title="REG-05 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-05 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="mem_size_reg holds the payload length of the last packet"><b>REG-06</b> <span>mem_size_reg holds the payload length of the last packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-06 ← pkt_mem_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-06 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="Automatic checking on read (check_on_read + predict)"><b>REG-07</b> <span>Automatic checking on read (check_on_read + predict)</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="REG-07 ← reg_function_check_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr class="mx-g"><th colspan="33">DROP · Drop rules</th></tr>
+<tr><th class="mx-item st-covered" title="length &gt; maxpktsize drops the whole packet"><b>DROP-01</b> <span>length &gt; maxpktsize drops the whole packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-01 ← test_uvc_integration">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-01 ← scoreboard_drop_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-01 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-01 ← router_filter_test">●</td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="router_en = 0 drops every packet"><b>DROP-02</b> <span>router_en = 0 drops every packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-02 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-02 ← router_disable_test">●</td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="Address 3 drops the packet"><b>DROP-03</b> <span>Address 3 drops the packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-03 ← test_uvc_integration">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-03 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-03 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-03 ← router_filter_test">●</td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="An oversized packet to address 3 counts in both counters"><b>DROP-04</b> <span>An oversized packet to address 3 counts in both counters</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-04 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="DROP-04 ← router_filter_test">●</td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-excluded" title="Changing router_en or a counter enable in the middle of a packet"><b>DROP-05</b> <span>Changing router_en or a counter enable in the middle of a packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">–</td></tr>
+<tr class="mx-g"><th colspan="33">CNT · Counters</th></tr>
+<tr><th class="mx-item st-covered" title="A counter counts only while its enable bit is set"><b>CNT-01</b> <span>A counter counts only while its enable bit is set</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-01 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-01 ← parity_error_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-01 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-01 ← router_filter_test">●</td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="addrN_cnt_reg counts every received packet with address N"><b>CNT-02</b> <span>addrN_cnt_reg counts every received packet with address N</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-02 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-02 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-02 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="parity_err_cnt_reg counts the bad-parity packets"><b>CNT-03</b> <span>parity_err_cnt_reg counts the bad-parity packets</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-03 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-03 ← parity_error_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-03 ← random_parity_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="oversized_pkt_cnt_reg counts packets longer than maxpktsize"><b>CNT-04</b> <span>oversized_pkt_cnt_reg counts packets longer than maxpktsize</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-04 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-04 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-04 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="addr3_cnt_reg counts packets to address 3"><b>CNT-05</b> <span>addr3_cnt_reg counts packets to address 3</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-05 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-05 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-05 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="Counter overflow after 255 packets"><b>CNT-06</b> <span>Counter overflow after 255 packets</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-06 ← counter_wrap_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="CNT-06 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr class="mx-g"><th colspan="33">MEM · Memories</th></tr>
+<tr><th class="mx-item st-covered" title="yapp_pkt_mem holds the last packet, byte by byte"><b>MEM-01</b> <span>yapp_pkt_mem holds the last packet, byte by byte</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-01 ← pkt_mem_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-01 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="yapp_pkt_mem is read-only"><b>MEM-02</b> <span>yapp_pkt_mem is read-only</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-02 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-02 ← pkt_mem_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="A dropped packet is still stored"><b>MEM-03</b> <span>A dropped packet is still stored</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-03 ← pkt_mem_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-03 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="yapp_mem: every byte can be written and read back"><b>MEM-04</b> <span>yapp_mem: every byte can be written and read back</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="MEM-04 ← uvm_mem_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr class="mx-g"><th colspan="33">HBUS · Host port (HBUS)</th></tr>
+<tr><th class="mx-item st-covered" title="Write: hen and hwr_rd for one cycle, data latched on the rising edge"><b>HBUS-01</b> <span>Write: hen and hwr_rd for one cycle, data latched on the rising edge</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-01 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-01 ← reg_access_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-01 ← hbus_protocol_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="Read: haddr sampled in cycle 1, hdata driven by the DUT in cycle 2"><b>HBUS-02</b> <span>Read: haddr sampled in cycle 1, hdata driven by the DUT in cycle 2</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-02 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-02 ← reg_access_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-02 ← hbus_protocol_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="hdata is tri-stated when hen drops"><b>HBUS-03</b> <span>hdata is tri-stated when hen drops</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-03 ← hbus_protocol_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="Back-to-back accesses"><b>HBUS-04</b> <span>Back-to-back accesses</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-04 ← uvm_mem_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-04 ← reg_bit_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="The register model&#x27;s front door is HBUS traffic"><b>HBUS-05</b> <span>The register model&#x27;s front door is HBUS traffic</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-05 ← reg_function_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="HBUS-05 ← router_disable_test">●</td><td class="mx-c st-covered" title="HBUS-05 ← router_filter_test">●</td><td class="mx-n">3</td></tr>
+<tr class="mx-g"><th colspan="33">RND · Random scenarios</th></tr>
+<tr><th class="mx-item st-covered" title="Random configuration between bursts"><b>RND-01</b> <span>Random configuration between bursts</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-01 ← random_config_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-01 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="One error pulse per bad packet when bad packets overlap"><b>RND-02</b> <span>One error pulse per bad packet when bad packets overlap</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-02 ← random_parity_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="Bad parity on dropped and ignored packets"><b>RND-03</b> <span>Bad parity on dropped and ignored packets</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-03 ← random_config_test">●</td><td class="mx-c st-covered" title="RND-03 ← random_parity_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="Receivers that stall, per channel"><b>RND-04</b> <span>Receivers that stall, per channel</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-04 ← random_backpressure_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="RND-04 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr class="mx-g"><th colspan="33">COV · Functional coverage</th></tr>
+<tr><th class="mx-item st-covered" title="REQ1: all packet lengths, bucketed"><b>COV-01</b> <span>REQ1: all packet lengths, bucketed</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-01 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="REQ2: every address received a packet, including the illegal one"><b>COV-02</b> <span>REQ2: every address received a packet, including the illegal one</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-02 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="REQ3: every length bucket to every legal address with a parity error"><b>COV-03</b> <span>REQ3: every length bucket to every legal address with a parity error</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-03 ← coverage_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="HBUS: every address of the router read and written"><b>COV-04</b> <span>HBUS: every address of the router read and written</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-04 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-04 ← random_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="HBUS: every bit of ctrl_reg and en_reg written as 0 and as 1"><b>COV-05</b> <span>HBUS: every bit of ctrl_reg and en_reg written as 0 and as 1</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-05 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-05 ← reg_bit_walk_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="HBUS: data patterns in yapp_mem"><b>COV-06</b> <span>HBUS: data patterns in yapp_mem</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-06 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="HBUS: every counter read at 0, in between and at 255"><b>COV-07</b> <span>HBUS: every counter read at 0, in between and at 255</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="COV-07 ← hbus_sweep_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr class="mx-g"><th colspan="33">TB · Testbench mechanics</th></tr>
+<tr><th class="mx-item st-covered" title="The test builds the testbench and the run ends cleanly"><b>TB-01</b> <span>The test builds the testbench and the run ends cleanly</span></th><td class="mx-c st-covered" title="TB-01 ← base_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="A factory type override replaces the packet type everywhere"><b>TB-02</b> <span>A factory type override replaces the packet type everywhere</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-02 ← short_packet_test">●</td><td class="mx-c st-covered" title="TB-02 ← exhaustive_seq_test">●</td><td class="mx-c st-covered" title="TB-02 ← incr_payload_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-02 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-02 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">5</td></tr>
+<tr><th class="mx-item st-covered" title="Configuration through the database, checked for use"><b>TB-03</b> <span>Configuration through the database, checked for use</span></th><td class="mx-c"></td><td class="mx-c st-covered" title="TB-03 ← set_config_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="The sequence library: sub-sequences and post_randomize shaping"><b>TB-04</b> <span>The sequence library: sub-sequences and post_randomize shaping</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-04 ← exhaustive_seq_test">●</td><td class="mx-c st-covered" title="TB-04 ← incr_payload_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="The virtual interface connects the driver to the DUT"><b>TB-05</b> <span>The virtual interface connects the driver to the DUT</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-05 ← yapp_012_test">●</td><td class="mx-c st-covered" title="TB-05 ← simple_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">2</td></tr>
+<tr><th class="mx-item st-covered" title="A multichannel sequence coordinates HBUS and YAPP"><b>TB-06</b> <span>A multichannel sequence coordinates HBUS and YAPP</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-06 ← router_simple_mcseq_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="The scoreboard notices a wrong packet"><b>TB-07</b> <span>The scoreboard notices a wrong packet</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-07 ← scoreboard_drop_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="The register model describes itself"><b>TB-08</b> <span>The register model describes itself</span></th><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c st-covered" title="TB-08 ← reg_introspection_test">●</td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-c"></td><td class="mx-n">1</td></tr>
+<tr class="mx-sum"><th class="mx-item">items per test</th><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">2</td><td class="mx-n">2</td><td class="mx-n">3</td><td class="mx-n">8</td><td class="mx-n">5</td><td class="mx-n">11</td><td class="mx-n">6</td><td class="mx-n">14</td><td class="mx-n">2</td><td class="mx-n">1</td><td class="mx-n">5</td><td class="mx-n">1</td><td class="mx-n">10</td><td class="mx-n">3</td><td class="mx-n">1</td><td class="mx-n">8</td><td class="mx-n">1</td><td class="mx-n">5</td><td class="mx-n">7</td><td class="mx-n">4</td><td class="mx-n">5</td><td class="mx-n">5</td><td class="mx-n">12</td><td class="mx-n">5</td><td class="mx-n">7</td><td class="mx-n">4</td><td class="mx-n">2</td><td class="mx-n">14</td><td></td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<p>Every test extends <code>base_test</code> and only changes what runs. The lab is where the test was born; the test-plan tests exist only in <code>yapp_project/tb/tests</code>. Run one with <code>make run-project TEST=&lt;name&gt;</code> (or <code>make run LAB=&lt;lab&gt; TEST=&lt;name&gt;</code> for a lab).</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Lab</th>
+<th>Purpose</th>
+<th>Verifies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base_test</code></td>
+<td><a href="labs/lab02.html">2</a></td>
+<td>The skeleton every test extends: builds router_tb, keeps the run alive 200 ns after the last objection, reports unused settings.</td>
+<td>TB-01</td>
+</tr>
+<tr>
+<td><code>set_config_test</code></td>
+<td><a href="labs/lab04.html">4</a></td>
+<td>Lab 4: a passive agent through the configuration database -- and why the sequence setting lives in a virtual function.</td>
+<td>TB-03</td>
+</tr>
+<tr>
+<td><code>short_packet_test</code></td>
+<td><a href="labs/lab04.html">4</a></td>
+<td>Lab 4: the factory override in action -- the sequence asks for yapp_packet and gets short_yapp_packet.</td>
+<td>TB-02</td>
+</tr>
+<tr>
+<td><code>exhaustive_seq_test</code></td>
+<td><a href="labs/lab05.html">5</a></td>
+<td>Lab 5: one sequence that runs every sequence of the library once (sequences starting sub-sequences).</td>
+<td>TB-02, TB-04</td>
+</tr>
+<tr>
+<td><code>incr_payload_test</code></td>
+<td><a href="labs/lab05.html">5</a></td>
+<td>Lab 5: a sequence that shapes the payload after randomisation.</td>
+<td>TB-02, TB-04</td>
+</tr>
+<tr>
+<td><code>yapp_012_test</code></td>
+<td><a href="labs/lab06.html">6</a></td>
+<td>Lab 6: the first packets into the real DUT -- one per channel, so the connection is easy to check in the waveform.</td>
+<td>ROUTE-01, IN-01, TB-05</td>
+</tr>
+<tr>
+<td><code>simple_test</code></td>
+<td><a href="labs/lab07.html">7</a></td>
+<td>Lab 7: every UVC talking to the DUT with the default sequences only.</td>
+<td>ROUTE-01, PKT-01, IN-01, IN-02, OUT-01, OUT-02, TB-02, TB-05</td>
+</tr>
+<tr>
+<td><code>test_uvc_integration</code></td>
+<td><a href="labs/lab07.html">7</a></td>
+<td>Lab 7: 88 packets of every length and address against a router programmed for small packets.</td>
+<td>PKT-03, PKT-05, IN-04, DROP-01, DROP-03</td>
+</tr>
+<tr>
+<td><code>router_simple_mcseq_test</code></td>
+<td><a href="labs/lab08.html">8</a></td>
+<td>Lab 8: one multichannel sequence on the virtual sequencer programs the router and sends the packets in order.</td>
+<td>ROUTE-01, ROUTE-02, ROUTE-03, PKT-01, OUT-01, OUT-02, OUT-04, HBUS-01, HBUS-02, TB-02, TB-06</td>
+</tr>
+<tr>
+<td><code>scoreboard_drop_test</code></td>
+<td><a href="labs/lab09a.html">9A</a></td>
+<td>Lab 9A: the negative check -- full-size packets while maxpktsize is 20, so the router drops some and the scoreboard must notice.</td>
+<td>ROUTE-02, ROUTE-04, PKT-02, OUT-03, DROP-01, TB-07</td>
+</tr>
+<tr>
+<td><code>coverage_test</code></td>
+<td><a href="labs/lab10.html">10</a></td>
+<td>Lab 10: stimulus written to close the functional coverage model of the YAPP packets (yapp_pkt_cg in yapp_pkt_coverage, fed by the monitor).</td>
+<td>ROUTE-02, ROUTE-03, ROUTE-04, PKT-01, PKT-02, PKT-03, PKT-04, IN-01, OUT-01, OUT-05, DROP-03, COV-01, COV-02, COV-03</td>
+</tr>
+<tr>
+<td><code>uvm_mem_walk_test</code></td>
+<td><a href="labs/lab11b.html">11B</a></td>
+<td>Lab 11B: the built-in memory sequence walks yapp_mem; the RO yapp_pkt_mem is skipped.</td>
+<td>MEM-04, HBUS-04</td>
+</tr>
+<tr>
+<td><code>uvm_reset_test</code></td>
+<td><a href="labs/lab11b.html">11B</a></td>
+<td>Lab 11B: the built-in register sequence that reads every register after reset.</td>
+<td>REG-01</td>
+</tr>
+<tr>
+<td><code>reg_access_test</code></td>
+<td><a href="labs/lab11c.html">11C</a></td>
+<td>Lab 11C: hand-written front-door and backdoor checks on one RW and one RO register.</td>
+<td>REG-02, REG-03, REG-04, HBUS-01, HBUS-02</td>
+</tr>
+<tr>
+<td><code>reg_function_check_test</code></td>
+<td><a href="labs/lab11c.html">11C</a></td>
+<td>Lab 11C (optional): the same test with the model checking every read itself.</td>
+<td>REG-07</td>
+</tr>
+<tr>
+<td><code>reg_function_test</code></td>
+<td><a href="labs/lab11c.html">11C</a></td>
+<td>Lab 11C: do the enable bits and the counters behave? Packets in, counters read through the model.</td>
+<td>ROUTE-01, PKT-04, PKT-05, IN-02, CNT-01, CNT-02, CNT-03, CNT-04, CNT-05, HBUS-05</td>
+</tr>
+<tr>
+<td><code>reg_introspection_test</code></td>
+<td><a href="labs/lab11c.html">11C</a></td>
+<td>Lab 11C (optional): the model tells the test which registers are RW and which are RO, then every one is checked.</td>
+<td>REG-03, REG-04, TB-08</td>
+</tr>
+<tr>
+<td><code>back_to_back_test</code></td>
+<td>test plan</td>
+<td>Test plan: the input port with the shortest gap -- a header in the cycle right after the parity byte -- and gaps of 1, 2 and 3 cycles.</td>
+<td>ROUTE-04</td>
+</tr>
+<tr>
+<td><code>backpressure_test</code></td>
+<td>test plan</td>
+<td>Test plan: the YAPP handshake under back-pressure -- slow receivers fill the 16-byte channel FIFOs, the router stalls the input with in_suspend and no byte is lost.</td>
+<td>ROUTE-02, ROUTE-03, PKT-02, IN-03, OUT-02, OUT-03, OUT-04, OUT-05</td>
+</tr>
+<tr>
+<td><code>counter_wrap_test</code></td>
+<td>test plan</td>
+<td>Test plan: an 8-bit counter wraps from 255 to 0 -- the specification is silent, the Decisions of dut/spec.md fix the choice.</td>
+<td>CNT-06</td>
+</tr>
+<tr>
+<td><code>hbus_protocol_test</code></td>
+<td>test plan</td>
+<td>Test plan: the host port on the wire -- one-cycle writes, two-cycle reads, tri-state after the access, unmapped addresses -- with raw HBUS sequences, no register model.</td>
+<td>REG-03, REG-05, HBUS-01, HBUS-02, HBUS-03</td>
+</tr>
+<tr>
+<td><code>hbus_sweep_test</code></td>
+<td>test plan</td>
+<td>Test plan: the HBUS side of the coverage -- every address of the router read and written, checked against the reference model, until the four HBUS collectors reach 100 %.</td>
+<td>REG-05, CNT-06, MEM-02, COV-04, COV-05, COV-06, COV-07</td>
+</tr>
+<tr>
+<td><code>parity_error_test</code></td>
+<td>test plan</td>
+<td>Test plan: what a wrong parity byte does -- the counter counts it (when enabled), error pulses 1..10 cycles later, and the packet is still delivered.</td>
+<td>PKT-05, IN-04, CNT-01, CNT-03</td>
+</tr>
+<tr>
+<td><code>pkt_mem_test</code></td>
+<td>test plan</td>
+<td>Test plan: the packet memory and mem_size_reg hold the last packet, byte by byte, even when the packet was dropped.</td>
+<td>IN-02, REG-06, MEM-01, MEM-02, MEM-03</td>
+</tr>
+<tr>
+<td><code>random_backpressure_test</code></td>
+<td>test plan</td>
+<td>Random tests: back-pressure on a random mix of channels -- slow and stalling receivers against long packets sent back to back.</td>
+<td>ROUTE-03, IN-03, OUT-02, OUT-05, RND-04</td>
+</tr>
+<tr>
+<td><code>random_config_test</code></td>
+<td>test plan</td>
+<td>Random tests: the configuration space -- every maxpktsize edge, the router off, mixed counter enables -- under many short bursts.</td>
+<td>PKT-03, DROP-01, DROP-02, DROP-03, DROP-04, CNT-01, CNT-02, CNT-04, CNT-05, MEM-03, RND-01, RND-03</td>
+</tr>
+<tr>
+<td><code>random_parity_test</code></td>
+<td>test plan</td>
+<td>Random tests: bad parity where it can happen -- forwarded, dropped (address 3, oversized) and ignored (router off) -- and storms of overlapping bad packets.</td>
+<td>PKT-05, IN-04, CNT-03, RND-02, RND-03</td>
+</tr>
+<tr>
+<td><code>random_test</code></td>
+<td>test plan</td>
+<td>Random tests: the seed decides the shape of the test, and every result is checked automatically -- no expected value is written by hand.</td>
+<td>PKT-02, REG-05, REG-06, MEM-01, RND-01, RND-04, COV-04</td>
+</tr>
+<tr>
+<td><code>reg_bit_walk_test</code></td>
+<td>test plan</td>
+<td>Test plan: every bit of every register obeys its policy -- walking ones and zeros through the RW registers, writes ignored by the RO ones.</td>
+<td>REG-02, REG-03, HBUS-04, COV-05</td>
+</tr>
+<tr>
+<td><code>router_disable_test</code></td>
+<td>test plan</td>
+<td>Test plan: router_en = 0 makes the router deaf -- nothing reaches a channel, nothing is counted, nothing is stored; traffic resumes when it is enabled again.</td>
+<td>DROP-02, HBUS-05</td>
+</tr>
+<tr>
+<td><code>router_filter_test</code></td>
+<td>test plan</td>
+<td>Test plan: the drop rules around the maxpktsize limit and the counters behind them, with the counters enabled and then disabled.</td>
+<td>ROUTE-01, ROUTE-02, ROUTE-03, PKT-03, PKT-04, OUT-04, DROP-01, DROP-03, DROP-04, CNT-01, CNT-02, CNT-04, CNT-05, HBUS-05</td>
+</tr>
+</tbody>
+</table>
+<h2 id="writing-a-new-test-checklist">Writing a new test — checklist<a class="headerlink" href="#writing-a-new-test-checklist" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Extend <code>base_test</code> (or <code>reg_function_test</code> when you need the register block, the YAPP sequencer and <code>check_counter()</code>); add <code>`uvm_component_utils</code> and the constructor.</li>
+<li>Decide the packet type: factory override in <code>build_phase</code> <em>before</em> <code>super.build_phase(phase)</code>.</li>
+<li><code>configure_sequences()</code>: which sequencer runs what. Always <code>set_clock_and_channel_sequences()</code> in Labs 7+ (or your own channel sequence, as <code>backpressure_test</code> does).</li>
+<li>For register tests: get handles in <code>connect_phase</code>, raise an objection in <code>run_phase</code>, use the model API.</li>
+<li>Decide what <em>passes</em>: <code>UVM_ERROR : 0</code> plus the counts in the reports, and say so in the log (<code>uvm_info</code> at <code>UVM_NONE</code>).</li>
+<li>Add the test to <code>annotations.yaml</code>: a line under <code>classes:</code>, its plan under <code>tests:</code>, and the items it verifies under <code>plan:</code>; <code>make map</code> regenerates this page and the map.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="components/random-tests.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Random tests">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Random tests
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="coverage-results.html" class="md-footer__link md-footer__link--next" aria-label="Next: Coverage results">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Coverage results
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="assets/project_map/regmap.js"></script>
+      
+        <script src="assets/project_map/sim.js"></script>
+      
+    
+  </body>
+</html>

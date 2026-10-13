@@ -23,6 +23,9 @@
 > + `hbus_sweep_test` שסוגר אותם (כל קריאה נבדקת מול הרפרנס). רגרסיה **162/162**; ממוזג על 100 ריצות: **222/222 bins**.
 > נפתח PR [tamirgabgab/Qcom-Mentoring#1](https://github.com/tamirgabgab/Qcom-Mentoring/pull/1) מה-UI; תמיר אישר: **ממשיכים
 > לקדם את `main` (ff) אחרי כל push כמו תמיד**, גם כשיש PR פתוח (ה-PR יסומן merged אוטומטית).
+> **סשן 8ב (2026-10-13, במקביל, אתר אופליין):** `make docs-offline` בונה את אתר הקורס לתיקייה שנפתחת מהדיסק
+> (`offline/site/index.html`, **committed** בבקשת תמיר) + `build/QcomCourseSite.zip`. חיפוש, mermaid והמפה עובדים בלי שרת
+> ובלי אינטרנט (נבדק ב-Playwright עם חסימת רשת). האתר הציבורי לא השתנה. פירוט: סעיף 2, פריט 16.
 > **סשן 8 סבב 3 (ביקורת + דוח באתר):** ביקורת קריאה של HANDOFF/אתר/דוח/מפה → 16 הצעות; תמיר בחר ניקיון + דוח רגרסיה
 > באתר וכיווץ + קישורים ותגים במפה. הדוח המחויב 83 → **33 MB** (`runs.json`, בלי `all_logs.log`/`signals.csv`/`timeline.csv`,
 > timeline מקוצץ), עמוד אתר **Regression results** + דף לכל טסט (`docs/regression/`, מיוצר ב-`build.py`), סעיף Regression
@@ -97,9 +100,9 @@
   ```
   (המודל וה-session id משתנים בין סשנים — תמיד להעתיק את ה-trailer שה-system reminder נותן.)
   **אין מזהי מודל** (Claude/Fable וכו') בשום artifact שנדחף (קוד, הערות, PR body) מלבד ה-trailer.
-- **מסירה**: אחרי כל סבב — `QcommMentoring.zip` של הריפו (בלי `.git`, `site`, `build`,
-  `__pycache__`, `scripts/uvm_src`) + `yapp_project_map.html` העצמאי נשלחים לתמיר דרך
-  SendUserFile. הוא מעתיק ל-`C:\Users\User\Desktop\PyProjects\QcommMentoring` או עושה
+- **מסירה**: אחרי כל סבב — `QcommMentoring.zip` של הריפו (בלי `.git`, `site`, `offline`, `build`,
+  `__pycache__`, `scripts/uvm_src`, `tr_db.log`; מגבלת SendUserFile 30 MB) + `yapp_project_map.html` העצמאי, ואחרי שינוי
+  בדפי האתר גם `build/QcomCourseSite.zip` (`make docs-offline`; ~9 MB) נשלחים לתמיר דרך SendUserFile. הוא מעתיק ל-`C:\Users\User\Desktop\PyProjects\QcommMentoring` או עושה
   `git pull origin main`.
 - לפני שינויים גדולים תמיר רוצה **שאלות מנחות** (AskUserQuestion) ואז ביצוע מלא.
 - מפת הפרויקט: תמיר מבקש **קליקים נוחים** (קליק בודד פותח/בוחר), **חצים מעוגלים ולא מבולגנים**,
@@ -141,6 +144,12 @@
 - CI ב-GitHub: workflow `lint` (slang + style-check + map-check) ו-`docs` (mkdocs → GitHub Pages)
   ירוקים על כל commit של סשן 5 עד `3687ecb` (נבדק דרך ה-API). ה-runner של GitHub (ubuntu-latest) כולל node, ולכן `map-check`
   ב-CI מריץ גם את `test_sim.mjs`.
+- **אתר הקורס אופליין (סשן 8ב):** `make docs-offline` (`scripts/build_offline_site.py`, `mkdocs-offline.yml` שיורש מ-`mkdocs.yml`,
+  `scripts/mkdocs_offline_hooks.py`) בונה את `offline/site/` (**committed**, ~25 MB, 190 קבצים) שנפתחת עם `index.html` מהדיסק (file://)
+  ו-`build/QcomCourseSite.zip` (התיקייה `site/` בפנים, ~9 MB). `use_directory_urls: false` + תוסף `offline` של Material; Mermaid ו-`iframe-worker` (החיפוש תחת file://)
+  נשלפים עם `npm pack` ל-`build/offline_cache/` ונשלחים בתוך האתר במקום unpkg; ה-iframe של המפה ב-`project-map.md` הוא HTML גולמי ולכן
+  ה-hook מתקן לו את הנתיב. נבדק ב-Playwright עם חסימת כל הרשת: חיפוש (10 תוצאות), ניווט, תרשימי mermaid והמפה האינטראקטיבית עובדים;
+  רק ה-API של GitHub (כוכבים/forks בכותרת) מנסה לצאת ונכשל בשקט. האתר הציבורי ב-Pages לא השתנה (ה-CI ממשיך לבנות עם `mkdocs.yml`).
 - GitHub Pages פעיל (Source = GitHub Actions), האתר חי, המפה ב-`/project-map/` והקובץ העצמאי
   ב-`/downloads/yapp_project_map.html`.
 
@@ -584,8 +593,28 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - Test plan: **COV-04..07** + `hbus_sweep_test` תחת REG-05, MEM-02, CNT-06; `test_model`: router_module_env = 11 connects.
    - **`docs/dut/register-map.md`** (חדש, nav "Register map"): תמיר ביקש "קובץ MD פשוט" למפת הרגיסטרים — נוצר ע"י `build.py` מ-
      `regmap.yaml` (טבלאות בלבד, נקרא ב-GitHub/VS Code), כולל קישור לסימולטור. map-check שומר שהוא עדכני.
+16. **אתר הקורס אופליין (סשן 8ב, 2026-10-13, במקביל לסשן ה-coverage).** תמיר רצה את האתר אצלו כתיקייה `site`.
+   - `mkdocs-offline.yml` (`INHERIT: mkdocs.yml`): `site_url: ""`, `use_directory_urls: false`, `theme.font: false`, תוסף
+     `offline` של Material (אינדקס החיפוש כ-JS), `extra.polyfills: [assets/vendor/iframe-worker.js]` (אחרת התוסף מוסיף את
+     ה-shim מ-unpkg — בלעדיו החיפוש לא עולה תחת file:// בלי אינטרנט), `hooks: scripts/mkdocs_offline_hooks.py`.
+   - ה-hook: מעתיק `mermaid.min.js` ו-`iframe-worker.js` מ-`build/offline_cache/` ל-`assets/vendor/`; טוען את mermaid ב-`<head>`
+     רק בדפים עם `class="mermaid"` (ה-bundle של Material מדלג על unpkg כש-`mermaid` כבר מוגדר); מתקן את ה-`<iframe>` הגולמי
+     ב-`project-map.md` (`../downloads/` → `downloads/`), כי MkDocs לא משכתב נתיבים ב-HTML גולמי.
+   - `scripts/build_offline_site.py`: `npm pack mermaid@11` / `iframe-worker@1` פעם אחת ל-cache, `mkdocs build --strict` ל-`offline/site`,
+     zip ל-`build/QcomCourseSite.zip`. `.gitignore`: `!/offline/site/` (כי `site/` חסום בכל עומק).
+   - **נבדק** (Playwright, `file://`, כל בקשת http(s) נחסמת): כותרת, חיפוש "scoreboard" → 10 תוצאות, ניווט ל-`labs/lab01.html`,
+     תרשים mermaid ב-`uvm/big-picture.html`, המפה בתוך ה-iframe של `project-map.html`, 0 שגיאות JS. נשארות רק שתי בקשות ל-
+     `api.github.com` (כוכבים/forks בכותרת) שנכשלות בשקט.
+   - **תקלה אצל תמיר:** פתח את `index.html` מתוך ה-zip ב-Explorer → Windows חילץ רק את הקובץ הזה ל-Temp, בלי CSS/JS → טקסט
+     גולמי. הפתרון: Extract All קודם. נכתב גם ב-README.
+   - `make help` הדפיס שורות 2–21 קבועות ונחתך; עכשיו `awk` עד שורת ה-`# ---`.
+   - **README → "Where to find everything"** (בקשת תמיר): טבלה בראש ה-README עם כל נקודת כניסה — אונליין (Pages) ובריפו
+     (פתיחה מהדיסק): האתר, המפה (`docs/downloads/yapp_project_map.html` — הממשק כולו, קובץ עצמאי; נשאר ב-`downloads` כי הקישור
+     הציבורי ותשעה מקומות תלויים בו), labs, spec + סימולטור, register map, packet playground, test plan, coverage results,
+     genhtml, דוח הרגרסיה, Surfer, sim-report, verification status, CI. **כשמוסיפים דף/דוח חדש — להוסיף שורה לטבלה.**
+   - בשיחה הוסברו גם (בלי שינוי קוד): `uvm_subscriber` מול פורט רגיל, ומה קורה לסשן ענן כשעוצרים או מכבים את המחשב.
 
-16. **ביקורת + דוח רגרסיה באתר (סשן 8 סבב 3, בקשת תמיר "תסתכל על HANDOFF, האם הכול כתוב נכון, רשימת הצעות; דגש על הממשק
+17. **ביקורת + דוח רגרסיה באתר (סשן 8 סבב 3, בקשת תמיר "תסתכל על HANDOFF, האם הכול כתוב נכון, רשימת הצעות; דגש על הממשק
    האינטרנטי, דוחות הרגרסיה, דף ההיררכיה והאתר").** 3 סוכני ביקורת (אתר / דוח / מפה) → רשימת טעויות קטנות + 16 הצעות. תמיר בחר:
    ניקיון, דוח באתר (עמוד לכל טסט) + כיווץ (כל 4 האפשרויות), CI artifact בלבד (בלי בדיקת עדכניות), קישורים ותגים במפה. **לא** נבחר:
    תוכן לימודי (מסלול Verilator, glossary/FAQ, מבנה אחיד ללאבים עם "See it run", קוד התחלה), היסטוריה/trend, שכתוב HANDOFF.
@@ -625,6 +654,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
   `9cbb6f1` (coverage collectors + דוח coverage), `edd70b9` (HBUS coverage + `hbus_sweep_test` + register-map.md), `2aafca1`/`094da66`
   (HANDOFF), ואחריהם סבב 3: הדוח המכווץ + `runs.json`, דפי Regression results + המפה, CI artifact, סבב הניקיון, HANDOFF.
   ה-remote המקומי הוחלף לשם החדש `Qcom-Mentoring` (הישן עובד דרך redirect).
+- ענף סשן 8ב: `claude/hopeful-dijkstra-ldfxv2`, rebased על `094da66` (main אחרי שני הסבבים של סשן ה-coverage); commit של האתר
+  האופליין ואחריו commit של התיקייה `offline/site/` + HANDOFF/README. `main` ff לאותו commit (באישור תמיר).
+  לשים לב: סשן ה-coverage (סשן 8) עבד במקביל ודחף ל-`main` ישירות (`0004b0b`…`094da66`) — לפני push תמיד `git fetch` ולבדוק
+  ש-`origin/main` הוא אב של הענף.
 - ענף סשן 7: `claude/confident-rubin-m1zkvc` (הענף של סשן 5, קודם ל-`e9e0af2` = main של סשן 6, ואז commit הסשן; `main` ff).
   commits של סשן 7: `4bd6705` (לוגים, tracer, דוח), `b744589` (דוח committed), `852e92a` (in_phase), `1a6b908` (layout
   ל-Surfer), `0fdfe2c`/`5e62203` (state של תמיר נוסף ונמחק), `c78971d` (merge של `--trace-max-array` מסשן אחר),
@@ -751,6 +784,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`scripts/sv_style.py`** | כללי הסגנון: hoist config locals, wrap bodies, delimiters, תיקון `extern //`; `--fix/--check/--diff` | **חדש** |
 | `scripts/gen_waves.py` | SVG של waveforms + **`packet_structure()`** → `docs/assets/packet_structure.svg`; **סשן 7: `render(out_dir, title, quiet)` משמש גם את `sim_report.py`** | + figure |
 | **`scripts/sim_report.py`** | **סשן 7:** לוגים → `build/sim/report/` (timeline md/csv, FST, signals.csv, `wave_*.svg`), `index.md`, `all_logs.log`, zip | **חדש (סשן 7)** |
+| **`mkdocs-offline.yml`**, **`scripts/mkdocs_offline_hooks.py`**, **`scripts/build_offline_site.py`** | **סשן 8ב:** האתר כתיקייה שנפתחת מהדיסק (`make docs-offline`) → `offline/site/` (committed) + `build/QcomCourseSite.zip` | **חדש (סשן 8ב)** |
 | **`yapp_project/tb/yapp_router_tracer.sv`** | **סשן 7:** observer שנקשר ל-DUT ב-`bind`: שורות `[DUT]` + `+trace_csv` (CSV לכל מחזור) | **חדש (סשן 7)** |
 | **`docs/appendix/sim-report.md`** | **סשן 7:** איך לקרוא לוג, מבנה הדוח, התמונות, פתיחת גלים | **חדש (סשן 7)** |
 | `scripts/project_map/extract.py` | pyslang → מבנה גולמי (classes, methods incl. extern prototypes, modules, ports, connects, vif) | — |
@@ -843,7 +877,11 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 
 **חוב טכני / נדחה.**
 - `hbus_slave_agent` הוא placeholder (ה-router הוא ה-slave היחיד).
-- Mermaid מ-CDN — האתר offline מאבד דיאגרמות (המפה והסימולטורים כן עובדים offline).
+- ~~Mermaid מ-CDN — האתר offline מאבד דיאגרמות~~ — סשן 8ב: `offline/site/` נושא את mermaid בעצמו. האתר הציבורי עדיין מ-unpkg (תקין).
+- `offline/site/` **לא נבדק ב-CI**: אחרי שינוי ב-`docs/` (או ב-map/coverage שמייצרים דפים) להריץ `make docs-offline` ולעשות commit,
+  אחרת הוא מתיישן. ה-diff גדול (כל ה-HTML משתנה כשה-nav משתנה).
+- **באג באתר הציבורי ובאופליין:** חסר `pymdownx.emoji` ב-`mkdocs.yml`, ולכן בכרטיסים של עמוד הבית רואים `:material-chip:{ .lg .middle }`
+  ו-`:octicons-arrow-right-24:` כטקסט במקום אייקונים (תמיר ראה בצילום). לא תוקן — מחכה לאישור.
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
 - ~~בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact"~~ — הפאנל ניתן להרחבה (סשן 5); הדיאגרמה בשורת-משנה.
 - תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה; בסצנות צפופות הן ממילא מוסתרות עד hover.
@@ -883,6 +921,10 @@ begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצ�
 2. **Xcelium** — אם תמיר ישיג גישה: להריץ את הרגרסיה (`make run-project TEST=...`), לסמן ב-`unverified.md` מה אומת
    (four-state, UVM 1.1d, IMC coverage), ולעדכן `expected` ב-`tests:` לפי הלוגים האמיתיים.
 3. **תוכן לימודי לאתר** (פריט 4 למטה) — לא נבחר עדיין; לשאול את תמיר מה חסר לסטודנטיות.
+7. **(סשן 8ב) אתר — תיקונים קטנים שהוצעו לתמיר ולא בוצעו:** (א) `pymdownx.emoji` ב-`mkdocs.yml` (אייקוני הכרטיסים
+   בעמוד הבית); (ב) בדיקת staleness ל-`offline/site/` ב-CI, או workflow שבונה אותו ומצרף zip כ-artifact/release במקום commit;
+   (ג) לכבות ב-offline את ה-repo facts (בקשות `api.github.com`), למשל `repo_url` ריק או override של `partials/source.html`;
+   (ד) לשקול לשלוח את `QcomCourseSite.zip` כחלק מהמסירה הקבועה.
 6. **(סשן 8) coverpoints חדשים** — תמיר אמר "קודם לראות, אחר כך להוסיף". המודל הנוכחי ב-100% על 96 ריצות, אז
    הוא לא מבחין יותר. רעיונות לשאול עליהם: ערוצי היציאה (מי יצא באיזה ערוץ, cross עם back-pressure), `in_suspend` /
    FIFO מלא, קריאות/כתיבות HBUS לכל רגיסטר (או RAL coverage במקום `UVM_NO_COVERAGE`), פולסי error חופפים (כמה חייבים),
@@ -946,6 +988,7 @@ make lint                                   # slang על 18 run.f (מוריד UV
 make style-check                            # סגנון; make style = לתקן
 make map && make map-check                  # לבנות ולבדוק את המפה (חובה אחרי כל שינוי ב-.sv / app.js / sim.js / regmap.yaml)
 mkdocs build --strict                       # האתר ל-site/ (gitignored)
+make docs-offline                           # האתר האופליין ל-offline/site/ (committed) + build/QcomCourseSite.zip; צריך npm בפעם הראשונה
 python3 scripts/gen_waves.py                # waveforms + packet_structure.svg
 make map-export                             # SVG/PNG ל-docs/assets/project_map/export/ (ל-commit), PDF ל-build/
 make readme-shots                           # בונה את האתר ומצלם מחדש את 5 תמונות ה-README ל-docs/assets/readme/ (PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers בקונטיינר)
@@ -976,7 +1019,7 @@ git push -u origin <הענף של הסשן>          # סשן 5+7: claude/confid
 git branch -f main <הענף של הסשן> && git push origin main
 
 # מסירה
-zip -qr QcommMentoring.zip qcom-mentoring -x "qcom-mentoring/.git/*" "qcom-mentoring/site/*" "qcom-mentoring/build/*" "*/__pycache__/*" "qcom-mentoring/scripts/uvm_src/*" "*.pdf" "qcom-mentoring/uvm_course.md" "*/node_modules/*" "*/tr_db.log"   # tr_db.log = UVM recording, 300+ MB
+zip -qr QcommMentoring.zip qcom-mentoring -x "qcom-mentoring/.git/*" "qcom-mentoring/site/*" "qcom-mentoring/offline/*" "qcom-mentoring/build/*" "*/__pycache__/*" "qcom-mentoring/scripts/uvm_src/*" "*.pdf" "qcom-mentoring/uvm_course.md" "*/node_modules/*" "*/tr_db.log"   # tr_db.log = UVM recording, 300+ MB; offline/site (25 MB) goes separately as build/QcomCourseSite.zip (make docs-offline)
 # + docs/downloads/yapp_project_map.html  → SendUserFile
 
 # debug של המפה בדפדפן (Playwright מקומי)
@@ -994,6 +1037,9 @@ node -e "const pw=require('/opt/node-tools/node_modules/playwright'); ..."   # �
 - **לפני שמתחילים:** `git fetch && git status`; לוודא ש-`main` == הענף של הסשן הקודם (סשן 5:
   `claude/confident-rubin-m1zkvc`). סשן חדש מקבל שם ענף חדש מה-system prompt — לפתוח אותו מ-`origin/main`
   ולעבוד עליו; `main` מקבל ff אחרי כל push.
+- **אתר אופליין:** אחרי כל שינוי שמשנה דפים (docs/, `make map` שמייצר test-plan/coverage-results) — `make docs-offline` ו-commit
+  ל-`offline/site/`. לבדיקה: סקריפט Playwright ב-scratchpad שפותח `file://.../offline/site/index.html` עם `context.route(/^https?:/, abort)`.
+  כשתמיר מוריד zip — להזכיר לחלץ לפני שפותחים.
 - **הודעת ה-system reminder** של הסשן נותנת trailer עם session id חדש — להשתמש בו, לא בישן.
 - **`make map` הוא חובה** אחרי כל שינוי שמזיז שורות ב-.sv (גם הערות!), אחרי כל שינוי ב-`app.js/app.css/sim.js/sim.css/regmap.yaml/annotations.yaml`,
   **ואחרי כל דוח רגרסיה חדש** (`coverage.json` + `runs.json` → `coverage-results.md`, `docs/regression/`, המפה) — אחרת `map-check` ב-CI אדום. ה-exports (`export/`) **לא** נבדקים — להריץ `make map-export` כשהתמונות משתנות.

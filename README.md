@@ -13,9 +13,34 @@ UVCs, every lab from 1 to 11C, a teaching site, an interactive map of the whole
 project and two small simulators of the router — all in one repository, all
 generated and checked from the same source code.
 
-**Start here:** the [course site](https://tamirgabgab.github.io/Qcom-Mentoring/)
-· the [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
-· the [labs](https://tamirgabgab.github.io/Qcom-Mentoring/labs/)
+## Where to find everything
+
+Most things have two copies: **online** on GitHub Pages, and **in the repository**, which opens
+from disk after `git clone` / `git pull` (no server, no internet).
+
+| What | Online | In the repository |
+|---|---|---|
+| **Course site** (home) | [tamirgabgab.github.io/Qcom-Mentoring/](https://tamirgabgab.github.io/Qcom-Mentoring/) | [`offline/site/index.html`](offline/site/index.html) |
+| **Project map** (the interactive interface) | [/project-map/](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/) | [`docs/downloads/yapp_project_map.html`](docs/downloads/yapp_project_map.html), one self-contained file |
+| **Labs** 1 → 11C | [/labs/](https://tamirgabgab.github.io/Qcom-Mentoring/labs/) | [`offline/site/labs/index.html`](offline/site/labs/index.html) |
+| **DUT specification** + register simulator | [/dut/spec/](https://tamirgabgab.github.io/Qcom-Mentoring/dut/spec/#try-it-the-register-file) | [`offline/site/dut/spec.html`](offline/site/dut/spec.html) |
+| **Register map** (tables) | [/dut/register-map/](https://tamirgabgab.github.io/Qcom-Mentoring/dut/register-map/) | [`docs/dut/register-map.md`](docs/dut/register-map.md) |
+| **Packet playground** | [/components/packet/](https://tamirgabgab.github.io/Qcom-Mentoring/components/packet/#try-it-build-or-check-a-packet) | [`offline/site/components/packet.html`](offline/site/components/packet.html) |
+| **Test plan** + coverage matrix | [/test-plan/](https://tamirgabgab.github.io/Qcom-Mentoring/test-plan/) | [`docs/test-plan.md`](docs/test-plan.md) |
+| **Regression results** (every test: seeds, logs, timelines, waves, pictures) | [/regression/](https://tamirgabgab.github.io/Qcom-Mentoring/regression/) | [`offline/site/regression/index.html`](offline/site/regression/index.html) |
+| **Coverage results** (merged over the regression, holes) | [/coverage-results/](https://tamirgabgab.github.io/Qcom-Mentoring/coverage-results/) | [`yapp_project/regression/coverage.md`](yapp_project/regression/coverage.md) |
+| **Coverage on the sources** (genhtml, a count on every bin) | [/coverage/yapp_project_tb/](https://tamirgabgab.github.io/Qcom-Mentoring/coverage/yapp_project_tb/index.html) | [`docs/coverage/yapp_project_tb/index.html`](docs/coverage/yapp_project_tb/index.html) |
+| **Regression report** (every run: log, timeline, wave pictures) | [on GitHub](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/index.md) | [`yapp_project/regression/index.md`](yapp_project/regression/index.md) |
+| **Waves** of a run in Surfer | the *Surfer* column of the regression report | `<run>/<run>.fst` + layout [`yapp_project/tb/yapp_router.sucl`](yapp_project/tb/yapp_router.sucl) |
+| **How to read logs, timelines, waves** | [/appendix/sim-report/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/sim-report/) | [`offline/site/appendix/sim-report.html`](offline/site/appendix/sim-report.html) |
+| **Verification status** (Verilator vs Xcelium) | [/appendix/unverified/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/unverified/) | [`offline/site/appendix/unverified.html`](offline/site/appendix/unverified.html) |
+| **CI** (lint, simulation, site) | [GitHub Actions](https://github.com/tamirgabgab/Qcom-Mentoring/actions) | `make lint`, `make regress`, `make docs` |
+
+**Opening the files on your computer.** The `.html` files: double-click, they open in the
+browser. The `.md` files read best on GitHub or in VS Code (Markdown preview). On GitHub an
+`.html` file shows as source code, so use the online column for those. From a downloaded zip,
+**extract it first**: a browser that opens `index.html` straight from inside the zip shows bare
+text. `offline/site/` is rebuilt with `make docs-offline` (see [Tooling and CI](#tooling-and-ci)).
 
 ---
 
@@ -338,6 +363,7 @@ docs/                             the course site (MkDocs Material) — see mkdo
       model.json                    GENERATED model of the project (classes, instances, connections, scenes)
       export/                       GENERATED SVG / PNG of every map view
   downloads/yapp_project_map.html   GENERATED single-file offline map
+offline/site/                     GENERATED the course site as a folder that opens from disk (`make docs-offline`)
 scripts/
   lint.py                           elaborates a run.f with slang + the UVM source (`make lint`)
   get_uvm.sh                        fetches the Accellera UVM source (2020.3.1) into scripts/uvm_src/ (not committed)
@@ -350,6 +376,8 @@ scripts/
   sv_style.py                       the code-style checker / fixer (`make style-check`, `make style`)
   gen_waves.py                      renders the waveform SVGs and packet_structure.svg
   readme_shots.mjs                  takes the README screenshots with headless Chromium
+  build_offline_site.py             builds offline/site/ and build/QcomCourseSite.zip (`make docs-offline`)
+  mkdocs_offline_hooks.py           the MkDocs hooks of that build: Mermaid + search shim inside the site
   project_map/
     extract.py                      pyslang → classes, methods, modules, ports, connect() calls
     model.py                        + annotations.yaml → nodes, edges, TLM paths, source files
@@ -372,14 +400,17 @@ test_install/                     the UVM installation check
   lint.yml                          style check, slang lint of every run.f, project-map staleness check
   sim.yml                           Verilator regression: one job per simulation directory
   docs.yml                          builds the site and deploys it to GitHub Pages
+mkdocs.yml                        the site (GitHub Pages)
+mkdocs-offline.yml                the same site for offline/site/: page.html links, the offline plugin, no CDN
 .devcontainer/                    GitHub Codespaces: Verilator, UVM, a waveform viewer in the browser
-Makefile                          lint · style · run · run-project · sim · sim-project · regress · setup-sim · docs · serve · map · …
+Makefile                          lint · style · run · run-project · sim · sim-project · regress · setup-sim · docs · docs-offline · serve · map · …
 HANDOFF.md                        working notes for continuing the development (state, decisions, next steps)
 CLAUDE.md                         the conventions an AI assistant follows in this repository (points to HANDOFF.md)
 ```
 
 Files marked GENERATED are committed so that the site and the offline map
-never depend on the tooling; CI fails if they are out of date.
+never depend on the tooling; CI fails if they are out of date (except `offline/site/`, which
+CI does not check yet: rebuild it with `make docs-offline` after changing the docs).
 
 ---
 
@@ -420,6 +451,15 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Tooling and CI
 
+* **The site, online and offline.** `mkdocs.yml` builds the GitHub Pages site
+  (`make docs`, workflow `docs`). `make docs-offline` builds the same pages from
+  `mkdocs-offline.yml`, which inherits it: `use_directory_urls: false` and
+  Material's `offline` plugin so links and search work under `file://`, no
+  Google Fonts, and `scripts/mkdocs_offline_hooks.py` ships Mermaid and the
+  `iframe-worker` search shim inside the site instead of loading them from
+  unpkg.com (both are fetched once with `npm pack` into `build/offline_cache/`).
+  The result is `offline/site/` (committed) and `build/QcomCourseSite.zip`.
+  It needs `pip install mkdocs-material` and `npm`.
 * **Lint without a simulator.** `make lint` fetches the Accellera UVM source
   once and elaborates all 18 `run.f` files with slang (pyslang 12). It catches
   everything a compiler would; it cannot run the testbench.

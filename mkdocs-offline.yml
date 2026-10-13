@@ -1,0 +1,20 @@
+# The course site as a folder that opens from disk (double-click site/index.html), no server needed.
+# Build with `make docs-offline`; the public GitHub Pages site keeps using mkdocs.yml.
+INHERIT: mkdocs.yml
+
+site_url: ""
+use_directory_urls: false     # page.html instead of page/, so links resolve under file://
+
+theme:
+  font: false                 # no Google Fonts request; the system fonts are used
+
+extra:
+  polyfills:
+    - assets/vendor/iframe-worker.js   # the offline plugin would load this from unpkg.com otherwise
+
+plugins:
+  - search
+  - offline                   # makes the search index load without a web server
+
+hooks:
+  - scripts/mkdocs_offline_hooks.py
