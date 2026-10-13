@@ -66,4 +66,4 @@ A read returns `0x00`; a write is ignored. Inside the window:
 
 The counters count only while `router_en` (`en_reg[0]`) is 1 and their own enable bit is set, and wrap from 255 to 0. `mem_size_reg` and `yapp_pkt_mem` describe the last packet received while the router was enabled, dropped packets included.
 
-To try it interactively: the register simulator on the site page [Specification → Try it: the register file](https://tamirgabgab.github.io/Qcom-Mentoring/dut/spec/#try-it-the-register-file), or in the offline map `docs/downloads/yapp_project_map.html` (click the registers block inside the DUT).
+To try it interactively: the register simulator on the site page [Specification → Try it: the register file](spec.md#try-it-the-register-file), or in the offline map `docs/downloads/yapp_project_map.html` (click the registers block inside the DUT).

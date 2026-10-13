@@ -54,6 +54,20 @@ def run_all(m, model_json, html):
             expect(os.path.exists(os.path.join(ROOT, "docs", d["url"])), f"{nid}: missing doc page {d['url']}")
         if n.get("file"):
             expect(os.path.exists(os.path.join(ROOT, n["file"])), f"{nid}: missing file {n['file']}")
+    # the committed regression on the tests (yapp_project/regression/runs.json), and the site pages
+    tests = [n for n in N.values() if n.get("scope") == "cls" and n["kind"] == "test"]
+    with_runs = [n for n in tests if n.get("regression")]
+    expect(len(with_runs) >= 20, f"tests with regression runs: {len(with_runs)} (runs.json missing or stale?)")
+    for n in with_runs:
+        r = n["regression"]
+        expect(r["total"] >= 1 and r["passed"] <= r["total"], f"{n['name']}: regression counts {r}")
+        expect(all(x.get("log") and x.get("dir") for x in r["runs"]), f"{n['name']}: run without log/dir")
+        expect(os.path.exists(os.path.join(ROOT, "docs", r["page"])), f"{n['name']}: missing regression page {r['page']}")
+    expect(os.path.exists(os.path.join(ROOT, "docs", "regression", "index.md")), "docs/regression/index.md missing")
+    for n in N.values():
+        if n["kind"] == "coverage" and n.get("coverage"):
+            for g in n["coverage"]:
+                expect(g.get("html"), f"{n['id']}: covergroup {g['name']} has no genhtml page")
     # scenes
     ids = [s["id"] for s in m["scenes"]]
     expect(len(ids) == len(set(ids)), "duplicate scene ids")

@@ -174,6 +174,12 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-node.test-card .chip rect { fill: var(--pm-bg); stroke: var(--sk, var(--pm-border)); stroke-width: 1.1; }
 .pm-node.test-card .chip text { font-size: 10px; fill: var(--pm-fg); pointer-events: none; }
 .pm-node.test-card .chip:hover rect { fill: var(--sk, var(--pm-border)); fill-opacity: .18; }
+.pm-node.test-card .runbadge rect { fill: #2e7d32; stroke: none; }
+.pm-node.test-card .runbadge.fail rect { fill: #c62828; }
+.pm-node.test-card .runbadge.bins rect { fill: var(--k-coverage); }
+.pm-node.test-card .runbadge text { font-size: 10px; font-weight: 600; fill: #fff; pointer-events: none; }
+.pm-node.test-card .runbadge.bins text { fill: #3e2723; }
+.pm.lod-far .pm-node.test-card .runbadge { display: none; }
 .k-build { --sk: #8e9aaf; } .k-config { --sk: #5b8def; } .k-reset { --sk: #6b7280; } .k-program { --sk: #a855f7; }
 .k-stimulus { --sk: #10a37f; } .k-check { --sk: #f59e0b; } .k-report { --sk: #ef4444; }
 .st-covered { --sk: var(--st-covered); } .st-partial { --sk: var(--st-partial); } .st-gap { --sk: var(--st-gap); } .st-excluded { --sk: var(--st-excluded); }
@@ -327,7 +333,10 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-panel-head { padding: 10px 14px 6px; border-bottom: 1px solid var(--pm-border); }
 .pm-badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 10px; color: #fff; background: var(--kc, var(--k-object));
   text-transform: uppercase; letter-spacing: .04em; vertical-align: middle; }
+.pm-badge[style*="--k-coverage"] { color: #3e2723; }      /* dark text on the yellow coverage badge */
 .pm-panel-head h2 { margin: 6px 0 2px; font-size: 18px; word-break: break-all; }
+.pm-panel-body .st-ok { color: #2e7d32; } .pm-panel-body .st-fail { color: #c62828; }
+.pm-panel-body table.pm-runs tr.hole td { background: rgba(198, 40, 40, .12); }
 .pm-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .pm-actions button { font-size: 12px; padding: 3px 9px; }
 .pm-code.preview { max-height: 320px; }

@@ -331,8 +331,8 @@
       this.help = el("div", { class: "pm-help", onclick: e => { if (e.target === this.help) this.help.classList.remove("open"); } }, [
         el("div", { class: "card", html:
           "<h3 style='margin-top:0'>Keyboard</h3><table>" +
-          "<tr><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td>Hierarchy / TLM / Classes</td></tr>" +
-          "<tr><td><kbd>/</kbd></td><td>search</td></tr>" +
+          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan</td></tr>" +
+          "<tr><td><kbd>/</kbd></td><td>search (<kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd> in the results)</td></tr>" +
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
           "<tr><td><kbd>c</kbd></td><td>source column on / off (on, it opens for the selected item and folds to a strip when empty)</td></tr>" +
           "<tr><td><kbd>a</kbd></td><td>arrows: all, or only those of the box under the pointer</td></tr>" +
@@ -342,11 +342,12 @@
           "<tr><td><kbd>Esc</kbd> / <kbd>Backspace</kbd></td><td>up one level</td></tr>" +
           "<tr><td><kbd>Alt</kbd>+<kbd>←</kbd> / <kbd>Alt</kbd>+<kbd>→</kbd></td><td>back / forward through the views visited</td></tr>" +
           "<tr><td><kbd>h</kbd></td><td>home: the overview</td></tr>" +
-          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan</td></tr>" +
-          "<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>select the previous / next item</td></tr>" +
+          "<tr><td><kbd>←</kbd> <kbd>→</kbd> (<kbd>↑</kbd> <kbd>↓</kbd>)</td><td>select the previous / next item</td></tr>" +
           "<tr><td><kbd>f</kbd> <kbd>+</kbd> <kbd>−</kbd></td><td>fit (the width at a readable zoom, then the whole picture) / zoom</td></tr>" +
           "<tr><td><kbd>m</kbd></td><td>members on / off (Classes)</td></tr>" +
+          "<tr><td><kbd>l</kbd></td><td>arrow labels on / off</td></tr>" +
           "<tr><td><kbd>p</kbd></td><td>panel on / off</td></tr>" +
+          "<tr><td><kbd>?</kbd></td><td>this card</td></tr>" +
           "<tr><td>zoomed far out</td><td>only the names are drawn, bigger; the small map in the corner shows where you are (click or drag it to move)</td></tr></table>" +
           "<p style='color:var(--pm-muted);font-size:12px'>Generated from the SystemVerilog source with pyslang; descriptions from <code>scripts/project_map/annotations.yaml</code>.</p>" }),
       ]);
@@ -988,6 +989,23 @@
       grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
       const t = svg("text", { class: "label", x: 12, y: 24 }); t.textContent = it.label; grp.append(t);
       if (it.sub) { const st = svg("text", { class: "sub", x: 12, y: 39 }); st.textContent = it.sub; grp.append(st); }
+      // the committed regression: seeds passed and the coverage bins the test hit (top-right badges)
+      const reg = (this.N[it.id] || {}).regression;
+      if (reg) {
+        const badges = [[`${reg.passed}/${reg.total} ${reg.passed === reg.total ? "✓" : "✗"} seeds`, reg.passed === reg.total ? "ok" : "fail"]];
+        if (reg.bins_hit != null) badges.push([`${reg.bins_hit} bins`, "bins"]);
+        let x = it.w - 10;
+        badges.reverse().forEach(([txt, cls]) => {
+          const w = txt.length * 6.2 + 12;
+          x -= w;
+          const bg = svg("g", { class: `runbadge ${cls}` });
+          bg.append(svg("rect", { x, y: 10, width: w, height: 16, rx: 8 }));
+          const bt = svg("text", { x: x + w / 2, y: 21.5, "text-anchor": "middle" }); bt.textContent = txt; bg.append(bt);
+          const tt = svg("title"); tt.textContent = cls === "bins" ? `${txt} hit in the committed regression (${reg.date})` : `${txt} passed in the committed regression (${reg.date})`; bg.append(tt);
+          grp.append(bg);
+          x -= 6;
+        });
+      }
       let y = 44;
       (it.lines || []).forEach(l => { y += 15; const lt = svg("text", { class: "purpose", x: 12, y: y - 3 }); lt.textContent = l; grp.append(lt); });
       const stages = it.stages || [];
@@ -1692,6 +1710,7 @@
         plan.expected.forEach((x, i) => { ul.children[i].innerHTML = md(x).replace(/^<p>|<\/p>$/g, ""); });
         body.append(ul);
       }
+      if (n.regression) this.renderRegression(body, n);
       const seqs = (n.config_sets || []).filter(c => c.field === "default_sequence");
       const starts = (n.notable_calls || []).filter(c => c.call === "start");
       if (seqs.length || starts.length || (n.overrides || []).length) {
@@ -1705,8 +1724,34 @@
       }
       add(`<p class="empty">Run it: <code>make run TEST=${esc(n.name)}</code></p>`);
     }
-    // A feature group of the test plan: where it comes from, then every item with its
-    // stimulus, check, coverage, the tests that cover it and its status.
+    // The runs of the committed regression (yapp_project/regression/runs.json): one row per
+    // seed with the log, the timeline and the waves on GitHub, and the page of the site.
+    renderRegression(body, n) {
+      const add = (h) => body.insertAdjacentHTML("beforeend", h);
+      const r = n.regression, ok = r.passed === r.total;
+      add(`<h3>Regression</h3>`);
+      add(`<p class="pm-spec"><b class="${ok ? "st-ok" : "st-fail"}">${r.passed} of ${r.total} seeds passed</b>` +
+          (r.bins_hit != null ? ` · ${r.bins_hit} coverage bins hit${r.only_this ? ` (${r.only_this} only by this test)` : ""}` : "") +
+          ` · ${esc(r.date || "")}${r.commit ? ` · commit <code>${esc(r.commit)}</code>` : ""}</p>`);
+      const gh = (p) => this.opts.repoUrl ? `${this.opts.repoUrl}/blob/main/${r.report}/${p}` : null;
+      const t = el("table", { class: "members pm-runs" });
+      t.innerHTML = "<tr><th>seed</th><th>result</th><th>sim time</th><th>wall</th><th>log</th><th>timeline</th><th>waves</th></tr>";
+      r.runs.forEach(x => {
+        const tr = el("tr", { class: x.ok ? "" : "hole" });
+        const link = (p, label) => gh(p) ? `<a href="${gh(p)}" target="_blank" rel="noopener">${label} ↗</a>` : `<code>${esc(p)}</code>`;
+        tr.innerHTML = `<td>${x.seed}</td><td>${x.ok ? "pass" : "<b>FAIL</b>"}</td><td>${esc(x.sim_time)}</td>` +
+                       `<td>${x.wall != null ? x.wall.toFixed(1) + " s" : "—"}</td><td>${link(x.log, "log")}</td>` +
+                       `<td>${link(x.dir + "/timeline.md", "timeline")}</td>` +
+                       `<td>${x.surfer ? `<a href="${x.surfer}" target="_blank" rel="noopener">Surfer ↗</a>` : "—"}</td>`;
+        if (!x.ok && x.first_error) tr.title = x.first_error;
+        t.append(tr);
+      });
+      body.append(t);
+      const ul = el("ul");
+      ul.append(el("li", {}, [el("a", { href: this.docUrl(r.page), target: "_top" }, ["The page of this test in the regression results"])]));
+      ul.append(el("li", {}, [el("a", { href: this.docUrl("test-plan.md") + "#tests", target: "_top" }, ["The test in the test plan page"])]));
+      body.append(ul);
+    }
     // The merged bins of the committed regression (yapp_project/regression/coverage.json)
     renderCoverage(body, n) {
       const add = (h) => body.insertAdjacentHTML("beforeend", h);
@@ -1714,16 +1759,22 @@
         add(`<h3>Coverage: <code>${esc(g.name)}</code> ${g.pct.toFixed(1)}%</h3>`);
         add(`<p class="pm-spec">${g.covered} of ${g.total} bins hit, merged over the ${g.runs} runs of the committed regression. ` +
             `Every run: <code>make regress</code>, then <code>make sim-report</code> writes coverage.md and the HTML.</p>`);
+        const links = el("ul");
+        if (g.html) links.append(el("li", {}, [el("a", { href: this.docUrl(g.html), target: "_blank", rel: "noopener" }, ["Annotated source (genhtml) ↗"])]));
+        links.append(el("li", {}, [el("a", { href: this.docUrl("coverage-results.md"), target: "_top" }, ["Coverage results: every covergroup, merged"])]));
+        body.append(links);
         const t = el("table", { class: "members pm-cov" });
         t.innerHTML = "<tr><th>coverpoint</th><th>bin</th><th>hits</th><th>tests</th><th></th></tr>";
         g.points.forEach(p => p.bins.forEach((b, i) => {
           const tr = el("tr", { class: b.hits ? "" : "hole" });
           const label = i ? "" : `<code>${esc(p.name)}</code>${p.cross ? " <span class='role'>cross</span>" : ""} <span class='role'>${p.covered}/${p.total}</span>`;
-          const tests = b.tests.join(", ") + (b.n_tests > b.tests.length ? ` +${b.n_tests - b.tests.length}` : "");
           tr.innerHTML = `<td>${label}</td><td><code>${esc(b.name)}</code></td><td>${b.hits ? b.hits : "<b>hole</b>"}</td>` +
-                         `<td class="role">${esc(tests)}</td><td class="ln">L${b.line}</td>`;
+                         `<td class="role"></td><td class="ln">L${b.line}</td>`;
+          const cell = tr.children[3];
+          b.tests.forEach((tn, j) => { if (j) cell.append(", "); cell.append(this.N[`cls:${tn}`] ? this.nodeLink(`cls:${tn}`, tn) : tn); });
+          if (b.n_tests > b.tests.length) cell.append(` +${b.n_tests - b.tests.length}`);
           tr.classList.add("jump"); tr.title = "show this bin in the source";
-          tr.addEventListener("click", () => this.showCodeAt(n, b.line));
+          tr.addEventListener("click", ev => { if (ev.target.closest("a")) return; this.showCodeAt(n, b.line); });
           t.append(tr);
         }));
         body.append(t);
@@ -1731,7 +1782,7 @@
     }
     renderFeature(body, n) {
       const add = (h) => body.insertAdjacentHTML("beforeend", h);
-      if (n.spec) add(`<p class="pm-spec">Source: ${esc(n.spec)}</p>`);
+      if (n.spec) add(`<p class="pm-spec">Source: ${esc(n.spec)}` + (n.doc ? ` — <a href="${this.docUrl(n.doc)}" target="_top">${n.doc.startsWith("labs/") ? "the lab" : "the specification page"} ↗</a>` : "") + `</p>`);
       const counts = {};
       (n.items || []).forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
       const sum = el("p", { class: "pm-counts" });
@@ -1772,7 +1823,11 @@
       if (n.item_type) row("item type", [this.nodeLink(`cls:${n.item_type}`, n.item_type)]);
       if (n.parent && this.N[n.parent]) row("parent", [this.nodeLink(n.parent)]);
       if (n.lab) { const lk = (n.docs || []).find(d => d.title.startsWith("Lab") || d.title === "Test plan"); row(n.lab === "TP" ? "belongs to" : "introduced", lk ? el("a", { href: this.docUrl(lk.url), target: "_top" }, [labTxt(n)]) : labTxt(n)); }
-      if (n.file && n.scope !== "cls") row("source", el("code", {}, [`${n.file}:${n.line}`]));
+      if (n.file) {
+        const src = [el("code", {}, [n.scope === "cls" ? n.file : `${n.file}:${n.line}`])];
+        if (this.opts.repoUrl) src.push(" ", el("a", { href: `${this.opts.repoUrl}/blob/main/${n.file}${n.line ? `#L${n.line}` : ""}`, target: "_blank", rel: "noopener" }, ["GitHub ↗"]));
+        row("source", src);
+      }
       if (facts.children.length) { add("<h3>Facts</h3>"); body.append(facts); }
       if (n.coverage) this.renderCoverage(body, n);
       if (n.alternatives && n.alternatives.length) {

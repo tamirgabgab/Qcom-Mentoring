@@ -22,6 +22,7 @@ ROOT = extract.ROOT
 HERE = os.path.dirname(os.path.abspath(__file__))
 # the merged functional coverage of the committed regression report (scripts/coverage_report.py)
 COVERAGE_JSON = os.path.join(ROOT, "yapp_project", "regression", "coverage.json")
+RUNS_JSON = os.path.join(ROOT, "yapp_project", "regression", "runs.json")      # the runs of the same report
 COVERAGE_BENCH = "yapp_project_tb"
 
 UVM_COMPONENT_KINDS = [
@@ -790,12 +791,44 @@ class ModelBuilder:
                            "bins": [{"name": b["name"], "hits": b["hits"], "runs": b["runs"], "line": b["line"],
                                      "tests": b["tests"][:3], "n_tests": len(b["tests"])} for b in p["bins"]]}
                           for p in g["points"]]
+                html = f"coverage/{bench['bench']}/index.html"       # genhtml, served by the site
                 by_file.setdefault(g["file"], []).append(
                     {"name": g["name"], "covered": g["covered"], "total": g["total"], "pct": g["pct"],
-                     "runs": bench["runs"], "points": points})
+                     "runs": bench["runs"], "points": points,
+                     "html": html if os.path.isfile(os.path.join(ROOT, "docs", html)) else None})
         for n in self.nodes.values():
             if n["kind"] == "coverage" and n.get("file") in by_file:
                 n["coverage"] = by_file[n["file"]]
+
+    def attach_regression(self):
+        """The runs of the committed regression on every test class: seeds, results, times, the
+        links of the report, and the bins the test hit (coverage.json)."""
+        try:
+            with open(RUNS_JSON) as fh:
+                rep = json.load(fh)
+            with open(COVERAGE_JSON) as fh:
+                benches = json.load(fh)
+        except OSError:
+            return
+        bins = {t["test"]: t for b in benches if b["bench"] == COVERAGE_BENCH for t in b.get("tests", [])}
+        by_test = {}
+        for r in rep["runs"]:
+            if r["bench"] == COVERAGE_BENCH:
+                by_test.setdefault(r["test"], []).append(r)
+        for test, runs in by_test.items():
+            n = self.nodes.get(f"cls:{test}")
+            if n is None:
+                continue
+            runs.sort(key=lambda r: r["seed"])
+            b = bins.get(test)
+            n["regression"] = {
+                "date": rep.get("date"), "commit": rep.get("commit"), "report": os.path.relpath(os.path.dirname(RUNS_JSON), ROOT),
+                "passed": sum(1 for r in runs if r["ok"]), "total": len(runs),
+                "bins_hit": b["bins_hit"] if b else None, "only_this": len(b["only_this"]) if b else 0,
+                "page": f"regression/{test}.md",
+                "runs": [{"seed": r["seed"], "ok": r["ok"], "sim_time": r["sim_time"], "wall": r["wall"],
+                          "dir": r["dir"], "log": r["log"], "surfer": r.get("surfer"), "first_error": r.get("first_error")}
+                         for r in runs]}
 
     def build(self):
         self.build_instances()
@@ -805,6 +838,7 @@ class ModelBuilder:
         self.build_plan()
         self.finish()
         self.attach_coverage()
+        self.attach_regression()
         return {
             "meta": {"sources": [r["source"] for r in self.raws], "pyslang": __import__("pyslang").__version__},
             "kinds": self.ann["kinds"],

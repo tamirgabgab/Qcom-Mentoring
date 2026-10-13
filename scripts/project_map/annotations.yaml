@@ -558,7 +558,7 @@ tests:
       - "`UVM_ERROR ... [PKT_COMPARE] Length mismatch` / `... MISMATCH` when the next packet on that channel is compared with the dropped one -- expected errors, this is a negative test."
       - "At the end: packets received == matched + mismatched + left in queues."
   coverage_test:
-    purpose: "Lab 10: stimulus written to close the functional coverage model of the YAPP monitor."
+    purpose: "Lab 10: stimulus written to close the functional coverage model of the YAPP packets (yapp_pkt_cg in yapp_pkt_coverage, fed by the monitor)."
     stages:
       - {k: config,   t: "default sequences",   d: "yapp_coverage_seq on YAPP, clock and channel sequences; no HBUS traffic, maxpktsize stays 63"}
       - {k: reset,    t: "clk10_rst5_seq",      d: "clock and reset"}
@@ -756,14 +756,14 @@ tests:
       - {k: check,    t: "always on",          d: "scoreboard per packet and nothing left at the end; one error pulse per bad packet"}
     expected:
       - "A `STAGE: burst k/n: ctrl=... en=...` line per burst and `STAGE: done: N packets (F forwarded, D dropped) ... R HBUS reads checked, P error pulses for P bad packets`."
-      - "Reference report: `HBUS reads checked against the model: R (0 mismatches ...)` and the coverage of the configuration it reached."
+      - "Reference report: `HBUS reads checked against the model: R (0 mismatches ...)`; the `router_coverage` report shows the configuration coverage it reached."
   random_config_test:
     purpose: "Random tests: the configuration space -- every maxpktsize edge, the router off, mixed counter enables -- under many short bursts."
     stages:
       - {k: config,   t: "knobs",              d: "4..8 bursts, maxpktsize 0/1/62/63 70% of the time, router off 20%, address 3 15%, lengths at the boundaries 70%"}
       - {k: check,    t: "as random_test",     d: "every read against the reference model; scoreboard; error pulses"}
     expected:
-      - "The reference coverage report shows maxpktsize 0 and 1 and lengths equal to max and max+1 reached; `0 mismatches`."
+      - "The `router_coverage` report shows maxpktsize 0 and 1 and lengths equal to max and max+1 reached; the reference report `0 mismatches`."
   random_backpressure_test:
     purpose: "Random tests: back-pressure on a random mix of channels -- slow and stalling receivers against long packets sent back to back."
     stages:
