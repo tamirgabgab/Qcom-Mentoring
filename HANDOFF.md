@@ -603,6 +603,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - **תקלה אצל תמיר:** פתח את `index.html` מתוך ה-zip ב-Explorer → Windows חילץ רק את הקובץ הזה ל-Temp, בלי CSS/JS → טקסט
      גולמי. הפתרון: Extract All קודם. נכתב גם ב-README.
    - `make help` הדפיס שורות 2–21 קבועות ונחתך; עכשיו `awk` עד שורת ה-`# ---`.
+   - **README → "Where to find everything"** (בקשת תמיר): טבלה בראש ה-README עם כל נקודת כניסה — אונליין (Pages) ובריפו
+     (פתיחה מהדיסק): האתר, המפה (`docs/downloads/yapp_project_map.html` — הממשק כולו, קובץ עצמאי; נשאר ב-`downloads` כי הקישור
+     הציבורי ותשעה מקומות תלויים בו), labs, spec + סימולטור, register map, packet playground, test plan, coverage results,
+     genhtml, דוח הרגרסיה, Surfer, sim-report, verification status, CI. **כשמוסיפים דף/דוח חדש — להוסיף שורה לטבלה.**
    - בשיחה הוסברו גם (בלי שינוי קוד): `uvm_subscriber` מול פורט רגיל, ומה קורה לסשן ענן כשעוצרים או מכבים את המחשב.
 
 ### מה בתהליך ולא גמור

@@ -13,15 +13,33 @@ UVCs, every lab from 1 to 11C, a teaching site, an interactive map of the whole
 project and two small simulators of the router — all in one repository, all
 generated and checked from the same source code.
 
-**Start here:** the [course site](https://tamirgabgab.github.io/Qcom-Mentoring/)
-· the [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
-· the [labs](https://tamirgabgab.github.io/Qcom-Mentoring/labs/)
+## Where to find everything
 
-**The course site on your own disk:** the whole site is committed in
-[`offline/site/`](offline/site/). Clone or download the repository and open
-`offline/site/index.html` in a browser: search, the Mermaid diagrams and the project map
-work from the folder, with no server and no internet. (From a downloaded zip: extract it
-first; a browser that opens `index.html` straight from inside the zip shows bare text.)
+Most things have two copies: **online** on GitHub Pages, and **in the repository**, which opens
+from disk after `git clone` / `git pull` (no server, no internet).
+
+| What | Online | In the repository |
+|---|---|---|
+| **Course site** (home) | [tamirgabgab.github.io/Qcom-Mentoring/](https://tamirgabgab.github.io/Qcom-Mentoring/) | [`offline/site/index.html`](offline/site/index.html) |
+| **Project map** (the interactive interface) | [/project-map/](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/) | [`docs/downloads/yapp_project_map.html`](docs/downloads/yapp_project_map.html), one self-contained file |
+| **Labs** 1 → 11C | [/labs/](https://tamirgabgab.github.io/Qcom-Mentoring/labs/) | [`offline/site/labs/index.html`](offline/site/labs/index.html) |
+| **DUT specification** + register simulator | [/dut/spec/](https://tamirgabgab.github.io/Qcom-Mentoring/dut/spec/#try-it-the-register-file) | [`offline/site/dut/spec.html`](offline/site/dut/spec.html) |
+| **Register map** (tables) | [/dut/register-map/](https://tamirgabgab.github.io/Qcom-Mentoring/dut/register-map/) | [`docs/dut/register-map.md`](docs/dut/register-map.md) |
+| **Packet playground** | [/components/packet/](https://tamirgabgab.github.io/Qcom-Mentoring/components/packet/#try-it-build-or-check-a-packet) | [`offline/site/components/packet.html`](offline/site/components/packet.html) |
+| **Test plan** + coverage matrix | [/test-plan/](https://tamirgabgab.github.io/Qcom-Mentoring/test-plan/) | [`docs/test-plan.md`](docs/test-plan.md) |
+| **Coverage results** (merged over the regression, holes) | [/coverage-results/](https://tamirgabgab.github.io/Qcom-Mentoring/coverage-results/) | [`yapp_project/regression/coverage.md`](yapp_project/regression/coverage.md) |
+| **Coverage on the sources** (genhtml, a count on every bin) | [/coverage/yapp_project_tb/](https://tamirgabgab.github.io/Qcom-Mentoring/coverage/yapp_project_tb/index.html) | [`docs/coverage/yapp_project_tb/index.html`](docs/coverage/yapp_project_tb/index.html) |
+| **Regression report** (every run: log, timeline, wave pictures) | [on GitHub](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/index.md) | [`yapp_project/regression/index.md`](yapp_project/regression/index.md) |
+| **Waves** of a run in Surfer | the *Surfer* column of the regression report | `<run>/<run>.fst` + layout [`yapp_project/tb/yapp_router.sucl`](yapp_project/tb/yapp_router.sucl) |
+| **How to read logs, timelines, waves** | [/appendix/sim-report/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/sim-report/) | [`offline/site/appendix/sim-report.html`](offline/site/appendix/sim-report.html) |
+| **Verification status** (Verilator vs Xcelium) | [/appendix/unverified/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/unverified/) | [`offline/site/appendix/unverified.html`](offline/site/appendix/unverified.html) |
+| **CI** (lint, simulation, site) | [GitHub Actions](https://github.com/tamirgabgab/Qcom-Mentoring/actions) | `make lint`, `make regress`, `make docs` |
+
+**Opening the files on your computer.** The `.html` files: double-click, they open in the
+browser. The `.md` files read best on GitHub or in VS Code (Markdown preview). On GitHub an
+`.html` file shows as source code, so use the online column for those. From a downloaded zip,
+**extract it first**: a browser that opens `index.html` straight from inside the zip shows bare
+text. `offline/site/` is rebuilt with `make docs-offline` (see [Tooling and CI](#tooling-and-ci)).
 
 ---
 
