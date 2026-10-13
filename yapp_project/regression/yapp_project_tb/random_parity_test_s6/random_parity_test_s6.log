@@ -167,9 +167,15 @@ Name                               Type                       Size  Value
           recording_detail         integral                   32    'd1                                      
         chan2_export               uvm_analysis_export        -     @524                                     
           recording_detail         integral                   32    'd1                                      
+        coverage                   router_coverage            -     @1630                                    
+          analysis_imp             uvm_analysis_imp           -     @1638                                    
+            recording_detail       integral                   32    'd1                                      
+          recording_detail         integral                   32    'd1                                      
         hbus_export                uvm_analysis_export        -     @497                                     
           recording_detail         integral                   32    'd1                                      
         reference                  router_reference           -     @1542                                    
+          decision_out             uvm_analysis_port          -     @1577                                    
+            recording_detail       integral                   32    'd1                                      
           hbus_in                  uvm_analysis_imp_hbus      -     @1559                                    
             recording_detail       integral                   32    'd1                                      
           yapp_in                  uvm_analysis_imp_yapp      -     @1550                                    
@@ -177,37 +183,45 @@ Name                               Type                       Size  Value
           yapp_valid_out           uvm_analysis_port          -     @1568                                    
             recording_detail       integral                   32    'd1                                      
           recording_detail         integral                   32    'd1                                      
-        scoreboard                 router_scoreboard          -     @1577                                    
-          chan0_in                 uvm_analysis_imp_chan0     -     @1594                                    
+        scoreboard                 router_scoreboard          -     @1586                                    
+          chan0_in                 uvm_analysis_imp_chan0     -     @1603                                    
             recording_detail       integral                   32    'd1                                      
-          chan1_in                 uvm_analysis_imp_chan1     -     @1603                                    
+          chan1_in                 uvm_analysis_imp_chan1     -     @1612                                    
             recording_detail       integral                   32    'd1                                      
-          chan2_in                 uvm_analysis_imp_chan2     -     @1612                                    
+          chan2_in                 uvm_analysis_imp_chan2     -     @1621                                    
             recording_detail       integral                   32    'd1                                      
-          yapp_in                  uvm_analysis_imp_yapp      -     @1585                                    
+          yapp_in                  uvm_analysis_imp_yapp      -     @1594                                    
             recording_detail       integral                   32    'd1                                      
           recording_detail         integral                   32    'd1                                      
         yapp_export                uvm_analysis_export        -     @488                                     
           recording_detail         integral                   32    'd1                                      
         recording_detail           integral                   32    'd1                                      
       yapp                         yapp_env                   -     @309                                     
-        agent                      yapp_tx_agent              -     @1628                                    
-          driver                   yapp_tx_driver             -     @1656                                    
-            rsp_port               uvm_analysis_port          -     @1673                                    
+        agent                      yapp_tx_agent              -     @1655                                    
+          driver                   yapp_tx_driver             -     @1717                                    
+            rsp_port               uvm_analysis_port          -     @1734                                    
               recording_detail     integral                   32    'd1                                      
-            seq_item_port          uvm_seq_item_pull_port     -     @1664                                    
+            seq_item_port          uvm_seq_item_pull_port     -     @1725                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             num_sent               integral                   32    'd0                                      
-          monitor                  yapp_tx_monitor            -     @1639                                    
-            item_collected_port    uvm_analysis_port          -     @1647                                    
+          gap_cov                  yapp_gap_coverage          -     @1700                                    
+            analysis_imp           uvm_analysis_imp           -     @1708                                    
+              recording_detail     integral                   32    'd1                                      
+            recording_detail       integral                   32    'd1                                      
+          monitor                  yapp_tx_monitor            -     @1666                                    
+            item_collected_port    uvm_analysis_port          -     @1674                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             num_pkt_col            integral                   32    'd0                                      
-          sequencer                yapp_tx_sequencer          -     @1682                                    
-            rsp_export             uvm_analysis_export        -     @1690                                    
+          pkt_cov                  yapp_pkt_coverage          -     @1683                                    
+            analysis_imp           uvm_analysis_imp           -     @1691                                    
               recording_detail     integral                   32    'd1                                      
-            seq_item_export        uvm_seq_item_pull_imp      -     @1796                                    
+            recording_detail       integral                   32    'd1                                      
+          sequencer                yapp_tx_sequencer          -     @1743                                    
+            rsp_export             uvm_analysis_export        -     @1751                                    
+              recording_detail     integral                   32    'd1                                      
+            seq_item_export        uvm_seq_item_pull_imp      -     @1857                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             arbitration_queue      array                      0     -                                        
@@ -293,7 +307,7 @@ Name                               Type                       Size  Value
             yapp_mem               yapp_mem_c                 ...   @560 +'h1100                             
 -------------------------------------------------------------------------------------------------------------
 UVM_INFO tests/base_test.sv(96) @ 0: uvm_test_top [TEST] === random_parity_test  seed 6 ===
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(113) @ 0: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor running
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(63) @ 0: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor running
 UVM_INFO tests/base_test.sv(101) @ 0: uvm_test_top [TEST] STAGE: receivers: ch0 RX_FAST, ch1 RX_NORMAL, ch2 RX_STALLY
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(49) @ 0: uvm_test_top.tb.chan0.rx_agent.sequencer@@rx_seq0 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile RX_FAST)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(49) @ 0: uvm_test_top.tb.chan1.rx_agent.sequencer@@rx_seq1 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile RX_NORMAL)
@@ -308,12 +322,12 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_drive
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 70: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1001 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 75: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0xc2
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(175) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 90: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xfe
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 90: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x100e
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 95: reporter [DUT] CONFIG router_en=0 maxpktsize=2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 95: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xfe
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(180) @ 95: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 0 (en_reg 0xfe)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 95: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 0 (en_reg 0xfe)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 120: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x100e data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 120: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x100e data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 120: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x1006
@@ -351,155 +365,155 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 335: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1048 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 345: reporter [DUT] IN  pkt #1 header: addr=0 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 365: reporter [DUT] IN  pkt #1 complete: addr=0 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 365: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #1 on the input: addr=0 len=1 parity=good gap=29
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 365: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 365: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #1 on the input: addr=0 len=1 parity=good gap=29
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 365: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=1)
 365 ROUTER DROPS PACKET addr=0 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 370: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #1 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 370: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #2: addr=3 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 375: reporter [DUT] IN  pkt #2 header: addr=3 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 395: reporter [DUT] IN  pkt #2 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 395: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #2 on the input: addr=3 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 395: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 395: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #2 on the input: addr=3 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 395: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
 395 ROUTER DROPS PACKET addr=3 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 400: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #2 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 400: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #3: addr=0 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 405: reporter [DUT] IN  pkt #3 header: addr=0 len=2 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 435: reporter [DUT] IN  pkt #3 complete: addr=0 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 435: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #3 on the input: addr=0 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 435: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 435: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #3 on the input: addr=0 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 435: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=2)
 435 ROUTER DROPS PACKET addr=0 length=2 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 440: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #3 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 440: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #4: addr=2 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 445: reporter [DUT] IN  pkt #4 header: addr=2 len=2 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 475: reporter [DUT] IN  pkt #4 complete: addr=2 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 475: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #4 on the input: addr=2 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 475: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 475: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #4 on the input: addr=2 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 475: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=2)
 475 ROUTER DROPS PACKET addr=2 length=2 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 480: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #4 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 480: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #5: addr=1 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 485: reporter [DUT] IN  pkt #5 header: addr=1 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 505: reporter [DUT] IN  pkt #5 complete: addr=1 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 505: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #5 on the input: addr=1 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 505: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 505: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #5 on the input: addr=1 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 505: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
 505 ROUTER DROPS PACKET addr=1 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 510: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #5 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 510: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #6: addr=1 len=3 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 515: reporter [DUT] IN  pkt #6 header: addr=1 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 555: reporter [DUT] IN  pkt #6 complete: addr=1 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #6 on the input: addr=1 len=3 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 555: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #6 on the input: addr=1 len=3 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 555: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
 555 ROUTER DROPS PACKET addr=1 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #6 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #7: addr=2 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 565: reporter [DUT] IN  pkt #7 header: addr=2 len=2 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 595: reporter [DUT] IN  pkt #7 complete: addr=2 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #7 on the input: addr=2 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #7 on the input: addr=2 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=2)
 595 ROUTER DROPS PACKET addr=2 length=2 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #7 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #8: addr=3 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 605: reporter [DUT] IN  pkt #8 header: addr=3 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 625: reporter [DUT] IN  pkt #8 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 625: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #8 on the input: addr=3 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 625: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 625: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #8 on the input: addr=3 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 625: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
 625 ROUTER DROPS PACKET addr=3 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 630: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #8 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 630: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #9: addr=2 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 635: reporter [DUT] IN  pkt #9 header: addr=2 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 675: reporter [DUT] IN  pkt #9 complete: addr=2 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 675: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #9 on the input: addr=2 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 675: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 675: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #9 on the input: addr=2 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 675: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
 675 ROUTER DROPS PACKET addr=2 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 680: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #9 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 680: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #10: addr=3 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 685: reporter [DUT] IN  pkt #10 header: addr=3 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 705: reporter [DUT] IN  pkt #10 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 705: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #10 on the input: addr=3 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 705: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 705: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #10 on the input: addr=3 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 705: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
 705 ROUTER DROPS PACKET addr=3 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 710: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #10 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 710: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #11: addr=1 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 715: reporter [DUT] IN  pkt #11 header: addr=1 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 735: reporter [DUT] IN  pkt #11 complete: addr=1 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 735: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #11 on the input: addr=1 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 735: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 735: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #11 on the input: addr=1 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 735: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
 735 ROUTER DROPS PACKET addr=1 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 740: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #11 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 740: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #12: addr=3 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 745: reporter [DUT] IN  pkt #12 header: addr=3 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 765: reporter [DUT] IN  pkt #12 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 765: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #12 on the input: addr=3 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 765: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 765: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #12 on the input: addr=3 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 765: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
 765 ROUTER DROPS PACKET addr=3 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 770: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #12 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 770: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #13: addr=3 len=1 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 775: reporter [DUT] IN  pkt #13 header: addr=3 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 795: reporter [DUT] IN  pkt #13 complete: addr=3 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 795: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #13 on the input: addr=3 len=1 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 795: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 795: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #13 on the input: addr=3 len=1 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 795: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=3 len=1)
 795 ROUTER DROPS PACKET addr=3 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 800: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #13 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 800: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #14: addr=1 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 805: reporter [DUT] IN  pkt #14 header: addr=1 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 825: reporter [DUT] IN  pkt #14 complete: addr=1 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 825: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #14 on the input: addr=1 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 825: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 825: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #14 on the input: addr=1 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 825: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
 825 ROUTER DROPS PACKET addr=1 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 830: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #14 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 830: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #15: addr=2 len=3 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 835: reporter [DUT] IN  pkt #15 header: addr=2 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 875: reporter [DUT] IN  pkt #15 complete: addr=2 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 875: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #15 on the input: addr=2 len=3 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 875: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 875: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #15 on the input: addr=2 len=3 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 875: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
 875 ROUTER DROPS PACKET addr=2 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 880: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #15 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 880: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #16: addr=1 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 885: reporter [DUT] IN  pkt #16 header: addr=1 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 925: reporter [DUT] IN  pkt #16 complete: addr=1 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 925: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #16 on the input: addr=1 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 925: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 925: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #16 on the input: addr=1 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 925: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
 925 ROUTER DROPS PACKET addr=1 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 930: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #16 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 930: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #17: addr=2 len=3 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 935: reporter [DUT] IN  pkt #17 header: addr=2 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 975: reporter [DUT] IN  pkt #17 complete: addr=2 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 975: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #17 on the input: addr=2 len=3 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 975: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 975: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #17 on the input: addr=2 len=3 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 975: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
 975 ROUTER DROPS PACKET addr=2 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 980: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #17 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 980: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #18: addr=1 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 985: reporter [DUT] IN  pkt #18 header: addr=1 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 1025: reporter [DUT] IN  pkt #18 complete: addr=1 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 1025: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #18 on the input: addr=1 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 1025: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 1025: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #18 on the input: addr=1 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 1025: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=3)
 1025 ROUTER DROPS PACKET addr=1 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 1030: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #18 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 1030: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #19: addr=0 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 1035: reporter [DUT] IN  pkt #19 header: addr=0 len=2 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 1065: reporter [DUT] IN  pkt #19 complete: addr=0 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 1065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #19 on the input: addr=0 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 1065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 1065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #19 on the input: addr=0 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 1065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=0 len=2)
 1065 ROUTER DROPS PACKET addr=0 length=2 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 1070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #19 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 1070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #20: addr=2 len=1 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 1075: reporter [DUT] IN  pkt #20 header: addr=2 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 1095: reporter [DUT] IN  pkt #20 complete: addr=2 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 1095: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #20 on the input: addr=2 len=1 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 1095: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 1095: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #20 on the input: addr=2 len=1 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 1095: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=1)
 1095 ROUTER DROPS PACKET addr=2 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 1100: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #20 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 1100: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #21: addr=2 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 1105: reporter [DUT] IN  pkt #21 header: addr=2 len=3 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 1145: reporter [DUT] IN  pkt #21 complete: addr=2 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 1145: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #21 on the input: addr=2 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 1145: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 1145: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #21 on the input: addr=2 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 1145: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=2 len=3)
 1145 ROUTER DROPS PACKET addr=2 length=3 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 1150: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #21 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 1150: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #22: addr=1 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 1155: reporter [DUT] IN  pkt #22 header: addr=1 len=1 -> DROP (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 1175: reporter [DUT] IN  pkt #22 complete: addr=1 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 1175: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #22 on the input: addr=1 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(195) @ 1175: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 1175: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #22 on the input: addr=1 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(161) @ 1175: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: router disabled (addr=1 len=1)
 1175 ROUTER DROPS PACKET addr=1 length=1 (router disabled)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 1180: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #22 accepted by the DUT
 UVM_INFO mcseqs/router_random_mcseq.sv(257) @ 1180: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 1/4 sent: addr0..3 3/7/7/5, bad parity 5, gap 0 22, length 1..3
@@ -508,12 +522,12 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_drive
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 1200: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 1205: reporter [DUT] CONFIG router_en=0 maxpktsize=18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1205: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x12
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(175) @ 1205: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 18
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 1205: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1220: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 1220: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x100d
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 1225: reporter [DUT] CONFIG router_en=1 maxpktsize=18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1225: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xff
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(180) @ 1225: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0xff)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 1225: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0xff)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 1250: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x100d data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 1250: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x100d data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 1250: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1163 data=0xa2
@@ -536,29 +550,29 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 1355: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x114a data=0x3f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 1565: reporter [DUT] IN  pkt #23 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 2205: reporter [DUT] IN  pkt #23 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 2205: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #23 on the input: addr=0 len=63 parity=good gap=38
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 2205: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=0)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 2205: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #23 on the input: addr=0 len=63 parity=good gap=38
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 2205: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=0)
 2205 ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 2210: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #23 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 2210: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #24: addr=2 len=63 parity=good delay=1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 2225: reporter [DUT] IN  pkt #24 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 2865: reporter [DUT] IN  pkt #24 complete: addr=2 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 2865: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #24 on the input: addr=2 len=63 parity=good gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 2865: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 2865: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #24 on the input: addr=2 len=63 parity=good gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 2865: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
 2865 ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 2870: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #24 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 2870: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #25: addr=0 len=32 parity=good delay=2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 2895: reporter [DUT] IN  pkt #25 header: addr=0 len=32 -> DROP (oversized: len 32 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 3225: reporter [DUT] IN  pkt #25 complete: addr=0 len=32 parity=ok dropped, 34 bytes in 34 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 3225: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #25 on the input: addr=0 len=32 parity=good gap=2
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 3225: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 32 > maxpktsize 18 (addr=0)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 3225: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #25 on the input: addr=0 len=32 parity=good gap=2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 3225: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 32 > maxpktsize 18 (addr=0)
 3225 ROUTER DROPS PACKET addr=0 length=32 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 3230: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #25 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 3230: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #26: addr=2 len=46 parity=bad delay=1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 3245: reporter [DUT] IN  pkt #26 header: addr=2 len=46 -> DROP (oversized: len 46 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 3715: reporter [DUT] IN  pkt #26 complete: addr=2 len=46 parity=BAD dropped, 48 bytes in 48 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 3715: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #26 on the input: addr=2 len=46 parity=bad gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 3715: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 3715: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #26 on the input: addr=2 len=46 parity=bad gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 3715: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=2)
 3715 ROUTER DROPS PACKET addr=2 length=46 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 3720: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #26 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 3720: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #27: addr=3 len=25 parity=bad delay=0
@@ -566,8 +580,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 3770: reporter [DUT] ERROR pulse, 5 cycle(s) after the bad-parity packet
 UVM_INFO tests/error_pulse_checker.sv(90) @ 3770: uvm_test_top.err_chk [ERR_PULSE] error pulse 5 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 3985: reporter [DUT] IN  pkt #27 complete: addr=3 len=25 parity=BAD dropped, 27 bytes in 27 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 3985: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #27 on the input: addr=3 len=25 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 3985: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=25)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 3985: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #27 on the input: addr=3 len=25 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 3985: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=25)
 3985 ROUTER DROPS PACKET addr=3 length=25 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 3990: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #27 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 3990: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #28: addr=2 len=17 parity=good delay=6
@@ -576,8 +590,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 
 UVM_INFO tests/error_pulse_checker.sv(90) @ 4090: uvm_test_top.err_chk [ERR_PULSE] error pulse 10 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 4145: reporter [DUT] OUT ch2 pkt #1 start: addr=2 len=17 (receiver waited 8 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 4235: reporter [DUT] IN  pkt #28 complete: addr=2 len=17 parity=ok forwarded, 19 bytes in 19 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 4235: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #28 on the input: addr=2 len=17 parity=good gap=6
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 4235: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=17 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 4235: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #28 on the input: addr=2 len=17 parity=good gap=6
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 4235: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=17 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 4240: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #28 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 4240: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #29: addr=2 len=63 parity=good delay=6
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 4305: reporter [DUT] IN  pkt #29 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 18)
@@ -587,22 +601,22 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 4405: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=17 (1 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 4550: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 7)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 4945: reporter [DUT] IN  pkt #29 complete: addr=2 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 4945: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #29 on the input: addr=2 len=63 parity=good gap=6
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 4945: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 4945: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #29 on the input: addr=2 len=63 parity=good gap=6
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 4945: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
 4945 ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 4950: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #29 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 4950: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #30: addr=0 len=46 parity=good delay=17
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 5125: reporter [DUT] IN  pkt #30 header: addr=0 len=46 -> DROP (oversized: len 46 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 5595: reporter [DUT] IN  pkt #30 complete: addr=0 len=46 parity=ok dropped, 48 bytes in 48 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 5595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #30 on the input: addr=0 len=46 parity=good gap=17
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 5595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=0)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 5595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #30 on the input: addr=0 len=46 parity=good gap=17
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 5595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=0)
 5595 ROUTER DROPS PACKET addr=0 length=46 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 5600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #30 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 5600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #31: addr=1 len=63 parity=bad delay=18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 5785: reporter [DUT] IN  pkt #31 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 6425: reporter [DUT] IN  pkt #31 complete: addr=1 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 6425: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #31 on the input: addr=1 len=63 parity=bad gap=18
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 6425: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 6425: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #31 on the input: addr=1 len=63 parity=bad gap=18
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 6425: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=1)
 6425 ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 6430: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #31 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 6430: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #32: addr=0 len=18 parity=good delay=3
@@ -611,8 +625,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 
 UVM_INFO tests/error_pulse_checker.sv(90) @ 6470: uvm_test_top.err_chk [ERR_PULSE] error pulse 4 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 6475: reporter [DUT] OUT ch0 pkt #1 start: addr=0 len=18 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 6655: reporter [DUT] IN  pkt #32 complete: addr=0 len=18 parity=ok forwarded, 20 bytes in 20 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 6655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #32 on the input: addr=0 len=18 parity=good gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 6655: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=18 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 6655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #32 on the input: addr=0 len=18 parity=good gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 6655: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=18 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 6660: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 6660: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #32 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 6660: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #33: addr=2 len=46 parity=good delay=2
@@ -622,15 +636,15 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 6685: reporter [DUT] IN  pkt #33 header: addr=2 len=46 -> DROP (oversized: len 46 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 6990: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 7155: reporter [DUT] IN  pkt #33 complete: addr=2 len=46 parity=ok dropped, 48 bytes in 48 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 7155: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #33 on the input: addr=2 len=46 parity=good gap=2
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 7155: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 7155: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #33 on the input: addr=2 len=46 parity=good gap=2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 7155: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 46 > maxpktsize 18 (addr=2)
 7155 ROUTER DROPS PACKET addr=2 length=46 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 7160: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #33 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 7160: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #34: addr=1 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 7165: reporter [DUT] IN  pkt #34 header: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 7185: reporter [DUT] IN  pkt #34 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 7185: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #34 on the input: addr=1 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 7185: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 7185: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #34 on the input: addr=1 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 7185: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 7190: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #34 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 7190: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #35: addr=2 len=63 parity=bad delay=7
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 7195: reporter [DUT] OUT ch1 pkt #1 start: addr=1 len=1 (receiver waited 2 cycle(s))
@@ -641,8 +655,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 7305: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch1 pkt matched: addr=1 len=1 (3 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 7450: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 8)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 7905: reporter [DUT] IN  pkt #35 complete: addr=2 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 7905: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #35 on the input: addr=2 len=63 parity=bad gap=7
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 7905: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 7905: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #35 on the input: addr=2 len=63 parity=bad gap=7
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 7905: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
 7905 ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 7910: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #35 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 7910: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #36: addr=2 len=31 parity=good delay=15
@@ -650,8 +664,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 
 UVM_INFO tests/error_pulse_checker.sv(90) @ 7930: uvm_test_top.err_chk [ERR_PULSE] error pulse 2 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 8065: reporter [DUT] IN  pkt #36 header: addr=2 len=31 -> DROP (oversized: len 31 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 8385: reporter [DUT] IN  pkt #36 complete: addr=2 len=31 parity=ok dropped, 33 bytes in 33 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 8385: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #36 on the input: addr=2 len=31 parity=good gap=15
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 8385: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 31 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 8385: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #36 on the input: addr=2 len=31 parity=good gap=15
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 8385: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 31 > maxpktsize 18 (addr=2)
 8385 ROUTER DROPS PACKET addr=2 length=31 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 8390: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #36 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 8390: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #37: addr=2 len=15 parity=good delay=1
@@ -660,8 +674,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(303) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 9545: reporter [DUT] OUT ch2 pkt #2 start: addr=2 len=15 (receiver waited 113 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 9555: reporter [DUT] IN  pkt #37 complete: addr=2 len=15 parity=ok forwarded, 17 bytes in 116 cycles (held 99)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(309) @ 9555: reporter [DUT] SUSPEND released after 99 cycle(s)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 9555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #37 on the input: addr=2 len=15 parity=good gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 9555: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=15 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 9555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #37 on the input: addr=2 len=15 parity=good gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 9555: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=15 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 9560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #37 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 9560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #38: addr=2 len=31 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 9565: reporter [DUT] IN  pkt #38 header: addr=2 len=31 -> DROP (oversized: len 31 > maxpktsize 18)
@@ -670,8 +684,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 9795: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #2: addr=2 len=15 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 9795: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=15 (4 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 9885: reporter [DUT] IN  pkt #38 complete: addr=2 len=31 parity=BAD dropped, 33 bytes in 33 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 9885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #38 on the input: addr=2 len=31 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 9885: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 31 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 9885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #38 on the input: addr=2 len=31 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 9885: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 31 > maxpktsize 18 (addr=2)
 9885 ROUTER DROPS PACKET addr=2 length=31 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 9890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #38 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 9890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #39: addr=0 len=1 parity=good delay=5
@@ -679,8 +693,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 9950: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 8)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 9955: reporter [DUT] OUT ch0 pkt #2 start: addr=0 len=1 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 9965: reporter [DUT] IN  pkt #39 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 9965: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #39 on the input: addr=0 len=1 parity=good gap=5
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 9965: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=1 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 9965: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #39 on the input: addr=0 len=1 parity=good gap=5
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 9965: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=1 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 9970: reporter [DUT] ERROR pulse, 8 cycle(s) after the bad-parity packet
 UVM_INFO tests/error_pulse_checker.sv(90) @ 9970: uvm_test_top.err_chk [ERR_PULSE] error pulse 8 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 9970: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
@@ -692,16 +706,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 10025: reporter [DUT] IN  pkt #40 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 10270: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 10665: reporter [DUT] IN  pkt #40 complete: addr=2 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 10665: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #40 on the input: addr=2 len=63 parity=good gap=5
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 10665: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 10665: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #40 on the input: addr=2 len=63 parity=good gap=5
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 10665: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 63 > maxpktsize 18 (addr=2)
 10665 ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 10670: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #40 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 10670: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #41: addr=1 len=18 parity=good delay=18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 10855: reporter [DUT] IN  pkt #41 header: addr=1 len=18 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 10865: reporter [DUT] OUT ch1 pkt #2 start: addr=1 len=18 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 11045: reporter [DUT] IN  pkt #41 complete: addr=1 len=18 parity=ok forwarded, 20 bytes in 20 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 11045: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #41 on the input: addr=1 len=18 parity=good gap=18
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 11045: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=18 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 11045: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #41 on the input: addr=1 len=18 parity=good gap=18
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 11045: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=18 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 11050: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 11050: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #41 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 11050: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #42: addr=1 len=53 parity=bad delay=0
@@ -710,8 +724,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 11155: uvm_test_top.tb.chan1.rx_agent.monitor [channel_rx_monitor] ch1 RX pkt #2: addr=1 len=18 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 11155: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch1 pkt matched: addr=1 len=18 (6 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 11595: reporter [DUT] IN  pkt #42 complete: addr=1 len=53 parity=BAD dropped, 55 bytes in 55 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 11595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #42 on the input: addr=1 len=53 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 11595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 53 > maxpktsize 18 (addr=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 11595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #42 on the input: addr=1 len=53 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 11595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 53 > maxpktsize 18 (addr=1)
 11595 ROUTER DROPS PACKET addr=1 length=53 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 11600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #42 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 11600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #43: addr=2 len=45 parity=good delay=3
@@ -720,8 +734,8 @@ UVM_INFO tests/error_pulse_checker.sv(90) @ 11630: uvm_test_top.err_chk [ERR_PUL
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 11635: reporter [DUT] IN  pkt #43 header: addr=2 len=45 -> DROP (oversized: len 45 > maxpktsize 18)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 11670: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 9)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12095: reporter [DUT] IN  pkt #43 complete: addr=2 len=45 parity=ok dropped, 47 bytes in 47 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12095: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #43 on the input: addr=2 len=45 parity=good gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(207) @ 12095: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 45 > maxpktsize 18 (addr=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12095: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #43 on the input: addr=2 len=45 parity=good gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(173) @ 12095: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: length 45 > maxpktsize 18 (addr=2)
 12095 ROUTER DROPS PACKET addr=2 length=45 (length > maxpktsize)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12100: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #43 accepted by the DUT
 UVM_INFO mcseqs/router_random_mcseq.sv(257) @ 12100: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 2/4 sent: addr0..3 5/4/11/1, bad parity 6, gap 0 4, length 1..63
@@ -730,11 +744,11 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_drive
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 12120: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1001 data=0x05
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 12125: reporter [DUT] CONFIG router_en=1 maxpktsize=47
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 12125: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x2f
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(175) @ 12125: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 47
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 12125: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 47
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 12140: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x05
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 12140: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x1011
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 12145: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x05
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(180) @ 12145: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x05)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 12145: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x05)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 12170: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1011 data=0x29
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 12170: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x1011 data=0x29
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 12170: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x100c
@@ -758,35 +772,35 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 12285: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x103f data=0xbd
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12295: reporter [DUT] IN  pkt #44 header: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12325: reporter [DUT] IN  pkt #44 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12325: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #44 on the input: addr=2 len=2 parity=good gap=19
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12325: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12325: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #44 on the input: addr=2 len=2 parity=good gap=19
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12325: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12330: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #44 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12330: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #45: addr=3 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12335: reporter [DUT] IN  pkt #45 header: addr=3 len=3 -> DROP (illegal address 3)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12375: reporter [DUT] IN  pkt #45 complete: addr=3 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12375: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #45 on the input: addr=3 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 12375: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12375: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #45 on the input: addr=3 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 12375: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=3)
 12375 ROUTER DROPS PACKET addr=3 length=3 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12380: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #45 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12380: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #46: addr=2 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12385: reporter [DUT] IN  pkt #46 header: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12405: reporter [DUT] IN  pkt #46 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12405: reporter [DUT] OUT ch2 pkt #3 start: addr=2 len=2 (receiver waited 10 cycle(s))
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12405: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #46 on the input: addr=2 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12405: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12405: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #46 on the input: addr=2 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12405: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12410: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #46 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12410: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #47: addr=2 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12415: reporter [DUT] IN  pkt #47 header: addr=2 len=3 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 12430: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 10)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12455: reporter [DUT] IN  pkt #47 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12455: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #47 on the input: addr=2 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12455: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12455: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #47 on the input: addr=2 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12455: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12460: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #47 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12460: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #48: addr=3 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12465: reporter [DUT] IN  pkt #48 header: addr=3 len=2 -> DROP (illegal address 3)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12495: reporter [DUT] IN  pkt #48 complete: addr=3 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12495: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #48 on the input: addr=3 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 12495: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=2)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12495: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #48 on the input: addr=3 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 12495: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=2)
 12495 ROUTER DROPS PACKET addr=3 length=2 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12500: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #48 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12500: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #49: addr=2 len=1 parity=good delay=0
@@ -796,8 +810,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12515: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=2 (7 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12525: reporter [DUT] IN  pkt #49 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12525: reporter [DUT] OUT ch2 pkt #4 start: addr=2 len=1 (receiver waited 0 cycle(s))
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12525: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #49 on the input: addr=2 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12525: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12525: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #49 on the input: addr=2 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12525: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12530: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #49 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12530: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #50: addr=0 len=1 parity=good delay=1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12545: reporter [DUT] IN  pkt #50 header: addr=0 len=1 -> channel 0
@@ -807,8 +821,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12555: reporter [DUT] OUT ch0 pkt #3 start: addr=0 len=1 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12555: reporter [DUT] OUT ch2 pkt #5 start: addr=2 len=3 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12565: reporter [DUT] IN  pkt #50 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12565: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #50 on the input: addr=0 len=1 parity=good gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12565: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=1 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12565: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #50 on the input: addr=0 len=1 parity=good gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12565: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=1 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 12570: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12570: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #50 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12570: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #51: addr=3 len=1 parity=good delay=0
@@ -820,8 +834,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 12595: reporter [DUT] OUT ch2 pkt #5 done: 5 bytes in 5 cycles
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 12595: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #5: addr=2 len=3 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12595: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=3 (10 matched so far)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #51 on the input: addr=3 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 12595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=1)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12595: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #51 on the input: addr=3 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 12595: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=1)
 12595 ROUTER DROPS PACKET addr=3 length=1 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #51 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12600: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #52: addr=2 len=1 parity=bad delay=0
@@ -831,8 +845,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 12625: reporter [DUT] OUT ch2 pkt #6 done: 3 bytes in 3 cycles
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 12625: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #6: addr=2 len=1 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12625: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=1 (11 matched so far)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12625: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #52 on the input: addr=2 len=1 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12625: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12625: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #52 on the input: addr=2 len=1 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12625: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12630: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #52 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12630: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #53: addr=2 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12635: reporter [DUT] IN  pkt #53 header: addr=2 len=3 -> channel 2
@@ -842,8 +856,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12655: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=1 (12 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12665: reporter [DUT] OUT ch2 pkt #8 start: addr=2 len=3 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12675: reporter [DUT] IN  pkt #53 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12675: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #53 on the input: addr=2 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12675: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12675: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #53 on the input: addr=2 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12675: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12680: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #53 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12680: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #54: addr=2 len=1 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12685: reporter [DUT] IN  pkt #54 header: addr=2 len=1 -> channel 2
@@ -851,8 +865,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 12705: reporter [DUT] OUT ch2 pkt #8 done: 5 bytes in 5 cycles
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 12705: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #8: addr=2 len=3 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12705: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=3 (13 matched so far)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12705: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #54 on the input: addr=2 len=1 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12705: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12705: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #54 on the input: addr=2 len=1 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12705: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12710: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #54 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12710: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #55: addr=2 len=3 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12715: reporter [DUT] IN  pkt #55 header: addr=2 len=3 -> channel 2
@@ -864,8 +878,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12735: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=1 (14 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12745: reporter [DUT] OUT ch2 pkt #10 start: addr=2 len=3 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12755: reporter [DUT] IN  pkt #55 complete: addr=2 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12755: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #55 on the input: addr=2 len=3 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12755: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12755: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #55 on the input: addr=2 len=3 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12755: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12760: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #55 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12760: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #56: addr=2 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12765: reporter [DUT] IN  pkt #56 header: addr=2 len=2 -> channel 2
@@ -874,8 +888,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12785: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=3 (15 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12795: reporter [DUT] IN  pkt #56 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12795: reporter [DUT] OUT ch2 pkt #11 start: addr=2 len=2 (receiver waited 0 cycle(s))
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12795: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #56 on the input: addr=2 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12795: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12795: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #56 on the input: addr=2 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12795: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12800: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #56 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12800: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #57: addr=2 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12805: reporter [DUT] IN  pkt #57 header: addr=2 len=2 -> channel 2
@@ -886,8 +900,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 
 UVM_INFO tests/error_pulse_checker.sv(90) @ 12830: uvm_test_top.err_chk [ERR_PULSE] error pulse 7 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12835: reporter [DUT] IN  pkt #57 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12835: reporter [DUT] OUT ch2 pkt #12 start: addr=2 len=2 (receiver waited 0 cycle(s))
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12835: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #57 on the input: addr=2 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12835: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12835: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #57 on the input: addr=2 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12835: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12840: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #57 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12840: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #58: addr=3 len=3 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12845: reporter [DUT] IN  pkt #58 header: addr=3 len=3 -> DROP (illegal address 3)
@@ -895,16 +909,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 12865: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #12: addr=2 len=2 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12865: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=2 (17 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12885: reporter [DUT] IN  pkt #58 complete: addr=3 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #58 on the input: addr=3 len=3 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 12885: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=3)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #58 on the input: addr=3 len=3 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 12885: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=3)
 12885 ROUTER DROPS PACKET addr=3 length=3 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #58 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #59: addr=0 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12895: reporter [DUT] IN  pkt #59 header: addr=0 len=2 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 12905: reporter [DUT] OUT ch0 pkt #4 start: addr=0 len=2 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12925: reporter [DUT] IN  pkt #59 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12925: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #59 on the input: addr=0 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12925: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=2 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12925: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #59 on the input: addr=0 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12925: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=2 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12930: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #59 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12930: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #60: addr=1 len=1 parity=good delay=3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 12935: reporter [DUT] OUT ch0 pkt #4 done: 4 bytes in 4 cycles
@@ -912,16 +926,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 12935: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch0 pkt matched: addr=0 len=2 (18 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12965: reporter [DUT] IN  pkt #60 header: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 12985: reporter [DUT] IN  pkt #60 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 12985: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #60 on the input: addr=1 len=1 parity=good gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 12985: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 12985: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #60 on the input: addr=1 len=1 parity=good gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 12985: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 12990: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #60 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 12990: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #61: addr=1 len=1 parity=bad delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 12995: reporter [DUT] IN  pkt #61 header: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 13005: reporter [DUT] OUT ch1 pkt #3 start: addr=1 len=1 (receiver waited 3 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13010: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 7)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 13015: reporter [DUT] IN  pkt #61 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 13015: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #61 on the input: addr=1 len=1 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 13015: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 13015: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #61 on the input: addr=1 len=1 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 13015: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13020: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 3)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 13020: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #61 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 13020: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #62: addr=2 len=3 parity=bad delay=0
@@ -929,14 +943,14 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 13030: reporter [DUT] ERROR pulse, 1 cycle(s) after the bad-parity packet
 UVM_INFO tests/error_pulse_checker.sv(90) @ 13030: uvm_test_top.err_chk [ERR_PULSE] error pulse 1 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 13065: reporter [DUT] IN  pkt #62 complete: addr=2 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 13065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #62 on the input: addr=2 len=3 parity=bad gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 13065: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 13065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #62 on the input: addr=2 len=3 parity=bad gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 13065: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=3 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 13070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #62 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 13070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #63: addr=2 len=2 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 13075: reporter [DUT] IN  pkt #63 header: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 13105: reporter [DUT] IN  pkt #63 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 13105: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #63 on the input: addr=2 len=2 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 13105: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 13105: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #63 on the input: addr=2 len=2 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 13105: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 13110: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #63 accepted by the DUT
 UVM_INFO mcseqs/router_random_mcseq.sv(257) @ 13110: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 3/4 sent: addr0..3 2/2/12/4, bad parity 4, gap 0 18, length 1..3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 13110: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1000 data=0x7f
@@ -951,7 +965,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_s
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 13135: reporter [DUT] OUT ch1 pkt #4 start: addr=1 len=1 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 13135: reporter [DUT] CONFIG router_en=1 maxpktsize=63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 13135: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x7f
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(175) @ 13135: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 63
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 13135: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 63
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13140: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 13150: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x7f
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(29) @ 13150: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Executing hbus_read_seq addr=0x1002
@@ -959,7 +973,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 13155: uvm_test_top.tb.chan1.rx_agent.monitor [channel_rx_monitor] ch1 RX pkt #4: addr=1 len=1 parity=bad
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 13155: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch1 pkt matched: addr=1 len=1 (20 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 13155: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x7f
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(180) @ 13155: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x7f)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 13155: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x7f)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13160: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 9)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 13180: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1002 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 13180: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x1002 data=0x00
@@ -992,8 +1006,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 13305: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=2 (22 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 13315: reporter [DUT] OUT ch2 pkt #15 start: addr=2 len=2 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 13335: reporter [DUT] IN  pkt #64 complete: addr=2 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 13335: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #64 on the input: addr=2 len=2 parity=bad gap=19
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 13335: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 13335: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #64 on the input: addr=2 len=2 parity=bad gap=19
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 13335: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=2 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13340: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 9)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 13340: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #64 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 13340: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #65: addr=1 len=1 parity=good delay=20
@@ -1005,8 +1019,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13480: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 9)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 13545: reporter [DUT] IN  pkt #65 header: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 13565: reporter [DUT] IN  pkt #65 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 13565: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #65 on the input: addr=1 len=1 parity=good gap=20
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 13565: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 13565: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #65 on the input: addr=1 len=1 parity=good gap=20
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 13565: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=1 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 13570: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #65 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 13570: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #66: addr=2 len=63 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 13575: reporter [DUT] IN  pkt #66 header: addr=2 len=63 -> channel 2
@@ -1019,16 +1033,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 13990: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 10)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 14150: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 10)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 14215: reporter [DUT] IN  pkt #66 complete: addr=2 len=63 parity=ok forwarded, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 14215: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #66 on the input: addr=2 len=63 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 14215: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=63 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 14215: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #66 on the input: addr=2 len=63 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 14215: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=63 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 14220: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #66 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 14220: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #67: addr=1 len=63 parity=good delay=2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 14245: reporter [DUT] IN  pkt #67 header: addr=1 len=63 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 14265: reporter [DUT] OUT ch1 pkt #6 start: addr=1 len=63 (receiver waited 1 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 14320: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 9)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 14885: reporter [DUT] IN  pkt #67 complete: addr=1 len=63 parity=ok forwarded, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 14885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #67 on the input: addr=1 len=63 parity=good gap=2
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 14885: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=63 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 14885: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #67 on the input: addr=1 len=63 parity=good gap=2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 14885: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=63 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 14890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #67 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 14890: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #68: addr=2 len=50 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 14895: reporter [DUT] IN  pkt #68 header: addr=2 len=50 -> channel 2
@@ -1044,8 +1058,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(309) @ 15825: reporter [DUT] SUSPEND released after 78 cycle(s)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 15825: reporter [DUT] OUT ch2 pkt #17 start: addr=2 len=50 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 16185: reporter [DUT] IN  pkt #68 complete: addr=2 len=50 parity=ok forwarded, 52 bytes in 130 cycles (held 78)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 16185: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #68 on the input: addr=2 len=50 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 16185: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=50 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 16185: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #68 on the input: addr=2 len=50 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 16185: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=50 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 16190: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #68 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 16190: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #69: addr=2 len=14 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 16195: reporter [DUT] IN  pkt #69 header: addr=2 len=14 -> channel 2
@@ -1054,15 +1068,15 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 16335: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=50 (27 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 16340: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 148)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 16345: reporter [DUT] IN  pkt #69 complete: addr=2 len=14 parity=ok forwarded, 16 bytes in 16 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 16345: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #69 on the input: addr=2 len=14 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 16345: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=14 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 16345: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #69 on the input: addr=2 len=14 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 16345: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=14 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 16350: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #69 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 16350: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #70: addr=1 len=63 parity=good delay=5
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 16405: reporter [DUT] IN  pkt #70 header: addr=1 len=63 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 16425: reporter [DUT] OUT ch1 pkt #7 start: addr=1 len=63 (receiver waited 1 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 17045: reporter [DUT] IN  pkt #70 complete: addr=1 len=63 parity=ok forwarded, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 17045: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #70 on the input: addr=1 len=63 parity=good gap=5
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 17045: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=63 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 17045: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #70 on the input: addr=1 len=63 parity=good gap=5
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 17045: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=63 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 17050: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #70 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 17050: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #71: addr=2 len=5 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(303) @ 17055: reporter [DUT] SUSPEND asserted: FIFO 2 full, byte 0x16 held (pkt #71)
@@ -1075,16 +1089,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 17785: reporter [DUT] IN  pkt #71 header: addr=2 len=5 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(309) @ 17785: reporter [DUT] SUSPEND released after 73 cycle(s)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 17845: reporter [DUT] IN  pkt #71 complete: addr=2 len=5 parity=ok forwarded, 7 bytes in 7 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 17845: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #71 on the input: addr=2 len=5 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 17845: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=5 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 17845: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #71 on the input: addr=2 len=5 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 17845: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=5 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 17850: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #71 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 17850: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #72: addr=0 len=63 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 17855: reporter [DUT] IN  pkt #72 header: addr=0 len=63 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 17865: reporter [DUT] OUT ch0 pkt #5 start: addr=0 len=63 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 17920: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 142)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 18495: reporter [DUT] IN  pkt #72 complete: addr=0 len=63 parity=ok forwarded, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 18495: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #72 on the input: addr=0 len=63 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 18495: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=63 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 18495: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #72 on the input: addr=0 len=63 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 18495: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=63 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 18500: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 18500: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #72 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 18500: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #73: addr=1 len=42 parity=bad delay=1
@@ -1094,8 +1108,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 18515: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch0 pkt matched: addr=0 len=63 (29 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 18545: reporter [DUT] OUT ch1 pkt #8 start: addr=1 len=42 (receiver waited 2 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 18945: reporter [DUT] IN  pkt #73 complete: addr=1 len=42 parity=BAD forwarded, 44 bytes in 44 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 18945: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #73 on the input: addr=1 len=42 parity=bad gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 18945: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=42 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 18945: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #73 on the input: addr=1 len=42 parity=bad gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 18945: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=42 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 18950: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #73 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 18950: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #74: addr=1 len=41 parity=good delay=1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 18965: reporter [DUT] IN  pkt #74 header: addr=1 len=41 -> channel 1
@@ -1115,8 +1129,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 19295: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] ch2 RX pkt #19: addr=2 len=5 parity=good
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 19295: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=5 (32 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 19385: reporter [DUT] IN  pkt #74 complete: addr=1 len=41 parity=ok forwarded, 43 bytes in 43 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 19385: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #74 on the input: addr=1 len=41 parity=good gap=1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 19385: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=41 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 19385: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #74 on the input: addr=1 len=41 parity=good gap=1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 19385: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=41 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 19390: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #74 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 19390: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #75: addr=3 len=63 parity=bad delay=3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 19425: reporter [DUT] IN  pkt #75 header: addr=3 len=63 -> DROP (illegal address 3)
@@ -1126,8 +1140,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 19580: uvm_test_top.tb.chan1.rx_agent.driver [channel_rx_driver] ch1: packet consumed (response delay 7)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 19780: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 129)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 20065: reporter [DUT] IN  pkt #75 complete: addr=3 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 20065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #75 on the input: addr=3 len=63 parity=bad gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 20065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=63)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 20065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #75 on the input: addr=3 len=63 parity=bad gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 20065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=63)
 20065 ROUTER DROPS PACKET addr=3 length=63 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 20070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #75 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 20070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #76: addr=1 len=40 parity=bad delay=7
@@ -1136,8 +1150,8 @@ UVM_INFO tests/error_pulse_checker.sv(90) @ 20090: uvm_test_top.err_chk [ERR_PUL
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 20145: reporter [DUT] IN  pkt #76 header: addr=1 len=40 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 20255: reporter [DUT] OUT ch1 pkt #10 start: addr=1 len=40 (receiver waited 10 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 20555: reporter [DUT] IN  pkt #76 complete: addr=1 len=40 parity=BAD forwarded, 42 bytes in 42 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 20555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #76 on the input: addr=1 len=40 parity=bad gap=7
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 20555: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=40 -> channel 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 20555: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #76 on the input: addr=1 len=40 parity=bad gap=7
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 20555: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=1 len=40 -> channel 1
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 20560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #76 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 20560: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #77: addr=3 len=46 parity=bad delay=3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 20590: reporter [DUT] ERROR pulse, 3 cycle(s) after the bad-parity packet
@@ -1148,8 +1162,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(347) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(72) @ 20715: uvm_test_top.tb.chan1.rx_agent.monitor [channel_rx_monitor] ch1 RX pkt #10: addr=1 len=40 parity=bad
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 20715: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch1 pkt matched: addr=1 len=40 (34 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 21065: reporter [DUT] IN  pkt #77 complete: addr=3 len=46 parity=BAD dropped, 48 bytes in 48 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 21065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #77 on the input: addr=3 len=46 parity=bad gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(201) @ 21065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=46)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 21065: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #77 on the input: addr=3 len=46 parity=bad gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(167) @ 21065: uvm_test_top.tb.router_module.reference [router_reference] Packet dropped: illegal address 3 (len=46)
 21065 ROUTER DROPS PACKET addr=3 length=46 (    illegal address)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 21070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #77 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 21070: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #78: addr=0 len=62 parity=bad delay=17
@@ -1159,8 +1173,8 @@ UVM_INFO tests/error_pulse_checker.sv(90) @ 21130: uvm_test_top.err_chk [ERR_PUL
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 21245: reporter [DUT] IN  pkt #78 header: addr=0 len=62 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 21255: reporter [DUT] OUT ch0 pkt #6 start: addr=0 len=62 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 21875: reporter [DUT] IN  pkt #78 complete: addr=0 len=62 parity=BAD forwarded, 64 bytes in 64 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 21875: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #78 on the input: addr=0 len=62 parity=bad gap=17
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 21875: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=62 -> channel 0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 21875: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #78 on the input: addr=0 len=62 parity=bad gap=17
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 21875: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=0 len=62 -> channel 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 21880: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 21880: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #78 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 21880: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #79: addr=2 len=33 parity=good delay=0
@@ -1173,15 +1187,15 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(368) @ 
 UVM_INFO tests/error_pulse_checker.sv(90) @ 21950: uvm_test_top.err_chk [ERR_PULSE] error pulse 7 cycles after the bad packet (0 still owed)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 22070: uvm_test_top.tb.chan0.rx_agent.driver [channel_rx_driver] ch0: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 22225: reporter [DUT] IN  pkt #79 complete: addr=2 len=33 parity=ok forwarded, 35 bytes in 35 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 22225: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #79 on the input: addr=2 len=33 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 22225: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=33 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 22225: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #79 on the input: addr=2 len=33 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 22225: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=33 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 22230: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 0)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 22230: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #79 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 22230: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #80: addr=2 len=1 parity=bad delay=3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 22265: reporter [DUT] IN  pkt #80 header: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 22285: reporter [DUT] IN  pkt #80 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 22285: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #80 on the input: addr=2 len=1 parity=bad gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 22285: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 22285: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #80 on the input: addr=2 len=1 parity=bad gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 22285: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=1 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 22290: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #80 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 22290: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #81: addr=2 len=62 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 22295: reporter [DUT] IN  pkt #81 header: addr=2 len=62 -> channel 2
@@ -1199,8 +1213,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_dri
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(303) @ 22895: reporter [DUT] SUSPEND asserted: FIFO 2 full, byte 0x7c held (pkt #81)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(309) @ 22925: reporter [DUT] SUSPEND released after 3 cycle(s)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 22955: reporter [DUT] IN  pkt #81 complete: addr=2 len=62 parity=ok forwarded, 64 bytes in 67 cycles (held 3)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 22955: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #81 on the input: addr=2 len=62 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 22955: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=62 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 22955: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #81 on the input: addr=2 len=62 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 22955: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=62 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 22960: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #81 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 22960: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #82: addr=2 len=62 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 22965: reporter [DUT] IN  pkt #82 header: addr=2 len=62 -> channel 2
@@ -1212,8 +1226,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_dri
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(303) @ 23135: reporter [DUT] SUSPEND asserted: FIFO 2 full, byte 0xf5 held (pkt #82)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(309) @ 23205: reporter [DUT] SUSPEND released after 7 cycle(s)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 23665: reporter [DUT] IN  pkt #82 complete: addr=2 len=62 parity=ok forwarded, 64 bytes in 71 cycles (held 7)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 23665: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #82 on the input: addr=2 len=62 parity=good gap=0
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 23665: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=62 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 23665: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #82 on the input: addr=2 len=62 parity=good gap=0
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 23665: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=62 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 23670: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #82 accepted by the DUT
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 23670: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #83: addr=2 len=58 parity=good delay=3
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_driver.sv(59) @ 23700: uvm_test_top.tb.chan2.rx_agent.driver [channel_rx_driver] ch2: packet consumed (response delay 6)
@@ -1223,8 +1237,8 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(134) @ 23845: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=62 (39 matched so far)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(341) @ 23855: reporter [DUT] OUT ch2 pkt #24 start: addr=2 len=58 (receiver waited 0 cycle(s))
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(284) @ 24295: reporter [DUT] IN  pkt #83 complete: addr=2 len=58 parity=ok forwarded, 60 bytes in 60 cycles (held 0)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(144) @ 24295: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #83 on the input: addr=2 len=58 parity=good gap=3
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(213) @ 24295: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=58 -> channel 2
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(96) @ 24295: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] RX pkt #83 on the input: addr=2 len=58 parity=good gap=3
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(179) @ 24295: uvm_test_top.tb.router_module.reference [router_reference] Packet forwarded: addr=2 len=58 -> channel 2
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(80) @ 24300: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #83 accepted by the DUT
 UVM_INFO mcseqs/router_random_mcseq.sv(257) @ 24300: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 4/4 sent: addr0..3 2/6/10/2, bad parity 7, gap 0 9, length 1..63
 UVM_INFO mcseqs/router_random_mcseq.sv(257) @ 24300: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: final reads: every register and the stored packet, checked against the reference model
@@ -1511,21 +1525,21 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(89) @ 26655: uvm_test_top.tb.chan1.rx_agent.monitor [channel_rx_monitor] Channel 1 report: 10 packets collected
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(89) @ 26655: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] Channel 2 report: 24 packets collected
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(70) @ 26655: uvm_test_top.tb.hbus.monitor [hbus_monitor] HBUS report: 15 writes, 85 reads
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(285) @ 26655: uvm_test_top.tb.router_module.reference [router_reference] 
---- Reference model report ---
-  forwarded to scoreboard   : 40
-  dropped (router disabled) : 22
-  dropped (oversized)       : 14
-  dropped (address 3)       : 7
-  counters parity/oversized/addr0..3 : 13 / 15 / 7 10 21 1
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(288) @ 26655: uvm_test_top.tb.router_module.reference [router_reference] HBUS reads checked against the model: 84 (0 mismatches, 1 of memory bytes never written)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(302) @ 26655: uvm_test_top.tb.router_module.reference [router_reference] Coverage of the router configuration: 78.3%
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_coverage.sv(117) @ 26655: uvm_test_top.tb.router_module.coverage [router_coverage] Coverage of the router configuration: 78.3%
   maxpktsize 0 / 1 / 2..61 / 62 / 63       : 0 / 0 / 41 / 0 / 20 packets
   length < max / = max / max+1 / > max+1   : 39 / 7 / 0 / 15
   forwarded good / bad                     : 31 / 9
   dropped address 3 good / bad             : 4 / 3
   dropped oversized good / bad             : 9 / 5
   counter enables none / mixed / all       : 0 / 40 / 21
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(243) @ 26655: uvm_test_top.tb.router_module.reference [router_reference] 
+--- Reference model report ---
+  forwarded to scoreboard   : 40
+  dropped (router disabled) : 22
+  dropped (oversized)       : 14
+  dropped (address 3)       : 7
+  counters parity/oversized/addr0..3 : 13 / 15 / 7 10 21 1
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(246) @ 26655: uvm_test_top.tb.router_module.reference [router_reference] HBUS reads checked against the model: 84 (0 mismatches, 1 of memory bytes never written)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboard.sv(172) @ 26655: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] 
 --- Scoreboard report ---
   packets received  : 40
@@ -1535,14 +1549,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
   packets to addr 3 : 0
   left in queue 0/1/2: 0 / 0 / 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(86) @ 26655: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] YAPP driver report: 83 packets sent
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(156) @ 26655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor report: 83 packets collected, coverage 86.7%
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(159) @ 26655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP gaps: 50 back to back, 6 of 1 cycle, 3 of 2, 23 longer (gap coverage 100.0%)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_gap_coverage.sv(59) @ 26655: uvm_test_top.tb.yapp.agent.gap_cov [yapp_gap_coverage] YAPP gap coverage: 82 gaps sampled, coverage 100.0%
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(107) @ 26655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor report: 83 packets collected, 22 with bad parity
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(110) @ 26655: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP gaps: 50 back to back, 6 of 1 cycle, 3 of 2, 23 longer
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_pkt_coverage.sv(85) @ 26655: uvm_test_top.tb.yapp.agent.pkt_cov [yapp_pkt_coverage] YAPP packet coverage: 83 packets sampled, coverage 86.7%
 UVM_INFO tests/base_test.sv(114) @ 26655: uvm_test_top [TEST] === random_parity_test  seed 6: PASSED (0 UVM_ERROR, 0 UVM_FATAL) ===
 UVM_INFO /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_report_server.svh(1009) @ 26655: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
 ** Report counts by severity
-UVM_INFO : 1186
+UVM_INFO : 1188
 UVM_WARNING :    0
 UVM_ERROR :    0
 UVM_FATAL :    0
@@ -1561,13 +1577,16 @@ UVM_FATAL :    0
 [hbus_monitor]   101
 [hbus_read_seq]   170
 [hbus_write_seq]    15
-[router_reference]    94
+[router_coverage]     1
+[router_reference]    93
 [router_scoreboard]    41
+[yapp_gap_coverage]     1
+[yapp_pkt_coverage]     1
 [yapp_random_burst_seq]     4
 [yapp_tx_driver]   167
 [yapp_tx_monitor]    86
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 27us; walltime 16.684 s; speed 1.598 us/s
-- Verilator: cpu 1.977 s on 1 threads; allocated 39 MB
+- Verilator: $finish at 27us; walltime 17.809 s; speed 1.497 us/s
+- Verilator: cpu 2.080 s on 1 threads; allocated 40 MB

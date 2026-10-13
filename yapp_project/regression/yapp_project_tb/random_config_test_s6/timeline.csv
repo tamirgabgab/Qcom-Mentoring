@@ -623,10 +623,12 @@ time_ns,severity,who,id,event
 17535,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 4 packets collected
 17535,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 4 packets collected
 17535,INFO,hbus monitor,hbus_monitor,"HBUS report: 45 writes, 126 reads"
+17535,INFO,coverage,router_coverage,Coverage of the router configuration: 82.6%
 17535,INFO,reference,router_reference,
 17535,INFO,reference,router_reference,"HBUS reads checked against the model: 125 (0 mismatches, 1 of memory bytes never written)"
-17535,INFO,reference,router_reference,Coverage of the router configuration: 82.6%
 17535,INFO,scoreboard,router_scoreboard,
 17535,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 24 packets sent
-17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 24 packets collected, coverage 56.7%"
-17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 5 back to back, 3 of 1 cycle, 1 of 2, 14 longer (gap coverage 100.0%)"
+17535,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 23 gaps sampled, coverage 100.0%"
+17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 24 packets collected, 2 with bad parity"
+17535,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 5 back to back, 3 of 1 cycle, 1 of 2, 14 longer"
+17535,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 24 packets sampled, coverage 56.7%"

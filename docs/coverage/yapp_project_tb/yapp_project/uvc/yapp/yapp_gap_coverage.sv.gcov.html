@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - YAPP functional coverage (yapp_project_tb, 96 runs) - yapp_project/uvc/yapp/yapp_gap_coverage.sv</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">YAPP functional coverage (covergroup bins)</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">yapp_project/uvc/yapp</a> - yapp_gap_coverage.sv</td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">YAPP functional coverage (yapp_project_tb, 96 runs)</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">-</td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">             Branch data     Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L2"><span class="lineNum">       2</span>                 :             : // yapp_gap_coverage.sv -- coverage of the gap between input packets (test plan</span>
+<span id="L3"><span class="lineNum">       3</span>                 :             : // ROUTE-04)</span>
+<span id="L4"><span class="lineNum">       4</span>                 :             : //</span>
+<span id="L5"><span class="lineNum">       5</span>                 :             : //   yapp_tx_monitor.item_collected_port ──► analysis_export (write)</span>
+<span id="L6"><span class="lineNum">       6</span>                 :             : //</span>
+<span id="L7"><span class="lineNum">       7</span>                 :             : // On a collected packet, packet_delay is the gap the monitor measured: idle</span>
+<span id="L8"><span class="lineNum">       8</span>                 :             : // cycles since the previous packet's parity byte, -1 for the first packet</span>
+<span id="L9"><span class="lineNum">       9</span>                 :             : // after reset (not sampled). Separate from yapp_pkt_cg, so the Lab 10</span>
+<span id="L10"><span class="lineNum">      10</span>                 :             : // percentage does not change.</span>
+<span id="L11"><span class="lineNum">      11</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L12"><span class="lineNum">      12</span>                 :             : class yapp_gap_coverage extends uvm_subscriber #(yapp_packet);</span>
+<span id="L13"><span class="lineNum">      13</span>                 :             : </span>
+<span id="L14"><span class="lineNum">      14</span>                 :             :   int num_sampled;</span>
+<span id="L15"><span class="lineNum">      15</span>                 :             : </span>
+<span id="L16"><span class="lineNum">      16</span>                 :             :   // ROUTE-04: packets back to back (gap 0) and with short gaps</span>
+<span id="L17"><span class="lineNum">      17</span>                 :             :   covergroup yapp_gap_cg with function sample(int gap);</span>
+<span id="L18"><span class="lineNum">      18</span>                 :             :     option.per_instance = 1;</span>
+<span id="L19"><span class="lineNum">      19</span>                 :             :     gap_cp : coverpoint gap {</span>
+<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC tlaBgGNC">         767 :       bins back_to_back = {0};</span></span>
+<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">         345 :       bins one          = {1};</span></span>
+<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">         174 :       bins two          = {2};</span></span>
+<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">        1902 :       bins longer       = {[3:$]};</span></span>
+<span id="L24"><span class="lineNum">      24</span>                 :             :     }</span>
+<span id="L25"><span class="lineNum">      25</span>                 :             :   endgroup : yapp_gap_cg</span>
+<span id="L26"><span class="lineNum">      26</span>                 :             : </span>
+<span id="L27"><span class="lineNum">      27</span>                 :             :   `uvm_component_utils(yapp_gap_coverage)</span>
+<span id="L28"><span class="lineNum">      28</span>                 :             : </span>
+<span id="L29"><span class="lineNum">      29</span>                 :             :   extern function new(string name, uvm_component parent);</span>
+<span id="L30"><span class="lineNum">      30</span>                 :             : </span>
+<span id="L31"><span class="lineNum">      31</span>                 :             :   // One packet from the monitor</span>
+<span id="L32"><span class="lineNum">      32</span>                 :             :   extern function void write(yapp_packet t);</span>
+<span id="L33"><span class="lineNum">      33</span>                 :             : </span>
+<span id="L34"><span class="lineNum">      34</span>                 :             :   extern function void report_phase(uvm_phase phase);</span>
+<span id="L35"><span class="lineNum">      35</span>                 :             : </span>
+<span id="L36"><span class="lineNum">      36</span>                 :             : endclass : yapp_gap_coverage</span>
+<span id="L37"><span class="lineNum">      37</span>                 :             : </span>
+<span id="L38"><span class="lineNum">      38</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L39"><span class="lineNum">      39</span>                 :             : // yapp_gap_coverage -- method implementations</span>
+<span id="L40"><span class="lineNum">      40</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L41"><span class="lineNum">      41</span>                 :             : </span>
+<span id="L42"><span class="lineNum">      42</span>                 :             : function yapp_gap_coverage::new(string name, uvm_component parent);</span>
+<span id="L43"><span class="lineNum">      43</span>                 :             :   super.new(name, parent);</span>
+<span id="L44"><span class="lineNum">      44</span>                 :             :   yapp_gap_cg = new();</span>
+<span id="L45"><span class="lineNum">      45</span>                 :             : endfunction : new</span>
+<span id="L46"><span class="lineNum">      46</span>                 :             : </span>
+<span id="L47"><span class="lineNum">      47</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L48"><span class="lineNum">      48</span>                 :             : function void yapp_gap_coverage::write(yapp_packet t);</span>
+<span id="L49"><span class="lineNum">      49</span>                 :             :   if (t.packet_delay &lt; 0) begin</span>
+<span id="L50"><span class="lineNum">      50</span>                 :             :     return;                                 // the first packet after reset has no gap</span>
+<span id="L51"><span class="lineNum">      51</span>                 :             :   end</span>
+<span id="L52"><span class="lineNum">      52</span>                 :             :   num_sampled++;</span>
+<span id="L53"><span class="lineNum">      53</span>                 :             :   yapp_gap_cg.sample(t.packet_delay);</span>
+<span id="L54"><span class="lineNum">      54</span>                 :             : endfunction : write</span>
+<span id="L55"><span class="lineNum">      55</span>                 :             : </span>
+<span id="L56"><span class="lineNum">      56</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L57"><span class="lineNum">      57</span>                 :             : function void yapp_gap_coverage::report_phase(uvm_phase phase);</span>
+<span id="L58"><span class="lineNum">      58</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;YAPP gap coverage: %0d gaps sampled, coverage %.1f%%&quot;,</span>
+<span id="L59"><span class="lineNum">      59</span>                 :             :                                        num_sampled, yapp_gap_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L60"><span class="lineNum">      60</span>                 :             : endfunction : report_phase</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

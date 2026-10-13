@@ -93,9 +93,11 @@ time_ns,severity,who,id,event
 6015,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
 6015,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 1 packets collected
 6015,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 0 reads"
+6015,INFO,coverage,router_coverage,Coverage of the router configuration: 26.1%
 6015,INFO,reference,router_reference,
-6015,INFO,reference,router_reference,Coverage of the router configuration: 26.1%
 6015,INFO,scoreboard,router_scoreboard,
 6015,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent
-6015,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, coverage 26.7%"
-6015,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer (gap coverage 25.0%)"
+6015,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 5 gaps sampled, coverage 25.0%"
+6015,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, 0 with bad parity"
+6015,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer"
+6015,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 6 packets sampled, coverage 26.7%"

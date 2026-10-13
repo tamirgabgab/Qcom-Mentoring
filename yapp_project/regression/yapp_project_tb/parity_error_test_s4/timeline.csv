@@ -189,9 +189,11 @@ time_ns,severity,who,id,event
 7840,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 2 packets collected
 7840,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 2 packets collected
 7840,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 2 reads"
+7840,INFO,coverage,router_coverage,Coverage of the router configuration: 30.4%
 7840,INFO,reference,router_reference,
-7840,INFO,reference,router_reference,Coverage of the router configuration: 30.4%
 7840,INFO,scoreboard,router_scoreboard,
 7840,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 12 packets sent
-7840,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 12 packets collected, coverage 53.3%"
-7840,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 1 of 1 cycle, 0 of 2, 10 longer (gap coverage 50.0%)"
+7840,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 11 gaps sampled, coverage 50.0%"
+7840,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 12 packets collected, 12 with bad parity"
+7840,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 1 of 1 cycle, 0 of 2, 10 longer"
+7840,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 12 packets sampled, coverage 53.3%"

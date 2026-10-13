@@ -15,6 +15,10 @@
 > ב-waves (`--trace-max-array 256`). **סבב 5:** 4 טסטים אקראיים (`random_*_test`) עם מודל מלא ב-`router_reference` שבודק כל
 > קריאת HBUS; נמצא ותוקן באג ב-`yapp_error_timer` (פולס אחד לכל פקטה bad). רגרסיה: **158/158** (מעבדות seed אחד; הפרויקט
 > 96/96 = 16 מכוונים × 4 + 4 אקראיים × 8). Test plan: **60 פריטים, 59 covered + 1 excluded** (קבוצה חדשה RND).
+> **סשן 8 (2026-10-13, coverage):** כל covergroup בקובץ משלו — coverage collector (`uvm_subscriber`): `yapp_pkt_coverage`,
+> `yapp_gap_coverage` (על ה-monitor), `router_coverage` (על `router_reference.decision_out`). כל ריצה כותבת `.dat`
+> (`--coverage-user`), `coverage_report.py` ממזג → `coverage.md` / `coverage.json` בדוח, HTML של genhtml ב-`docs/coverage/`,
+> עמוד אתר "Coverage results", טבלת bins בפאנל של כל collector במפה. רגרסיה **158/158**; ממוזג על 96 ריצות: **57/57 bins (100%)**.
 
 ---
 
@@ -529,6 +533,31 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
    - תיעוד: `docs/components/random-tests.md` (חדש, nav "Random tests"), Test plan: קבוצה חדשה **RND-01..04** + הטסטים
      האקראיים תחת IN-03/04, OUT-02/05, DROP-01..04, CNT-01..05, MEM-01/03, REG-05/06, PKT-02/03/05, ROUTE-03.
 
+14. **Coverage (סשן 8, בקשת תמיר "להתמקד ב-coverage, איך רואים תוצאות").** שאלות מנחות → תשובותיו: **functional בלבד**
+   (בלי line/toggle); תצוגה: **עמוד coverage בדוח + HTML (lcov/genhtml) + אתר/מפה**; **תמיד ברגרסיה**; **קודם לראות,
+   אחר כך להוסיף coverpoints**. בנוסף ביקש: **כל covergroup בקובץ נפרד מחוץ לאלמנט**, ובמפה האלמנט במקום הנכון.
+   - **Refactor:** `yapp_pkt_coverage.sv` / `yapp_gap_coverage.sv` (`uvm_subscriber #(yapp_packet)`, נבנים תמיד ב-`yapp_tx_agent`
+     ומחוברים ל-`monitor.item_collected_port`); ה-monitor כותב את ה-gap שמדד ל-`pkt.packet_delay` (-1 לפקטה הראשונה) ושומר
+     `num_gap[]`. `router_decision.sv` (pkt, maxpktsize, en_reg, `router_reason_e`) + `router_coverage.sv` (`router_cfg_cg` =
+     `ref_cg` לשעבר, אותם bins + ה-`hits_*`); `router_reference` מפרסם על `decision_out` לכל פקטה כש-enabled.
+     `back_to_back_test` קורא `tb.yapp.agent.gap_cov.yapp_gap_cg`. **נבדק:** האחוזים זהים לפני/אחרי (lab10 coverage_test
+     100/50/52.2, random_test s1 60/100/65.2, random_config_test s1 56.7/100/87.0, back_to_back_test s1 30/100/26.1).
+   - **איסוף:** `sim.py` מקמפל עם `--coverage-user` (נבדק: רק bins של covergroups, `t=covergroup`), `run_one` מוסיף
+     `+verilator+coverage+file+<bd>/coverage/<test>_s<seed>.dat`, `regress` מנקה את ה-`.dat` הישנים של bench ומאחד ל-`merged.dat/.info`.
+     שם ה-covergroup ב-`.dat` הוא `__vlAnonCG_<name>` (בלי שם המחלקה) → `coverage_report.py` מזהה לפי `f=` (הקובץ).
+   - **דוח:** `scripts/coverage_report.py` (חדש; `make coverage` מדפיס סיכום + holes) ← `sim_report.py` כותב `coverage.md`,
+     `coverage.json`, `<bench>/merged.dat|info`, ו-genhtml ל-`docs/coverage/<bench>/` (לדוח המחויב; אחרת `coverage_html/`).
+     genhtml: *Lines* = שורה עם bin שנפגע, *Branches* = כל bin בשורה עם כמה bins (`legal[]`, cross). נתיבים יחסיים ב-info
+     מכפילים תיקיות → `write_html` הופך ל-absolute + `--prefix ROOT`. `lcov` נוסף ל-`setup_sim.sh`; CI מדפיס סיכום coverage.
+   - **מפה/אתר:** kind חדש `coverage` ("Coverage collector", צהוב); `analysis_export` מרומז ל-`uvm_subscriber`;
+     `model.attach_coverage()` קורא את `yapp_project/regression/coverage.json` → `renderCoverage` בפאנל (hole באדום, קליק
+     מראה את השורה); `build.py` מייצר `docs/coverage-results.md` (nav "Coverage results"). `test_model`: router_module_env
+     עכשיו 7 connects. **אחרי כל דוח חדש: `make map`** (אחרת map-check STALE).
+   - **תוצאה:** ממוזג על 96 ריצות — `yapp_pkt_cg` 30/30, `yapp_gap_cg` 4/4, `router_cfg_cg` 23/23: **אין holes**;
+     `random_parity_test` לבדו פוגע בכל 57. כלומר מודל ה-coverage הנוכחי רווי — הצעד הבא הוא coverpoints חדשים (סעיף 8).
+   - תיעוד: `components/coverage.md` (איפה ה-covergroups, "Seeing the results (Verilator)"), `monitor.md`, `lab10.md`
+     (הקורס שם ב-monitor, כאן subscriber), `reference-model.md`, `random-tests.md`, `sim-report.md`, `verilator.md`, README.
+
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. סשן 7 סבב 5 (טסטים אקראיים) נדחף כולו (`71636b3` + commit ה-HANDOFF). מה שתמיר דחה במפורש להמשך:
   reset באמצע טסט, ו-receiver שעוצר באמצע פקטה (סעיף 8 פריט 5).
@@ -787,6 +816,10 @@ begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצ�
 2. **Xcelium** — אם תמיר ישיג גישה: להריץ את הרגרסיה (`make run-project TEST=...`), לסמן ב-`unverified.md` מה אומת
    (four-state, UVM 1.1d, IMC coverage), ולעדכן `expected` ב-`tests:` לפי הלוגים האמיתיים.
 3. **תוכן לימודי לאתר** (פריט 4 למטה) — לא נבחר עדיין; לשאול את תמיר מה חסר לסטודנטיות.
+6. **(סשן 8) coverpoints חדשים** — תמיר אמר "קודם לראות, אחר כך להוסיף". המודל הנוכחי ב-100% על 96 ריצות, אז
+   הוא לא מבחין יותר. רעיונות לשאול עליהם: ערוצי היציאה (מי יצא באיזה ערוץ, cross עם back-pressure), `in_suspend` /
+   FIFO מלא, קריאות/כתיבות HBUS לכל רגיסטר (או RAL coverage במקום `UVM_NO_COVERAGE`), פולסי error חופפים (כמה חייבים),
+   מוני wrap, gap × parity, transitions של קונפיגורציה בין bursts. כל collector חדש = קובץ `*_coverage.sv` + חיבור + `make map`.
 5. **(סשן 7) המשך הטסטים האקראיים** — מה שתמיר השאיר בחוץ: reset באמצע טסט (דורש drivers/monitors/רפרנס/scoreboard
    מודעי reset) ו-suspend באמצע פקטה ב-receiver (מחוץ ל-spec; ה-RTL תומך). אפשר גם: לבדוק את `ref_cg` על פני seeds ולכוון
    knobs, להפעיל `check_empty` גם במעבדות (דורש drain ארוך יותר בטסטי הקורס), להקטין את הדוח (51 MB; `all_logs.log`

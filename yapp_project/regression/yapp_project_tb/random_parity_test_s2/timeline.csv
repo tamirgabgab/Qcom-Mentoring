@@ -1211,10 +1211,12 @@ time_ns,severity,who,id,event
 28755,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 22 packets collected
 28755,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 21 packets collected
 28755,INFO,hbus monitor,hbus_monitor,"HBUS report: 17 writes, 85 reads"
+28755,INFO,coverage,router_coverage,Coverage of the router configuration: 73.9%
 28755,INFO,reference,router_reference,
 28755,INFO,reference,router_reference,"HBUS reads checked against the model: 84 (0 mismatches, 1 of memory bytes never written)"
-28755,INFO,reference,router_reference,Coverage of the router configuration: 73.9%
 28755,INFO,scoreboard,router_scoreboard,
 28755,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 95 packets sent
-28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 95 packets collected, coverage 96.7%"
-28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 55 back to back, 12 of 1 cycle, 8 of 2, 19 longer (gap coverage 100.0%)"
+28755,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 94 gaps sampled, coverage 100.0%"
+28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 95 packets collected, 36 with bad parity"
+28755,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 55 back to back, 12 of 1 cycle, 8 of 2, 19 longer"
+28755,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 95 packets sampled, coverage 96.7%"

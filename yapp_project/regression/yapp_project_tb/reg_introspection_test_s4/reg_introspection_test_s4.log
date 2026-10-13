@@ -163,9 +163,15 @@ Name                               Type                       Size  Value
           recording_detail         integral                   32    'd1                                      
         chan2_export               uvm_analysis_export        -     @486                                     
           recording_detail         integral                   32    'd1                                      
+        coverage                   router_coverage            -     @1592                                    
+          analysis_imp             uvm_analysis_imp           -     @1600                                    
+            recording_detail       integral                   32    'd1                                      
+          recording_detail         integral                   32    'd1                                      
         hbus_export                uvm_analysis_export        -     @459                                     
           recording_detail         integral                   32    'd1                                      
         reference                  router_reference           -     @1504                                    
+          decision_out             uvm_analysis_port          -     @1539                                    
+            recording_detail       integral                   32    'd1                                      
           hbus_in                  uvm_analysis_imp_hbus      -     @1521                                    
             recording_detail       integral                   32    'd1                                      
           yapp_in                  uvm_analysis_imp_yapp      -     @1512                                    
@@ -173,37 +179,45 @@ Name                               Type                       Size  Value
           yapp_valid_out           uvm_analysis_port          -     @1530                                    
             recording_detail       integral                   32    'd1                                      
           recording_detail         integral                   32    'd1                                      
-        scoreboard                 router_scoreboard          -     @1539                                    
-          chan0_in                 uvm_analysis_imp_chan0     -     @1556                                    
+        scoreboard                 router_scoreboard          -     @1548                                    
+          chan0_in                 uvm_analysis_imp_chan0     -     @1565                                    
             recording_detail       integral                   32    'd1                                      
-          chan1_in                 uvm_analysis_imp_chan1     -     @1565                                    
+          chan1_in                 uvm_analysis_imp_chan1     -     @1574                                    
             recording_detail       integral                   32    'd1                                      
-          chan2_in                 uvm_analysis_imp_chan2     -     @1574                                    
+          chan2_in                 uvm_analysis_imp_chan2     -     @1583                                    
             recording_detail       integral                   32    'd1                                      
-          yapp_in                  uvm_analysis_imp_yapp      -     @1547                                    
+          yapp_in                  uvm_analysis_imp_yapp      -     @1556                                    
             recording_detail       integral                   32    'd1                                      
           recording_detail         integral                   32    'd1                                      
         yapp_export                uvm_analysis_export        -     @450                                     
           recording_detail         integral                   32    'd1                                      
         recording_detail           integral                   32    'd1                                      
       yapp                         yapp_env                   -     @271                                     
-        agent                      yapp_tx_agent              -     @1589                                    
-          driver                   yapp_tx_driver             -     @1617                                    
-            rsp_port               uvm_analysis_port          -     @1634                                    
+        agent                      yapp_tx_agent              -     @1616                                    
+          driver                   yapp_tx_driver             -     @1678                                    
+            rsp_port               uvm_analysis_port          -     @1695                                    
               recording_detail     integral                   32    'd1                                      
-            seq_item_port          uvm_seq_item_pull_port     -     @1625                                    
+            seq_item_port          uvm_seq_item_pull_port     -     @1686                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             num_sent               integral                   32    'd0                                      
-          monitor                  yapp_tx_monitor            -     @1600                                    
-            item_collected_port    uvm_analysis_port          -     @1608                                    
+          gap_cov                  yapp_gap_coverage          -     @1661                                    
+            analysis_imp           uvm_analysis_imp           -     @1669                                    
+              recording_detail     integral                   32    'd1                                      
+            recording_detail       integral                   32    'd1                                      
+          monitor                  yapp_tx_monitor            -     @1627                                    
+            item_collected_port    uvm_analysis_port          -     @1635                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             num_pkt_col            integral                   32    'd0                                      
-          sequencer                yapp_tx_sequencer          -     @1643                                    
-            rsp_export             uvm_analysis_export        -     @1651                                    
+          pkt_cov                  yapp_pkt_coverage          -     @1644                                    
+            analysis_imp           uvm_analysis_imp           -     @1652                                    
               recording_detail     integral                   32    'd1                                      
-            seq_item_export        uvm_seq_item_pull_imp      -     @1757                                    
+            recording_detail       integral                   32    'd1                                      
+          sequencer                yapp_tx_sequencer          -     @1704                                    
+            rsp_export             uvm_analysis_export        -     @1712                                    
+              recording_detail     integral                   32    'd1                                      
+            seq_item_export        uvm_seq_item_pull_imp      -     @1818                                    
               recording_detail     integral                   32    'd1                                      
             recording_detail       integral                   32    'd1                                      
             arbitration_queue      array                      0     -                                        
@@ -289,7 +303,7 @@ Name                               Type                       Size  Value
             yapp_mem               yapp_mem_c                 ...   @522 +'h1100                             
 -------------------------------------------------------------------------------------------------------------
 UVM_INFO tests/base_test.sv(96) @ 0: uvm_test_top [TEST] === reg_introspection_test  seed 4 ===
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(113) @ 0: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor running
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(63) @ 0: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor running
 UVM_INFO tests/base_test.sv(101) @ 0: uvm_test_top [TEST] STAGE: list every register of the model by access rights, then check each one
 UVM_INFO tests/reg_introspection_test.sv(39) @ 0: uvm_test_top [REG_INTRO] RW register: ctrl_reg @ 0x1000
 UVM_INFO tests/reg_introspection_test.sv(39) @ 0: uvm_test_top [REG_INTRO] RW register: en_reg @ 0x1001
@@ -314,7 +328,7 @@ UVM_INFO tests/reg_access_test.sv(80) @ 70: uvm_test_top [REG_ACCESS] peek      
 UVM_INFO tests/reg_access_test.sv(86) @ 70: uvm_test_top [REG_ACCESS] poke            0x1a
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 75: reporter [DUT] CONFIG router_en=1 maxpktsize=26
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 75: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x25
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(175) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 37
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 37
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 100: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1000 data=0x1a
 UVM_INFO tests/reg_access_test.sv(88) @ 100: uvm_test_top [REG_ACCESS] front-door read 0x1a
 UVM_INFO tests/base_test.sv(101) @ 100: uvm_test_top [TEST] STAGE: RW register en_reg: front-door write 0x25, peek, poke 0x1a, front-door read
@@ -325,7 +339,7 @@ UVM_INFO tests/reg_access_test.sv(80) @ 120: uvm_test_top [REG_ACCESS] peek     
 UVM_INFO tests/reg_access_test.sv(86) @ 120: uvm_test_top [REG_ACCESS] poke            0x1a
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 125: reporter [DUT] CONFIG router_en=0 maxpktsize=26
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 125: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x25
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(180) @ 125: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x25)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 125: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x25)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 150: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1001 data=0x1a
 UVM_INFO tests/reg_access_test.sv(88) @ 150: uvm_test_top [REG_ACCESS] front-door read 0x1a
 UVM_INFO tests/base_test.sv(101) @ 150: uvm_test_top [TEST] STAGE: RO register parity_err_cnt_reg: poke 0x5a, front-door read, write 0x33 must be ignored
@@ -396,7 +410,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_mon
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(89) @ 700: uvm_test_top.tb.chan1.rx_agent.monitor [channel_rx_monitor] Channel 1 report: 0 packets collected
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/channel_rx_monitor.sv(89) @ 700: uvm_test_top.tb.chan2.rx_agent.monitor [channel_rx_monitor] Channel 2 report: 0 packets collected
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(70) @ 700: uvm_test_top.tb.hbus.monitor [hbus_monitor] HBUS report: 9 writes, 9 reads
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(285) @ 700: uvm_test_top.tb.router_module.reference [router_reference] 
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(243) @ 700: uvm_test_top.tb.router_module.reference [router_reference] 
 --- Reference model report ---
   forwarded to scoreboard   : 0
   dropped (router disabled) : 0
@@ -412,14 +426,16 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_scoreboa
   packets to addr 3 : 0
   left in queue 0/1/2: 0 / 0 / 0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(86) @ 700: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] YAPP driver report: 0 packets sent
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(156) @ 700: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor report: 0 packets collected, coverage 0.0%
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(159) @ 700: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_gap_coverage.sv(59) @ 700: uvm_test_top.tb.yapp.agent.gap_cov [yapp_gap_coverage] YAPP gap coverage: 0 gaps sampled, coverage 0.0%
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(107) @ 700: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor report: 0 packets collected, 0 with bad parity
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(110) @ 700: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_pkt_coverage.sv(85) @ 700: uvm_test_top.tb.yapp.agent.pkt_cov [yapp_pkt_coverage] YAPP packet coverage: 0 packets sampled, coverage 0.0%
 UVM_INFO tests/base_test.sv(114) @ 700: uvm_test_top [TEST] === reg_introspection_test  seed 4: PASSED (0 UVM_ERROR, 0 UVM_FATAL) ===
 UVM_INFO /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_report_server.svh(1009) @ 700: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
 ** Report counts by severity
-UVM_INFO :  116
+UVM_INFO :  118
 UVM_WARNING :    0
 UVM_ERROR :    0
 UVM_FATAL :    0
@@ -438,10 +454,12 @@ UVM_FATAL :    0
 [hbus_monitor]    19
 [router_reference]     3
 [router_scoreboard]     1
+[yapp_gap_coverage]     1
+[yapp_pkt_coverage]     1
 [yapp_tx_driver]     1
 [yapp_tx_monitor]     3
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 700ns; walltime 0.159 s; speed 4.410 us/s
-- Verilator: cpu 0.079 s on 1 threads; allocated 36 MB
+- Verilator: $finish at 700ns; walltime 0.161 s; speed 4.341 us/s
+- Verilator: cpu 0.083 s on 1 threads; allocated 37 MB

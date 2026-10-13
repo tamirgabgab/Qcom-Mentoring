@@ -1,0 +1,124 @@
+# Functional coverage
+
+The covergroups of every run, merged (`scripts/coverage_report.py`). How to read it: docs/components/coverage.md.
+
+## Functional coverage: yapp_project_tb
+
+Merged over **96 runs**: 57 of 57 bins hit. A percentage is covered bins / bins of the covergroup, as `get_inst_coverage()` gives it in the log of one run.
+
+Annotated sources (genhtml): [../../docs/coverage/yapp_project_tb/index.html](../../docs/coverage/yapp_project_tb/index.html)
+
+| Covergroup | Where | Bins hit | Coverage |
+|---|---|---|---|
+| `router_cfg_cg` | [router_coverage.sv](../../yapp_project/uvc/router/router_coverage.sv) | 23 / 23 | **100.0%** |
+| `yapp_gap_cg` | [yapp_gap_coverage.sv](../../yapp_project/uvc/yapp/yapp_gap_coverage.sv) | 4 / 4 | **100.0%** |
+| `yapp_pkt_cg` | [yapp_pkt_coverage.sv](../../yapp_project/uvc/yapp/yapp_pkt_coverage.sv) | 30 / 30 | **100.0%** |
+
+### Holes
+
+None: every bin was hit at least once.
+
+### `router_cfg_cg`: 100.0% (23 / 23 bins)
+
+Source: [yapp_project/uvc/router/router_coverage.sv](../../yapp_project/uvc/router/router_coverage.sv)
+
+| Coverpoint / cross | Bin | Hits | Runs | Tests that hit it (most hits first) |
+|---|---|---|---|---|
+| `max_cp` (5/5) | zero | 107 | 10 | random_config_test, random_parity_test, random_test |
+|  | one | 95 | 9 | random_config_test, random_backpressure_test, random_parity_test, random_test |
+|  | mid | 1211 | 40 | random_backpressure_test, random_parity_test, random_test, random_config_test +2 |
+|  | max62 | 154 | 11 | random_test, random_config_test, random_parity_test, random_backpressure_test |
+|  | max63 | 1428 | 43 | counter_wrap_test, back_to_back_test, random_parity_test, random_config_test +7 |
+| `len_cp` (4/4) | below | 1962 | 68 | counter_wrap_test, random_parity_test, random_test, random_config_test +9 |
+|  | equal | 151 | 32 | random_config_test, router_filter_test, random_test, random_parity_test +1 |
+|  | plus_one | 158 | 28 | random_config_test, router_filter_test, random_test, random_parity_test +1 |
+|  | above | 724 | 40 | random_backpressure_test, random_config_test, random_test, random_parity_test +2 |
+| `reason_cp` (3/3) | forwarded | 2017 | 68 | counter_wrap_test, random_parity_test, random_test, random_config_test +9 |
+|  | addr3 | 175 | 27 | random_parity_test, random_config_test, router_filter_test, random_test +1 |
+|  | oversized | 803 | 40 | random_backpressure_test, random_config_test, random_test, random_parity_test +2 |
+| `parity_cp` (2/2) | good | 2670 | 64 | counter_wrap_test, random_config_test, random_backpressure_test, random_test +8 |
+|  | bad | 325 | 40 | random_parity_test, parity_error_test, random_config_test, random_test +4 |
+| `cnt_en_cp` (3/3) | none | 412 | 39 | back_to_back_test, random_config_test, random_test, router_filter_test +7 |
+|  | mixed | 977 | 34 | random_parity_test, random_test, random_backpressure_test, random_config_test +1 |
+|  | all | 1606 | 39 | counter_wrap_test, random_config_test, random_backpressure_test, random_parity_test +5 |
+| cross `reason_x_parity` (6/6) | addr3_x_bad | 33 | 12 | random_parity_test, random_config_test, random_backpressure_test |
+|  | addr3_x_good | 142 | 26 | random_config_test, random_parity_test, router_filter_test, random_test +1 |
+|  | forwarded_x_bad | 189 | 34 | random_parity_test, parity_error_test, random_config_test, random_test +4 |
+|  | forwarded_x_good | 1828 | 64 | counter_wrap_test, random_test, random_parity_test, random_config_test +8 |
+|  | oversized_x_bad | 103 | 27 | random_parity_test, random_config_test, random_test, random_backpressure_test |
+|  | oversized_x_good | 700 | 40 | random_backpressure_test, random_config_test, random_test, random_parity_test +2 |
+
+### `yapp_gap_cg`: 100.0% (4 / 4 bins)
+
+Source: [yapp_project/uvc/yapp/yapp_gap_coverage.sv](../../yapp_project/uvc/yapp/yapp_gap_coverage.sv)
+
+| Coverpoint / cross | Bin | Hits | Runs | Tests that hit it (most hits first) |
+|---|---|---|---|---|
+| `gap_cp` (4/4) | back_to_back | 767 | 36 | random_parity_test, random_backpressure_test, random_config_test, random_test +1 |
+|  | one | 345 | 53 | random_test, random_config_test, counter_wrap_test, random_parity_test +7 |
+|  | two | 174 | 42 | random_config_test, counter_wrap_test, random_parity_test, random_test +7 |
+|  | longer | 1902 | 68 | counter_wrap_test, random_test, random_config_test, random_parity_test +9 |
+
+### `yapp_pkt_cg`: 100.0% (30 / 30 bins)
+
+Source: [yapp_project/uvc/yapp/yapp_pkt_coverage.sv](../../yapp_project/uvc/yapp/yapp_pkt_coverage.sv)
+
+| Coverpoint / cross | Bin | Hits | Runs | Tests that hit it (most hits first) |
+|---|---|---|---|---|
+| `length_cp` (5/5) | MIN | 1316 | 40 | counter_wrap_test, random_parity_test, random_config_test, random_test +6 |
+|  | SMALL | 426 | 52 | random_parity_test, back_to_back_test, random_test, router_filter_test +7 |
+|  | MEDIUM | 564 | 56 | random_test, random_config_test, random_backpressure_test, random_parity_test +6 |
+|  | LARGE | 597 | 52 | random_backpressure_test, random_test, random_config_test, random_parity_test +5 |
+|  | MAX | 353 | 35 | random_config_test, random_test, random_parity_test, router_filter_test +1 |
+| `addr_cp` (4/4) | legal[0] | 1539 | 63 | counter_wrap_test, random_config_test, random_test, random_parity_test +8 |
+|  | legal[1] | 529 | 64 | random_test, random_parity_test, random_backpressure_test, random_config_test +8 |
+|  | legal[2] | 985 | 64 | random_test, random_config_test, random_parity_test, random_backpressure_test +8 |
+|  | illegal_addr | 203 | 29 | random_config_test, random_parity_test, router_filter_test, random_test +1 |
+| `parity_cp` (2/2) | good | 2895 | 64 | counter_wrap_test, random_test, random_config_test, random_backpressure_test +8 |
+|  | bad | 361 | 41 | random_parity_test, random_config_test, parity_error_test, random_test +4 |
+| `legal_addr_cp` (3/3) | legal[0] | 1539 | 63 | counter_wrap_test, random_config_test, random_test, random_parity_test +8 |
+|  | legal[1] | 529 | 64 | random_test, random_parity_test, random_backpressure_test, random_config_test +8 |
+|  | legal[2] | 985 | 64 | random_test, random_config_test, random_parity_test, random_backpressure_test +8 |
+| `bad_parity_cp` (1/1) | bad | 361 | 41 | random_parity_test, random_config_test, parity_error_test, random_test +4 |
+| cross `len_x_addr_x_parity` (15/15) | LARGE_x_legal[0]_x_bad | 24 | 15 | parity_error_test, random_parity_test, random_config_test, random_backpressure_test +1 |
+|  | LARGE_x_legal[1]_x_bad | 23 | 18 | parity_error_test, random_parity_test, random_backpressure_test, random_config_test +3 |
+|  | LARGE_x_legal[2]_x_bad | 41 | 24 | random_parity_test, random_test, parity_error_test, random_backpressure_test +1 |
+|  | MAX_x_legal[0]_x_bad | 5 | 5 | random_config_test, random_parity_test, random_test |
+|  | MAX_x_legal[1]_x_bad | 12 | 9 | random_config_test, random_parity_test, random_backpressure_test, random_test |
+|  | MAX_x_legal[2]_x_bad | 16 | 12 | random_config_test, random_parity_test, random_test, random_backpressure_test |
+|  | MEDIUM_x_legal[0]_x_bad | 21 | 14 | random_test, parity_error_test, random_config_test, random_parity_test +3 |
+|  | MEDIUM_x_legal[1]_x_bad | 23 | 16 | parity_error_test, random_parity_test, random_config_test, random_test +1 |
+|  | MEDIUM_x_legal[2]_x_bad | 45 | 28 | random_parity_test, parity_error_test, random_test, random_config_test +4 |
+|  | MIN_x_legal[0]_x_bad | 11 | 7 | random_parity_test, random_config_test, random_test |
+|  | MIN_x_legal[1]_x_bad | 14 | 9 | random_parity_test, random_test, parity_error_test |
+|  | MIN_x_legal[2]_x_bad | 35 | 15 | random_parity_test, random_config_test, random_test |
+|  | SMALL_x_legal[0]_x_bad | 13 | 8 | random_parity_test, random_test, parity_error_test |
+|  | SMALL_x_legal[1]_x_bad | 13 | 7 | random_parity_test, random_config_test, random_test |
+|  | SMALL_x_legal[2]_x_bad | 26 | 13 | random_parity_test, random_backpressure_test, random_config_test, parity_error_test +1 |
+
+### What each test adds
+
+Bins hit over all the seeds of a test, and the bins no other test hits (a test with none adds nothing to the coverage; it may still check something no other test checks).
+
+| Test | Runs | Bins hit | Only this test |
+|---|---|---|---|
+| back_to_back_test | 4 | 19 / 57 | - |
+| backpressure_test | 4 | 15 / 57 | - |
+| base_test | 4 | 0 / 57 | - |
+| counter_wrap_test | 4 | 13 / 57 | - |
+| hbus_protocol_test | 4 | 0 / 57 | - |
+| parity_error_test | 4 | 31 / 57 | - |
+| pkt_mem_test | 4 | 18 / 57 | - |
+| random_backpressure_test | 8 | 48 / 57 | - |
+| random_config_test | 8 | 55 / 57 | - |
+| random_parity_test | 8 | 57 / 57 | - |
+| random_test | 8 | 55 / 57 | - |
+| reg_access_test | 4 | 0 / 57 | - |
+| reg_bit_walk_test | 4 | 0 / 57 | - |
+| reg_function_check_test | 4 | 29 / 57 | - |
+| reg_function_test | 4 | 29 / 57 | - |
+| reg_introspection_test | 4 | 0 / 57 | - |
+| router_disable_test | 4 | 25 / 57 | - |
+| router_filter_test | 4 | 28 / 57 | - |
+| uvm_mem_walk_test | 4 | 0 / 57 | - |
+| uvm_reset_test | 4 | 0 / 57 | - |

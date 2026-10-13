@@ -2757,9 +2757,11 @@ time_ns,severity,who,id,event
 42340,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 0 packets collected
 42340,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
 42340,INFO,hbus monitor,hbus_monitor,"HBUS report: 1 writes, 8 reads"
+42340,INFO,coverage,router_coverage,Coverage of the router configuration: 26.1%
 42340,INFO,reference,router_reference,
-42340,INFO,reference,router_reference,Coverage of the router configuration: 26.1%
 42340,INFO,scoreboard,router_scoreboard,
 42340,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 257 packets sent
-42340,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 257 packets collected, coverage 13.3%"
-42340,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 10 of 1 cycle, 4 of 2, 242 longer (gap coverage 75.0%)"
+42340,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 256 gaps sampled, coverage 75.0%"
+42340,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 257 packets collected, 0 with bad parity"
+42340,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 10 of 1 cycle, 4 of 2, 242 longer"
+42340,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 257 packets sampled, coverage 13.3%"

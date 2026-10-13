@@ -48,7 +48,7 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-338 events (the same list is in `timeline.csv`).
+340 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -384,9 +384,11 @@ Waves: `router_filter_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 12900 | ch1 monitor | Channel 1 report: 4 packets collected |
 | 12900 | ch2 monitor | Channel 2 report: 4 packets collected |
 | 12900 | hbus monitor | HBUS report: 4 writes, 11 reads |
+| 12900 | coverage | Coverage of the router configuration: 60.9% |
 | 12900 | reference |  |
-| 12900 | reference | Coverage of the router configuration: 60.9% |
 | 12900 | scoreboard |  |
 | 12900 | yapp driver | YAPP driver report: 32 packets sent |
-| 12900 | yapp monitor | YAPP monitor report: 32 packets collected, coverage 36.7% |
-| 12900 | yapp monitor | YAPP gaps: 0 back to back, 2 of 1 cycle, 1 of 2, 28 longer (gap coverage 75.0%) |
+| 12900 | coverage | YAPP gap coverage: 31 gaps sampled, coverage 75.0% |
+| 12900 | yapp monitor | YAPP monitor report: 32 packets collected, 0 with bad parity |
+| 12900 | yapp monitor | YAPP gaps: 0 back to back, 2 of 1 cycle, 1 of 2, 28 longer |
+| 12900 | coverage | YAPP packet coverage: 32 packets sampled, coverage 36.7% |

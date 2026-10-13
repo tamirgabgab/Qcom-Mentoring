@@ -46,7 +46,7 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 
 ## Timeline
 
-108 events (the same list is in `timeline.csv`).
+110 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -156,5 +156,7 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 | 700 | reference |  |
 | 700 | scoreboard |  |
 | 700 | yapp driver | YAPP driver report: 0 packets sent |
-| 700 | yapp monitor | YAPP monitor report: 0 packets collected, coverage 0.0% |
-| 700 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%) |
+| 700 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
+| 700 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |
+| 700 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer |
+| 700 | coverage | YAPP packet coverage: 0 packets sampled, coverage 0.0% |

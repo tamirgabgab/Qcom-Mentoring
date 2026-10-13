@@ -511,7 +511,8 @@ now gives each its own. Highlights: `coverage_test` closes `yapp_pkt_cg` at
 100%, `backpressure_test` matches all packets while `in_suspend` toggles,
 `random_parity_test` sees one `error` pulse per bad packet with up to three
 owed at once, and the reference model checks every HBUS read of the random
-tests. The project's 96 runs with waves form the regression report described
+tests. Merged over the project's 96 runs, the functional coverage is at 100%
+(57 of 57 bins of `yapp_pkt_cg`, `yapp_gap_cg` and `router_cfg_cg`). The project's 96 runs with waves form the regression report described
 in [`docs/appendix/sim-report.md`](docs/appendix/sim-report.md).
 
 Cadence Xcelium itself has still not run the code: four-state behaviour (the

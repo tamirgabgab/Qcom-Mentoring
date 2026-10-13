@@ -331,9 +331,11 @@ time_ns,severity,who,id,event
 12130,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 4 packets collected
 12130,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 4 packets collected
 12130,INFO,hbus monitor,hbus_monitor,"HBUS report: 4 writes, 11 reads"
+12130,INFO,coverage,router_coverage,Coverage of the router configuration: 60.9%
 12130,INFO,reference,router_reference,
-12130,INFO,reference,router_reference,Coverage of the router configuration: 60.9%
 12130,INFO,scoreboard,router_scoreboard,
 12130,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 32 packets sent
-12130,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 32 packets collected, coverage 36.7%"
-12130,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 5 of 1 cycle, 1 of 2, 25 longer (gap coverage 75.0%)"
+12130,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 31 gaps sampled, coverage 75.0%"
+12130,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 32 packets collected, 0 with bad parity"
+12130,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 5 of 1 cycle, 1 of 2, 25 longer"
+12130,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 32 packets sampled, coverage 36.7%"

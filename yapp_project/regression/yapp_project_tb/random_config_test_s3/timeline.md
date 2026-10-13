@@ -72,7 +72,7 @@ Waves: `random_config_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 
 ## Timeline
 
-1091 events (the same list is in `timeline.csv`).
+1093 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -1160,10 +1160,12 @@ Waves: `random_config_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer);
 | 43915 | ch1 monitor | Channel 1 report: 6 packets collected |
 | 43915 | ch2 monitor | Channel 2 report: 13 packets collected |
 | 43915 | hbus monitor | HBUS report: 45 writes, 72 reads |
+| 43915 | coverage | Coverage of the router configuration: 100.0% |
 | 43915 | reference |  |
 | 43915 | reference | HBUS reads checked against the model: 72 (0 mismatches, 0 of memory bytes never written) |
-| 43915 | reference | Coverage of the router configuration: 100.0% |
 | 43915 | scoreboard |  |
 | 43915 | yapp driver | YAPP driver report: 89 packets sent |
-| 43915 | yapp monitor | YAPP monitor report: 89 packets collected, coverage 83.3% |
-| 43915 | yapp monitor | YAPP gaps: 21 back to back, 7 of 1 cycle, 8 of 2, 52 longer (gap coverage 100.0%) |
+| 43915 | coverage | YAPP gap coverage: 88 gaps sampled, coverage 100.0% |
+| 43915 | yapp monitor | YAPP monitor report: 89 packets collected, 17 with bad parity |
+| 43915 | yapp monitor | YAPP gaps: 21 back to back, 7 of 1 cycle, 8 of 2, 52 longer |
+| 43915 | coverage | YAPP packet coverage: 89 packets sampled, coverage 83.3% |

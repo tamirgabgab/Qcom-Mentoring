@@ -144,7 +144,7 @@ and each run writes its bins to
     (bins no run hit), every bin with its hits, the number of runs and the
     tests that hit it, and what each test adds (bins only that test hits).
     The committed report of the project is
-    [`yapp_project/regression/coverage.md`](https://github.com/tamirgabgab/qcom-mentoring/blob/main/yapp_project/regression/coverage.md);
+    [`yapp_project/regression/coverage.md`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/coverage.md);
     the same data is the site page [Coverage results](../coverage-results.md).
 
 3. **The annotated sources (HTML).** `genhtml` (lcov) draws every collector's

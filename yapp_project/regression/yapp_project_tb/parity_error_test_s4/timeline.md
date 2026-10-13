@@ -54,7 +54,7 @@ Waves: `parity_error_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-196 events (the same list is in `timeline.csv`).
+198 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -248,9 +248,11 @@ Waves: `parity_error_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 7840 | ch1 monitor | Channel 1 report: 2 packets collected |
 | 7840 | ch2 monitor | Channel 2 report: 2 packets collected |
 | 7840 | hbus monitor | HBUS report: 2 writes, 2 reads |
+| 7840 | coverage | Coverage of the router configuration: 30.4% |
 | 7840 | reference |  |
-| 7840 | reference | Coverage of the router configuration: 30.4% |
 | 7840 | scoreboard |  |
 | 7840 | yapp driver | YAPP driver report: 12 packets sent |
-| 7840 | yapp monitor | YAPP monitor report: 12 packets collected, coverage 53.3% |
-| 7840 | yapp monitor | YAPP gaps: 0 back to back, 1 of 1 cycle, 0 of 2, 10 longer (gap coverage 50.0%) |
+| 7840 | coverage | YAPP gap coverage: 11 gaps sampled, coverage 50.0% |
+| 7840 | yapp monitor | YAPP monitor report: 12 packets collected, 12 with bad parity |
+| 7840 | yapp monitor | YAPP gaps: 0 back to back, 1 of 1 cycle, 0 of 2, 10 longer |
+| 7840 | coverage | YAPP packet coverage: 12 packets sampled, coverage 53.3% |

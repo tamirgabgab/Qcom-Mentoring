@@ -1075,10 +1075,12 @@ time_ns,severity,who,id,event
 47075,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 13 packets collected
 47075,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 26 packets collected
 47075,INFO,hbus monitor,hbus_monitor,"HBUS report: 14 writes, 61 reads"
+47075,INFO,coverage,router_coverage,Coverage of the router configuration: 78.3%
 47075,INFO,reference,router_reference,
 47075,INFO,reference,router_reference,"HBUS reads checked against the model: 60 (0 mismatches, 1 of memory bytes never written)"
-47075,INFO,reference,router_reference,Coverage of the router configuration: 78.3%
 47075,INFO,scoreboard,router_scoreboard,
 47075,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 89 packets sent
-47075,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 89 packets collected, coverage 70.0%"
-47075,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 25 back to back, 13 of 1 cycle, 3 of 2, 47 longer (gap coverage 100.0%)"
+47075,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 88 gaps sampled, coverage 100.0%"
+47075,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 89 packets collected, 8 with bad parity"
+47075,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 25 back to back, 13 of 1 cycle, 3 of 2, 47 longer"
+47075,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 89 packets sampled, coverage 70.0%"

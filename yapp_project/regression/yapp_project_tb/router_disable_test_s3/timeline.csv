@@ -107,9 +107,11 @@ time_ns,severity,who,id,event
 7650,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
 7650,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 1 packets collected
 7650,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
+7650,INFO,coverage,router_coverage,Coverage of the router configuration: 26.1%
 7650,INFO,reference,router_reference,
-7650,INFO,reference,router_reference,Coverage of the router configuration: 26.1%
 7650,INFO,scoreboard,router_scoreboard,
 7650,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 6 packets sent
-7650,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, coverage 40.0%"
-7650,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer (gap coverage 25.0%)"
+7650,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 5 gaps sampled, coverage 25.0%"
+7650,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 6 packets collected, 1 with bad parity"
+7650,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer"
+7650,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 6 packets sampled, coverage 40.0%"

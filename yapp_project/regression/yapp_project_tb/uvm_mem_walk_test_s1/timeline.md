@@ -37,7 +37,7 @@ Waves: `uvm_mem_walk_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-1548 events (the same list is in `timeline.csv`).
+1550 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -1587,5 +1587,7 @@ Waves: `uvm_mem_walk_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 18150 | reference |  |
 | 18150 | scoreboard |  |
 | 18150 | yapp driver | YAPP driver report: 0 packets sent |
-| 18150 | yapp monitor | YAPP monitor report: 0 packets collected, coverage 0.0% |
-| 18150 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%) |
+| 18150 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
+| 18150 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |
+| 18150 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer |
+| 18150 | coverage | YAPP packet coverage: 0 packets sampled, coverage 0.0% |

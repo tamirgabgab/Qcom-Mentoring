@@ -110,9 +110,11 @@ time_ns,severity,who,id,event
 1910,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
 1910,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 0 packets collected
 1910,INFO,hbus monitor,hbus_monitor,"HBUS report: 3 writes, 34 reads"
+1910,INFO,coverage,router_coverage,Coverage of the router configuration: 43.5%
 1910,INFO,reference,router_reference,
-1910,INFO,reference,router_reference,Coverage of the router configuration: 43.5%
 1910,INFO,scoreboard,router_scoreboard,
 1910,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 2 packets sent
-1910,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 2 packets collected, coverage 23.3%"
-1910,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 1 longer (gap coverage 25.0%)"
+1910,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 1 gaps sampled, coverage 25.0%"
+1910,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 2 packets collected, 0 with bad parity"
+1910,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 1 longer"
+1910,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 2 packets sampled, coverage 23.3%"

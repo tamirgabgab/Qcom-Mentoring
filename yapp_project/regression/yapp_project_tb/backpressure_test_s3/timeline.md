@@ -42,7 +42,7 @@ Waves: `backpressure_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-102 events (the same list is in `timeline.csv`).
+104 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -142,9 +142,11 @@ Waves: `backpressure_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 5785 | ch1 monitor | Channel 1 report: 1 packets collected |
 | 5785 | ch2 monitor | Channel 2 report: 3 packets collected |
 | 5785 | hbus monitor | HBUS report: 0 writes, 0 reads |
+| 5785 | coverage | Coverage of the router configuration: 26.1% |
 | 5785 | reference |  |
-| 5785 | reference | Coverage of the router configuration: 26.1% |
 | 5785 | scoreboard |  |
 | 5785 | yapp driver | YAPP driver report: 6 packets sent |
-| 5785 | yapp monitor | YAPP monitor report: 6 packets collected, coverage 26.7% |
-| 5785 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer (gap coverage 25.0%) |
+| 5785 | coverage | YAPP gap coverage: 5 gaps sampled, coverage 25.0% |
+| 5785 | yapp monitor | YAPP monitor report: 6 packets collected, 0 with bad parity |
+| 5785 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 5 longer |
+| 5785 | coverage | YAPP packet coverage: 6 packets sampled, coverage 26.7% |

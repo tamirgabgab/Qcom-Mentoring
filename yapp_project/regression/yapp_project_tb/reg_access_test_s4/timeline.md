@@ -38,7 +38,7 @@ Waves: `reg_access_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); si
 
 ## Timeline
 
-33 events (the same list is in `timeline.csv`).
+35 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -73,5 +73,7 @@ Waves: `reg_access_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); si
 | 350 | reference |  |
 | 350 | scoreboard |  |
 | 350 | yapp driver | YAPP driver report: 0 packets sent |
-| 350 | yapp monitor | YAPP monitor report: 0 packets collected, coverage 0.0% |
-| 350 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%) |
+| 350 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
+| 350 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |
+| 350 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer |
+| 350 | coverage | YAPP packet coverage: 0 packets sampled, coverage 0.0% |

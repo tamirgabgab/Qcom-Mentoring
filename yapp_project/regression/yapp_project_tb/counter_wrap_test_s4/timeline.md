@@ -48,7 +48,7 @@ Waves: `counter_wrap_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 
 ## Timeline
 
-2764 events (the same list is in `timeline.csv`).
+2766 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -2810,9 +2810,11 @@ Waves: `counter_wrap_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer); 
 | 42340 | ch1 monitor | Channel 1 report: 0 packets collected |
 | 42340 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 42340 | hbus monitor | HBUS report: 1 writes, 8 reads |
+| 42340 | coverage | Coverage of the router configuration: 26.1% |
 | 42340 | reference |  |
-| 42340 | reference | Coverage of the router configuration: 26.1% |
 | 42340 | scoreboard |  |
 | 42340 | yapp driver | YAPP driver report: 257 packets sent |
-| 42340 | yapp monitor | YAPP monitor report: 257 packets collected, coverage 13.3% |
-| 42340 | yapp monitor | YAPP gaps: 0 back to back, 10 of 1 cycle, 4 of 2, 242 longer (gap coverage 75.0%) |
+| 42340 | coverage | YAPP gap coverage: 256 gaps sampled, coverage 75.0% |
+| 42340 | yapp monitor | YAPP monitor report: 257 packets collected, 0 with bad parity |
+| 42340 | yapp monitor | YAPP gaps: 0 back to back, 10 of 1 cycle, 4 of 2, 242 longer |
+| 42340 | coverage | YAPP packet coverage: 257 packets sampled, coverage 13.3% |

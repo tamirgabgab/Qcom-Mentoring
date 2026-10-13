@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - YAPP functional coverage (yapp_project_tb, 96 runs) - yapp_project/uvc/yapp/yapp_pkt_coverage.sv</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">YAPP functional coverage (covergroup bins)</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">yapp_project/uvc/yapp</a> - yapp_pkt_coverage.sv</td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">YAPP functional coverage (yapp_project_tb, 96 runs)</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">-</td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">21</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">             Branch data     Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L2"><span class="lineNum">       2</span>                 :             : // yapp_pkt_coverage.sv -- functional coverage of the input packets (Lab 10)</span>
+<span id="L3"><span class="lineNum">       3</span>                 :             : //</span>
+<span id="L4"><span class="lineNum">       4</span>                 :             : //   yapp_tx_monitor.item_collected_port ──► analysis_export (write)</span>
+<span id="L5"><span class="lineNum">       5</span>                 :             : //</span>
+<span id="L6"><span class="lineNum">       6</span>                 :             : // The covergroup lives in its own subscriber, not in the monitor: the monitor</span>
+<span id="L7"><span class="lineNum">       7</span>                 :             : // only observes and publishes, and a coverage model can be added, replaced or</span>
+<span id="L8"><span class="lineNum">       8</span>                 :             : // left out without touching it. The Cadence lab writes the same covergroup</span>
+<span id="L9"><span class="lineNum">       9</span>                 :             : // inside the monitor; the bins, and so the percentage, are the same.</span>
+<span id="L10"><span class="lineNum">      10</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L11"><span class="lineNum">      11</span>                 :             : class yapp_pkt_coverage extends uvm_subscriber #(yapp_packet);</span>
+<span id="L12"><span class="lineNum">      12</span>                 :             : </span>
+<span id="L13"><span class="lineNum">      13</span>                 :             :   int num_sampled;</span>
+<span id="L14"><span class="lineNum">      14</span>                 :             : </span>
+<span id="L15"><span class="lineNum">      15</span>                 :             :   //--------------------------------------------------------------------------</span>
+<span id="L16"><span class="lineNum">      16</span>                 :             :   // Functional coverage (Lab 10)</span>
+<span id="L17"><span class="lineNum">      17</span>                 :             :   //   REQ1 all packet lengths, bucketed</span>
+<span id="L18"><span class="lineNum">      18</span>                 :             :   //   REQ2 all addresses, including the illegal one</span>
+<span id="L19"><span class="lineNum">      19</span>                 :             :   //   REQ3 every length bucket to every legal address with a parity error</span>
+<span id="L20"><span class="lineNum">      20</span>                 :             :   //--------------------------------------------------------------------------</span>
+<span id="L21"><span class="lineNum">      21</span>                 :             :   covergroup yapp_pkt_cg with function sample(bit [5:0] length,</span>
+<span id="L22"><span class="lineNum">      22</span>                 :             :                                               bit [1:0] addr,</span>
+<span id="L23"><span class="lineNum">      23</span>                 :             :                                               parity_type_e parity_type);</span>
+<span id="L24"><span class="lineNum">      24</span>                 :             :     option.per_instance = 1;</span>
+<span id="L25"><span class="lineNum">      25</span>                 :             :     length_cp : coverpoint length {</span>
+<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC tlaBgGNC">        1316 :       bins MIN    = {1};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         426 :       bins SMALL  = {[2:10]};</span></span>
+<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         564 :       bins MEDIUM = {[11:40]};</span></span>
+<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         597 :       bins LARGE  = {[41:62]};</span></span>
+<span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         353 :       bins MAX    = {63};</span></span>
+<span id="L31"><span class="lineNum">      31</span>                 :             :     }</span>
+<span id="L32"><span class="lineNum">      32</span>                 :             :     addr_cp : coverpoint addr {</span>
+<span id="L33"><span class="lineNum">      33</span>      [<span class="tlaGBC" title="Branch 0 was taken 1539 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 529 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 985 times"> + </span>]:<span class="tlaGNC">        1539 :       bins legal[]      = {[0:2]};</span></span>
+<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">         203 :       bins illegal_addr = {3};</span></span>
+<span id="L35"><span class="lineNum">      35</span>                 :             :     }</span>
+<span id="L36"><span class="lineNum">      36</span>                 :             :     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)</span>
+<span id="L37"><span class="lineNum">      37</span>                 :             :     parity_cp : coverpoint parity_type {</span>
+<span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">        2895 :       bins good = {GOOD_PARITY};</span></span>
+<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">         361 :       bins bad  = {BAD_PARITY};</span></span>
+<span id="L40"><span class="lineNum">      40</span>                 :             :     }</span>
+<span id="L41"><span class="lineNum">      41</span>                 :             :     // REQ3: only legal addresses and only BAD_PARITY are interesting</span>
+<span id="L42"><span class="lineNum">      42</span>                 :             : `ifdef VERILATOR</span>
+<span id="L43"><span class="lineNum">      43</span>                 :             :     // (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is</span>
+<span id="L44"><span class="lineNum">      44</span>                 :             :     // built from coverpoints that hold only the interesting bins: same 15 bins)</span>
+<span id="L45"><span class="lineNum">      45</span>      [<span class="tlaGBC" title="Branch 0 was taken 1539 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 529 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 985 times"> + </span>]:<span class="tlaGNC">        1539 :     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }</span></span>
+<span id="L46"><span class="lineNum">      46</span>                 :<span class="tlaGNC">         361 :     bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }</span></span>
+<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 41 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 5 times"> + </span> :<span class="tlaGNC">          45 :     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;</span></span>
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 16 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 21 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 45 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 11 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 14 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 35 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 13 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 13 times"> + </span> 
+<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 14 was taken 26 times"> + </span>]
+<span id="L48"><span class="lineNum">      48</span>                 :             : `else</span>
+<span id="L49"><span class="lineNum">      49</span>                 :             :     len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {</span>
+<span id="L50"><span class="lineNum">      50</span>                 :             :       ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};</span>
+<span id="L51"><span class="lineNum">      51</span>                 :             :       ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);</span>
+<span id="L52"><span class="lineNum">      52</span>                 :             :     }</span>
+<span id="L53"><span class="lineNum">      53</span>                 :             : `endif</span>
+<span id="L54"><span class="lineNum">      54</span>                 :             :   endgroup : yapp_pkt_cg</span>
+<span id="L55"><span class="lineNum">      55</span>                 :             : </span>
+<span id="L56"><span class="lineNum">      56</span>                 :             :   `uvm_component_utils(yapp_pkt_coverage)</span>
+<span id="L57"><span class="lineNum">      57</span>                 :             : </span>
+<span id="L58"><span class="lineNum">      58</span>                 :             :   extern function new(string name, uvm_component parent);</span>
+<span id="L59"><span class="lineNum">      59</span>                 :             : </span>
+<span id="L60"><span class="lineNum">      60</span>                 :             :   // One packet from the monitor</span>
+<span id="L61"><span class="lineNum">      61</span>                 :             :   extern function void write(yapp_packet t);</span>
+<span id="L62"><span class="lineNum">      62</span>                 :             : </span>
+<span id="L63"><span class="lineNum">      63</span>                 :             :   extern function void report_phase(uvm_phase phase);</span>
+<span id="L64"><span class="lineNum">      64</span>                 :             : </span>
+<span id="L65"><span class="lineNum">      65</span>                 :             : endclass : yapp_pkt_coverage</span>
+<span id="L66"><span class="lineNum">      66</span>                 :             : </span>
+<span id="L67"><span class="lineNum">      67</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L68"><span class="lineNum">      68</span>                 :             : // yapp_pkt_coverage -- method implementations</span>
+<span id="L69"><span class="lineNum">      69</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L70"><span class="lineNum">      70</span>                 :             : </span>
+<span id="L71"><span class="lineNum">      71</span>                 :             : function yapp_pkt_coverage::new(string name, uvm_component parent);</span>
+<span id="L72"><span class="lineNum">      72</span>                 :             :   super.new(name, parent);</span>
+<span id="L73"><span class="lineNum">      73</span>                 :             :   yapp_pkt_cg = new();   // a covergroup inside a class is created with new()</span>
+<span id="L74"><span class="lineNum">      74</span>                 :             : endfunction : new</span>
+<span id="L75"><span class="lineNum">      75</span>                 :             : </span>
+<span id="L76"><span class="lineNum">      76</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L77"><span class="lineNum">      77</span>                 :             : function void yapp_pkt_coverage::write(yapp_packet t);</span>
+<span id="L78"><span class="lineNum">      78</span>                 :             :   num_sampled++;</span>
+<span id="L79"><span class="lineNum">      79</span>                 :             :   yapp_pkt_cg.sample(t.length, t.addr, t.parity_type);</span>
+<span id="L80"><span class="lineNum">      80</span>                 :             : endfunction : write</span>
+<span id="L81"><span class="lineNum">      81</span>                 :             : </span>
+<span id="L82"><span class="lineNum">      82</span>                 :             : //------------------------------------------------------------------------------</span>
+<span id="L83"><span class="lineNum">      83</span>                 :             : function void yapp_pkt_coverage::report_phase(uvm_phase phase);</span>
+<span id="L84"><span class="lineNum">      84</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;YAPP packet coverage: %0d packets sampled, coverage %.1f%%&quot;,</span>
+<span id="L85"><span class="lineNum">      85</span>                 :             :                                        num_sampled, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L86"><span class="lineNum">      86</span>                 :             : endfunction : report_phase</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

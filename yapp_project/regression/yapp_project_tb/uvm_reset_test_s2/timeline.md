@@ -33,7 +33,7 @@ Waves: `uvm_reset_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 
 ## Timeline
 
-32 events (the same list is in `timeline.csv`).
+34 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -67,5 +67,7 @@ Waves: `uvm_reset_test_s2.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 | 520 | reference |  |
 | 520 | scoreboard |  |
 | 520 | yapp driver | YAPP driver report: 0 packets sent |
-| 520 | yapp monitor | YAPP monitor report: 0 packets collected, coverage 0.0% |
-| 520 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%) |
+| 520 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
+| 520 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |
+| 520 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer |
+| 520 | coverage | YAPP packet coverage: 0 packets sampled, coverage 0.0% |

@@ -1221,10 +1221,12 @@ time_ns,severity,who,id,event
 45685,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 16 packets collected
 45685,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 27 packets collected
 45685,INFO,hbus monitor,hbus_monitor,"HBUS report: 31 writes, 74 reads"
+45685,INFO,coverage,router_coverage,Coverage of the router configuration: 73.9%
 45685,INFO,reference,router_reference,
 45685,INFO,reference,router_reference,"HBUS reads checked against the model: 71 (0 mismatches, 3 of memory bytes never written)"
-45685,INFO,reference,router_reference,Coverage of the router configuration: 73.9%
 45685,INFO,scoreboard,router_scoreboard,
 45685,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 95 packets sent
-45685,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 95 packets collected, coverage 70.0%"
-45685,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 20 back to back, 17 of 1 cycle, 2 of 2, 55 longer (gap coverage 100.0%)"
+45685,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 94 gaps sampled, coverage 100.0%"
+45685,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 95 packets collected, 8 with bad parity"
+45685,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 20 back to back, 17 of 1 cycle, 2 of 2, 55 longer"
+45685,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 95 packets sampled, coverage 70.0%"

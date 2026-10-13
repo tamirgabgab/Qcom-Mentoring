@@ -17,7 +17,7 @@ Waves: `base_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal t
 
 ## Timeline
 
-10 events (the same list is in `timeline.csv`).
+12 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -29,5 +29,7 @@ Waves: `base_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signal t
 | 0 | reference |  |
 | 0 | scoreboard |  |
 | 0 | yapp driver | YAPP driver report: 0 packets sent |
-| 0 | yapp monitor | YAPP monitor report: 0 packets collected, coverage 0.0% |
-| 0 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%) |
+| 0 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
+| 0 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |
+| 0 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer |
+| 0 | coverage | YAPP packet coverage: 0 packets sampled, coverage 0.0% |

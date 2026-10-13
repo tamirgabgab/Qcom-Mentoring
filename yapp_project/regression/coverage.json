@@ -1,0 +1,1154 @@
+[
+ {
+  "bench": "yapp_project_tb",
+  "runs": 96,
+  "covergroups": [
+   {
+    "name": "router_cfg_cg",
+    "file": "yapp_project/uvc/router/router_coverage.sv",
+    "points": [
+     {
+      "name": "max_cp",
+      "cross": false,
+      "line": 20,
+      "bins": [
+       {
+        "name": "zero",
+        "line": 20,
+        "hits": 107,
+        "runs": 10,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "one",
+        "line": 21,
+        "hits": 95,
+        "runs": 9,
+        "tests": [
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "mid",
+        "line": 22,
+        "hits": 1211,
+        "runs": 40,
+        "tests": [
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "random_config_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "max62",
+        "line": 23,
+        "hits": 154,
+        "runs": 11,
+        "tests": [
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "max63",
+        "line": 24,
+        "hits": 1428,
+        "runs": 43,
+        "tests": [
+         "counter_wrap_test",
+         "back_to_back_test",
+         "random_parity_test",
+         "random_config_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "random_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 5,
+      "covered": 5
+     },
+     {
+      "name": "len_cp",
+      "cross": false,
+      "line": 27,
+      "bins": [
+       {
+        "name": "below",
+        "line": 27,
+        "hits": 1962,
+        "runs": 68,
+        "tests": [
+         "counter_wrap_test",
+         "random_parity_test",
+         "random_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "equal",
+        "line": 28,
+        "hits": 151,
+        "runs": 32,
+        "tests": [
+         "random_config_test",
+         "router_filter_test",
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "plus_one",
+        "line": 29,
+        "hits": 158,
+        "runs": 28,
+        "tests": [
+         "random_config_test",
+         "router_filter_test",
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "above",
+        "line": 30,
+        "hits": 724,
+        "runs": 40,
+        "tests": [
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 4,
+      "covered": 4
+     },
+     {
+      "name": "reason_cp",
+      "cross": false,
+      "line": 34,
+      "bins": [
+       {
+        "name": "forwarded",
+        "line": 34,
+        "hits": 2017,
+        "runs": 68,
+        "tests": [
+         "counter_wrap_test",
+         "random_parity_test",
+         "random_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "router_filter_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "addr3",
+        "line": 35,
+        "hits": 175,
+        "runs": 27,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "router_filter_test",
+         "random_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "oversized",
+        "line": 36,
+        "hits": 803,
+        "runs": 40,
+        "tests": [
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 3,
+      "covered": 3
+     },
+     {
+      "name": "parity_cp",
+      "cross": false,
+      "line": 39,
+      "bins": [
+       {
+        "name": "good",
+        "line": 39,
+        "hits": 2670,
+        "runs": 64,
+        "tests": [
+         "counter_wrap_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "reg_function_test",
+         "reg_function_check_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "bad",
+        "line": 40,
+        "hits": 325,
+        "runs": 40,
+        "tests": [
+         "random_parity_test",
+         "parity_error_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "cnt_en_cp",
+      "cross": false,
+      "line": 43,
+      "bins": [
+       {
+        "name": "none",
+        "line": 43,
+        "hits": 412,
+        "runs": 39,
+        "tests": [
+         "back_to_back_test",
+         "random_config_test",
+         "random_test",
+         "router_filter_test",
+         "random_parity_test",
+         "backpressure_test",
+         "parity_error_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "mixed",
+        "line": 44,
+        "hits": 977,
+        "runs": 34,
+        "tests": [
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "parity_error_test"
+        ]
+       },
+       {
+        "name": "all",
+        "line": 45,
+        "hits": 1606,
+        "runs": 39,
+        "tests": [
+         "counter_wrap_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_filter_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       }
+      ],
+      "total": 3,
+      "covered": 3
+     },
+     {
+      "name": "reason_x_parity",
+      "cross": true,
+      "line": 47,
+      "bins": [
+       {
+        "name": "addr3_x_bad",
+        "line": 47,
+        "hits": 33,
+        "runs": 12,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "addr3_x_good",
+        "line": 47,
+        "hits": 142,
+        "runs": 26,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "router_filter_test",
+         "random_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "forwarded_x_bad",
+        "line": 47,
+        "hits": 189,
+        "runs": 34,
+        "tests": [
+         "random_parity_test",
+         "parity_error_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "forwarded_x_good",
+        "line": 47,
+        "hits": 1828,
+        "runs": 64,
+        "tests": [
+         "counter_wrap_test",
+         "random_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "router_filter_test",
+         "reg_function_test",
+         "reg_function_check_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "oversized_x_bad",
+        "line": 47,
+        "hits": 103,
+        "runs": 27,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "oversized_x_good",
+        "line": 47,
+        "hits": 700,
+        "runs": 40,
+        "tests": [
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 6,
+      "covered": 6
+     }
+    ],
+    "total": 23,
+    "covered": 23,
+    "pct": 100.0
+   },
+   {
+    "name": "yapp_gap_cg",
+    "file": "yapp_project/uvc/yapp/yapp_gap_coverage.sv",
+    "points": [
+     {
+      "name": "gap_cp",
+      "cross": false,
+      "line": 20,
+      "bins": [
+       {
+        "name": "back_to_back",
+        "line": 20,
+        "hits": 767,
+        "runs": 36,
+        "tests": [
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "back_to_back_test"
+        ]
+       },
+       {
+        "name": "one",
+        "line": 21,
+        "hits": 345,
+        "runs": 53,
+        "tests": [
+         "random_test",
+         "random_config_test",
+         "counter_wrap_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "router_filter_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "parity_error_test"
+        ]
+       },
+       {
+        "name": "two",
+        "line": 22,
+        "hits": 174,
+        "runs": 42,
+        "tests": [
+         "random_config_test",
+         "counter_wrap_test",
+         "random_parity_test",
+         "random_test",
+         "back_to_back_test",
+         "random_backpressure_test",
+         "router_filter_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "longer",
+        "line": 23,
+        "hits": 1902,
+        "runs": 68,
+        "tests": [
+         "counter_wrap_test",
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "router_filter_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "back_to_back_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 4,
+      "covered": 4
+     }
+    ],
+    "total": 4,
+    "covered": 4,
+    "pct": 100.0
+   },
+   {
+    "name": "yapp_pkt_cg",
+    "file": "yapp_project/uvc/yapp/yapp_pkt_coverage.sv",
+    "points": [
+     {
+      "name": "length_cp",
+      "cross": false,
+      "line": 26,
+      "bins": [
+       {
+        "name": "MIN",
+        "line": 26,
+        "hits": 1316,
+        "runs": 40,
+        "tests": [
+         "counter_wrap_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_test",
+         "back_to_back_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "SMALL",
+        "line": 27,
+        "hits": 426,
+        "runs": 52,
+        "tests": [
+         "random_parity_test",
+         "back_to_back_test",
+         "random_test",
+         "router_filter_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "pkt_mem_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "parity_error_test"
+        ]
+       },
+       {
+        "name": "MEDIUM",
+        "line": 28,
+        "hits": 564,
+        "runs": 56,
+        "tests": [
+         "random_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "router_filter_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "LARGE",
+        "line": 29,
+        "hits": 597,
+        "runs": 52,
+        "tests": [
+         "random_backpressure_test",
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "MAX",
+        "line": 30,
+        "hits": 353,
+        "runs": 35,
+        "tests": [
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "router_filter_test",
+         "random_backpressure_test"
+        ]
+       }
+      ],
+      "total": 5,
+      "covered": 5
+     },
+     {
+      "name": "addr_cp",
+      "cross": false,
+      "line": 33,
+      "bins": [
+       {
+        "name": "legal[0]",
+        "line": 33,
+        "hits": 1539,
+        "runs": 63,
+        "tests": [
+         "counter_wrap_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "legal[1]",
+        "line": 33,
+        "hits": 529,
+        "runs": 64,
+        "tests": [
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "backpressure_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "legal[2]",
+        "line": 33,
+        "hits": 985,
+        "runs": 64,
+        "tests": [
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "router_filter_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "illegal_addr",
+        "line": 34,
+        "hits": 203,
+        "runs": 29,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "router_filter_test",
+         "random_test",
+         "random_backpressure_test"
+        ]
+       }
+      ],
+      "total": 4,
+      "covered": 4
+     },
+     {
+      "name": "parity_cp",
+      "cross": false,
+      "line": 38,
+      "bins": [
+       {
+        "name": "good",
+        "line": 38,
+        "hits": 2895,
+        "runs": 64,
+        "tests": [
+         "counter_wrap_test",
+         "random_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "reg_function_test",
+         "reg_function_check_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "bad",
+        "line": 39,
+        "hits": 361,
+        "runs": 41,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "parity_error_test",
+         "random_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       }
+      ],
+      "total": 2,
+      "covered": 2
+     },
+     {
+      "name": "legal_addr_cp",
+      "cross": false,
+      "line": 45,
+      "bins": [
+       {
+        "name": "legal[0]",
+        "line": 45,
+        "hits": 1539,
+        "runs": 63,
+        "tests": [
+         "counter_wrap_test",
+         "random_config_test",
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "router_disable_test"
+        ]
+       },
+       {
+        "name": "legal[1]",
+        "line": 45,
+        "hits": 529,
+        "runs": 64,
+        "tests": [
+         "random_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "router_filter_test",
+         "back_to_back_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test",
+         "backpressure_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "legal[2]",
+        "line": 45,
+        "hits": 985,
+        "runs": 64,
+        "tests": [
+         "random_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "back_to_back_test",
+         "router_filter_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "backpressure_test",
+         "router_disable_test",
+         "pkt_mem_test"
+        ]
+       }
+      ],
+      "total": 3,
+      "covered": 3
+     },
+     {
+      "name": "bad_parity_cp",
+      "cross": false,
+      "line": 46,
+      "bins": [
+       {
+        "name": "bad",
+        "line": 46,
+        "hits": 361,
+        "runs": 41,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "parity_error_test",
+         "random_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_disable_test"
+        ]
+       }
+      ],
+      "total": 1,
+      "covered": 1
+     },
+     {
+      "name": "len_x_addr_x_parity",
+      "cross": true,
+      "line": 47,
+      "bins": [
+       {
+        "name": "LARGE_x_legal[0]_x_bad",
+        "line": 47,
+        "hits": 24,
+        "runs": 15,
+        "tests": [
+         "parity_error_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "reg_function_test"
+        ]
+       },
+       {
+        "name": "LARGE_x_legal[1]_x_bad",
+        "line": 47,
+        "hits": 23,
+        "runs": 18,
+        "tests": [
+         "parity_error_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test",
+         "reg_function_check_test",
+         "reg_function_test"
+        ]
+       },
+       {
+        "name": "LARGE_x_legal[2]_x_bad",
+        "line": 47,
+        "hits": 41,
+        "runs": 24,
+        "tests": [
+         "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "random_backpressure_test",
+         "random_config_test"
+        ]
+       },
+       {
+        "name": "MAX_x_legal[0]_x_bad",
+        "line": 47,
+        "hits": 5,
+        "runs": 5,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "MAX_x_legal[1]_x_bad",
+        "line": 47,
+        "hits": 12,
+        "runs": 9,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "MAX_x_legal[2]_x_bad",
+        "line": 47,
+        "hits": 16,
+        "runs": 12,
+        "tests": [
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test"
+        ]
+       },
+       {
+        "name": "MEDIUM_x_legal[0]_x_bad",
+        "line": 47,
+        "hits": 21,
+        "runs": 14,
+        "tests": [
+         "random_test",
+         "parity_error_test",
+         "random_config_test",
+         "random_parity_test",
+         "reg_function_test",
+         "random_backpressure_test",
+         "reg_function_check_test"
+        ]
+       },
+       {
+        "name": "MEDIUM_x_legal[1]_x_bad",
+        "line": 47,
+        "hits": 23,
+        "runs": 16,
+        "tests": [
+         "parity_error_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_test",
+         "reg_function_check_test"
+        ]
+       },
+       {
+        "name": "MEDIUM_x_legal[2]_x_bad",
+        "line": 47,
+        "hits": 45,
+        "runs": 28,
+        "tests": [
+         "random_parity_test",
+         "parity_error_test",
+         "random_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "reg_function_check_test",
+         "router_disable_test",
+         "reg_function_test"
+        ]
+       },
+       {
+        "name": "MIN_x_legal[0]_x_bad",
+        "line": 47,
+        "hits": 11,
+        "runs": 7,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "MIN_x_legal[1]_x_bad",
+        "line": 47,
+        "hits": 14,
+        "runs": 9,
+        "tests": [
+         "random_parity_test",
+         "random_test",
+         "parity_error_test"
+        ]
+       },
+       {
+        "name": "MIN_x_legal[2]_x_bad",
+        "line": 47,
+        "hits": 35,
+        "runs": 15,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "SMALL_x_legal[0]_x_bad",
+        "line": 47,
+        "hits": 13,
+        "runs": 8,
+        "tests": [
+         "random_parity_test",
+         "random_test",
+         "parity_error_test"
+        ]
+       },
+       {
+        "name": "SMALL_x_legal[1]_x_bad",
+        "line": 47,
+        "hits": 13,
+        "runs": 7,
+        "tests": [
+         "random_parity_test",
+         "random_config_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "SMALL_x_legal[2]_x_bad",
+        "line": 47,
+        "hits": 26,
+        "runs": 13,
+        "tests": [
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "parity_error_test",
+         "random_test"
+        ]
+       }
+      ],
+      "total": 15,
+      "covered": 15
+     }
+    ],
+    "total": 30,
+    "covered": 30,
+    "pct": 100.0
+   }
+  ],
+  "tests": [
+   {
+    "test": "back_to_back_test",
+    "runs": 4,
+    "bins_hit": 19,
+    "only_this": []
+   },
+   {
+    "test": "backpressure_test",
+    "runs": 4,
+    "bins_hit": 15,
+    "only_this": []
+   },
+   {
+    "test": "base_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "counter_wrap_test",
+    "runs": 4,
+    "bins_hit": 13,
+    "only_this": []
+   },
+   {
+    "test": "hbus_protocol_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "parity_error_test",
+    "runs": 4,
+    "bins_hit": 31,
+    "only_this": []
+   },
+   {
+    "test": "pkt_mem_test",
+    "runs": 4,
+    "bins_hit": 18,
+    "only_this": []
+   },
+   {
+    "test": "random_backpressure_test",
+    "runs": 8,
+    "bins_hit": 48,
+    "only_this": []
+   },
+   {
+    "test": "random_config_test",
+    "runs": 8,
+    "bins_hit": 55,
+    "only_this": []
+   },
+   {
+    "test": "random_parity_test",
+    "runs": 8,
+    "bins_hit": 57,
+    "only_this": []
+   },
+   {
+    "test": "random_test",
+    "runs": 8,
+    "bins_hit": 55,
+    "only_this": []
+   },
+   {
+    "test": "reg_access_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "reg_bit_walk_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "reg_function_check_test",
+    "runs": 4,
+    "bins_hit": 29,
+    "only_this": []
+   },
+   {
+    "test": "reg_function_test",
+    "runs": 4,
+    "bins_hit": 29,
+    "only_this": []
+   },
+   {
+    "test": "reg_introspection_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "router_disable_test",
+    "runs": 4,
+    "bins_hit": 25,
+    "only_this": []
+   },
+   {
+    "test": "router_filter_test",
+    "runs": 4,
+    "bins_hit": 28,
+    "only_this": []
+   },
+   {
+    "test": "uvm_mem_walk_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   },
+   {
+    "test": "uvm_reset_test",
+    "runs": 4,
+    "bins_hit": 0,
+    "only_this": []
+   }
+  ],
+  "total": 57,
+  "covered": 57
+ }
+]

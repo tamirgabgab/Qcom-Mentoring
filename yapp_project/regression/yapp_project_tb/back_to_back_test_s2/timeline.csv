@@ -273,9 +273,11 @@ time_ns,severity,who,id,event
 2525,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 6 packets collected
 2525,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 11 packets collected
 2525,INFO,hbus monitor,hbus_monitor,"HBUS report: 0 writes, 0 reads"
+2525,INFO,coverage,router_coverage,Coverage of the router configuration: 26.1%
 2525,INFO,reference,router_reference,
-2525,INFO,reference,router_reference,Coverage of the router configuration: 26.1%
 2525,INFO,scoreboard,router_scoreboard,
 2525,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 24 packets sent
-2525,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 24 packets collected, coverage 30.0%"
-2525,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer (gap coverage 100.0%)"
+2525,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 23 gaps sampled, coverage 100.0%"
+2525,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 24 packets collected, 0 with bad parity"
+2525,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 5 back to back, 6 of 1 cycle, 6 of 2, 6 longer"
+2525,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 24 packets sampled, coverage 30.0%"

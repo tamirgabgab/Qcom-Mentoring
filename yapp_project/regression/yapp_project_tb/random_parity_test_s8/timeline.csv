@@ -613,10 +613,12 @@ time_ns,severity,who,id,event
 17265,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 1 packets collected
 17265,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 5 packets collected
 17265,INFO,hbus monitor,hbus_monitor,"HBUS report: 9 writes, 51 reads"
+17265,INFO,coverage,router_coverage,Coverage of the router configuration: 78.3%
 17265,INFO,reference,router_reference,
 17265,INFO,reference,router_reference,"HBUS reads checked against the model: 51 (0 mismatches, 0 of memory bytes never written)"
-17265,INFO,reference,router_reference,Coverage of the router configuration: 78.3%
 17265,INFO,scoreboard,router_scoreboard,
 17265,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 55 packets sent
-17265,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 55 packets collected, coverage 70.0%"
-17265,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 30 back to back, 7 of 1 cycle, 2 of 2, 15 longer (gap coverage 100.0%)"
+17265,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 54 gaps sampled, coverage 100.0%"
+17265,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 55 packets collected, 16 with bad parity"
+17265,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 30 back to back, 7 of 1 cycle, 2 of 2, 15 longer"
+17265,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 55 packets sampled, coverage 70.0%"

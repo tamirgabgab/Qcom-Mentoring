@@ -156,9 +156,11 @@ time_ns,severity,who,id,event
 5400,INFO,ch1 monitor,channel_rx_monitor,Channel 1 report: 3 packets collected
 5400,INFO,ch2 monitor,channel_rx_monitor,Channel 2 report: 3 packets collected
 5400,INFO,hbus monitor,hbus_monitor,"HBUS report: 2 writes, 11 reads"
+5400,INFO,coverage,router_coverage,Coverage of the router configuration: 39.1%
 5400,INFO,reference,router_reference,
-5400,INFO,reference,router_reference,Coverage of the router configuration: 39.1%
 5400,INFO,scoreboard,router_scoreboard,
 5400,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 9 packets sent
-5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 9 packets collected, coverage 43.3%"
-5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 1 of 1 cycle, 1 of 2, 6 longer (gap coverage 75.0%)"
+5400,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 8 gaps sampled, coverage 75.0%"
+5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 9 packets collected, 1 with bad parity"
+5400,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 1 of 1 cycle, 1 of 2, 6 longer"
+5400,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 9 packets sampled, coverage 43.3%"

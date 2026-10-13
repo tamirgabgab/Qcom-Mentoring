@@ -47,7 +47,7 @@ Waves: `pkt_mem_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signa
 
 ## Timeline
 
-117 events (the same list is in `timeline.csv`).
+119 events (the same list is in `timeline.csv`).
 
 | time (ns) | who | event |
 |---|---|---|
@@ -162,9 +162,11 @@ Waves: `pkt_mem_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer); signa
 | 2070 | ch1 monitor | Channel 1 report: 1 packets collected |
 | 2070 | ch2 monitor | Channel 2 report: 0 packets collected |
 | 2070 | hbus monitor | HBUS report: 3 writes, 34 reads |
+| 2070 | coverage | Coverage of the router configuration: 43.5% |
 | 2070 | reference |  |
-| 2070 | reference | Coverage of the router configuration: 43.5% |
 | 2070 | scoreboard |  |
 | 2070 | yapp driver | YAPP driver report: 2 packets sent |
-| 2070 | yapp monitor | YAPP monitor report: 2 packets collected, coverage 23.3% |
-| 2070 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 1 longer (gap coverage 25.0%) |
+| 2070 | coverage | YAPP gap coverage: 1 gaps sampled, coverage 25.0% |
+| 2070 | yapp monitor | YAPP monitor report: 2 packets collected, 0 with bad parity |
+| 2070 | yapp monitor | YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 1 longer |
+| 2070 | coverage | YAPP packet coverage: 2 packets sampled, coverage 23.3% |

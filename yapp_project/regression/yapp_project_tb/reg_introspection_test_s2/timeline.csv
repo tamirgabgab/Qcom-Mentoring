@@ -105,5 +105,7 @@ time_ns,severity,who,id,event
 700,INFO,reference,router_reference,
 700,INFO,scoreboard,router_scoreboard,
 700,INFO,yapp driver,yapp_tx_driver,YAPP driver report: 0 packets sent
-700,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, coverage 0.0%"
-700,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer (gap coverage 0.0%)"
+700,INFO,coverage,yapp_gap_coverage,"YAPP gap coverage: 0 gaps sampled, coverage 0.0%"
+700,INFO,yapp monitor,yapp_tx_monitor,"YAPP monitor report: 0 packets collected, 0 with bad parity"
+700,INFO,yapp monitor,yapp_tx_monitor,"YAPP gaps: 0 back to back, 0 of 1 cycle, 0 of 2, 0 longer"
+700,INFO,coverage,yapp_pkt_coverage,"YAPP packet coverage: 0 packets sampled, coverage 0.0%"
