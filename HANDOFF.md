@@ -928,7 +928,7 @@ git push -u origin <הענף של הסשן>          # סשן 5+7: claude/confid
 git branch -f main <הענף של הסשן> && git push origin main
 
 # מסירה
-zip -qr QcommMentoring.zip qcom-mentoring -x "qcom-mentoring/.git/*" "qcom-mentoring/site/*" "qcom-mentoring/build/*" "*/__pycache__/*" "qcom-mentoring/scripts/uvm_src/*"
+zip -qr QcommMentoring.zip qcom-mentoring -x "qcom-mentoring/.git/*" "qcom-mentoring/site/*" "qcom-mentoring/build/*" "*/__pycache__/*" "qcom-mentoring/scripts/uvm_src/*" "*.pdf" "qcom-mentoring/uvm_course.md" "*/node_modules/*" "*/tr_db.log"   # tr_db.log = UVM recording, 300+ MB
 # + docs/downloads/yapp_project_map.html  → SendUserFile
 
 # debug של המפה בדפדפן (Playwright מקומי)
