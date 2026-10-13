@@ -251,6 +251,7 @@ def write_html(info, html_dir, title):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", action="append", help="benches whose build directory contains this")
+    ap.add_argument("--md", action="store_true", help="Markdown tables instead of plain text (the CI step summary)")
     ns = ap.parse_args()
     found = False
     for bench_dir in sorted(glob.glob(os.path.join(BUILD, "*"))):
@@ -260,10 +261,23 @@ def main():
         if not data:
             continue
         found = True
+        hole_list = holes(data)
+        if ns.md:
+            print(f"### Functional coverage: {data['bench']} -- {data['covered']} / {data['total']} bins over {data['runs']} runs\n")
+            print("| Covergroup | Bins hit | Coverage | File |\n|---|---|---|---|")
+            for g in data["covergroups"]:
+                print(f"| `{g['name']}` | {g['covered']} / {g['total']} | {g['pct']:.1f}% | `{g['file']}` |")
+            print()
+            if hole_list:
+                print("| Hole | Where |\n|---|---|")
+                for cg, point, b, line, f in hole_list:
+                    print(f"| `{cg}.{point}.{b}` | `{f}:{line}` |")
+                print()
+            continue
         print(f"{data['bench']}: {data['runs']} runs, {data['covered']} / {data['total']} bins")
         for g in data["covergroups"]:
             print(f"  {g['name']:<16} {g['covered']:>3} / {g['total']:<3} {g['pct']:5.1f}%  {g['file']}")
-        for cg, point, b, line, f in holes(data):
+        for cg, point, b, line, f in hole_list:
             print(f"    hole: {cg}.{point}.{b}  ({f}:{line})")
     if not found:
         sys.exit("coverage_report.py: no coverage files under build/sim/*/coverage -- run `make regress` first")

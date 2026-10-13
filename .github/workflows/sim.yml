@@ -44,13 +44,26 @@ jobs:
 
       - name: Functional coverage, merged over the runs of the bench
         if: always()
-        run: python3 scripts/coverage_report.py >> "$GITHUB_STEP_SUMMARY" || true
+        run: python3 scripts/coverage_report.py --md >> "$GITHUB_STEP_SUMMARY" || true
 
-      - name: Keep the logs of a failure
+      # The report of the bench (scripts/sim_report.py, without waves): index.md, runs.json, one folder
+      # per run with its log and timeline, coverage.md / .json. Download it from the run's Artifacts.
+      - name: Bundle the logs into a report
+        if: always()
+        run: python3 scripts/sim_report.py --only "${{ matrix.bench }}" --out build/sim/report || true
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ strategy.job-index }}
+          path: build/sim/report
+          if-no-files-found: ignore
+
+      - name: Keep the compile logs of a failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ strategy.job-index }}
-          path: |
-            build/sim/**/compile.log
-            build/sim/**/logs/*.log
+          path: build/sim/**/compile.log
+          if-no-files-found: ignore
