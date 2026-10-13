@@ -11,7 +11,7 @@ on the data buses, the clock drawn as a clock and one color per group:
   Input FSM          hw_top.dut.u_input_fsm: state, address, length, drop, FIFO push
   FIFO fill          hw_top.dut.g_ch[c].u_ch.u_fifo.count: bytes waiting per channel
   Channel 0 / 1 / 2  hw_top.ch0..2: data, data_vld, the receiver's suspend
-  Error              hw_top.dut: the error pulse, pkt_done, u_error_timer.err_timer
+  Error              hw_top.dut: the error pulse, pkt_done, u_error_timer.sched (pulses owed)
   HBUS               hw_top.hbus0: hen, hwr_rd, haddr, hdata
   Config, counters   hw_top.dut: router_en, maxpktsize; u_regs: the statistics registers
   Packet memory      hw_top.dut.u_regs.yapp_pkt_mem[0..63], folded
@@ -76,7 +76,7 @@ LAYOUT = [
     ("Error", "Red", [
         (D + "error", None),
         (D + "pkt_done", None),
-        (D + "u_error_timer.err_timer", "Unsigned"),
+        (D + "u_error_timer.sched", "Binary", "pulses owed"),   # bit k: a pulse k cycles from now
     ]),
     ("HBUS", "Pink", [
         ("hw_top.hbus0.hen", None),
@@ -190,6 +190,20 @@ def settle_state(text):
     return text
 
 
+def missing_signals(fst):
+    """The LAYOUT signals a .fst does not have (needs the pywellen reader; None without it).
+    A missing signal is not just absent in Surfer: the rows after it shift and the groups
+    fall apart, so a renamed RTL signal must be renamed here too."""
+    try:
+        import pywellen
+    except ImportError:
+        return None
+    names = {v.full_name for v in pywellen.Waveform(fst).all_vars()}
+    wanted = [sig for _name, _color, signals in LAYOUT for sig, *_rest in signals]
+    wanted += [scope + ".[0]" for scope, _name in MEMORIES]
+    return [sig for sig in wanted if sig not in names]
+
+
 def surfer_url(fst_rel):
     """The Surfer web app with a committed .fst (path relative to the repo) and this layout."""
     waves = RAW + fst_rel.replace(os.sep, "/")
@@ -199,7 +213,14 @@ def surfer_url(fst_rel):
 
 def main():
     """No argument: write the .sucl. `--state <saved.surf.ron>`: write the .surf.ron
-    from a state Surfer saved after running the .sucl (File -> Save state as...)."""
+    from a state Surfer saved after running the .sucl (File -> Save state as...).
+    `--check <file.fst>`: every signal of the layout must be in the waves."""
+    if len(sys.argv) == 3 and sys.argv[1] == "--check":
+        missing = missing_signals(sys.argv[2])
+        if missing is None:
+            sys.exit("surfer_layout.py --check needs pywellen (pip install pywellen)")
+        print("every layout signal is in the .fst" if not missing else "missing: " + ", ".join(missing))
+        sys.exit(1 if missing else 0)
     if len(sys.argv) == 3 and sys.argv[1] == "--state":
         with open(sys.argv[2]) as fh:
             text = settle_state(fh.read())

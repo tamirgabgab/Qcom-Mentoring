@@ -462,6 +462,7 @@ def build_report(only=None, out=None, make_zip=False):
     # A report written into the repository is committed: its .fst files are on GitHub, so each run gets
     # a link that opens them in Surfer's web app with the signal layout of scripts/surfer_layout.py.
     committed = not os.path.abspath(out).startswith(os.path.join(ROOT, "build") + os.sep)
+    layout_checked = False
     all_logs = []
     for r in runs:
         run_dir = os.path.join(out, r["bench"], f"{r['test']}_s{r['seed']}")
@@ -475,6 +476,12 @@ def build_report(only=None, out=None, make_zip=False):
             shutil.copy(r["fst"], fst_copy)
             if committed:
                 r["surfer"] = surfer_layout.surfer_url(os.path.relpath(fst_copy, ROOT))
+                if not layout_checked:
+                    layout_checked = True
+                    missing = surfer_layout.missing_signals(fst_copy)
+                    if missing:
+                        sys.exit(f"sim_report.py: the Surfer layout names signals the waves do not have: "
+                                 f"{', '.join(missing)} -- fix LAYOUT in scripts/surfer_layout.py")
         if r["trace"]:
             shutil.copy(r["trace"], os.path.join(run_dir, "signals.csv"))
             try:

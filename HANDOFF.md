@@ -522,6 +522,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      (`sim.yml`) כבר לא מעביר `--seeds 2` אלא את ה-seeds של הקובץ.
    - **אימות מוטציות:** ה-timer הישן → `random_parity_test` נכשל ("no error pulse within 10 cycles"); מונה addr2 שבור →
      `random_test` נכשל ("HBUS read 0x100b returned 0x03, the model expects 0x04"). הוחזר.
+   - **תקלה שתמיר מצא אחרי הסבב:** ה-layout של Surfer עדיין ביקש `u_error_timer.err_timer`, שהתיקון ב-RTL הסיר → ב-FST
+     החדשים שורה חסרה, והקבוצות שאחריה (Error, HBUS, Config, הזיכרונות) התפרקו גם ב-`.sucl` וגם ב-`.surf.ron`. הוחלף ב-
+     `u_error_timer.sched` ("pulses owed", Binary); ה-`.surf.ron` נוצר מחדש; `surfer_layout.py --check <fst>` (pywellen) ו-
+     `sim_report.py` בודק את זה אוטומטית כשהדוח נכתב לריפו. **כל שינוי שם של סיגנל ב-RTL/TB → לעדכן `LAYOUT`.**
    - תיעוד: `docs/components/random-tests.md` (חדש, nav "Random tests"), Test plan: קבוצה חדשה **RND-01..04** + הטסטים
      האקראיים תחת IN-03/04, OUT-02/05, DROP-01..04, CNT-01..05, MEM-01/03, REG-05/06, PKT-02/03/05, ROUTE-03.
 

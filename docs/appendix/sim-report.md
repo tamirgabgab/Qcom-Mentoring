@@ -147,7 +147,7 @@ Variable names are full paths (*Settings → Variable names → Global*):
 | Input FSM | `state`, `cur_addr`, `cur_len`, `byte_cnt`, `cur_drop`, `fifo_push`, `fifo_full` | `hw_top.dut.u_input_fsm` |
 | FIFO fill | `ch0 count` … `ch2 count`: bytes waiting in each channel FIFO | `hw_top.dut.g_ch[c].u_ch.u_fifo.count` |
 | Channel 0 / 1 / 2 | `data`, `data_vld`, `suspend` | `hw_top.ch0` … `ch2` |
-| Error | `error`, `pkt_done`, `err_timer` | `hw_top.dut`, `u_error_timer` |
+| Error | `error`, `pkt_done`, `pulses owed` (`sched`: bit k = a pulse k cycles from now) | `hw_top.dut`, `u_error_timer` |
 | HBUS | `hen`, `hwr_rd`, `haddr`, `hdata` | `hw_top.hbus0` |
 | Config, counters | `router_en`, `maxpktsize`, `addr0..3_cnt_reg`, `parity_err_cnt_reg`, `oversized_pkt_cnt_reg` | `hw_top.dut`, `u_regs` |
 | Packet memory (folded) | `[0]` … `[63]`: the last packet, header first (0x1010, RO) | `hw_top.dut.u_regs.yapp_pkt_mem` |
@@ -185,7 +185,11 @@ FIFO is full and `in_suspend` holds byte `49`:
 
 The layout is written by `scripts/surfer_layout.py` (`LAYOUT` at the top):
 edit it there and run `python3 scripts/surfer_layout.py` to rewrite the
-`.sucl`. For the `.surf.ron`, run the new `.sucl` in Surfer, *File → Save
+`.sucl` (`python3 scripts/surfer_layout.py --check <file.fst>` says whether every
+signal of the layout is in a recording: a signal that is missing does not just
+stay empty, the rows after it shift and the groups fall apart, so a renamed RTL
+signal must be renamed in `LAYOUT` too; `make sim-report` into the repository
+runs the same check). For the `.surf.ron`, run the new `.sucl` in Surfer, *File → Save
 state as...*, then `python3 scripts/surfer_layout.py --state <saved file>`
 (it puts the four settings of `STATE_SETTINGS` in). To keep your own
 arrangement after changing it in Surfer, use *File → Save state as...* and

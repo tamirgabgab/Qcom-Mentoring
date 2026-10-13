@@ -119,10 +119,11 @@ item_set_color Blue
 
 # Error
 item_unfocus
-variable_add hw_top.dut.u_error_timer.err_timer
+variable_add hw_top.dut.u_error_timer.sched
 item_focus ca
-item_set_format Unsigned
+item_set_format Binary
 item_set_color Red
+item_rename pulses owed
 group_marked
 item_rename Error
 item_set_color Red
