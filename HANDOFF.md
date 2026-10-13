@@ -21,8 +21,8 @@
 > עמוד אתר "Coverage results", טבלת bins בפאנל של כל collector במפה. רגרסיה **158/158**; ממוזג על 96 ריצות: **57/57 bins (100%)**.
 > **סשן 8 סבב 2 (HBUS coverage):** 4 collectors חדשים על `hbus_export` (כתובת×R/W, ביטי ctrl/en, תבניות yapp_mem, ערכי מונים)
 > + `hbus_sweep_test` שסוגר אותם (כל קריאה נבדקת מול הרפרנס). רגרסיה **162/162**; ממוזג על 100 ריצות: **222/222 bins**.
-> נפתח PR [tamirgabgab/Qcom-Mentoring#1](https://github.com/tamirgabgab/Qcom-Mentoring/pull/1) מה-UI — **`main` לא קודם** מאז
-> `99397d4`; שאלתי את תמיר אם להמשיך ff אחרי כל push או לחכות שהוא ימזג. לא לקדם `main` עד שיענה.
+> נפתח PR [tamirgabgab/Qcom-Mentoring#1](https://github.com/tamirgabgab/Qcom-Mentoring/pull/1) מה-UI; תמיר אישר: **ממשיכים
+> לקדם את `main` (ff) אחרי כל push כמו תמיד**, גם כשיש PR פתוח (ה-PR יסומן merged אוטומטית).
 
 ---
 
