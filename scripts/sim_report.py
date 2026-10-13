@@ -15,14 +15,16 @@ trace/<test>_s<seed>.csv (the per-cycle signal trace of yapp_router_tracer).
 Writes
 
     build/sim/report/
-      index.md                        every run: result, counts, links
-      all_logs.log                    every log in one file, with banners
+      index.md                        every run: result, counts, links; the failures first
+      runs.json                       the same per run, as data (the site pages and the map read it)
+      all_logs.log                    every log in one file, with banners (local reports only)
       <bench>/<test>_s<seed>/
         <test>_s<seed>.log            the log of the run
-        timeline.md                   summary, stages and the full timeline
-        timeline.csv                  the same events, one per row
+        timeline.md                   summary, stages and the timeline (the longest runs keep
+                                      only the test, DUT, HBUS and report events)
+        timeline.csv                  the same events, one per row (local reports only)
         <test>_s<seed>.fst            the waves (GTKWave, Surfer, VS Code)
-        signals.csv                   the per-cycle signal trace
+        signals.csv                   the per-cycle signal trace (local reports only)
         wave_*.svg                    the pictures
       coverage.md                     the functional coverage merged over every run
       coverage.json                   the same data (the site page and the map read it)
@@ -32,7 +34,10 @@ Writes
     build/sim/regression_report.zip   with --zip
 
 The committed report of the project lives in yapp_project/regression/
-(make sim-report ONLY=yapp_project OUT=yapp_project/regression).
+(make sim-report ONLY=yapp_project OUT=yapp_project/regression). It leaves out the
+files that only repeat the log or the waves (all_logs.log, timeline.csv, signals.csv)
+and copies the pictures of seed 1 of every test to docs/assets/regression/<test>/,
+where the site's regression pages (scripts/project_map/build.py) show them.
 
 The log lines it understands are documented in docs/appendix/sim-report.md.
 """
@@ -44,7 +49,9 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
+import time
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,6 +61,9 @@ import gen_waves  # noqa: E402  (render(): the SVG timing-diagram drawer of the 
 import surfer_layout  # noqa: E402  (surfer_url(): one-click link to the waves in Surfer's web app)
 
 BUILD = os.path.join(ROOT, "build", "sim")
+SITE_PICS = os.path.join(ROOT, "docs", "assets", "regression")   # seed-1 pictures for the site pages
+TIMELINE_MAX = 1500      # a run with more events keeps only the important ones in timeline.md
+KEEP_WHO = ("test", "DUT", "hbus monitor", "reference", "scoreboard", "coverage", "error checker")
 
 # UVM_INFO file(line) @ time: path [id] message     (Accellera UVM report format)
 UVM_RE = re.compile(r"^UVM_(INFO|WARNING|ERROR|FATAL) (\S+?)\((\d+)\) @ +(\d+)(?:\s*[a-z]+)?: (\S+) \[(\S+)\] ?(.*)$")
@@ -99,12 +109,15 @@ def who_of(path, msg_id):
 
 def parse_log(text):
     """Events of one log: dicts with time, sev, who, id, msg, plus the banner info."""
-    events, info = [], {"test": "?", "seed": "?", "verdict": None, "errors": 0, "fatals": 0}
+    events, info = [], {"test": "?", "seed": "?", "verdict": None, "errors": 0, "fatals": 0,
+                        "wall": None, "verilator": None}
+    cont = None          # the last event: a line that is not a UVM line continues its message
     for line in text.splitlines():
         m = UVM_RE.match(line)
         if m:
             sev, _f, _l, t, path, mid, msg = m.groups()
             who = who_of(path, mid)
+            cont = None
             if mid == "TEST":
                 b = BANNER_RE.search(msg)
                 if b:
@@ -114,12 +127,27 @@ def parse_log(text):
                     continue                       # banners are not timeline events
             if sev == "INFO" and who in ("other", "ral"):
                 continue
-            events.append({"time": int(t), "sev": sev, "who": who, "id": mid, "msg": msg})
+            cont = {"time": int(t), "sev": sev, "who": who, "id": mid, "msg": msg}
+            events.append(cont)
             continue
         m = DROP_RE.match(line)
         if m:
+            cont = None
             events.append({"time": int(m.group(1)), "sev": "INFO", "who": "DUT", "id": "RTL",
                            "msg": "ROUTER DROPS PACKET " + m.group(2)})
+            continue
+        if line.startswith("--- UVM Report Summary"):
+            cont = None
+        m = re.search(r"walltime ([\d.]+) s", line)
+        if m and line.startswith("- Verilator:"):
+            info["wall"] = float(m.group(1))
+        m = re.search(r"R e p o r t: Verilator (\d+\.\d+)", line)
+        if m:
+            info["verilator"] = m.group(1)
+        if cont is not None and line.strip():
+            # a multi-line message (the report_phase blocks of the reference model and the scoreboard)
+            part = " ".join(line.split())
+            cont["msg"] = (cont["msg"] + " · " + part) if cont["msg"].strip() else part
     return events, info
 
 
@@ -198,38 +226,54 @@ def summarize(events):
 
 
 # ------------------------------------------------------------------ timeline files
-def write_timeline(run, events, info, summ, out_dir, has_pics):
-    csv_path = os.path.join(out_dir, "timeline.csv")
-    with open(csv_path, "w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["time_ns", "severity", "who", "id", "event"])
-        for e in events:
-            w.writerow([e["time"], e["sev"], e["who"], e["id"], e["msg"]])
+def summary_lines(summ):
+    """The bullets of the summary block (timeline.md and the site pages)."""
+    if summ["tx"] == 0 and summ["rx_in"]:
+        sent = (f"- YAPP driver quiet in this test (verbosity UVM_NONE); the input monitor saw "
+                f"**{summ['rx_in']}** packet(s).")
+    else:
+        sent = (f"- YAPP driver sent **{summ['tx']}** packet(s) ({summ['tx_bad']} with bad parity); "
+                f"the input monitor saw {summ['rx_in']}.")
+    return [sent,
+            f"- Router: **{summ['in_fwd']}** forwarded, **{summ['in_drop']}** dropped"
+            + (" (" + ", ".join(f"{n} {r}" for r, n in summ["drop_reasons"].items()) + ")" if summ["drop_reasons"] else "")
+            + ".",
+            f"- Packets out: ch0 **{summ['out'][0]}**, ch1 **{summ['out'][1]}**, ch2 **{summ['out'][2]}**.",
+            f"- Scoreboard: {summ['matched']} matched, {summ['mismatched']} mismatched, {summ['unexpected']} unexpected.",
+            f"- Back-pressure: in_suspend asserted **{summ['suspends']}** time(s)"
+            + (f", longest hold {summ['suspend_max']} cycle(s)" if summ["suspends"] else "") + ".",
+            f"- Error pulses: {summ['err_pulses']}.",
+            f"- HBUS: {summ['hbus_wr']} write(s), {summ['hbus_rd']} read(s)."]
 
-    verdict = info["verdict"] or ("PASSED" if run["ok"] else "FAIL")
-    lines = [f"# {run['test']}  seed {run['seed']}", "",
+
+def important(e):
+    """The events a capped timeline keeps: the test's stages, the DUT, the host bus, the
+    reports of the checkers, and every warning or error."""
+    return e["sev"] != "INFO" or e["who"] in KEEP_WHO
+
+
+def write_timeline(run, events, info, summ, out_dir, has_pics, committed):
+    if not committed:
+        with open(os.path.join(out_dir, "timeline.csv"), "w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["time_ns", "severity", "who", "id", "event"])
+            for e in events:
+                w.writerow([e["time"], e["sev"], e["who"], e["id"], e["msg"]])
+
+    verdict = info["verdict"] or ("PASSED" if run["ok"] else "FAILED")
+    wall = f" · wall {run['wall']:.1f} s" if run.get("wall") is not None else ""
+    lines = [f"# {run['test']} seed {run['seed']}", "",
              f"**Result:** {verdict} ({summ['uvm_errors']} UVM_ERROR, {summ['uvm_warnings']} UVM_WARNING, "
-             f"{summ['uvm_fatals']} UVM_FATAL) · bench `{run['bench']}` · sim time {run['sim_time']} · "
-             f"log `{run['log_name']}`", ""]
+             f"{summ['uvm_fatals']} UVM_FATAL) · bench `{run['bench']}` · sim time {run['sim_time']}{wall} · "
+             f"log [`{run['log_name']}`]({run['log_name']})", ""]
     if run.get("fst"):
-        lines.append(f"Waves: `{os.path.basename(run['fst'])}` (GTKWave, Surfer or the VS Code wave viewer); "
-                     f"signal trace: `signals.csv`.")
+        lines.append(f"Waves: `{os.path.basename(run['fst'])}` (GTKWave, Surfer or the VS Code wave viewer)"
+                     + ("" if committed else "; signal trace: `signals.csv`") + ".")
         if run.get("surfer"):
             lines.append(f"[Open the waves in Surfer]({run['surfer']}) (web app, the signals already in groups: "
-                         "`yapp_project/tb/yapp_router.sucl`).")
+                         f"`{os.path.relpath(surfer_layout.SUCL, ROOT)}`).")
         lines.append("")
-    lines += ["## Summary", "",
-              f"- YAPP driver sent **{summ['tx']}** packet(s) ({summ['tx_bad']} with bad parity); "
-              f"the input monitor saw {summ['rx_in']}.",
-              f"- Router: **{summ['in_fwd']}** forwarded, **{summ['in_drop']}** dropped"
-              + (" (" + ", ".join(f"{n} {r}" for r, n in summ["drop_reasons"].items()) + ")" if summ["drop_reasons"] else "")
-              + ".",
-              f"- Packets out: ch0 **{summ['out'][0]}**, ch1 **{summ['out'][1]}**, ch2 **{summ['out'][2]}**.",
-              f"- Scoreboard: {summ['matched']} matched, {summ['mismatched']} mismatched, {summ['unexpected']} unexpected.",
-              f"- Back-pressure: in_suspend asserted **{summ['suspends']}** time(s)"
-              + (f", longest hold {summ['suspend_max']} cycle(s)" if summ["suspends"] else "") + ".",
-              f"- Error pulses: {summ['err_pulses']}.",
-              f"- HBUS: {summ['hbus_wr']} write(s), {summ['hbus_rd']} read(s).", ""]
+    lines += ["## Summary", ""] + summary_lines(summ) + [""]
     if summ["stages"]:
         lines += ["## Stages", "", "| time (ns) | stage |", "|---|---|"]
         lines += [f"| {t} | {md_text(s)} |" for t, s in summ["stages"]]
@@ -238,9 +282,19 @@ def write_timeline(run, events, info, summ, out_dir, has_pics):
         lines += ["## Pictures", ""]
         for name, title in has_pics:
             lines += [f"**{title}**", "", f"![{title}]({name})", ""]
-    lines += ["## Timeline", "", f"{len(events)} events (the same list is in `timeline.csv`).", "",
-              "| time (ns) | who | event |", "|---|---|---|"]
-    for e in events:
+    shown = events
+    if len(events) > TIMELINE_MAX:
+        shown = [e for e in events if important(e)]
+        note = (f"{len(events)} events; this table keeps the {len(shown)} of the test, the DUT, the host bus, "
+                f"the checkers' reports and every warning or error")
+        if len(shown) > TIMELINE_MAX:
+            note += f", and only the first {TIMELINE_MAX} of those"
+            shown = shown[:TIMELINE_MAX]
+        lines += ["## Timeline", "", note + ". The full list is in the log" + ("." if committed else " and in `timeline.csv`."), ""]
+    else:
+        lines += ["## Timeline", "", f"{len(events)} events" + ("." if committed else " (the same list is in `timeline.csv`)."), ""]
+    lines += ["| time (ns) | who | event |", "|---|---|---|"]
+    for e in shown:
         mark = {"ERROR": "❌ ", "FATAL": "💥 ", "WARNING": "⚠️ "}.get(e["sev"], "")
         who = f"**{e['who']}**" if e["who"] in ("test", "DUT") else e["who"]
         lines.append(f"| {e['time']} | {who} | {mark}{md_text(e['msg'])} |")
@@ -428,7 +482,7 @@ def find_runs(only):
     for log in sorted(glob.glob(os.path.join(BUILD, "*", "logs", "*_s*.log"))):
         bench_dir = os.path.dirname(os.path.dirname(log))
         bench = os.path.basename(bench_dir)
-        if only and not any(o in bench for o in only):
+        if only and not any(o in bench or o.replace("/", "_").replace(" +define+", "__") in bench for o in only):
             continue
         m = re.match(r"(.*)_s(\d+)\.log$", os.path.basename(log))
         if not m:
@@ -451,6 +505,14 @@ def find_runs(only):
     return runs
 
 
+def git_commit():
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True,
+                              text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+
+
 def build_report(only=None, out=None, make_zip=False):
     out = out or os.path.join(BUILD, "report")
     runs = find_runs(only)
@@ -459,27 +521,23 @@ def build_report(only=None, out=None, make_zip=False):
     if os.path.isdir(out):
         shutil.rmtree(out)
     os.makedirs(out)
-    index = ["# Regression report", "",
-             f"{sum(1 for r in runs if r['ok'])} of {len(runs)} runs passed. One folder per run: the log, "
-             "`timeline.md` (summary, stages, every event), `timeline.csv`, the waves and the wave pictures. "
-             "`all_logs.log` holds every log in one file.", "",
-             "Generated by `scripts/sim_report.py` from `build/sim/*/logs` (Verilator): regenerate with "
-             "`make regress ONLY=yapp_project WAVES=1 && make sim-report ONLY=yapp_project "
-             f"OUT={os.path.relpath(out, ROOT)}`. How to read it: docs/appendix/sim-report.md.", "",
-             "| Bench | Test | Seed | Result | Sim time | In / fwd / drop | Out ch0/1/2 | Suspends | Errors | Folder "
-             "| Waves |",
-             "|---|---|---|---|---|---|---|---|---|---|---|"]
     # A report written into the repository is committed: its .fst files are on GitHub, so each run gets
-    # a link that opens them in Surfer's web app with the signal layout of scripts/surfer_layout.py.
+    # a link that opens them in Surfer's web app with the signal layout of scripts/surfer_layout.py;
+    # the files that only repeat the log or the waves are left out, and the site gets the pictures.
     committed = not os.path.abspath(out).startswith(os.path.join(ROOT, "build") + os.sep)
+    docs_rel = os.path.relpath(os.path.join(ROOT, "docs"), out)
     layout_checked = False
-    all_logs = []
+    all_logs, rows, records, failures = [], [], [], []
+    one_bench = len({r["bench"] for r in runs}) == 1
+    if committed and os.path.isdir(SITE_PICS):
+        shutil.rmtree(SITE_PICS)
     for r in runs:
         run_dir = os.path.join(out, r["bench"], f"{r['test']}_s{r['seed']}")
         os.makedirs(run_dir)
         shutil.copy(r["log"], os.path.join(run_dir, r["log_name"]))
         events, info = parse_log(r["text"])
         summ = summarize(events)
+        r["wall"], r["verilator"] = info["wall"], info["verilator"]
         pics = []
         if r["fst"]:
             fst_copy = os.path.join(run_dir, os.path.basename(r["fst"]))
@@ -493,32 +551,83 @@ def build_report(only=None, out=None, make_zip=False):
                         sys.exit(f"sim_report.py: the Surfer layout names signals the waves do not have: "
                                  f"{', '.join(missing)} -- fix LAYOUT in scripts/surfer_layout.py")
         if r["trace"]:
-            shutil.copy(r["trace"], os.path.join(run_dir, "signals.csv"))
+            if not committed:
+                shutil.copy(r["trace"], os.path.join(run_dir, "signals.csv"))
             try:
                 pics = pictures(r, summ, Trace(r["trace"]), run_dir)
             except Exception as exc:  # a picture must never break the report
                 print(f"    (no pictures for {r['test']} s{r['seed']}: {exc})")
-        write_timeline(r, events, info, summ, run_dir, pics)
+        write_timeline(r, events, info, summ, run_dir, pics, committed)
         rel = os.path.relpath(run_dir, out)
-        index.append(f"| {r['bench_rel']} | {r['test']} | {r['seed']} | {'pass' if r['ok'] else '**FAIL**'} "
-                     f"| {r['sim_time']} | {summ['rx_in']} / {summ['in_fwd']} / {summ['in_drop']} "
-                     f"| {summ['out'][0]}/{summ['out'][1]}/{summ['out'][2]} | {summ['suspends']} "
-                     f"| {summ['uvm_errors']} | [{rel}]({rel}/timeline.md) "
-                     f"| {'[Surfer](' + r['surfer'] + ')' if r.get('surfer') else '-'} |")
-        all_logs.append("#" * 78 + f"\n# {r['bench_rel']}  {r['test']}  seed {r['seed']}  "
-                        f"({'PASS' if r['ok'] else 'FAIL'}{', ' + r['reason'] if r['reason'] else ''})\n"
-                        + "#" * 78 + "\n" + r["text"] + "\n")
+        if committed and pics and r["seed"] == min(x["seed"] for x in runs if x["test"] == r["test"] and x["bench"] == r["bench"]):
+            site_dir = os.path.join(SITE_PICS, r["test"])
+            os.makedirs(site_dir, exist_ok=True)
+            for name, _title in pics:
+                shutil.copy(os.path.join(run_dir, name), os.path.join(site_dir, name))
+        first_error = next((e for e in events if e["sev"] in ("ERROR", "FATAL")), None)
+        if not r["ok"]:
+            failures.append((r, first_error["msg"] if first_error else (r["reason"] or "see the log")))
+        counts = {k: summ[k] for k in ("tx", "tx_bad", "rx_in", "in_fwd", "in_drop", "drop_reasons", "out", "matched",
+                                       "mismatched", "unexpected", "suspends", "suspend_max", "err_pulses", "hbus_wr",
+                                       "hbus_rd", "uvm_errors", "uvm_warnings", "uvm_fatals")}
+        records.append({"bench": r["bench"], "bench_rel": r["bench_rel"], "test": r["test"], "seed": r["seed"],
+                        "ok": r["ok"], "verdict": info["verdict"] or ("PASSED" if r["ok"] else "FAILED"),
+                        "reason": r["reason"], "sim_time": r["sim_time"], "wall": r["wall"], "events": len(events),
+                        "counts": counts, "summary": summary_lines(summ), "stages": summ["stages"],
+                        "pictures": pics, "first_error": first_error["msg"] if first_error else None,
+                        "dir": rel, "log": f"{rel}/{r['log_name']}", "fst": f"{rel}/{os.path.basename(r['fst'])}" if r["fst"] else None,
+                        "surfer": r.get("surfer")})
+        wall_txt = f"{r['wall']:.1f} s" if r["wall"] is not None else "-"
+        rows.append(("" if one_bench else f"| {r['bench_rel']} ")
+                    + f"| {r['test']} | {r['seed']} | {'pass' if r['ok'] else '**FAIL**'} "
+                    f"| {r['sim_time']} | {wall_txt} "
+                    f"| {summ['rx_in']} / {summ['in_fwd']} / {summ['in_drop']} "
+                    f"| {summ['out'][0]}/{summ['out'][1]}/{summ['out'][2]} | {summ['suspends']} "
+                    f"| {summ['uvm_errors']} | {md_text(r['reason']) if r['reason'] else ''} | [{rel}]({rel}/timeline.md) "
+                    f"| {'[Surfer](' + r['surfer'] + ')' if r.get('surfer') else '-'} |")
+        if not committed:
+            all_logs.append("#" * 78 + f"\n# {r['bench_rel']}  {r['test']}  seed {r['seed']}  "
+                            f"({'PASS' if r['ok'] else 'FAIL'}{', ' + r['reason'] if r['reason'] else ''})\n"
+                            + "#" * 78 + "\n" + r["text"] + "\n")
         print(f"    {'PASS' if r['ok'] else 'FAIL'}  {r['test']:<26} seed {r['seed']}  {len(events):>5} events"
               f"  {len(pics)} picture(s)")
     cov = write_coverage(runs, out, committed)
+    meta = {"date": time.strftime("%Y-%m-%d"), "commit": git_commit(),
+            "verilator": next((r["verilator"] for r in runs if r.get("verilator")), None),
+            "total": len(runs), "passed": sum(1 for r in runs if r["ok"]),
+            "wall": sum(r["wall"] for r in runs if r.get("wall") is not None)}
+    passed = f"**{meta['passed']} of {meta['total']} runs passed**"
+    index = ["# Regression report", "",
+             f"{passed} · {meta['date']}" + (f" · commit `{meta['commit']}`" if meta["commit"] else "")
+             + (f" · Verilator {meta['verilator']}" if meta["verilator"] else "")
+             + f" · {meta['wall'] / 60:.1f} min of simulation wall time.", ""]
     if cov:
-        index[2:2] = ["Functional coverage merged over every run: [coverage.md](coverage.md) ("
-                      + "; ".join(f"{d['bench']} {d['covered']} / {d['total']} bins" for d in cov) + ").", ""]
+        index += ["Functional coverage merged over every run: [coverage.md](coverage.md) ("
+                  + "; ".join(f"{d['bench']} {d['covered']} / {d['total']} bins" for d in cov) + ").", ""]
+    if failures:
+        index += ["## Failures", "", "| Test | Seed | First error |", "|---|---|---|"]
+        index += [f"| {r['test']} | {r['seed']} | {md_text(msg)} |" for r, msg in failures] + [""]
+    index += ["## Runs", "",
+              "One folder per run: the log, `timeline.md` (summary, stages, the timeline), the waves and the "
+              "wave pictures" + ("" if committed else "; `timeline.csv` and `signals.csv` hold the events and the "
+                                 "per-cycle signals as data, `all_logs.log` every log in one file") + ". "
+              "`runs.json` holds the table below as data.", "",
+              "Generated by `scripts/sim_report.py` from `build/sim/*/logs` (Verilator): regenerate with "
+              "`make regress ONLY=yapp_project WAVES=1 && make sim-report ONLY=yapp_project "
+              f"OUT={os.path.relpath(out, ROOT)}`. How to read it: [{docs_rel}/appendix/sim-report.md]"
+              f"({docs_rel}/appendix/sim-report.md).", "",
+              ("" if one_bench else "| Bench ") + "| Test | Seed | Result | Sim time | Wall | In / fwd / drop | Out ch0/1/2 "
+              "| Suspends | Errors | Note | Folder | Waves |",
+              ("" if one_bench else "|---") + "|---|---|---|---|---|---|---|---|---|---|---|---|"] + rows
     with open(os.path.join(out, "index.md"), "w") as fh:
         fh.write("\n".join(index) + "\n")
-    with open(os.path.join(out, "all_logs.log"), "w") as fh:
-        fh.write("\n".join(all_logs))
-    print(f"report: {os.path.relpath(out, ROOT)}/index.md  ({len(runs)} runs)")
+    with open(os.path.join(out, "runs.json"), "w") as fh:
+        json.dump({**meta, "committed": committed, "runs": records}, fh, indent=1)
+        fh.write("\n")
+    if not committed:
+        with open(os.path.join(out, "all_logs.log"), "w") as fh:
+            fh.write("\n".join(all_logs))
+    print(f"report: {os.path.relpath(out, ROOT)}/index.md  ({len(runs)} runs, {meta['passed']} passed)")
     if make_zip:
         os.makedirs(BUILD, exist_ok=True)
         zpath = os.path.join(BUILD, "regression_report.zip")
@@ -555,8 +664,10 @@ def write_coverage(runs, out, committed):
     if not all_data:
         return []
     with open(os.path.join(out, "coverage.md"), "w") as fh:
+        docs_rel = os.path.relpath(os.path.join(ROOT, "docs"), out)
         fh.write("# Functional coverage\n\nThe covergroups of every run, merged (`scripts/coverage_report.py`). "
-                 "How to read it: docs/components/coverage.md.\n\n" + "\n".join(sections))
+                 f"How to read it: [{docs_rel}/components/coverage.md]({docs_rel}/components/coverage.md).\n\n"
+                 + "\n".join(sections))
     with open(os.path.join(out, "coverage.json"), "w") as fh:
         json.dump(all_data, fh, indent=1)
         fh.write("\n")

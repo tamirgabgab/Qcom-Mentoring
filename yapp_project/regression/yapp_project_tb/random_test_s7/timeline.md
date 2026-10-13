@@ -1,8 +1,8 @@
-# random_test  seed 7
+# random_test seed 7
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 44us · log `random_test_s7.log`
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 44us · wall 18.5 s · log [`random_test_s7.log`](random_test_s7.log)
 
-Waves: `random_test_s7.fst` (GTKWave, Surfer or the VS Code wave viewer); signal trace: `signals.csv`.
+Waves: `random_test_s7.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s7%2Frandom_test_s7.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
 
 ## Summary
@@ -64,7 +64,7 @@ Waves: `random_test_s7.fst` (GTKWave, Surfer or the VS Code wave viewer); signal
 
 ## Timeline
 
-1043 events (the same list is in `timeline.csv`).
+1043 events.
 
 | time (ns) | who | event |
 |---|---|---|
@@ -1098,14 +1098,14 @@ Waves: `random_test_s7.fst` (GTKWave, Surfer or the VS Code wave viewer); signal
 | 44075 | ch1 monitor | Channel 1 report: 5 packets collected |
 | 44075 | ch2 monitor | Channel 2 report: 13 packets collected |
 | 44075 | hbus monitor | HBUS report: 27 writes, 91 reads |
-| 44075 | coverage | Coverage of the router configuration: 82.6% |
+| 44075 | coverage | Coverage of the router configuration: 82.6% · maxpktsize 0 / 1 / 2..61 / 62 / 63 : 14 / 0 / 44 / 16 / 0 packets · length < max / = max / max+1 / > max+1 : 24 / 3 / 9 / 38 · forwarded good / bad : 21 / 3 · dropped address 3 good / bad : 4 / 0 · dropped oversized good / bad : 43 / 3 · counter enables none / mixed / all : 0 / 58 / 16 |
 | 44075 | coverage | HBUS address coverage: 118 accesses sampled, coverage 50.6% |
 | 44075 | coverage | HBUS register bits coverage: 12 writes to ctrl_reg/en_reg, coverage 100.0% |
 | 44075 | coverage | HBUS counter value coverage: 8 counter reads sampled, coverage 55.6% |
 | 44075 | coverage | HBUS yapp_mem data coverage: 30 accesses sampled, coverage 29.4% |
-| 44075 | reference |  |
+| 44075 | reference | --- Reference model report --- · forwarded to scoreboard : 24 · dropped (router disabled) : 15 · dropped (oversized) : 46 · dropped (address 3) : 4 · counters parity/oversized/addr0..3 : 5 / 6 / 9 2 21 3 |
 | 44075 | reference | HBUS reads checked against the model: 91 (0 mismatches, 0 of memory bytes never written) |
-| 44075 | scoreboard |  |
+| 44075 | scoreboard | --- Scoreboard report --- · packets received : 24 · packets matched : 24 · packets mismatched: 0 · packets unexpected: 0 · packets to addr 3 : 0 · left in queue 0/1/2: 0 / 0 / 0 |
 | 44075 | yapp driver | YAPP driver report: 89 packets sent |
 | 44075 | coverage | YAPP gap coverage: 88 gaps sampled, coverage 100.0% |
 | 44075 | yapp monitor | YAPP monitor report: 89 packets collected, 7 with bad parity |

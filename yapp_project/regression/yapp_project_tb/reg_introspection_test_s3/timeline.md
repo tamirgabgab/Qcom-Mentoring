@@ -1,8 +1,8 @@
-# reg_introspection_test  seed 3
+# reg_introspection_test seed 3
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 700ns · log `reg_introspection_test_s3.log`
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 700ns · wall 0.1 s · log [`reg_introspection_test_s3.log`](reg_introspection_test_s3.log)
 
-Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); signal trace: `signals.csv`.
+Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Freg_introspection_test_s3%2Freg_introspection_test_s3.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
 
 ## Summary
@@ -46,7 +46,7 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 
 ## Timeline
 
-114 events (the same list is in `timeline.csv`).
+114 events.
 
 | time (ns) | who | event |
 |---|---|---|
@@ -157,8 +157,8 @@ Waves: `reg_introspection_test_s3.fst` (GTKWave, Surfer or the VS Code wave view
 | 700 | coverage | HBUS register bits coverage: 2 writes to ctrl_reg/en_reg, coverage 63.6% |
 | 700 | coverage | HBUS counter value coverage: 6 counter reads sampled, coverage 48.1% |
 | 700 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
-| 700 | reference |  |
-| 700 | scoreboard |  |
+| 700 | reference | --- Reference model report --- · forwarded to scoreboard : 0 · dropped (router disabled) : 0 · dropped (oversized) : 0 · dropped (address 3) : 0 · counters parity/oversized/addr0..3 : 0 / 0 / 0 0 0 0 |
+| 700 | scoreboard | --- Scoreboard report --- · packets received : 0 · packets matched : 0 · packets mismatched: 0 · packets unexpected: 0 · packets to addr 3 : 0 · left in queue 0/1/2: 0 / 0 / 0 |
 | 700 | yapp driver | YAPP driver report: 0 packets sent |
 | 700 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
 | 700 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |

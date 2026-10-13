@@ -1,8 +1,8 @@
-# uvm_reset_test  seed 3
+# uvm_reset_test seed 3
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 520ns · log `uvm_reset_test_s3.log`
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 520ns · wall 0.2 s · log [`uvm_reset_test_s3.log`](uvm_reset_test_s3.log)
 
-Waves: `uvm_reset_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); signal trace: `signals.csv`.
+Waves: `uvm_reset_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Fuvm_reset_test_s3%2Fuvm_reset_test_s3.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
 
 ## Summary
@@ -33,7 +33,7 @@ Waves: `uvm_reset_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 
 ## Timeline
 
-38 events (the same list is in `timeline.csv`).
+38 events.
 
 | time (ns) | who | event |
 |---|---|---|
@@ -68,8 +68,8 @@ Waves: `uvm_reset_test_s3.fst` (GTKWave, Surfer or the VS Code wave viewer); sig
 | 520 | coverage | HBUS register bits coverage: 0 writes to ctrl_reg/en_reg, coverage 0.0% |
 | 520 | coverage | HBUS counter value coverage: 6 counter reads sampled, coverage 48.1% |
 | 520 | coverage | HBUS yapp_mem data coverage: 0 accesses sampled, coverage 0.0% |
-| 520 | reference |  |
-| 520 | scoreboard |  |
+| 520 | reference | --- Reference model report --- · forwarded to scoreboard : 0 · dropped (router disabled) : 0 · dropped (oversized) : 0 · dropped (address 3) : 0 · counters parity/oversized/addr0..3 : 0 / 0 / 0 0 0 0 |
+| 520 | scoreboard | --- Scoreboard report --- · packets received : 0 · packets matched : 0 · packets mismatched: 0 · packets unexpected: 0 · packets to addr 3 : 0 · left in queue 0/1/2: 0 / 0 / 0 |
 | 520 | yapp driver | YAPP driver report: 0 packets sent |
 | 520 | coverage | YAPP gap coverage: 0 gaps sampled, coverage 0.0% |
 | 520 | yapp monitor | YAPP monitor report: 0 packets collected, 0 with bad parity |

@@ -1,6 +1,6 @@
 # Functional coverage
 
-The covergroups of every run, merged (`scripts/coverage_report.py`). How to read it: docs/components/coverage.md.
+The covergroups of every run, merged (`scripts/coverage_report.py`). How to read it: [../../docs/components/coverage.md](../../docs/components/coverage.md).
 
 ## Functional coverage: yapp_project_tb
 
