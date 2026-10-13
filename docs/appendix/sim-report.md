@@ -54,8 +54,8 @@ make sim-report ONLY=yapp_project                 # bundle: build/sim/report/ + 
 make sim-report ONLY=yapp_project OUT=yapp_project/regression   # refresh the committed report
 ```
 
-The report of the project (16 directed tests with 4 seeds and 4 random tests
-with 8, 96 runs) is committed in
+The report of the project (17 directed tests with 4 seeds and 4 random tests
+with 8, 100 runs) is committed in
 `yapp_project/regression/`, so the logs, timelines, waves and pictures can be
 read on GitHub or in the ZIP without running anything; `index.md` is the
 entry point.

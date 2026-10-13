@@ -21,6 +21,8 @@ flowchart LR
     MON -->|"item_collected_port"| GAP["gap_cov<br/>yapp_gap_coverage<br/>yapp_gap_cg"]
     MON -->|"item_collected_port"| REF["router_reference"]
     REF -->|"decision_out<br/>(router_decision)"| RC["coverage<br/>router_coverage<br/>router_cfg_cg"]
+    HM["hbus_monitor"] -->|"hbus_export"| REF
+    HM -->|"hbus_export"| HC["hbus_addr_cov · hbus_bits_cov<br/>hbus_data_cov · hbus_counter_cov"]
 ```
 
 | Collector (instance) | File | Covergroup | Samples |
@@ -28,6 +30,10 @@ flowchart LR
 | `tb.yapp.agent.pkt_cov` | `yapp_project/uvc/yapp/yapp_pkt_coverage.sv` | `yapp_pkt_cg` (Lab 10) | length, address, parity of every input packet |
 | `tb.yapp.agent.gap_cov` | `yapp_project/uvc/yapp/yapp_gap_coverage.sv` | `yapp_gap_cg` (ROUTE-04) | the gap before every packet, which the monitor writes into `packet_delay` |
 | `tb.router_module.coverage` | `yapp_project/uvc/router/router_coverage.sv` | `router_cfg_cg` (random tests) | maxpktsize, length vs maxpktsize, drop reason × parity, counter enables of every packet received while the router is on, from the reference's `router_decision` |
+| `tb.router_module.hbus_addr_cov` | `yapp_project/uvc/router/router_hbus_addr_coverage.sv` | `hbus_addr_cg` (COV-04) | the address of every HBUS access × read / write |
+| `tb.router_module.hbus_bits_cov` | `yapp_project/uvc/router/router_hbus_bits_coverage.sv` | `hbus_bits_cg` (COV-05) | every bit of every write to `ctrl_reg` / `en_reg` |
+| `tb.router_module.hbus_data_cov` | `yapp_project/uvc/router/router_hbus_data_coverage.sv` | `hbus_data_cg` (COV-06) | the byte of every access to `yapp_mem` × read / write |
+| `tb.router_module.hbus_counter_cov` | `yapp_project/uvc/router/router_hbus_counter_coverage.sv` | `hbus_counter_cg` (COV-07) | the value every counter read returned |
 
 Why not inside the monitor, as the Cadence lab writes it? The monitor's job is
 to observe and publish. A separate collector can be added, replaced (factory)
@@ -35,6 +41,30 @@ or left out without touching the monitor, a passive agent keeps it, and a
 collector can sample what *another* component decided (the reference model's
 drop reason), which the monitor never sees. The bins are the same, so the
 percentage is the same.
+
+## HBUS coverage
+
+The four HBUS collectors subscribe to `router_module_env.hbus_export`, next
+to the reference model. They live in the router module UVC, not in the HBUS
+UVC: the HBUS UVC is generic, the address map belongs to the router.
+
+| Covergroup | Coverpoints | Bins |
+|---|---|---|
+| `hbus_addr_cg` | `addr_cp`: the 9 registers, the 7 holes between them (`reg_hole[]`: 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f), first / middle / last byte of `yapp_pkt_mem` (0x1010..0x104f), of the unmapped range 0x1050..0x10ff and of `yapp_mem` (0x1100..0x11ff); `rw_cp`: read, write | 25 + 2, cross `addr_x_rw` 50 |
+| `hbus_bits_cg` | sampled once per bit of every write to `ctrl_reg` / `en_reg`: `reg_cp` (ctrl, en) × `bit_cp` (`b[0..7]`) × `val_cp` (0, 1) | cross 32 |
+| `hbus_data_cg` | accesses to `yapp_mem`: `rw_cp` × `pattern_cp` (0x00, 0xff, 0x55, 0xaa, other) | cross 10 |
+| `hbus_counter_cg` | reads of a counter: `counter_cp` (parity, oversized, addr0..addr3) × `value_cp` (0, 1..254, 255) | cross 18 |
+
+`hbus_sweep_test` (`router_hbus_sweep_mcseq`) closes them: it writes and reads
+every address of the window, reads the whole register window back after each
+write to a register, a hole or a read-only byte (so a write that lands on the
+wrong register is caught), walks the bits of `ctrl_reg` / `en_reg`, fills
+`yapp_mem` with the four patterns and a random value, and sends 1020
+two-byte bad-parity packets (oversized at `maxpktsize = 1`, so dropped) to
+take every counter to 255. Every read is checked by the reference model
+(`check_reads = 1`), and the test fails unless the four covergroups reach
+100 %. Making the RTL write `ctrl_reg` on a write to the hole 0x1002 makes it
+fail with `HBUS read 0x1000 returned 0x00, the model expects 0xaa`.
 
 ## The requirements (Lab 10)
 

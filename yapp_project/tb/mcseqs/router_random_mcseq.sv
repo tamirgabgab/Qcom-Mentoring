@@ -50,7 +50,6 @@ class router_random_mcseq extends router_mcseq_base;
   int total_packets;
   int num_bursts;
   int num_storms;
-  int num_reads;
 
   `uvm_object_utils(router_random_mcseq)
 
@@ -65,12 +64,6 @@ class router_random_mcseq extends router_mcseq_base;
 
   // Every register, then yapp_pkt_mem[0..mem_size]
   extern task final_reads();
-
-  extern task hbus_write(bit [15:0] addr, bit [7:0] data);
-  extern task hbus_read(bit [15:0] addr, output bit [7:0] data);
-
-  // A [TEST] STAGE line, as base_test::stage() prints it
-  extern function void stage(string what);
 
 endclass : router_random_mcseq
 
@@ -229,30 +222,3 @@ task router_random_mcseq::final_reads();
     hbus_read(16'h1010 + 16'(i), data);
   end
 endtask : final_reads
-
-//------------------------------------------------------------------------------
-task router_random_mcseq::hbus_write(bit [15:0] addr, bit [7:0] data);
-  hbus_write_seq wr;
-  wr = hbus_write_seq::type_id::create("wr");
-  if (!wr.randomize() with { addr == local::addr; data == local::data; }) begin
-    `uvm_error(get_type_name(), "hbus_write_seq.randomize() failed")
-  end
-  wr.start(p_sequencer.hbus_seqr, this);
-endtask : hbus_write
-
-//------------------------------------------------------------------------------
-task router_random_mcseq::hbus_read(bit [15:0] addr, output bit [7:0] data);
-  hbus_read_seq rd;
-  rd = hbus_read_seq::type_id::create("rd");
-  if (!rd.randomize() with { addr == local::addr; }) begin
-    `uvm_error(get_type_name(), "hbus_read_seq.randomize() failed")
-  end
-  rd.start(p_sequencer.hbus_seqr, this);
-  data = rd.data;
-  num_reads++;
-endtask : hbus_read
-
-//------------------------------------------------------------------------------
-function void router_random_mcseq::stage(string what);
-  `uvm_info("TEST", {"STAGE: ", what}, UVM_LOW)
-endfunction : stage

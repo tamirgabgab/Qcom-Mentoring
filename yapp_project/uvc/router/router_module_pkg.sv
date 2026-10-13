@@ -5,6 +5,8 @@
 //   router_decision         what the reference decided for one packet
 //   router_reference        register-aware packet filter (9B), full model
 //   router_coverage         coverage of the configuration the packets met
+//   router_hbus_*_coverage  coverage of the HBUS accesses: address map, register
+//                           bits, yapp_mem data, counter values
 //   router_module_env       env with top-level exports (9B/9C)
 //   router_fifo_scoreboard  alternative scoreboard on analysis FIFOs (9D)
 //
@@ -26,6 +28,10 @@ package router_module_pkg;
   `include "router_decision.sv"
   `include "router_reference.sv"
   `include "router_coverage.sv"
+  `include "router_hbus_addr_coverage.sv"
+  `include "router_hbus_bits_coverage.sv"
+  `include "router_hbus_data_coverage.sv"
+  `include "router_hbus_counter_coverage.sv"
   `include "router_module_env.sv"
   `include "router_fifo_scoreboard.sv"
 

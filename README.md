@@ -276,7 +276,8 @@ yapp_project/                     the complete project — the source of truth
     router/                         router module UVC: router_scoreboard, router_reference (a full model of the
                                     registers and memories; checks every HBUS read with check_reads), router_module_env,
                                     router_fifo_scoreboard (Lab 9D), packet_compare, router_decision and
-                                    router_coverage (router_cfg_cg, a subscriber of the reference's decision_out)
+                                    router_coverage (router_cfg_cg, a subscriber of the reference's decision_out),
+                                    router_hbus_{addr,bits,data,counter}_coverage (the HBUS collectors on hbus_export)
   tb/                             the final testbench
     yapp_router_tracer.sv           testbench observer bound into the DUT: [DUT] log lines, +trace_csv signal trace
     yapp_router.sucl                Surfer command file: the router signals in 10 colored groups (scripts/surfer_layout.py)
@@ -285,19 +286,20 @@ yapp_project/                     the complete project — the source of truth
     hw_top.sv                       hardware side: the DUT, the five interface instances, clkgen
     router_tb.sv                    the environment: five UVC envs, virtual sequencer, module UVC, register model
     router_mcsequencer.sv           the virtual (multichannel) sequencer
-    mcseqs/                         router_mcseq_base, router_simple_mcseq, router_random_mcseq (the random scenario)
+    mcseqs/                         router_mcseq_base, router_simple_mcseq, router_random_mcseq (the random scenario),
+                                    router_hbus_sweep_mcseq (every HBUS address, counters to 255)
     tests/                          base_test, uvm_reset_test, uvm_mem_walk_test, reg_access_test,
                                     reg_function_test, reg_function_check_test, reg_introspection_test,
                                     and the test-plan tests: router_disable_test, router_filter_test,
                                     pkt_mem_test, reg_bit_walk_test, hbus_protocol_test,
                                     backpressure_test, parity_error_test (+ error_pulse_checker),
-                                    counter_wrap_test, back_to_back_test,
+                                    counter_wrap_test, back_to_back_test, hbus_sweep_test,
                                     and the random tests: random_test, random_config_test,
                                     random_backpressure_test, random_parity_test
     reg/                            the register model: one class per register / memory, yapp_regs_c, yapp_router_regs_t
     yapp_router_reg_pkg.sv          the register-model package (includes reg/)
     run.f, Makefile                 `make run TEST=…`
-  regression/                     GENERATED report of the last project regression (16 directed tests x 4 seeds,
+  regression/                     GENERATED report of the last project regression (17 directed tests x 4 seeds,
                                   4 random tests x 8 seeds, Verilator):
                                   index.md, all_logs.log, one folder per run with the log, timeline, waves, pictures,
                                   coverage.md / coverage.json (the merged functional coverage), merged.dat / .info
@@ -498,8 +500,8 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Verification status
 
-Every lab and every test **runs on Verilator 5.052** and passes: 30 test classes
-over 18 benches plus one `INJECT_ERROR` build, 158 runs (`make regress`: one seed
+Every lab and every test **runs on Verilator 5.052** and passes: 31 test classes
+over 18 benches plus one `INJECT_ERROR` build, 162 runs (`make regress`: one seed
 per lab test, 4 per directed project test, 8 per random test; the **sim**
 workflow repeats it on every push, one job per lab). The first runs found two
 real bugs that slang could not see -- `set_parity()` left about half of the
@@ -511,8 +513,11 @@ now gives each its own. Highlights: `coverage_test` closes `yapp_pkt_cg` at
 100%, `backpressure_test` matches all packets while `in_suspend` toggles,
 `random_parity_test` sees one `error` pulse per bad packet with up to three
 owed at once, and the reference model checks every HBUS read of the random
-tests. Merged over the project's 96 runs, the functional coverage is at 100%
-(57 of 57 bins of `yapp_pkt_cg`, `yapp_gap_cg` and `router_cfg_cg`). The project's 96 runs with waves form the regression report described
+tests. Merged over the project's 100 runs, the functional coverage is at 100%:
+the 57 bins of `yapp_pkt_cg`, `yapp_gap_cg` and `router_cfg_cg`, and the HBUS
+covergroups (address map, register bits, `yapp_mem` patterns, counter values)
+that `hbus_sweep_test` closes while the reference model checks every read. The
+project's 100 runs with waves form the regression report described
 in [`docs/appendix/sim-report.md`](docs/appendix/sim-report.md).
 
 Cadence Xcelium itself has still not run the code: four-state behaviour (the

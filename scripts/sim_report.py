@@ -74,6 +74,7 @@ WHO = [
     (re.compile(r"\.err_chk$"),                    "error checker"),
     (re.compile(r"\.yapp\.agent\.(pkt|gap)_cov$"),  "coverage"),
     (re.compile(r"\.router_module\.coverage$"),   "coverage"),
+    (re.compile(r"\.router_module\.hbus_\w+_cov$"), "coverage"),
 ]
 
 

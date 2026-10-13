@@ -24,10 +24,10 @@ def run_all(m, model_json, html):
 
     expect(len(cls) >= 80, f"expected >= 80 classes, got {len(cls)}")
     expect(not m["unresolved"], f"unresolved connections: {m['unresolved']}")
-    # connect() calls: router_tb 5 + router_module_env 7 (6 + the coverage collector) + fifo_sb variant (5 in router_tb + 5 internal)
+    # connect() calls: router_tb 5 + router_module_env 11 (6 + the 5 coverage collectors) + fifo_sb variant (5 in router_tb + 5 internal)
     by_class = Counter(e.get("in_class") for e in E if e["kind"] == "connect")
     expect(by_class["router_tb"] == 10, f"router_tb connects: {by_class['router_tb']} (5 primary + 5 lab09d)")
-    expect(by_class["router_module_env"] == 7, f"router_module_env connects: {by_class['router_module_env']}")
+    expect(by_class["router_module_env"] == 11, f"router_module_env connects: {by_class['router_module_env']}")
     expect(by_class["router_fifo_scoreboard"] == 5, f"router_fifo_scoreboard connects: {by_class['router_fifo_scoreboard']}")
     expect(kinds["get"] == 5, f"get edges: {kinds['get']}")
     expect(kinds["seq_item"] == 6, f"seq_item edges: {kinds['seq_item']} (yapp, hbus, chan x3, clk_rst)")

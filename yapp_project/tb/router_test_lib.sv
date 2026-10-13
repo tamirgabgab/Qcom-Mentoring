@@ -34,3 +34,4 @@
 `include "tests/random_config_test.sv"
 `include "tests/random_backpressure_test.sv"
 `include "tests/random_parity_test.sv"
+`include "tests/hbus_sweep_test.sv"

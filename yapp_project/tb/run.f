@@ -45,7 +45,7 @@ yapp_router_tracer.sv          // testbench observer bound into the DUT: [DUT] e
 //        reg_function_test | reg_function_check_test | reg_introspection_test |
 //        router_disable_test | router_filter_test | pkt_mem_test | reg_bit_walk_test |
 //        hbus_protocol_test | backpressure_test | parity_error_test | counter_wrap_test |
-//        back_to_back_test | random_test | random_config_test | random_backpressure_test |
+//        back_to_back_test | hbus_sweep_test | random_test | random_config_test | random_backpressure_test |
 //        random_parity_test   (docs/test-plan.md, docs/components/random-tests.md)
 +UVM_TESTNAME=reg_function_test
 +UVM_VERBOSITY=UVM_MEDIUM       // one line per event; UVM_HIGH adds the full packet tables

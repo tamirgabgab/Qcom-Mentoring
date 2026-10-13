@@ -92,6 +92,12 @@ lab_overrides:
   yapp_pkt_coverage: "10"
   yapp_gap_coverage: "TP"
   router_coverage: "TP"
+  router_hbus_addr_coverage: "TP"
+  router_hbus_bits_coverage: "TP"
+  router_hbus_data_coverage: "TP"
+  router_hbus_counter_coverage: "TP"
+  router_hbus_sweep_mcseq: "TP"
+  hbus_sweep_test: "TP"
   router_decision: "TP"
   router_reason_e: "TP"
   # provided UVCs appear with the integration lab
@@ -295,8 +301,20 @@ classes:
       A `uvm_subscriber #(router_decision)` on `router_reference.decision_out`. `report_phase`
       prints the percentage and a breakdown counted by hand (Verilator has no per-coverpoint
       `get_inst_coverage()`). Informative: no test fails on it.
+  router_hbus_addr_coverage:
+    summary: "Coverage collector of the HBUS address map: hbus_addr_cg (every register, every hole between them, first / middle / last byte of yapp_pkt_mem, the unmapped range and yapp_mem) x read / write."
+    description: |
+      A `uvm_subscriber #(hbus_transaction)` on `router_module_env.hbus_export`, next to the
+      reference model. It belongs to the router module UVC, not to the HBUS UVC: the HBUS UVC
+      is generic, the address map is the router's.
+  router_hbus_bits_coverage:
+    summary: "Coverage collector of the read-write registers: hbus_bits_cg, every bit of ctrl_reg and en_reg written as 0 and as 1."
+  router_hbus_data_coverage:
+    summary: "Coverage collector of yapp_mem: hbus_data_cg, reads and writes of 0x00, 0xff, 0x55, 0xaa and any other byte."
+  router_hbus_counter_coverage:
+    summary: "Coverage collector of the counter reads: hbus_counter_cg, each of the six counters read at 0, in between and at 255."
   router_module_env:
-    summary: "The router module UVC: reference + scoreboard + coverage, with exports as the only connection points."
+    summary: "The router module UVC: reference + scoreboard + coverage collectors, with exports as the only connection points."
   router_fifo_scoreboard:
     summary: "Lab 9D: the same checks built on uvm_tlm_analysis_fifo and blocking get() in run_phase threads."
   # ------------------------------------------------------- Testbench & tests
@@ -310,11 +328,13 @@ classes:
   router_mcsequencer:
     summary: "Virtual sequencer: handles to the HBUS and YAPP sequencers, no items of its own."
   router_mcseq_base:
-    summary: "Base of the multichannel sequences; `uvm_declare_p_sequencer(router_mcsequencer)`."
+    summary: "Base of the multichannel sequences; `uvm_declare_p_sequencer(router_mcsequencer)`, and the shared helpers hbus_write(), hbus_read() and stage()."
   router_simple_mcseq:
     summary: "Programs maxpktsize = 20, sends 6 short packets, then maxpktsize = 63 and 6 random packets."
   router_random_mcseq:
     summary: "Random tests: 10..100 packets in bursts, a random configuration before each, random HBUS reads, every register read at the end."
+  router_hbus_sweep_mcseq:
+    summary: "Every HBUS address written and read (registers, holes, both memories), walking bits, yapp_mem patterns, 1020 packets that take the counters to 255."
   base_test:
     summary: "Builds router_tb, sets the clock/reset and channel default sequences, enables recording."
     description: |
@@ -351,6 +371,7 @@ classes:
   random_config_test:  {summary: "Random: many short bursts under extreme configurations (maxpktsize 0/1/62/63, router off, mixed counter enables)."}
   random_backpressure_test: {summary: "Random: slow and stalling receivers against long back-to-back packets; no byte lost or reordered."}
   random_parity_test:  {summary: "Random: bad parity on forwarded and dropped packets, storms of overlapping bad packets -- one error pulse each."}
+  hbus_sweep_test:     {summary: "Test plan: every HBUS address read and written, every RW bit 0 and 1, yapp_mem patterns, counters at 0 / mid / 255 -- HBUS coverage at 100 %."}
   # ---------------------------------------------------------- Register model
   yapp_router_regs_t: {summary: "Top register block: default_map with the yapp_regs sub-block at 0x1000."}
   yapp_regs_c: {summary: "The register file: ctrl_reg, en_reg, six RO counters, mem_size_reg, two memories."}
@@ -760,6 +781,21 @@ tests:
       - {k: check,    t: "parity counter",     d: "parity_err_cnt_reg against the reference model, with its enable bit"}
     expected:
       - "`error pulse report: N bad packets, N pulses, 0 outside 1..10 cycles, at most k owed at once` with k of 2 or more; `[DUT] ERROR pulse ... (1 more owed)` lines."
+  hbus_sweep_test:
+    purpose: "Test plan: the HBUS side of the coverage -- every address of the router read and written, checked against the reference model, until the four HBUS collectors reach 100 %."
+    stages:
+      - {k: config,   t: "check_reads = 1",    d: "router_reference compares every HBUS read with its model"}
+      - {k: stimulus, t: "1 packet",           d: "20 bytes to address 0, so yapp_pkt_mem holds known bytes"}
+      - {k: check,    t: "0x1000..0x100f",     d: "registers and holes: write 0x00 / 0xff / 0x55 / 0xaa, read the whole window back after each write"}
+      - {k: check,    t: "walking bits",       d: "ctrl_reg and en_reg: walking one and walking zero"}
+      - {k: check,    t: "yapp_pkt_mem",       d: "every byte written (read-only): the reads still return the packet"}
+      - {k: check,    t: "0x1050..0x10ff",     d: "edges and 6 addresses in between: writes ignored, reads 0"}
+      - {k: check,    t: "yapp_mem",           d: "every byte written and read back with 0x00, 0xff, 0x55, 0xaa and a random value"}
+      - {k: stimulus, t: "1020 packets",       d: "maxpktsize = 1, 2-byte packets with bad parity (dropped); en_reg 0x17 / 0x21 / 0x41 / 0x81, 255 to each address"}
+      - {k: check,    t: "counters",           d: "the six counters read before, after 100 and after 255 packets: 0, in between, 255"}
+      - {k: check,    t: "coverage",           d: "hbus_addr_cg, hbus_bits_cg, hbus_data_cg, hbus_counter_cg all at 100 %"}
+    expected:
+      - "`STAGE: done: 3585 HBUS reads checked against the model, 0 mismatches`; `HBUS address map coverage 100%` and likewise for the bits, the data patterns and the counter values."
 
 # ---------------------------------------------------------------------------
 # The verification plan, feature by feature, page by page of the course's DUT
@@ -948,7 +984,7 @@ plan:
         title: "Unmapped addresses read 0x00 and ignore writes"
         stimulus: "Write 0xa5 then read 0x1002, 0x1003, 0x1007, 0x1008, 0x100c, 0x100e, 0x100f and 0x1050 with raw HBUS sequences."
         check: "Every read returns 0x00."
-        tests: [hbus_protocol_test, random_test]
+        tests: [hbus_protocol_test, random_test, hbus_sweep_test]
         status: covered
       - id: REG-06
         title: "mem_size_reg holds the payload length of the last packet"
@@ -1039,7 +1075,7 @@ plan:
         title: "Counter overflow after 255 packets"
         stimulus: "257 one-byte packets to address 0 with every counter enabled."
         check: "addr0_cnt_reg reads 255 after 255 packets, 0 after the 256th (it wraps, it does not saturate), 1 after the 257th."
-        tests: [counter_wrap_test]
+        tests: [counter_wrap_test, hbus_sweep_test]
         status: covered
         note: "The specification is silent; wrapping is the decision recorded in dut/spec.md. Every counter is the same `+ 8'd1` in yapp_hbus_regs, so one counter stands for all six."
   - id: MEM
@@ -1058,7 +1094,7 @@ plan:
         title: "yapp_pkt_mem is read-only"
         stimulus: "A raw HBUS write to 0x1010 with the inverted header."
         check: "yapp_pkt_mem[0] still reads the header."
-        tests: [pkt_mem_test]
+        tests: [pkt_mem_test, hbus_sweep_test]
         status: covered
       - id: MEM-03
         title: "A dropped packet is still stored"
@@ -1143,7 +1179,7 @@ plan:
     title: "Functional coverage"
     spec: "Lab 10 p. 47 -- REQ1, REQ2, REQ3"
     doc: labs/lab10.md
-    summary: "The coverage model in yapp_pkt_coverage (a subscriber of the YAPP monitor): length buckets, every address including the illegal one, and every length to every legal address with bad parity."
+    summary: "The coverage models: yapp_pkt_coverage (Lab 10: length buckets, every address including the illegal one, every length to every legal address with bad parity) and the HBUS collectors of the router module (address map, register bits, yapp_mem data, counter values)."
     items:
       - id: COV-01
         title: "REQ1: all packet lengths, bucketed"
@@ -1165,6 +1201,34 @@ plan:
         check: "The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins."
         coverage: "len_x_addr_x_parity"
         tests: [coverage_test]
+        status: covered
+      - id: COV-04
+        title: "HBUS: every address of the router read and written"
+        stimulus: "router_hbus_sweep_mcseq: every address 0x1000..0x100f, every byte of yapp_pkt_mem and yapp_mem, the edges and some middle addresses of 0x1050..0x10ff."
+        check: "router_reference checks every read (check_reads = 1): read-only and unmapped addresses ignore writes, the register window is read back after each write."
+        coverage: "hbus_addr_cg: addr_cp (9 registers, 7 holes, first / middle / last of yapp_pkt_mem, the unmapped range and yapp_mem) x rw_cp"
+        tests: [hbus_sweep_test, random_test]
+        status: covered
+      - id: COV-05
+        title: "HBUS: every bit of ctrl_reg and en_reg written as 0 and as 1"
+        stimulus: "Patterns 0x00, 0xff, 0x55, 0xaa and walking one / walking zero on both registers."
+        check: "Each write read back and compared with the model."
+        coverage: "hbus_bits_cg: reg_cp x bit_cp[0:7] x val_cp"
+        tests: [hbus_sweep_test, reg_bit_walk_test]
+        status: covered
+      - id: COV-06
+        title: "HBUS: data patterns in yapp_mem"
+        stimulus: "Every byte of yapp_mem written and read back with 0x00, 0xff, 0x55, 0xaa and a random value."
+        check: "Every read equals what was written (reference model)."
+        coverage: "hbus_data_cg: rw_cp x pattern_cp"
+        tests: [hbus_sweep_test]
+        status: covered
+      - id: COV-07
+        title: "HBUS: every counter read at 0, in between and at 255"
+        stimulus: "maxpktsize = 1 and 2-byte bad-parity packets (oversized, dropped): 255 per address with the enables of the counters under test."
+        check: "Every counter read compared with the reference model (enables, wrap)."
+        coverage: "hbus_counter_cg: counter_cp x value_cp (0, 1..254, 255)"
+        tests: [hbus_sweep_test]
         status: covered
   - id: TB
     title: "Testbench mechanics"
