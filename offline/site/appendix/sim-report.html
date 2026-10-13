@@ -1,0 +1,2710 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Reference solutions, DUT and teaching material for the SystemVerilog/UVM YAPP router project">
+      
+      
+      
+      
+        <link rel="prev" href="verilator.html">
+      
+      
+        <link rel="next" href="unverified.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Logs, timelines and waves - YAPP Router — UVM Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="../assets/vendor/iframe-worker.js"></script>
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/extra.css">
+    
+      <link rel="stylesheet" href="../assets/project_map/sim.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reading-a-simulation-logs-timelines-and-waves" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="YAPP Router — UVM Course" class="md-header__button md-logo" aria-label="YAPP Router — UVM Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YAPP Router — UVM Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Logs, timelines and waves
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/tamirgabgab/Qcom-Mentoring" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tamirgabgab/Qcom-Mentoring
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="YAPP Router — UVM Course" class="md-nav__button md-logo" aria-label="YAPP Router — UVM Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YAPP Router — UVM Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/tamirgabgab/Qcom-Mentoring" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tamirgabgab/Qcom-Mentoring
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The DUT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    The DUT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dut/spec.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dut/register-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dut/rtl.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTL walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/big-picture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The big picture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/phases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phases and objections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/factory-config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Factory and configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/tlm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../components/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Component guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/packet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packet (sequence item)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/driver.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Driver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/sequences.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequencer and sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/monitor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/agent-env.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent and env
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/scoreboard.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scoreboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/reference-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference model and module UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/virtual-sequencer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Virtual sequencer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/register-model.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register model (RAL)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/random.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/random-tests.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-plan.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coverage-results.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coverage results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../labs/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab01.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — Stimulus model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab02.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — Test and testbench
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab03.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — A simple UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab04.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — Factories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab05.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — Sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab06.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Virtual interfaces and the DUT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab07.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Integrating UVCs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab08.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — Multichannel sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab09a.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9A — Scoreboard (TLM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab09b.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9B — Router module UVC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab09c.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9C — TLM exports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab09d.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9D — Analysis FIFOs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab10.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Functional coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab11a.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11A — Register model generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab11b.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11B — Register model integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/lab11c.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11C — Register tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files, classes, tests, sequences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="concept-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UVM concept → lab map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pitfalls.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="xrun.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    xrun options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="verilator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simulating with Verilator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logs, timelines and waves
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="sim-report.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Logs, timelines and waves
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-a-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-waves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The waves
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The waves">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-ready-signal-layout-for-surfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A ready signal layout for Surfer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-signals-to-look-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which signals to look at
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-one-test-by-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running one test by hand
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="unverified.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verification status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-a-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of a log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-waves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The waves
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The waves">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-ready-signal-layout-for-surfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A ready signal layout for Surfer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-signals-to-look-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which signals to look at
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-one-test-by-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running one test by hand
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="reading-a-simulation-logs-timelines-and-waves">Reading a simulation: logs, timelines and waves<a class="headerlink" href="#reading-a-simulation-logs-timelines-and-waves" title="Permanent link">&para;</a></h1>
+<p>Every run writes a log that tells its story in order: what the test is doing,
+what every component of the environment does with each packet, and what happens
+inside the router. <code>make sim-report</code> bundles the logs of a regression into one
+folder per run, with a timeline extracted from the log, the waves, and a few
+wave pictures of the moments worth looking at. This page explains the log
+lines, the report and how to get the waves into a viewer.</p>
+<h2 id="the-shape-of-a-log">The shape of a log<a class="headerlink" href="#the-shape-of-a-log" title="Permanent link">&para;</a></h2>
+<p>The project runs at <code>+UVM_VERBOSITY=UVM_MEDIUM</code> (set in <code>run.f</code>): one line per
+event, no packet tables. <code>UVM_HIGH</code> adds the full <code>Packet is</code> / <code>Packet
+collected</code> tables of the course and the HBUS lines of the DUT tracer.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>UVM_INFO tests/base_test.sv(94) @ 0: uvm_test_top [TEST] === backpressure_test  seed 1 ===
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>UVM_INFO tests/base_test.sv(99) @ 0: uvm_test_top [TEST] STAGE: 1. slow receivers (channel_rx_slow_seq): 6 packets of 40..63 bytes fill the 16-byte FIFOs
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>UVM_INFO ...yapp_router_tracer.sv(148) @ 50: reporter [DUT] RESET released: router_en=1 maxpktsize=63
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>UVM_INFO ...yapp_tx_driver.sv(76) @ 50: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #1: addr=2 len=55 parity=good delay=20
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>UVM_INFO ...yapp_router_tracer.sv(213) @ 265: reporter [DUT] IN  pkt #1 header: addr=2 len=55 -&gt; channel 2
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>UVM_INFO ...yapp_router_tracer.sv(251) @ 425: reporter [DUT] SUSPEND asserted: FIFO 2 full, byte 0x49 held (pkt #1)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>UVM_INFO ...yapp_router_tracer.sv(289) @ 565: reporter [DUT] OUT ch2 pkt #1 start: addr=2 len=55 (receiver waited 29 cycle(s))
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>UVM_INFO ...yapp_router_tracer.sv(257) @ 575: reporter [DUT] SUSPEND released after 15 cycle(s)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>UVM_INFO ...yapp_router_tracer.sv(228) @ 975: reporter [DUT] IN  pkt #1 complete: addr=2 len=55 parity=ok forwarded, 57 bytes in 72 cycles (held 15)
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>UVM_INFO ...yapp_tx_driver.sv(80) @ 980: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #1 accepted by the DUT
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>UVM_INFO ...router_scoreboard.sv(121) @ 1345: uvm_test_top.tb.router_module.scoreboard [router_scoreboard] ch2 pkt matched: addr=2 len=55 (1 matched so far)
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>UVM_INFO tests/base_test.sv(112) @ 6335: uvm_test_top [TEST] === backpressure_test  seed 1: PASSED (0 UVM_ERROR, 0 UVM_FATAL) ===
+</code></pre></div>
+<p>Three kinds of lines carry the story:</p>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Id</th>
+<th>Lines</th>
+<th>Where it is written</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The test</td>
+<td><code>[TEST]</code></td>
+<td><code>=== &lt;test&gt;  seed &lt;n&gt; ===</code> banner at the start, <code>STAGE: …</code> at every step of the test, <code>=== … PASSED/FAILED (…) ===</code> at the end</td>
+<td><code>base_test</code> (<code>stage()</code>, <code>start_of_simulation_phase</code>, <code>final_phase</code>); every test calls <code>stage()</code></td>
+</tr>
+<tr>
+<td>The router</td>
+<td><code>[DUT]</code></td>
+<td><code>RESET</code>, <code>IN pkt #n header / complete</code>, <code>SUSPEND asserted / released</code>, <code>OUT chX pkt #n start / done</code>, <code>ERROR pulse</code>, <code>CONFIG</code>; at <code>UVM_HIGH</code> also <code>HBUS write / read</code> with the register name and <code>FIFO x full / has room</code></td>
+<td><code>yapp_router_tracer</code>, a testbench module <strong>bound</strong> into the DUT (<code>yapp_project/tb/yapp_router_tracer.sv</code>); it watches the ports and the input FSM, the RTL is untouched</td>
+</tr>
+<tr>
+<td>The environment</td>
+<td>the component's type name, as in the course</td>
+<td><code>TX pkt #n: …</code> / <code>TX pkt #n accepted by the DUT</code> (driver), <code>RX pkt #n on the input: …</code> (monitor), <code>chX RX pkt #n: …</code> (channel monitor), <code>chX: packet consumed</code> (channel driver), <code>Executed WRITE/READ …</code> and <code>Collected …</code> (HBUS), <code>chX pkt matched: …</code> (scoreboard), <code>Packet forwarded / dropped …</code> (reference model), <code>Starting clock …</code> (clock and reset)</td>
+<td>the UVCs under <code>yapp_project/uvc/</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>[DUT]</code> lines are the ones that tell you what the hardware did, as opposed
+to what the environment sent or expected: a header that will be dropped says so
+(<code>-&gt; DROP (illegal address 3)</code>), a held byte names the full FIFO, a packet
+leaving a channel says how long the receiver kept it waiting, an error pulse
+says how many cycles after the bad packet it came.</p>
+<p>Every message with a number in it has a fixed format, so a script (or <code>grep</code>)
+can follow one packet from the driver (<code>TX pkt #3</code>) to the router (<code>IN pkt #3</code>),
+the channel (<code>OUT ch1 pkt #2</code>) and the scoreboard (<code>ch1 pkt matched</code>).</p>
+<h2 id="the-report">The report<a class="headerlink" href="#the-report" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>regress<span class="w"> </span><span class="nv">ONLY</span><span class="o">=</span>yapp_project<span class="w"> </span><span class="nv">WAVES</span><span class="o">=</span><span class="m">1</span><span class="w">           </span><span class="c1"># run, record waves and the signal trace</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>make<span class="w"> </span>sim-report<span class="w"> </span><span class="nv">ONLY</span><span class="o">=</span>yapp_project<span class="w">                 </span><span class="c1"># bundle: build/sim/report/ + regression_report.zip</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>make<span class="w"> </span>sim-report<span class="w"> </span><span class="nv">ONLY</span><span class="o">=</span>yapp_project<span class="w"> </span><span class="nv">OUT</span><span class="o">=</span>yapp_project/regression<span class="w">   </span><span class="c1"># refresh the committed report</span>
+</code></pre></div>
+<p>The report of the project (17 directed tests with 4 seeds and 4 random tests
+with 8, 100 runs) is committed in
+<code>yapp_project/regression/</code>, so the logs, timelines, waves and pictures can be
+read on GitHub or in the ZIP without running anything; <code>index.md</code> is the
+entry point.</p>
+<p><code>scripts/sim_report.py</code> reads <code>build/sim/&lt;bench&gt;/logs/&lt;test&gt;_s&lt;seed&gt;.log</code> and
+writes <code>build/sim/report/</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>report/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  index.md                      every run: result, packets in / forwarded / dropped,
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>                                packets out per channel, suspends, errors, link
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  all_logs.log                  every log in one file, each under a banner
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  coverage.md                   the functional coverage merged over every run: holes,
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                                every bin with its hits and tests, what each test adds
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  coverage.json                 the same data (the site page and the project map read it)
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  coverage_html/&lt;bench&gt;/        genhtml: the covergroup sources with a count per bin
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                                (docs/coverage/&lt;bench&gt;/ for the committed report)
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  yapp_project_tb/
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    merged.dat, merged.info     the merged coverage database (verilator_coverage, lcov)
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    backpressure_test_s1/
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>      backpressure_test_s1.log  the log, named after the test and the seed
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>      timeline.md               summary · stages · pictures · every event in order
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>      timeline.csv              the same events: time, severity, who, id, event
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>      backpressure_test_s1.fst  the waves
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>      signals.csv               the per-cycle signal trace (see below)
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>      wave_*.svg                the pictures
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    backpressure_test_s2/
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    ...
+</code></pre></div>
+<p><code>timeline.md</code> starts with the verdict and a summary counted from the log
+(packets sent, forwarded, dropped and why, packets out per channel, scoreboard
+matches, back-pressure events, error pulses, HBUS accesses), lists the stages
+of the test with their times, shows the pictures, and ends with the full
+timeline: one row per event, <code>UVM_ERROR</code> rows marked.</p>
+<p><code>coverage.md</code> comes from the coverage database every run writes
+(<code>build/sim/&lt;bench&gt;/coverage/&lt;test&gt;_s&lt;seed&gt;.dat</code>); how to read it is in
+<a href="../components/coverage.html#seeing-the-results-verilator">Functional coverage</a>.</p>
+<h2 id="the-pictures">The pictures<a class="headerlink" href="#the-pictures" title="Permanent link">&para;</a></h2>
+<p>With <code>WAVES=1</code> the tracer also writes <code>trace/&lt;test&gt;_s&lt;seed&gt;.csv</code>: one row per
+clock cycle, sampled on the falling edge, with the input port, the three
+channels, the HBUS port, <code>error</code>, the live configuration and the state of the
+input FSM. <code>sim_report.py</code> finds the first occurrence of each interesting event
+in the log and draws a window of cycles around it with the same SVG drawer as
+the timing diagrams of the <a href="../dut/spec.html">specification</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Picture</th>
+<th>When it is drawn</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wave_reset.svg</code></td>
+<td>always</td>
+<td>reset, the first idle cycles, <code>router_en</code> and <code>maxpktsize</code> after reset</td>
+</tr>
+<tr>
+<td><code>wave_first_packet_in.svg</code></td>
+<td>a packet entered the router</td>
+<td>header, payload and parity on <code>in_data</code> with their <code>in_phase</code> (HDR / PAY / PAR), <code>in_suspend</code>, the input FSM state, the target FIFO filling up</td>
+</tr>
+<tr>
+<td><code>wave_first_packet_out.svg</code></td>
+<td>a packet left on a channel</td>
+<td><code>data_x</code>, <code>data_vld_x</code>, the receiver's <code>suspend_x</code></td>
+</tr>
+<tr>
+<td><code>wave_first_suspend.svg</code></td>
+<td><code>in_suspend</code> rose</td>
+<td>the held byte on <code>in_data</code>, the full FIFO, the channel draining it</td>
+</tr>
+<tr>
+<td><code>wave_first_error_pulse.svg</code></td>
+<td><code>error</code> pulsed</td>
+<td>the end of the bad-parity packet and the pulse 1..10 cycles later</td>
+</tr>
+<tr>
+<td><code>wave_first_hbus_write.svg</code>, <code>wave_first_hbus_read.svg</code></td>
+<td>the host port was used</td>
+<td><code>hen</code>, <code>hwr_rd</code>, <code>haddr</code>, <code>hdata</code> for one write and one read</td>
+</tr>
+</tbody>
+</table>
+<p>Testbench-driven signals are drawn changing on the falling edge, DUT outputs on
+the rising edge, exactly as the protocol works. A window is at most 30 cycles;
+a longer packet is cut and the note under the picture says so.</p>
+<p>Below, the first packet of <code>backpressure_test</code> (seed 1): the receiver is slow,
+the FIFO of channel 2 fills up and the router holds the driver with <code>in_suspend</code>.</p>
+<p><img alt="first back-pressure" src="../assets/sim/wave_first_suspend.svg" /></p>
+<p>And the same packet leaving the router on channel 2:</p>
+<p><img alt="first packet out" src="../assets/sim/wave_first_packet_out.svg" /></p>
+<h2 id="the-waves">The waves<a class="headerlink" href="#the-waves" title="Permanent link">&para;</a></h2>
+<p><code>&lt;test&gt;_s&lt;seed&gt;.fst</code> is the complete design, every signal. Open it with</p>
+<ul>
+<li><strong>GTKWave</strong> (Windows, Linux, macOS): <code>gtkwave backpressure_test_s1.fst</code>,
+  then drag <code>hw_top.in0</code>, <code>hw_top.dut</code> and <code>hw_top.ch2</code> into the viewer. The
+  <code>[DUT]</code> times of <code>timeline.md</code> are the rising edges to jump to.</li>
+<li><strong>Surfer</strong> (<code>surfer file.fst</code>, also available as a web app), or the
+  <strong>VaporView</strong> extension of VS Code (installed in the Codespace): open the
+  file from the Explorer.</li>
+<li>From a lab directory, <code>make waves TEST=&lt;test&gt;</code> starts whichever of the two is
+  installed.</li>
+</ul>
+<p><code>signals.csv</code> is the same information for the port signals in a form a
+spreadsheet or a script can read: one row per cycle.</p>
+<h3 id="a-ready-signal-layout-for-surfer">A ready signal layout for Surfer<a class="headerlink" href="#a-ready-signal-layout-for-surfer" title="Permanent link">&para;</a></h3>
+<p><code>yapp_project/tb/yapp_router.sucl</code> is a Surfer command file that opens the
+signals of the router in ten groups, one color per group, buses in hex, the
+FSM state and <code>in_phase</code> by name, plus the two memories of the spec, folded.
+Variable names are full paths (<em>Settings → Variable names → Global</em>):</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Signals</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clock, reset</td>
+<td><code>clock</code>, <code>reset</code></td>
+<td><code>hw_top</code></td>
+</tr>
+<tr>
+<td>Input port</td>
+<td><code>in_data</code>, <code>in_data_vld</code>, <code>in_suspend</code>, <code>in_phase</code></td>
+<td><code>hw_top.in0</code>; <code>in_phase</code> from <code>hw_top.dut.u_tracer</code></td>
+</tr>
+<tr>
+<td>Input FSM</td>
+<td><code>state</code>, <code>cur_addr</code>, <code>cur_len</code>, <code>byte_cnt</code>, <code>cur_drop</code>, <code>fifo_push</code>, <code>fifo_full</code></td>
+<td><code>hw_top.dut.u_input_fsm</code></td>
+</tr>
+<tr>
+<td>FIFO fill</td>
+<td><code>ch0 count</code> … <code>ch2 count</code>: bytes waiting in each channel FIFO</td>
+<td><code>hw_top.dut.g_ch[c].u_ch.u_fifo.count</code></td>
+</tr>
+<tr>
+<td>Channel 0 / 1 / 2</td>
+<td><code>data</code>, <code>data_vld</code>, <code>suspend</code></td>
+<td><code>hw_top.ch0</code> … <code>ch2</code></td>
+</tr>
+<tr>
+<td>Error</td>
+<td><code>error</code>, <code>pkt_done</code>, <code>pulses owed</code> (<code>sched</code>: bit k = a pulse k cycles from now)</td>
+<td><code>hw_top.dut</code>, <code>u_error_timer</code></td>
+</tr>
+<tr>
+<td>HBUS</td>
+<td><code>hen</code>, <code>hwr_rd</code>, <code>haddr</code>, <code>hdata</code></td>
+<td><code>hw_top.hbus0</code></td>
+</tr>
+<tr>
+<td>Config, counters</td>
+<td><code>router_en</code>, <code>maxpktsize</code>, <code>addr0..3_cnt_reg</code>, <code>parity_err_cnt_reg</code>, <code>oversized_pkt_cnt_reg</code></td>
+<td><code>hw_top.dut</code>, <code>u_regs</code></td>
+</tr>
+<tr>
+<td>Packet memory (folded)</td>
+<td><code>[0]</code> … <code>[63]</code>: the last packet, header first (0x1010, RO)</td>
+<td><code>hw_top.dut.u_regs.yapp_pkt_mem</code></td>
+</tr>
+<tr>
+<td>Scratch memory (folded)</td>
+<td><code>[0]</code> … <code>[255]</code>: written and read over HBUS (0x1100, RW)</td>
+<td><code>hw_top.dut.u_regs.yapp_mem</code></td>
+</tr>
+</tbody>
+</table>
+<p>The memories are arrays, and Verilator leaves arrays of more than 32 elements
+out of the waves unless told otherwise: <code>scripts/sim.py</code> passes
+<code>--trace-max-array 256</code>, so <code>yapp_pkt_mem</code> (64 bytes) and <code>yapp_mem</code> (256
+bytes) are in every <code>.fst</code> recorded since. In Surfer they are scopes under
+<code>u_regs</code>, one variable per byte; a <code>.fst</code> recorded before has no memories.</p>
+<p>Three ways to use it:</p>
+<ul>
+<li><strong>One click.</strong> The <em>Waves</em> column of <code>yapp_project/regression/index.md</code> (and
+  the line under the result in every <code>timeline.md</code>) opens
+  <a href="https://app.surfer-project.org/">Surfer's web app</a> with that run's <code>.fst</code>
+  and the layout, both read from GitHub.</li>
+<li><strong>A local file in the web app or the desktop Surfer.</strong> Open the <code>.fst</code>, then
+  <em>File → Run command file...</em> and pick <code>yapp_router.sucl</code>. <em>File → Switch
+  file...</em> then moves to another test and keeps the list.</li>
+<li><strong>Command line:</strong> <code>surfer backpressure_test_s1.fst -c yapp_project/tb/yapp_router.sucl</code>.</li>
+<li><strong>With the view settings too:</strong> <code>yapp_project/tb/yapp_router.surf.ron</code> is the
+  same layout saved as a Surfer state, plus four settings no command can set:
+  <em>Focus highlight → Background</em>, <em>Hierarchy → Tree</em>, <em>Show hierarchy icons</em>
+  on, <em>Fill high values</em> off (and <em>Variable names → Global</em>). Open the <code>.fst</code>,
+  then <em>File → Load state...</em>; the state keeps the waves that are open. The web
+  app does not remember settings between visits, so this is the way to get
+  them back in one step.</li>
+</ul>
+<p>The first packet of <code>backpressure_test</code> (seed 1) in this layout: the header
+<code>de</code> (<code>HEADER</code>, one cycle) goes to channel 2, <code>ch2 count</code> climbs to 16, the
+FIFO is full and <code>in_suspend</code> holds byte <code>49</code>:</p>
+<p><img alt="Surfer with the YAPP router layout" src="../assets/sim/surfer_layout.png" /></p>
+<p>The layout is written by <code>scripts/surfer_layout.py</code> (<code>LAYOUT</code> at the top):
+edit it there and run <code>python3 scripts/surfer_layout.py</code> to rewrite the
+<code>.sucl</code> (<code>python3 scripts/surfer_layout.py --check &lt;file.fst&gt;</code> says whether every
+signal of the layout is in a recording: a signal that is missing does not just
+stay empty, the rows after it shift and the groups fall apart, so a renamed RTL
+signal must be renamed in <code>LAYOUT</code> too; <code>make sim-report</code> into the repository
+runs the same check). For the <code>.surf.ron</code>, run the new <code>.sucl</code> in Surfer, <em>File → Save
+state as...</em>, then <code>python3 scripts/surfer_layout.py --state &lt;saved file&gt;</code>
+(it puts the four settings of <code>STATE_SETTINGS</code> in). To keep your own
+arrangement after changing it in Surfer, use <em>File → Save state as...</em> and
+<em>File → Load state...</em> next time (open the <code>.fst</code> first; the state keeps the
+waves that are open and brings back the list).</p>
+<p>A <code>.sucl</code> or <code>.surf.ron</code> file is never dragged into the Surfer window: a
+dropped file is read as waves and fails with <code>UnknownFileFormat</code>.</p>
+<h3 id="which-signals-to-look-at">Which signals to look at<a class="headerlink" href="#which-signals-to-look-at" title="Permanent link">&para;</a></h3>
+<p>Following one packet from the driver to a channel (Surfer: click a scope in the
+tree, then the signals in the <em>Variables</em> list; <em>Format → Hex</em> on the buses):</p>
+<table>
+<thead>
+<tr>
+<th>Where</th>
+<th>Signals</th>
+<th>What they show</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hw_top.in0</code></td>
+<td><code>clock</code>, <code>in_data</code>, <code>in_data_vld</code>, <code>in_suspend</code></td>
+<td>what the YAPP driver puts on the input port (it changes the inputs on the <strong>falling</strong> edge)</td>
+</tr>
+<tr>
+<td><code>hw_top.dut.u_tracer</code></td>
+<td><code>in_phase</code></td>
+<td>what the byte now on <code>in_data</code> is: <code>IDLE</code>, <code>HEADER</code>, <code>PAYLOAD</code>, <code>PARITY</code>; changes with <code>in_data</code>, so <code>HEADER</code> lasts exactly the cycle of the header</td>
+</tr>
+<tr>
+<td><code>hw_top.dut.u_input_fsm</code></td>
+<td><code>state</code>, <code>cur_addr</code>, <code>cur_len</code>, <code>cur_drop</code>, <code>fifo_push</code>, <code>fifo_full</code></td>
+<td>what the router decided, on the <strong>rising</strong> edge that sampled each byte</td>
+</tr>
+<tr>
+<td><code>hw_top.ch0</code> … <code>ch2</code></td>
+<td><code>data</code>, <code>data_vld</code>, <code>suspend</code></td>
+<td>the packet leaving: the same bytes, in the same order, on the channel <code>addr</code> names</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why the FSM has no HEADER state.</strong> The FSM takes the header while it is in
+<code>IDLE</code>: on the rising edge where <code>in_data_vld</code> is high it latches <code>cur_addr</code> and
+<code>cur_len</code> from the header and moves to <code>PAYLOAD</code>. So <code>state</code> shows <code>PAYLOAD</code>
+half a cycle <em>before</em> the first payload byte is on the bus -- the testbench
+drives a byte on the falling edge and the router samples it on the next rising
+edge. A real HEADER state would cost a cycle per packet and change the
+protocol of the course; <code>in_phase</code> is the readable label, computed in the
+testbench (<code>yapp_router_tracer.sv</code>), with the RTL untouched.</p>
+<h2 id="running-one-test-by-hand">Running one test by hand<a class="headerlink" href="#running-one-test-by-hand" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>yapp_project/tb
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>make<span class="w"> </span>sim<span class="w"> </span><span class="nv">TEST</span><span class="o">=</span>parity_error_test<span class="w"> </span><span class="nv">SEED</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="nv">WAVES</span><span class="o">=</span><span class="m">1</span><span class="w">          </span><span class="c1"># log, waves, trace</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>make<span class="w"> </span>sim<span class="w"> </span><span class="nv">TEST</span><span class="o">=</span>parity_error_test<span class="w"> </span><span class="nv">SIM_OPTS</span><span class="o">=</span><span class="s2">"+UVM_VERBOSITY=UVM_HIGH"</span><span class="w">   </span><span class="c1"># with the packet tables</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>grep<span class="w"> </span><span class="s2">"\[DUT\]"</span><span class="w"> </span>../../build/sim/yapp_project_tb/logs/parity_error_test_s3.log
+</code></pre></div>
+<p>With Xcelium the same <code>[TEST]</code>, <code>[DUT]</code> and component lines appear in
+<code>xrun.log</code> (<code>make run TEST=…</code>); the seed in the banner comes from <code>+SVSEED</code>,
+the signal trace from <code>+trace_csv=&lt;file&gt;</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="verilator.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Simulating with Verilator">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Simulating with Verilator
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="unverified.html" class="md-footer__link md-footer__link--next" aria-label="Next: Verification status">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Verification status
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../assets/project_map/regmap.js"></script>
+      
+        <script src="../assets/project_map/sim.js"></script>
+      
+    
+  </body>
+</html>

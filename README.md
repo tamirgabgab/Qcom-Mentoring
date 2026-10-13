@@ -17,9 +17,11 @@ generated and checked from the same source code.
 · the [project map](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
 · the [labs](https://tamirgabgab.github.io/Qcom-Mentoring/labs/)
 
-**The course site on your own disk:** `make docs-offline` builds it into `build/offline/site/`
-(open `index.html`; search, diagrams and the project map work without a server or internet) and
-zips it as `build/QcomCourseSite.zip`. It needs `pip install mkdocs-material` and `npm`.
+**The course site on your own disk:** the whole site is committed in
+[`offline/site/`](offline/site/). Clone or download the repository and open
+`offline/site/index.html` in a browser: search, the Mermaid diagrams and the project map
+work from the folder, with no server and no internet. (From a downloaded zip: extract it
+first; a browser that opens `index.html` straight from inside the zip shows bare text.)
 
 ---
 
@@ -334,6 +336,7 @@ docs/                             the course site (MkDocs Material) — see mkdo
       model.json                    GENERATED model of the project (classes, instances, connections, scenes)
       export/                       GENERATED SVG / PNG of every map view
   downloads/yapp_project_map.html   GENERATED single-file offline map
+offline/site/                     GENERATED the course site as a folder that opens from disk (`make docs-offline`)
 scripts/
   lint.py                           elaborates a run.f with slang + the UVM source (`make lint`)
   get_uvm.sh                        fetches the Accellera UVM source (2020.3.1) into scripts/uvm_src/ (not committed)
@@ -346,6 +349,8 @@ scripts/
   sv_style.py                       the code-style checker / fixer (`make style-check`, `make style`)
   gen_waves.py                      renders the waveform SVGs and packet_structure.svg
   readme_shots.mjs                  takes the README screenshots with headless Chromium
+  build_offline_site.py             builds offline/site/ and build/QcomCourseSite.zip (`make docs-offline`)
+  mkdocs_offline_hooks.py           the MkDocs hooks of that build: Mermaid + search shim inside the site
   project_map/
     extract.py                      pyslang → classes, methods, modules, ports, connect() calls
     model.py                        + annotations.yaml → nodes, edges, TLM paths, source files
@@ -367,14 +372,17 @@ test_install/                     the UVM installation check
   lint.yml                          style check, slang lint of every run.f, project-map staleness check
   sim.yml                           Verilator regression: one job per simulation directory
   docs.yml                          builds the site and deploys it to GitHub Pages
+mkdocs.yml                        the site (GitHub Pages)
+mkdocs-offline.yml                the same site for offline/site/: page.html links, the offline plugin, no CDN
 .devcontainer/                    GitHub Codespaces: Verilator, UVM, a waveform viewer in the browser
-Makefile                          lint · style · run · run-project · sim · sim-project · regress · setup-sim · docs · serve · map · …
+Makefile                          lint · style · run · run-project · sim · sim-project · regress · setup-sim · docs · docs-offline · serve · map · …
 HANDOFF.md                        working notes for continuing the development (state, decisions, next steps)
 CLAUDE.md                         the conventions an AI assistant follows in this repository (points to HANDOFF.md)
 ```
 
 Files marked GENERATED are committed so that the site and the offline map
-never depend on the tooling; CI fails if they are out of date.
+never depend on the tooling; CI fails if they are out of date (except `offline/site/`, which
+CI does not check yet: rebuild it with `make docs-offline` after changing the docs).
 
 ---
 
@@ -415,6 +423,15 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Tooling and CI
 
+* **The site, online and offline.** `mkdocs.yml` builds the GitHub Pages site
+  (`make docs`, workflow `docs`). `make docs-offline` builds the same pages from
+  `mkdocs-offline.yml`, which inherits it: `use_directory_urls: false` and
+  Material's `offline` plugin so links and search work under `file://`, no
+  Google Fonts, and `scripts/mkdocs_offline_hooks.py` ships Mermaid and the
+  `iframe-worker` search shim inside the site instead of loading them from
+  unpkg.com (both are fetched once with `npm pack` into `build/offline_cache/`).
+  The result is `offline/site/` (committed) and `build/QcomCourseSite.zip`.
+  It needs `pip install mkdocs-material` and `npm`.
 * **Lint without a simulator.** `make lint` fetches the Accellera UVM source
   once and elaborates all 18 `run.f` files with slang (pyslang 12). It catches
   everything a compiler would; it cannot run the testbench.
