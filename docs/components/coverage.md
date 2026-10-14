@@ -20,12 +20,12 @@ collectors subscribe.
 
 ```mermaid
 flowchart LR
-    MON["yapp_tx_monitor"] -->|"item_collected_port"| PKT["pkt_cov<br/>yapp_pkt_coverage<br/>yapp_pkt_cg"]
-    MON -->|"item_collected_port"| GAP["gap_cov<br/>yapp_gap_coverage<br/>yapp_gap_cg"]
-    MON -->|"item_collected_port"| REF["router_reference"]
-    REF -->|"decision_out<br/>(router_decision)"| RC["coverage<br/>router_coverage<br/>router_cfg_cg"]
-    HM["hbus_monitor"] -->|"hbus_export"| REF
-    HM -->|"hbus_export"| HC["hbus_addr_cov · hbus_bits_cov<br/>hbus_data_cov · hbus_counter_cov"]
+    MON["yapp_tx_monitor"] -->|"m_item_collected_port"| PKT["m_pkt_cov<br/>yapp_pkt_coverage<br/>yapp_pkt_cg"]
+    MON -->|"m_item_collected_port"| GAP["m_gap_cov<br/>yapp_gap_coverage<br/>yapp_gap_cg"]
+    MON -->|"m_item_collected_port"| REF["router_reference"]
+    REF -->|"m_decision_out<br/>(router_decision)"| RC["m_coverage<br/>router_coverage<br/>router_cfg_cg"]
+    HM["hbus_monitor"] -->|"m_hbus_export"| REF
+    HM -->|"m_hbus_export"| HC["m_hbus_addr_cov · m_hbus_bits_cov<br/>m_hbus_data_cov · m_hbus_counter_cov"]
 ```
 
 | Collector (instance) | File | Covergroup | Samples |

@@ -11,10 +11,10 @@ on it starts sub-sequences on those handles.
 
 ```mermaid
 flowchart LR
-    T["router_simple_mcseq_test"] -->|"default_sequence"| MC["router_mcsequencer<br/>hbus_seqr, yapp_seqr"]
+    T["router_simple_mcseq_test"] -->|"default_sequence"| MC["router_mcsequencer<br/>m_hbus_seqr, m_yapp_seqr"]
     MS["router_simple_mcseq<br/>p_sequencer"] -.->|runs on| MC
-    MS -->|"hbus_small_seq.start(p_sequencer.hbus_seqr, this)"| H["hbus sequencer → driver → DUT registers"]
-    MS -->|"yapp_012.start(p_sequencer.yapp_seqr, this)"| Y["yapp sequencer → driver → DUT input"]
+    MS -->|"m_hbus_small_seq.start(p_sequencer.m_hbus_seqr, this)"| H["hbus sequencer → driver → DUT registers"]
+    MS -->|"m_yapp_012.start(p_sequencer.m_yapp_seqr, this)"| Y["yapp sequencer → driver → DUT input"]
 ```
 
 ## The sequencer

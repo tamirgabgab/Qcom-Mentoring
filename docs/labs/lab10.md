@@ -29,7 +29,7 @@ stimulus.
 
 ```mermaid
 flowchart LR
-    M["yapp_tx_monitor<br/>item_collected_port"] --> C["yapp_pkt_coverage<br/>(uvm_subscriber)<br/>write() → yapp_pkt_cg.sample()"]
+    M["yapp_tx_monitor<br/>m_item_collected_port"] --> C["yapp_pkt_coverage<br/>(uvm_subscriber)<br/>write() → yapp_pkt_cg.sample()"]
     M --> G["yapp_gap_coverage<br/>yapp_gap_cg"]
     M --> S["scoreboard, reference"]
 ```

@@ -14,8 +14,8 @@ rules and the current register values: the **reference model**.
 flowchart LR
     H["hbus monitor"] -->|"write_hbus: mirror every register,<br/>check every read"| R
     Y["yapp monitor"] -->|"write_yapp"| R
-    R["router_reference<br/>forward if enabled,<br/>len ≤ maxpktsize, addr ≠ 3;<br/>counters, memories"] -->|"yapp_valid_out"| S["router_scoreboard<br/>yapp_in"]
-    R -->|"decision_out"| C["router_coverage"]
+    R["router_reference<br/>forward if enabled,<br/>len ≤ m_maxpktsize, addr ≠ 3;<br/>counters, memories"] -->|"m_yapp_valid_out"| S["router_scoreboard<br/>m_yapp_in"]
+    R -->|"m_decision_out"| C["router_coverage"]
 ```
 
 ```systemverilog

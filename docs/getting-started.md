@@ -90,7 +90,9 @@ the packages include, but each of them only `include`s the class files of its su
 `endclass` come the constraint bodies under a `// <class> -- constraints` banner
 (`constraint yapp_packet::c_length { ... }`), then the method bodies under
 `// <class> -- method implementations`, as `function yapp_packet::set_parity();` or
-`task yapp_012_seq::body();`, each body preceded by a `//-----` delimiter line. Read the
+`task yapp_012_seq::body();`. Constraint and method bodies look alike: each is preceded
+by a `//-----` delimiter line (the first one after a banner excepted), opens on its own line
+and holds one statement per line, with one blank line between bodies. Read the
 prototypes to learn what a class does, scroll down to see how.
 
 The names follow fixed rules. Every class property starts with `m_` (`m_addr`, `m_length`,

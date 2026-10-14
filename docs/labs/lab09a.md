@@ -22,8 +22,8 @@ the router drops nothing.
 
 ```mermaid
 flowchart LR
-    Y["yapp monitor<br/>item_collected_port"] -->|"write_yapp()<br/>clone → pkt_q[addr]"| SB["router_scoreboard"]
-    C0["chan0 monitor<br/>item_collected_port"] -->|"write_chan0()<br/>pop pkt_q[0], compare"| SB
+    Y["yapp monitor<br/>m_item_collected_port"] -->|"write_yapp()<br/>clone → m_pkt_q[addr]"| SB["router_scoreboard"]
+    C0["chan0 monitor<br/>m_item_collected_port"] -->|"write_chan0()<br/>pop m_pkt_q[0], compare"| SB
     C1["chan1 monitor"] -->|"write_chan1()"| SB
     C2["chan2 monitor"] -->|"write_chan2()"| SB
 ```

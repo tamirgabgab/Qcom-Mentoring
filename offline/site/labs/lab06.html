@@ -2544,8 +2544,8 @@ database between them.</p>
 <pre class="mermaid"><code>flowchart LR
     subgraph tb_top["tb_top (UVM side)"]
         set["yapp_vif_config::set(null, &amp;quot;*.tb.yapp.*&amp;quot;, &amp;quot;vif&amp;quot;, hw_top.in0)"]
-        drv["driver&lt;br/&gt;vif.send_to_dut(...)"]
-        mon["monitor&lt;br/&gt;vif.collect_packets(...)"]
+        drv["driver&lt;br/&gt;m_vif.send_to_dut(...)"]
+        mon["monitor&lt;br/&gt;m_vif.collect_packets(...)"]
     end
     subgraph hw_top["hw_top (hardware side)"]
         clk["clkgen"]

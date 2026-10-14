@@ -37,17 +37,12 @@ m_agent     = yapp_tx_agent::type_id::create("agent", this);
 m_monitor   = yapp_tx_monitor::type_id::create("monitor", this);
 ```
 
-### 2. `short_yapp_packet` — end of `sv/yapp_packet.sv`
+### 2. `short_yapp_packet` — `sv/short_yapp_packet.sv`
+
+`c_no_addr2` is removed again in Lab 5.
 
 ```systemverilog
-class short_yapp_packet extends yapp_packet;
-  `uvm_object_utils(short_yapp_packet)
-  constraint c_short_length { m_length < 15; }
-  constraint c_no_addr2     { m_addr != 2'd2; }     // removed again in Lab 5!
-  function new(string name = "short_yapp_packet");
-    super.new(name);
-  endfunction
-endclass
+--8<-- "labs/lab04_factory/sv/short_yapp_packet.sv"
 ```
 
 ### 3. The tests — `tb/router_test_lib.sv`

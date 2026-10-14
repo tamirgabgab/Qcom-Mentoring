@@ -2370,7 +2370,7 @@ same call can go through the <strong>front door</strong> (real bus transactions,
 adapter and a sequencer) or the <strong>backdoor</strong> (direct access to the RTL
 variables through their HDL paths).</p>
 <pre class="mermaid"><code>flowchart LR
-    T["test&lt;br/&gt;regs.ctrl_reg.write / read / peek / poke"] --&gt; RM
+    T["test&lt;br/&gt;m_regs.ctrl_reg.write / read / peek / poke"] --&gt; RM
     subgraph RM["yapp_router_regs_t"]
         MAP["default_map&lt;br/&gt;base 0x1000"]
         BLK["router_yapp_regs : yapp_regs_c&lt;br/&gt;ctrl_reg, en_reg, counters,&lt;br/&gt;mem_size_reg, yapp_pkt_mem, yapp_mem"]

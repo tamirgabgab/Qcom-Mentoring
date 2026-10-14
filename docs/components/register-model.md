@@ -11,7 +11,7 @@ variables through their HDL paths).
 
 ```mermaid
 flowchart LR
-    T["test<br/>regs.ctrl_reg.write / read / peek / poke"] --> RM
+    T["test<br/>m_regs.ctrl_reg.write / read / peek / poke"] --> RM
     subgraph RM["yapp_router_regs_t"]
         MAP["default_map<br/>base 0x1000"]
         BLK["router_yapp_regs : yapp_regs_c<br/>ctrl_reg, en_reg, counters,<br/>mem_size_reg, yapp_pkt_mem, yapp_mem"]

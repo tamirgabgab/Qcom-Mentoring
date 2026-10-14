@@ -113,7 +113,7 @@ the [random tests](random-tests.md)) were written for the test plan.
 | objection in `pre_body` / `post_body` | `yapp_base_seq` | only root sequences have a starting phase; sub-sequences see `null` |
 | inline constraint | `yapp_012_seq` | `req.randomize() with { req.m_addr == 2'd0; }` |
 | nested sequence | `yapp_111_seq` | `m_seq_1.start(m_sequencer, this)` three times |
-| random **sequence** property | `yapp_repeat_addr_seq` | `rand bit [1:0] seq_addr;` randomized when the sequence is — two items share it |
+| random **sequence** property | `yapp_repeat_addr_seq` | `rand bit[1:0] m_seq_addr;` randomized when the sequence is — two items share it |
 | create / modify / send | `yapp_incr_payload_seq` | `randomize()`, edit, `set_parity()`, then `start_item` / `finish_item` |
 | constrained nesting | `six_yapp_seq` | `m_rnd_seq.randomize() with { m_rnd_seq.m_count == 6; }` before `rnd_seq.start(...)` |
 | switching a constraint off | `yapp_88_packets_seq`, `yapp_coverage_seq` | `req.c_addr_legal.constraint_mode(0)` to reach address 3 |

@@ -2334,7 +2334,7 @@ instead of signals. UVM has many flavours; the course uses four.</p>
 </ul>
 <h2 id="monitor-analysis-components-port-imp">Monitor → analysis components: port / imp<a class="headerlink" href="#monitor-analysis-components-port-imp" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-    MON["monitor&lt;br/&gt;uvm_analysis_port #(yapp_packet)&lt;br/&gt;item_collected_port.write(pkt)"] --&gt; IMP1["scoreboard&lt;br/&gt;uvm_analysis_imp_yapp&lt;br/&gt;write_yapp(pkt)"]
+    MON["monitor&lt;br/&gt;uvm_analysis_port #(yapp_packet)&lt;br/&gt;m_item_collected_port.write(pkt)"] --&gt; IMP1["scoreboard&lt;br/&gt;uvm_analysis_imp_yapp&lt;br/&gt;write_yapp(pkt)"]
     MON --&gt; IMP2["coverage collector&lt;br/&gt;uvm_analysis_imp&lt;br/&gt;write(pkt)"]</code></pre>
 <ul>
 <li>A <strong>port</strong> can be connected to any number of imps (0 included).
@@ -2363,8 +2363,8 @@ creates a fresh object per transaction, which is what Lab 9D requires.</p>
 </div>
 <h2 id="export-forwarding-a-connection-point">Export: forwarding a connection point<a class="headerlink" href="#export-forwarding-a-connection-point" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-    MON["yapp monitor&lt;br/&gt;port"] --&gt; EXP(("router_module_env&lt;br/&gt;yapp_export"))
-    EXP --&gt; IMP["reference&lt;br/&gt;yapp_in (imp)"]</code></pre>
+    MON["yapp monitor&lt;br/&gt;port"] --&gt; EXP(("router_module_env&lt;br/&gt;m_yapp_export"))
+    EXP --&gt; IMP["reference&lt;br/&gt;m_yapp_in (imp)"]</code></pre>
 <p>An <strong>export</strong> is a pass-through. It lets <code>router_module_env</code> show one set of
 connection points at its boundary while the imps stay inside the reference
 model and the scoreboard (Lab 9C). The testbench then connects

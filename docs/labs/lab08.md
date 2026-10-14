@@ -30,7 +30,7 @@ sequenceDiagram
     MC->>Y: yapp_012_seq
     MC->>H: hbus_large_packet_seq  (ctrl_reg=63)
     MC->>H: hbus_read_max_pkt_seq  → 63
-    MC->>Y: yapp_rnd_seq with count == 6
+    MC->>Y: yapp_rnd_seq with m_count == 6
 ```
 
 ## Solution

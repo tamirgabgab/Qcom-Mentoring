@@ -21,7 +21,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    MON["monitor<br/>uvm_analysis_port #(yapp_packet)<br/>item_collected_port.write(pkt)"] --> IMP1["scoreboard<br/>uvm_analysis_imp_yapp<br/>write_yapp(pkt)"]
+    MON["monitor<br/>uvm_analysis_port #(yapp_packet)<br/>m_item_collected_port.write(pkt)"] --> IMP1["scoreboard<br/>uvm_analysis_imp_yapp<br/>write_yapp(pkt)"]
     MON --> IMP2["coverage collector<br/>uvm_analysis_imp<br/>write(pkt)"]
 ```
 
@@ -54,8 +54,8 @@ class router_scoreboard extends uvm_scoreboard;
 
 ```mermaid
 flowchart LR
-    MON["yapp monitor<br/>port"] --> EXP(("router_module_env<br/>yapp_export"))
-    EXP --> IMP["reference<br/>yapp_in (imp)"]
+    MON["yapp monitor<br/>port"] --> EXP(("router_module_env<br/>m_yapp_export"))
+    EXP --> IMP["reference<br/>m_yapp_in (imp)"]
 ```
 
 An **export** is a pass-through. It lets `router_module_env` show one set of

@@ -504,7 +504,7 @@
         ]
        },
        {
-        "name": "m_oversized_cnt",
+        "name": "oversized_cnt",
         "line": 24,
         "hits": 703,
         "runs": 68,
@@ -610,7 +610,7 @@
         ]
        },
        {
-        "name": "m_mem_size",
+        "name": "mem_size",
         "line": 29,
         "hits": 752,
         "runs": 56,
@@ -1174,7 +1174,7 @@
         ]
        },
        {
-        "name": "m_mem_size_x_read",
+        "name": "mem_size_x_read",
         "line": 47,
         "hits": 724,
         "runs": 56,
@@ -1192,7 +1192,7 @@
         ]
        },
        {
-        "name": "m_mem_size_x_write",
+        "name": "mem_size_x_write",
         "line": 47,
         "hits": 28,
         "runs": 12,
@@ -1203,7 +1203,7 @@
         ]
        },
        {
-        "name": "m_oversized_cnt_x_read",
+        "name": "oversized_cnt_x_read",
         "line": 47,
         "hits": 675,
         "runs": 68,
@@ -1224,7 +1224,7 @@
         ]
        },
        {
-        "name": "m_oversized_cnt_x_write",
+        "name": "oversized_cnt_x_write",
         "line": 47,
         "hits": 28,
         "runs": 12,
@@ -1601,7 +1601,7 @@
       "line": 18,
       "bins": [
        {
-        "name": "m_ctrl_reg",
+        "name": "ctrl_reg",
         "line": 18,
         "hits": 2960,
         "runs": 60,
@@ -1620,7 +1620,7 @@
         ]
        },
        {
-        "name": "m_en_reg",
+        "name": "en_reg",
         "line": 19,
         "hits": 3184,
         "runs": 68,
@@ -1907,7 +1907,7 @@
       "line": 28,
       "bins": [
        {
-        "name": "m_ctrl_reg_x_b[0]_x_one",
+        "name": "ctrl_reg_x_b[0]_x_one",
         "line": 28,
         "hits": 191,
         "runs": 58,
@@ -1926,7 +1926,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[0]_x_zero",
+        "name": "ctrl_reg_x_b[0]_x_zero",
         "line": 28,
         "hits": 179,
         "runs": 45,
@@ -1942,7 +1942,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[1]_x_one",
+        "name": "ctrl_reg_x_b[1]_x_one",
         "line": 28,
         "hits": 202,
         "runs": 50,
@@ -1959,7 +1959,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[1]_x_zero",
+        "name": "ctrl_reg_x_b[1]_x_zero",
         "line": 28,
         "hits": 168,
         "runs": 52,
@@ -1976,7 +1976,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[2]_x_one",
+        "name": "ctrl_reg_x_b[2]_x_one",
         "line": 28,
         "hits": 204,
         "runs": 58,
@@ -1995,7 +1995,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[2]_x_zero",
+        "name": "ctrl_reg_x_b[2]_x_zero",
         "line": 28,
         "hits": 166,
         "runs": 45,
@@ -2011,7 +2011,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[3]_x_one",
+        "name": "ctrl_reg_x_b[3]_x_one",
         "line": 28,
         "hits": 201,
         "runs": 51,
@@ -2028,7 +2028,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[3]_x_zero",
+        "name": "ctrl_reg_x_b[3]_x_zero",
         "line": 28,
         "hits": 169,
         "runs": 50,
@@ -2045,7 +2045,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[4]_x_one",
+        "name": "ctrl_reg_x_b[4]_x_one",
         "line": 28,
         "hits": 189,
         "runs": 51,
@@ -2062,7 +2062,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[4]_x_zero",
+        "name": "ctrl_reg_x_b[4]_x_zero",
         "line": 28,
         "hits": 181,
         "runs": 57,
@@ -2081,7 +2081,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[5]_x_one",
+        "name": "ctrl_reg_x_b[5]_x_one",
         "line": 28,
         "hits": 201,
         "runs": 57,
@@ -2100,7 +2100,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[5]_x_zero",
+        "name": "ctrl_reg_x_b[5]_x_zero",
         "line": 28,
         "hits": 169,
         "runs": 48,
@@ -2116,7 +2116,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[6]_x_one",
+        "name": "ctrl_reg_x_b[6]_x_one",
         "line": 28,
         "hits": 152,
         "runs": 38,
@@ -2130,7 +2130,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[6]_x_zero",
+        "name": "ctrl_reg_x_b[6]_x_zero",
         "line": 28,
         "hits": 218,
         "runs": 59,
@@ -2149,7 +2149,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[7]_x_one",
+        "name": "ctrl_reg_x_b[7]_x_one",
         "line": 28,
         "hits": 158,
         "runs": 36,
@@ -2163,7 +2163,7 @@
         ]
        },
        {
-        "name": "m_ctrl_reg_x_b[7]_x_zero",
+        "name": "ctrl_reg_x_b[7]_x_zero",
         "line": 28,
         "hits": 212,
         "runs": 57,
@@ -2182,7 +2182,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[0]_x_one",
+        "name": "en_reg_x_b[0]_x_one",
         "line": 28,
         "hits": 296,
         "runs": 68,
@@ -2203,7 +2203,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[0]_x_zero",
+        "name": "en_reg_x_b[0]_x_zero",
         "line": 28,
         "hits": 102,
         "runs": 27,
@@ -2217,7 +2217,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[1]_x_one",
+        "name": "en_reg_x_b[1]_x_one",
         "line": 28,
         "hits": 214,
         "runs": 63,
@@ -2237,7 +2237,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[1]_x_zero",
+        "name": "en_reg_x_b[1]_x_zero",
         "line": 28,
         "hits": 184,
         "runs": 57,
@@ -2256,7 +2256,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[2]_x_one",
+        "name": "en_reg_x_b[2]_x_one",
         "line": 28,
         "hits": 198,
         "runs": 62,
@@ -2276,7 +2276,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[2]_x_zero",
+        "name": "en_reg_x_b[2]_x_zero",
         "line": 28,
         "hits": 200,
         "runs": 51,
@@ -2294,7 +2294,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[3]_x_one",
+        "name": "en_reg_x_b[3]_x_one",
         "line": 28,
         "hits": 202,
         "runs": 59,
@@ -2313,7 +2313,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[3]_x_zero",
+        "name": "en_reg_x_b[3]_x_zero",
         "line": 28,
         "hits": 196,
         "runs": 57,
@@ -2332,7 +2332,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[4]_x_one",
+        "name": "en_reg_x_b[4]_x_one",
         "line": 28,
         "hits": 207,
         "runs": 60,
@@ -2351,7 +2351,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[4]_x_zero",
+        "name": "en_reg_x_b[4]_x_zero",
         "line": 28,
         "hits": 191,
         "runs": 54,
@@ -2370,7 +2370,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[5]_x_one",
+        "name": "en_reg_x_b[5]_x_one",
         "line": 28,
         "hits": 207,
         "runs": 63,
@@ -2390,7 +2390,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[5]_x_zero",
+        "name": "en_reg_x_b[5]_x_zero",
         "line": 28,
         "hits": 191,
         "runs": 50,
@@ -2408,7 +2408,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[6]_x_one",
+        "name": "en_reg_x_b[6]_x_one",
         "line": 28,
         "hits": 211,
         "runs": 60,
@@ -2427,7 +2427,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[6]_x_zero",
+        "name": "en_reg_x_b[6]_x_zero",
         "line": 28,
         "hits": 187,
         "runs": 55,
@@ -2446,7 +2446,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[7]_x_one",
+        "name": "en_reg_x_b[7]_x_one",
         "line": 28,
         "hits": 205,
         "runs": 60,
@@ -2465,7 +2465,7 @@
         ]
        },
        {
-        "name": "m_en_reg_x_b[7]_x_zero",
+        "name": "en_reg_x_b[7]_x_zero",
         "line": 28,
         "hits": 193,
         "runs": 56,

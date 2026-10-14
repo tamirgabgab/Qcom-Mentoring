@@ -29,12 +29,12 @@ control knobs · packages
 ```mermaid
 classDiagram
     class yapp_packet {
-        +rand bit[1:0] addr
-        +rand bit[5:0] length
-        +rand bit[7:0] payload[]
-        +bit[7:0] parity
-        +rand parity_type_e parity_type
-        +rand int packet_delay
+        +rand bit[1:0] m_addr
+        +rand bit[5:0] m_length
+        +rand bit[7:0] m_payload[]
+        +bit[7:0] m_parity
+        +rand parity_type_e m_parity_type
+        +rand int m_packet_delay
         +calc_parity() bit[7:0]
         +set_parity()
         +post_randomize()

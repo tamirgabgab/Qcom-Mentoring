@@ -2370,7 +2370,7 @@ DUT inputs.</p>
 <pre class="mermaid"><code>flowchart LR
     SQR["sequencer"] --&gt;|"get_next_item(req)"| DRV["yapp_tx_driver&lt;br/&gt;send_to_dut(req)"]
     DRV --&gt;|"item_done()"| SQR
-    DRV --&gt;|"vif.send_to_dut(addr, length, payload, parity, delay)"| IF["yapp_if&lt;br/&gt;in_data, in_data_vld ← &lt;br/&gt;→ in_suspend"]
+    DRV --&gt;|"m_vif.send_to_dut(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, pkt.m_packet_delay)"| IF["yapp_if&lt;br/&gt;in_data, in_data_vld ← &lt;br/&gt;→ in_suspend"]
     IF --&gt; DUT</code></pre>
 <h2 id="the-loop-every-driver-has">The loop every driver has<a class="headerlink" href="#the-loop-every-driver-has" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">task</span><span class="w"> </span><span class="n">run_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>

@@ -10,9 +10,9 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.
 
 ```mermaid
 flowchart LR
-    IF["yapp_if<br/>in_data, in_data_vld, in_suspend"] -->|"vif.collect_packets(...)"| MON["yapp_tx_monitor"]
-    MON -->|"item_collected_port.write(pkt)"| SB["scoreboard / reference"]
-    MON -->|"item_collected_port.write(pkt)"| COV["pkt_cov / gap_cov<br/>coverage collectors"]
+    IF["yapp_if<br/>in_data, in_data_vld, in_suspend"] -->|"m_vif.collect_packets(...)"| MON["yapp_tx_monitor"]
+    MON -->|"m_item_collected_port.write(pkt)"| SB["scoreboard / reference"]
+    MON -->|"m_item_collected_port.write(pkt)"| COV["pkt_cov / gap_cov<br/>coverage collectors"]
     MON -->|"begin_tr / end_tr"| WAVE["Monitor_YAPP_Packet<br/>transaction stream"]
 ```
 

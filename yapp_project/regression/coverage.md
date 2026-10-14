@@ -61,12 +61,12 @@ Source: [yapp_project/uvc/router/router_hbus_addr_coverage.sv](../../yapp_projec
 | `addr_cp` (25/25) | ctrl | 1128 | 64 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +8 |
 |  | en | 1159 | 72 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +10 |
 |  | parity_cnt | 711 | 76 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_backpressure_test +11 |
-|  | m_oversized_cnt | 703 | 68 | hbus_sweep_test, random_config_test, reg_bit_walk_test, random_parity_test +9 |
+|  | oversized_cnt | 703 | 68 | hbus_sweep_test, random_config_test, reg_bit_walk_test, random_parity_test +9 |
 |  | addr3_cnt | 720 | 68 | hbus_sweep_test, random_config_test, reg_bit_walk_test, random_test +9 |
 |  | addr0_cnt | 726 | 72 | hbus_sweep_test, random_config_test, reg_bit_walk_test, counter_wrap_test +10 |
 |  | addr1_cnt | 708 | 68 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +9 |
 |  | addr2_cnt | 714 | 68 | hbus_sweep_test, random_config_test, reg_bit_walk_test, random_backpressure_test +9 |
-|  | m_mem_size | 752 | 56 | hbus_sweep_test, random_config_test, random_test, random_backpressure_test +6 |
+|  | mem_size | 752 | 56 | hbus_sweep_test, random_config_test, random_test, random_backpressure_test +6 |
 |  | reg_hole[0] | 581 | 16 | hbus_sweep_test, hbus_protocol_test, random_config_test, random_parity_test +2 |
 |  | reg_hole[1] | 575 | 11 | hbus_sweep_test, hbus_protocol_test, random_parity_test, random_config_test |
 |  | reg_hole[2] | 579 | 14 | hbus_sweep_test, hbus_protocol_test, random_backpressure_test, random_config_test +2 |
@@ -103,10 +103,10 @@ Source: [yapp_project/uvc/router/router_hbus_addr_coverage.sv](../../yapp_projec
 |  | gap_last_x_write | 4 | 4 | hbus_sweep_test |
 |  | gap_mid_x_read | 88 | 33 | hbus_sweep_test, random_config_test, random_parity_test, random_backpressure_test +1 |
 |  | gap_mid_x_write | 24 | 4 | hbus_sweep_test |
-|  | m_mem_size_x_read | 724 | 56 | hbus_sweep_test, random_config_test, random_test, random_backpressure_test +6 |
-|  | m_mem_size_x_write | 28 | 12 | hbus_sweep_test, reg_bit_walk_test, reg_introspection_test |
-|  | m_oversized_cnt_x_read | 675 | 68 | hbus_sweep_test, random_config_test, random_parity_test, random_backpressure_test +9 |
-|  | m_oversized_cnt_x_write | 28 | 12 | hbus_sweep_test, reg_bit_walk_test, reg_introspection_test |
+|  | mem_size_x_read | 724 | 56 | hbus_sweep_test, random_config_test, random_test, random_backpressure_test +6 |
+|  | mem_size_x_write | 28 | 12 | hbus_sweep_test, reg_bit_walk_test, reg_introspection_test |
+|  | oversized_cnt_x_read | 675 | 68 | hbus_sweep_test, random_config_test, random_parity_test, random_backpressure_test +9 |
+|  | oversized_cnt_x_write | 28 | 12 | hbus_sweep_test, reg_bit_walk_test, reg_introspection_test |
 |  | parity_cnt_x_read | 679 | 76 | hbus_sweep_test, random_parity_test, random_backpressure_test, random_config_test +11 |
 |  | parity_cnt_x_write | 32 | 16 | hbus_sweep_test, reg_bit_walk_test, hbus_protocol_test, reg_introspection_test |
 |  | pkt_mem_first_x_read | 49 | 40 | pkt_mem_test, random_parity_test, random_backpressure_test, random_config_test +2 |
@@ -142,8 +142,8 @@ Source: [yapp_project/uvc/router/router_hbus_bits_coverage.sv](../../yapp_projec
 
 | Coverpoint / cross | Bin | Hits | Runs | Tests that hit it (most hits first) |
 |---|---|---|---|---|
-| `reg_cp` (2/2) | m_ctrl_reg | 2960 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg | 3184 | 68 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +9 |
+| `reg_cp` (2/2) | ctrl_reg | 2960 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg | 3184 | 68 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +9 |
 | `bit_cp` (8/8) | b[0] | 768 | 80 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +12 |
 |  | b[1] | 768 | 80 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +12 |
 |  | b[2] | 768 | 80 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +12 |
@@ -154,38 +154,38 @@ Source: [yapp_project/uvc/router/router_hbus_bits_coverage.sv](../../yapp_projec
 |  | b[7] | 768 | 80 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +12 |
 | `val_cp` (2/2) | zero | 2906 | 76 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +11 |
 |  | one | 3238 | 80 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +12 |
-| cross `reg_x_bit_x_val` (32/32) | m_ctrl_reg_x_b[0]_x_one | 191 | 58 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_config_test +7 |
-|  | m_ctrl_reg_x_b[0]_x_zero | 179 | 45 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_test +4 |
-|  | m_ctrl_reg_x_b[1]_x_one | 202 | 50 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
-|  | m_ctrl_reg_x_b[1]_x_zero | 168 | 52 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_backpressure_test +5 |
-|  | m_ctrl_reg_x_b[2]_x_one | 204 | 58 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_ctrl_reg_x_b[2]_x_zero | 166 | 45 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +4 |
-|  | m_ctrl_reg_x_b[3]_x_one | 201 | 51 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
-|  | m_ctrl_reg_x_b[3]_x_zero | 169 | 50 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_config_test +5 |
-|  | m_ctrl_reg_x_b[4]_x_one | 189 | 51 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
-|  | m_ctrl_reg_x_b[4]_x_zero | 181 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
-|  | m_ctrl_reg_x_b[5]_x_one | 201 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_ctrl_reg_x_b[5]_x_zero | 169 | 48 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +4 |
-|  | m_ctrl_reg_x_b[6]_x_one | 152 | 38 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_backpressure_test +2 |
-|  | m_ctrl_reg_x_b[6]_x_zero | 218 | 59 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
-|  | m_ctrl_reg_x_b[7]_x_one | 158 | 36 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_config_test +2 |
-|  | m_ctrl_reg_x_b[7]_x_zero | 212 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
-|  | m_en_reg_x_b[0]_x_one | 296 | 68 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +9 |
-|  | m_en_reg_x_b[0]_x_zero | 102 | 27 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_test +2 |
-|  | m_en_reg_x_b[1]_x_one | 214 | 63 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
-|  | m_en_reg_x_b[1]_x_zero | 184 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[2]_x_one | 198 | 62 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
-|  | m_en_reg_x_b[2]_x_zero | 200 | 51 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_config_test +6 |
-|  | m_en_reg_x_b[3]_x_one | 202 | 59 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[3]_x_zero | 196 | 57 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_parity_test +7 |
-|  | m_en_reg_x_b[4]_x_one | 207 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[4]_x_zero | 191 | 54 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[5]_x_one | 207 | 63 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
-|  | m_en_reg_x_b[5]_x_zero | 191 | 50 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +6 |
-|  | m_en_reg_x_b[6]_x_one | 211 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[6]_x_zero | 187 | 55 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
-|  | m_en_reg_x_b[7]_x_one | 205 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
-|  | m_en_reg_x_b[7]_x_zero | 193 | 56 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+| cross `reg_x_bit_x_val` (32/32) | ctrl_reg_x_b[0]_x_one | 191 | 58 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_config_test +7 |
+|  | ctrl_reg_x_b[0]_x_zero | 179 | 45 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_test +4 |
+|  | ctrl_reg_x_b[1]_x_one | 202 | 50 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
+|  | ctrl_reg_x_b[1]_x_zero | 168 | 52 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_backpressure_test +5 |
+|  | ctrl_reg_x_b[2]_x_one | 204 | 58 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | ctrl_reg_x_b[2]_x_zero | 166 | 45 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +4 |
+|  | ctrl_reg_x_b[3]_x_one | 201 | 51 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
+|  | ctrl_reg_x_b[3]_x_zero | 169 | 50 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_config_test +5 |
+|  | ctrl_reg_x_b[4]_x_one | 189 | 51 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +5 |
+|  | ctrl_reg_x_b[4]_x_zero | 181 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
+|  | ctrl_reg_x_b[5]_x_one | 201 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | ctrl_reg_x_b[5]_x_zero | 169 | 48 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +4 |
+|  | ctrl_reg_x_b[6]_x_one | 152 | 38 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_backpressure_test +2 |
+|  | ctrl_reg_x_b[6]_x_zero | 218 | 59 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
+|  | ctrl_reg_x_b[7]_x_one | 158 | 36 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_config_test +2 |
+|  | ctrl_reg_x_b[7]_x_zero | 212 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
+|  | en_reg_x_b[0]_x_one | 296 | 68 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +9 |
+|  | en_reg_x_b[0]_x_zero | 102 | 27 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_test +2 |
+|  | en_reg_x_b[1]_x_one | 214 | 63 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
+|  | en_reg_x_b[1]_x_zero | 184 | 57 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[2]_x_one | 198 | 62 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
+|  | en_reg_x_b[2]_x_zero | 200 | 51 | hbus_sweep_test, reg_bit_walk_test, random_parity_test, random_config_test +6 |
+|  | en_reg_x_b[3]_x_one | 202 | 59 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[3]_x_zero | 196 | 57 | hbus_sweep_test, reg_bit_walk_test, random_backpressure_test, random_parity_test +7 |
+|  | en_reg_x_b[4]_x_one | 207 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[4]_x_zero | 191 | 54 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[5]_x_one | 207 | 63 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +8 |
+|  | en_reg_x_b[5]_x_zero | 191 | 50 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +6 |
+|  | en_reg_x_b[6]_x_one | 211 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[6]_x_zero | 187 | 55 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_backpressure_test +7 |
+|  | en_reg_x_b[7]_x_one | 205 | 60 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
+|  | en_reg_x_b[7]_x_zero | 193 | 56 | hbus_sweep_test, reg_bit_walk_test, random_config_test, random_parity_test +7 |
 
 ### `hbus_counter_cg`: 100.0% (27 / 27 bins)
 

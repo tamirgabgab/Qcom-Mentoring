@@ -18,7 +18,7 @@ int unsigned bad_bit;
 bad_bit = rnd::get_index(8, {get_full_name(), ".bad_parity_bit"});   // 0..7
 m_parity[bad_bit] = ~m_parity[bad_bit];
 
-m_payload = rnd::get_bytes(m_length, {get_full_name(), ".payload"});     // bit [7:0] []
+m_payload = rnd::get_bytes(m_length, {get_full_name(), ".payload"});     // bit[7:0] []
 ```
 
 ## The functions
@@ -28,12 +28,12 @@ m_payload = rnd::get_bytes(m_length, {get_full_name(), ".payload"});     // bit 
 | `rnd::get_bit(name)` | `bit`: 0 or 1 |
 | `rnd::get_int(min, max, name)` | `int` in `[min:max]`, both ends included (negative values allowed) |
 | `rnd::get_uint(min, max, name)` | `int unsigned` in `[min:max]` |
-| `rnd::get_byte(name)` | `bit [7:0]`: 0..255 |
-| `rnd::get_bits(width, name)` | `bit [63:0]` with `width` (1..64) random low bits, the rest 0 |
+| `rnd::get_byte(name)` | `bit[7:0]`: 0..255 |
+| `rnd::get_bits(width, name)` | `bit[63:0]` with `width` (1..64) random low bits, the rest 0 |
 | `rnd::get_index(size, name)` | `int unsigned` in `0 .. size-1`, an index into a collection |
-| `rnd::get_bytes(size, name)` | `rnd_bytes_t` (`bit [7:0] []`): `size` random bytes |
-| `rnd::get_byte_queue(size, name)` | `rnd_byte_q_t` (`bit [7:0] [$]`): `size` random bytes |
-| `rnd_array #(N)::get_bytes(name)` | `bit [7:0] [N]`: a fixed-size array |
+| `rnd::get_bytes(size, name)` | `rnd_bytes_t` (`bit[7:0] []`): `size` random bytes |
+| `rnd::get_byte_queue(size, name)` | `rnd_byte_q_t` (`bit[7:0] [$]`): `size` random bytes |
+| `rnd_array #(N)::get_bytes(name)` | `bit[7:0] [N]`: a fixed-size array |
 
 ```systemverilog
 bit[7:0] key[8];

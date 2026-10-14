@@ -434,7 +434,8 @@ The code is written to be read. Conventions, enforced by `make style-check`:
   (`function yapp_packet::set_parity();`), one `//-----` delimiter before every
   body. Read the class to learn what it does, scroll down to see how.
   **Constraints the same way**: `extern constraint c_length;` in the class,
-  `constraint yapp_packet::c_length { ... }` after `endclass`, before the methods.
+  `constraint yapp_packet::c_length {` after `endclass`, before the methods, laid out
+  like a method body: a `//-----` delimiter above, one statement per line, `}` alone.
   Order inside the class: properties, `utils` macro, covergroups, `extern constraint`
   lines, `extern` methods.
 * **Every class property starts with `m_`** (`m_addr`, `m_monitor`, `m_vif`);

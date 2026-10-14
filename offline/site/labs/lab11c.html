@@ -2859,11 +2859,11 @@ and counters <em>behave</em>.</p>
 <tbody>
 <tr>
 <td><code>reg_access_test</code></td>
-<td><code>check_rw_register(m_ctrl_reg)</code> and <code>check_ro_register(addr0_cnt_reg)</code> with every access logged at <code>UVM_NONE</code></td>
+<td><code>check_rw_register(m_regs.ctrl_reg)</code> and <code>check_ro_register(m_regs.addr0_cnt_reg)</code> with every access logged at <code>UVM_NONE</code></td>
 </tr>
 <tr>
 <td><code>reg_function_test</code></td>
-<td><code>m_en_reg = 0x01</code> → <code>yapp_012_seq</code> → counters still 0; <code>m_en_reg = 0xff</code> → <code>yapp_012_seq</code> ×2 → <code>addr0/1/2 == 2</code>, <code>addr3 == 0</code>, parity counter == bad-parity packets seen by the monitor, oversized == 0</td>
+<td><code>en_reg = 0x01</code> → <code>yapp_012_seq</code> → counters still 0; <code>en_reg = 0xff</code> → <code>yapp_012_seq</code> ×2 → <code>addr0/1/2 == 2</code>, <code>addr3 == 0</code>, parity counter == bad-parity packets seen by the monitor, oversized == 0</td>
 </tr>
 <tr>
 <td><code>reg_function_check_test</code> <em>(opt.)</em></td>

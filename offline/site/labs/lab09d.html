@@ -2406,14 +2406,14 @@ blocking <code>get()</code> calls instead of <code>write()</code> callbacks.</p>
 <p><code>uvm_tlm_analysis_fifo #(T)</code> · <code>analysis_export</code> / <code>get_peek_export</code> ·
 <code>uvm_get_port #(T)</code> · blocking <code>get()</code> · <code>fork</code> · <code>check_phase</code></p>
 <pre class="mermaid"><code>flowchart LR
-    Y["yapp monitor"] --&gt; YF[["yapp_fifo"]]
-    H["hbus monitor"] --&gt; HF[["hbus_fifo"]]
-    C0["chan0 monitor"] --&gt; F0[["chan_fifo[0]"]]
-    C1["chan1 monitor"] --&gt; F1[["chan_fifo[1]"]]
-    C2["chan2 monitor"] --&gt; F2[["chan_fifo[2]"]]
+    Y["yapp monitor"] --&gt; YF[["m_yapp_fifo"]]
+    H["hbus monitor"] --&gt; HF[["m_hbus_fifo"]]
+    C0["chan0 monitor"] --&gt; F0[["m_chan_fifo[0]"]]
+    C1["chan1 monitor"] --&gt; F1[["m_chan_fifo[1]"]]
+    C2["chan2 monitor"] --&gt; F2[["m_chan_fifo[2]"]]
     subgraph SB["router_fifo_scoreboard.run_phase"]
-        P1["check_packets()&lt;br/&gt;yapp_get.get(yp)&lt;br/&gt;drop? else chan_get[addr].get(cp)&lt;br/&gt;compare"]
-        P2["mirror_registers()&lt;br/&gt;hbus_get.get(tr)"]
+        P1["check_packets()&lt;br/&gt;m_yapp_get.get(yp)&lt;br/&gt;drop? else m_chan_get[addr].get(cp)&lt;br/&gt;compare"]
+        P2["mirror_registers()&lt;br/&gt;m_hbus_get.get(tr)"]
     end
     YF --&gt; P1
     F0 &amp; F1 &amp; F2 --&gt; P1

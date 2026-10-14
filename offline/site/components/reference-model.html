@@ -2284,8 +2284,8 @@ rules and the current register values: the <strong>reference model</strong>.</p>
 <pre class="mermaid"><code>flowchart LR
     H["hbus monitor"] --&gt;|"write_hbus: mirror every register,&lt;br/&gt;check every read"| R
     Y["yapp monitor"] --&gt;|"write_yapp"| R
-    R["router_reference&lt;br/&gt;forward if enabled,&lt;br/&gt;len ≤ maxpktsize, addr ≠ 3;&lt;br/&gt;counters, memories"] --&gt;|"yapp_valid_out"| S["router_scoreboard&lt;br/&gt;yapp_in"]
-    R --&gt;|"decision_out"| C["router_coverage"]</code></pre>
+    R["router_reference&lt;br/&gt;forward if enabled,&lt;br/&gt;len ≤ m_maxpktsize, addr ≠ 3;&lt;br/&gt;counters, memories"] --&gt;|"m_yapp_valid_out"| S["router_scoreboard&lt;br/&gt;m_yapp_in"]
+    R --&gt;|"m_decision_out"| C["router_coverage"]</code></pre>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// router_reference.sv -- reference model of the router (Lab 9B, grown into a</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// full model of the registers for the random tests)</span>

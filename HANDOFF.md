@@ -34,7 +34,8 @@
 > 16 ה-labs, common): כל שדה של class מתחיל ב-`m_` (שמות הריצה `create("monitor")` ומפתחות config_db לא השתנו), `bit[7:0]`
 > בלי רווח, constraints כ-`extern` עם גוף `constraint cls::c {}` אחרי `endclass` ולפני המתודות, typedef/enum בקובץ
 > `<pkg>_defines.sv` לכל חבילה, enums `NAME_UNDEFINED, NAME_X…` (`parity_type_e → PARITY_TYPE_*`, `hbus_op_e`, `ROUTER_REASON_*`,
-> `CHANNEL_RX_PROFILE_*`, `CHANNEL_PARITY_TYPE_*`). `sv_style.py` אוכף הכול (כללים 5–10, דיווח `קובץ:שורה`). במפה: לשונית
+> `CHANNEL_RX_PROFILE_*`, `CHANNEL_PARITY_TYPE_*`). `sv_style.py` אוכף הכול (כללים 5–11, דיווח `קובץ:שורה`; R11 מסבב 5:
+> גוף constraint בפריסה של מתודה). במפה: לשונית
 > שישית **Coverage** (כרטיס לכל collector, פס לכל covergroup, צ'יפ לכל coverpoint). באתר: `uvm/coverage.md` כללי + קבוצת Results.
 > פירוט: סעיף 2, פריט 18.
 
@@ -105,7 +106,9 @@
        `print_generic("parity_type", …)` — לכן ההיררכיה בלוגים, ב-Surfer, ב-`sim_report.py` ובמזהי המפה לא זזה.
     2. **רוחב בלי רווח**: `bit[7:0]`, `logic[15:0]` (גם בהערות של קבצי ה-classes).
     3. **constraints כמו מתודות**: `extern constraint c_x;` במחלקה, `constraint cls::c_x { … }` אחרי `endclass`
-       תחת באנר `// <cls> -- constraints`, לפני `-- method implementations`.
+       תחת באנר `// <cls> -- constraints`, לפני `-- method implementations`. **(סבב 5)** כל גוף constraint נראה כמו
+       גוף מתודה: delimiter `//---` מעליו (חוץ מהראשון אחרי הבאנר), `constraint cls::c_x {` בשורה משלו, משפט אחד
+       בשורה, `}` לבד, שורה ריקה אחת בין גופים (`sv_style.py` כלל R11).
     4. **סדר במחלקה**: שדות → מאקרו utils → covergroups → `extern constraint` → `extern function/task`; אחרי
        `endclass`: גופי constraints ואז גופי מתודות.
     5. **typedef/enum רק ב-`<pkg>_defines.sv`** (`yapp_defines.sv`, `hbus_defines.sv`, `channel_defines.sv`,
@@ -697,6 +700,17 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      מספרים: ראה "מה עובד היום".
    - **מה לא נעשה בכוונה**: RTL/interfaces/מודולים (`state_e` של ה-FSM, `logic [7:0]` ב-RTL) — תמיר בחר "רק classes וחבילות";
      מודל הרגיסטרים (Lab 11A) שומר את שמות הרגיסטרים (regmap.yaml, `test_model.py:164`); ההערות בקוד לא עברו rename (פרוזה).
+19. **constraints מרווחים + שמות בתרשימים (סשן 8 סבב 5, 2026-10-14).** תמיר: (1) ה-UML ב-Lab 1 הראה `addr` במקום `m_addr`
+   — כל משתנה שמוצג בתרשים צריך להיות בשם שבקוד; (2) גופי ה-constraints צפופים — לפרוס כמו מתודות. בחר: עצי היררכיה
+   (`agent : yapp_tx_agent`) נשארים בשמות הריצה; רק ביטויי קוד ושדות מחלקה בתרשימים מקבלים `m_`; R11 נאכף; **בלי רגרסיה**
+   (קומפילציה + lint בלבד).
+   - 56 גופי constraints ב-24 קבצים פורסו (סקריפט חד-פעמי, פיצול לפי `;` בעומק סוגריים 0). `sv_style.py` כלל R11.
+   - 17 דפים: תוויות mermaid שהן קוד (`m_vif.send_to_dut(pkt.m_addr, …)`, `m_item_collected_port.write(pkt)`, `m_pkt_q[addr]`,
+     `m_reference.m_yapp_in`, `m_yapp_export`, …) + ה-UML של Lab 1. הקטע הידני של `short_yapp_packet` ב-lab04 הוחלף ב-`--8<--`.
+   - **באג מסבב 4 שתוקן**: ה-rename הפך 4 שמות bins ל-`m_` (`ctrl_reg`, `en_reg` ב-`router_hbus_bits_coverage`,
+     `oversized_cnt`, `mem_size` ב-`router_hbus_addr_coverage`) כי היו גם שמות שדות ב-`router_reference`. הוחזרו, ושמות ה-bins
+     תוקנו טקסטואלית בנתוני הדוח (`coverage.json/md`, `merged.dat`, gcov html) כדי לא להריץ רגרסיה. `lab11c.md` (`ctrl_reg`
+     של מודל הרגיסטרים) תוקן גם הוא. **מספרי השורות ב-gcov html של הקבצים עם constraints ישנים** עד הרגרסיה הבאה.
 
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. מה שתמיר דחה במפורש להמשך: reset באמצע טסט, receiver שעוצר באמצע פקטה (סעיף 8 פריט 5), ומהביקורת של
@@ -793,6 +807,7 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 - **(סבב 4) `*_UNDEFINED` מזיז את הערכים המספריים**: אינדקס מערך לפי enum (`hits_reason_parity[t.m_reason]`) וקאסט
   מ-`rnd::get_int` (`random_test::pick_profile`) חייבים לדלג על 0. `enum bit` של ביט אחד לא מכיל 3 ערכים → `bit[1:0]`.
 - **(סבב 4) שם שהוא גם class וגם שדה** (`hbus_read_seq`): rename גלובלי של שדות משנה גם את ה-class. לבדוק `grep '^class m_'`.
+- **(סבב 5) rename גלובלי פוגע גם בשמות bins** של covergroup שזהים לשם שדה במחלקה אחרת — לבדוק `bins m_`.
 - **(סבב 4) מתודות של מחלקה פרמטרית** (`rnd_array #(N)`) נשארות in-class: R3 פוטר אותן (`parameterized`).
 
 **מפת הפרויקט**

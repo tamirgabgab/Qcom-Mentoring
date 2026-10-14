@@ -2476,8 +2476,8 @@ the router drops nothing.</p>
 <code>uvm_analysis_imp_suffix #(T, IMP)</code> · <code>clone()</code> · per-address queues ·
 <code>report_phase</code></p>
 <pre class="mermaid"><code>flowchart LR
-    Y["yapp monitor&lt;br/&gt;item_collected_port"] --&gt;|"write_yapp()&lt;br/&gt;clone → pkt_q[addr]"| SB["router_scoreboard"]
-    C0["chan0 monitor&lt;br/&gt;item_collected_port"] --&gt;|"write_chan0()&lt;br/&gt;pop pkt_q[0], compare"| SB
+    Y["yapp monitor&lt;br/&gt;m_item_collected_port"] --&gt;|"write_yapp()&lt;br/&gt;clone → m_pkt_q[addr]"| SB["router_scoreboard"]
+    C0["chan0 monitor&lt;br/&gt;m_item_collected_port"] --&gt;|"write_chan0()&lt;br/&gt;pop m_pkt_q[0], compare"| SB
     C1["chan1 monitor"] --&gt;|"write_chan1()"| SB
     C2["chan2 monitor"] --&gt;|"write_chan2()"| SB</code></pre>
 <h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>

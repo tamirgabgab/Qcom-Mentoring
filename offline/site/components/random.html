@@ -2313,7 +2313,7 @@ package and by <code>tb_top</code>, so a component, a sequence or a test just ca
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">bad_bit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_index</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".bad_parity_bit"</span><span class="p">});</span><span class="w">   </span><span class="c1">// 0..7</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">m_parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">m_parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">];</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">m_payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_bytes</span><span class="p">(</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".payload"</span><span class="p">});</span><span class="w">     </span><span class="c1">// bit [7:0] []</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">m_payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_bytes</span><span class="p">(</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".payload"</span><span class="p">});</span><span class="w">     </span><span class="c1">// bit[7:0] []</span>
 </code></pre></div>
 <h2 id="the-functions">The functions<a class="headerlink" href="#the-functions" title="Permanent link">&para;</a></h2>
 <table>
@@ -2338,11 +2338,11 @@ package and by <code>tb_top</code>, so a component, a sequence or a test just ca
 </tr>
 <tr>
 <td><code>rnd::get_byte(name)</code></td>
-<td><code>bit [7:0]</code>: 0..255</td>
+<td><code>bit[7:0]</code>: 0..255</td>
 </tr>
 <tr>
 <td><code>rnd::get_bits(width, name)</code></td>
-<td><code>bit [63:0]</code> with <code>width</code> (1..64) random low bits, the rest 0</td>
+<td><code>bit[63:0]</code> with <code>width</code> (1..64) random low bits, the rest 0</td>
 </tr>
 <tr>
 <td><code>rnd::get_index(size, name)</code></td>
@@ -2350,15 +2350,15 @@ package and by <code>tb_top</code>, so a component, a sequence or a test just ca
 </tr>
 <tr>
 <td><code>rnd::get_bytes(size, name)</code></td>
-<td><code>rnd_bytes_t</code> (<code>bit [7:0] []</code>): <code>size</code> random bytes</td>
+<td><code>rnd_bytes_t</code> (<code>bit[7:0] []</code>): <code>size</code> random bytes</td>
 </tr>
 <tr>
 <td><code>rnd::get_byte_queue(size, name)</code></td>
-<td><code>rnd_byte_q_t</code> (<code>bit [7:0] [$]</code>): <code>size</code> random bytes</td>
+<td><code>rnd_byte_q_t</code> (<code>bit[7:0] [$]</code>): <code>size</code> random bytes</td>
 </tr>
 <tr>
 <td><code>rnd_array #(N)::get_bytes(name)</code></td>
-<td><code>bit [7:0] [N]</code>: a fixed-size array</td>
+<td><code>bit[7:0] [N]</code>: a fixed-size array</td>
 </tr>
 </tbody>
 </table>

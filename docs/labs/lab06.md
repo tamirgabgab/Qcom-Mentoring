@@ -23,8 +23,8 @@ SystemVerilog `interface` with tasks · `virtual interface` ·
 flowchart LR
     subgraph tb_top["tb_top (UVM side)"]
         set["yapp_vif_config::set(null, &quot;*.tb.yapp.*&quot;, &quot;vif&quot;, hw_top.in0)"]
-        drv["driver<br/>vif.send_to_dut(...)"]
-        mon["monitor<br/>vif.collect_packets(...)"]
+        drv["driver<br/>m_vif.send_to_dut(...)"]
+        mon["monitor<br/>m_vif.collect_packets(...)"]
     end
     subgraph hw_top["hw_top (hardware side)"]
         clk["clkgen"]

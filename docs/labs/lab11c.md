@@ -43,8 +43,8 @@ flowchart LR
 
 | Test | What it does |
 |---|---|
-| `reg_access_test` | `check_rw_register(m_ctrl_reg)` and `check_ro_register(addr0_cnt_reg)` with every access logged at `UVM_NONE` |
-| `reg_function_test` | `m_en_reg = 0x01` → `yapp_012_seq` → counters still 0; `m_en_reg = 0xff` → `yapp_012_seq` ×2 → `addr0/1/2 == 2`, `addr3 == 0`, parity counter == bad-parity packets seen by the monitor, oversized == 0 |
+| `reg_access_test` | `check_rw_register(m_regs.ctrl_reg)` and `check_ro_register(m_regs.addr0_cnt_reg)` with every access logged at `UVM_NONE` |
+| `reg_function_test` | `en_reg = 0x01` → `yapp_012_seq` → counters still 0; `en_reg = 0xff` → `yapp_012_seq` ×2 → `addr0/1/2 == 2`, `addr3 == 0`, parity counter == bad-parity packets seen by the monitor, oversized == 0 |
 | `reg_function_check_test` *(opt.)* | same, with `set_check_on_read(1)`; `check_counter` calls `predict(expected)` before `read()` so the automatic check passes |
 | `reg_introspection_test` *(opt.)* | asks the model for all registers, splits them into RW / RO queues with `get_rights()`, runs the access checks over every register |
 

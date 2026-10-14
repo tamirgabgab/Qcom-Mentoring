@@ -2399,12 +2399,12 @@ UVM chapter; this page is about the collectors of this project.</p>
 monitor and the reference model only publish on an analysis port; the
 collectors subscribe.</p>
 <pre class="mermaid"><code>flowchart LR
-    MON["yapp_tx_monitor"] --&gt;|"item_collected_port"| PKT["pkt_cov&lt;br/&gt;yapp_pkt_coverage&lt;br/&gt;yapp_pkt_cg"]
-    MON --&gt;|"item_collected_port"| GAP["gap_cov&lt;br/&gt;yapp_gap_coverage&lt;br/&gt;yapp_gap_cg"]
-    MON --&gt;|"item_collected_port"| REF["router_reference"]
-    REF --&gt;|"decision_out&lt;br/&gt;(router_decision)"| RC["coverage&lt;br/&gt;router_coverage&lt;br/&gt;router_cfg_cg"]
-    HM["hbus_monitor"] --&gt;|"hbus_export"| REF
-    HM --&gt;|"hbus_export"| HC["hbus_addr_cov · hbus_bits_cov&lt;br/&gt;hbus_data_cov · hbus_counter_cov"]</code></pre>
+    MON["yapp_tx_monitor"] --&gt;|"m_item_collected_port"| PKT["m_pkt_cov&lt;br/&gt;yapp_pkt_coverage&lt;br/&gt;yapp_pkt_cg"]
+    MON --&gt;|"m_item_collected_port"| GAP["m_gap_cov&lt;br/&gt;yapp_gap_coverage&lt;br/&gt;yapp_gap_cg"]
+    MON --&gt;|"m_item_collected_port"| REF["router_reference"]
+    REF --&gt;|"m_decision_out&lt;br/&gt;(router_decision)"| RC["m_coverage&lt;br/&gt;router_coverage&lt;br/&gt;router_cfg_cg"]
+    HM["hbus_monitor"] --&gt;|"m_hbus_export"| REF
+    HM --&gt;|"m_hbus_export"| HC["m_hbus_addr_cov · m_hbus_bits_cov&lt;br/&gt;m_hbus_data_cov · m_hbus_counter_cov"]</code></pre>
 <table>
 <thead>
 <tr>

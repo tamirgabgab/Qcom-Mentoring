@@ -17,14 +17,14 @@ blocking `get()` calls instead of `write()` callbacks.
 
 ```mermaid
 flowchart LR
-    Y["yapp monitor"] --> YF[["yapp_fifo"]]
-    H["hbus monitor"] --> HF[["hbus_fifo"]]
-    C0["chan0 monitor"] --> F0[["chan_fifo[0]"]]
-    C1["chan1 monitor"] --> F1[["chan_fifo[1]"]]
-    C2["chan2 monitor"] --> F2[["chan_fifo[2]"]]
+    Y["yapp monitor"] --> YF[["m_yapp_fifo"]]
+    H["hbus monitor"] --> HF[["m_hbus_fifo"]]
+    C0["chan0 monitor"] --> F0[["m_chan_fifo[0]"]]
+    C1["chan1 monitor"] --> F1[["m_chan_fifo[1]"]]
+    C2["chan2 monitor"] --> F2[["m_chan_fifo[2]"]]
     subgraph SB["router_fifo_scoreboard.run_phase"]
-        P1["check_packets()<br/>yapp_get.get(yp)<br/>drop? else chan_get[addr].get(cp)<br/>compare"]
-        P2["mirror_registers()<br/>hbus_get.get(tr)"]
+        P1["check_packets()<br/>m_yapp_get.get(yp)<br/>drop? else m_chan_get[addr].get(cp)<br/>compare"]
+        P2["mirror_registers()<br/>m_hbus_get.get(tr)"]
     end
     YF --> P1
     F0 & F1 & F2 --> P1

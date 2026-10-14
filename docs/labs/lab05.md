@@ -59,7 +59,7 @@ flowchart TB
 | `yapp_1_seq` | one item: `start_item(req)` → `req.randomize() with { req.m_addr == 2'd1; }` → `finish_item(req)` |
 | `yapp_012_seq` | the same three times with different inline constraints |
 | `yapp_111_seq` | nested: `seq_1 = yapp_1_seq::type_id::create("seq_1")` → `m_seq_1.start(m_sequencer, this)`, three times |
-| `yapp_repeat_addr_seq` | `rand bit [1:0] seq_addr` with `!= 3`; both items use it |
+| `yapp_repeat_addr_seq` | `rand bit[1:0] m_seq_addr` with `!= 3`; both items use it |
 | `yapp_incr_payload_seq` | `create` → `randomize()` → edit payload → `set_parity()` → `start_item` / `finish_item` |
 | `yapp_rnd_seq` | `rand int count` in 1..10, printed in the info message |
 | `six_yapp_seq` | `m_rnd_seq.randomize() with { m_rnd_seq.m_count == 6; }` before `m_rnd_seq.start(m_sequencer, this)` |

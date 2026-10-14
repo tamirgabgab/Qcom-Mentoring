@@ -25,18 +25,18 @@ the top.
 
 ```mermaid
 flowchart LR
-    Y["yapp monitor"] --> YE(("yapp_export"))
-    H["hbus monitor"] --> HE(("hbus_export"))
-    C0["chan0 monitor"] --> C0E(("chan0_export"))
-    C1["chan1 monitor"] --> C1E(("chan1_export"))
-    C2["chan2 monitor"] --> C2E(("chan2_export"))
+    Y["yapp monitor"] --> YE(("m_yapp_export"))
+    H["hbus monitor"] --> HE(("m_hbus_export"))
+    C0["chan0 monitor"] --> C0E(("m_chan0_export"))
+    C1["chan1 monitor"] --> C1E(("m_chan1_export"))
+    C2["chan2 monitor"] --> C2E(("m_chan2_export"))
     subgraph ENV["router_module_env"]
-        YE --> R["reference.yapp_in"]
-        HE --> RH["reference.hbus_in"]
-        R2["reference.yapp_valid_out"] --> S["scoreboard.yapp_in"]
-        C0E --> S0["scoreboard.chan0_in"]
-        C1E --> S1["scoreboard.chan1_in"]
-        C2E --> S2["scoreboard.chan2_in"]
+        YE --> R["m_reference.m_yapp_in"]
+        HE --> RH["m_reference.m_hbus_in"]
+        R2["m_reference.m_yapp_valid_out"] --> S["m_scoreboard.m_yapp_in"]
+        C0E --> S0["m_scoreboard.m_chan0_in"]
+        C1E --> S1["m_scoreboard.m_chan1_in"]
+        C2E --> S2["m_scoreboard.m_chan2_in"]
     end
 ```
 

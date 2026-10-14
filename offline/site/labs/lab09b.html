@@ -2454,14 +2454,14 @@ router will drop.</p>
 <p>module UVC vs interface UVC · reference model · mirroring register settings
 from bus traffic · layered TLM connections · UVC package</p>
 <pre class="mermaid"><code>flowchart LR
-    Y["yapp monitor"] --&gt;|"yapp_in"| R
-    H["hbus monitor"] --&gt;|"hbus_in"| R
+    Y["yapp monitor"] --&gt;|"m_yapp_in"| R
+    H["hbus monitor"] --&gt;|"m_hbus_in"| R
     subgraph ENV["router_module_env"]
-        R["router_reference&lt;br/&gt;maxpktsize, router_en"] --&gt;|"yapp_valid_out → yapp_in"| S["router_scoreboard"]
+        R["router_reference&lt;br/&gt;m_maxpktsize, m_router_en"] --&gt;|"m_yapp_valid_out → m_yapp_in"| S["router_scoreboard"]
     end
-    C0["chan0 monitor"] --&gt;|"chan0_in"| S
-    C1["chan1 monitor"] --&gt;|"chan1_in"| S
-    C2["chan2 monitor"] --&gt;|"chan2_in"| S</code></pre>
+    C0["chan0 monitor"] --&gt;|"m_chan0_in"| S
+    C1["chan1 monitor"] --&gt;|"m_chan1_in"| S
+    C2["chan2 monitor"] --&gt;|"m_chan2_in"| S</code></pre>
 <h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>
 <h3 id="1-the-reference-model-svrouter_referencesv">1. The reference model — <code>sv/router_reference.sv</code><a class="headerlink" href="#1-the-reference-model-svrouter_referencesv" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">//------------------------------------------------------------------------------</span>

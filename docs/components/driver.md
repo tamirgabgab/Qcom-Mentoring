@@ -11,7 +11,7 @@ DUT inputs.
 flowchart LR
     SQR["sequencer"] -->|"get_next_item(req)"| DRV["yapp_tx_driver<br/>send_to_dut(req)"]
     DRV -->|"item_done()"| SQR
-    DRV -->|"vif.send_to_dut(addr, length, payload, parity, delay)"| IF["yapp_if<br/>in_data, in_data_vld ← <br/>→ in_suspend"]
+    DRV -->|"m_vif.send_to_dut(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, pkt.m_packet_delay)"| IF["yapp_if<br/>in_data, in_data_vld ← <br/>→ in_suspend"]
     IF --> DUT
 ```
 

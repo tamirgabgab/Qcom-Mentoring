@@ -2325,9 +2325,9 @@ rebuilds transactions and publishes them. It never drives anything, it is
 always built (active <em>and</em> passive agents), and everything that checks or
 measures — scoreboard, reference model, coverage collectors — hangs off it.</p>
 <pre class="mermaid"><code>flowchart LR
-    IF["yapp_if&lt;br/&gt;in_data, in_data_vld, in_suspend"] --&gt;|"vif.collect_packets(...)"| MON["yapp_tx_monitor"]
-    MON --&gt;|"item_collected_port.write(pkt)"| SB["scoreboard / reference"]
-    MON --&gt;|"item_collected_port.write(pkt)"| COV["pkt_cov / gap_cov&lt;br/&gt;coverage collectors"]
+    IF["yapp_if&lt;br/&gt;in_data, in_data_vld, in_suspend"] --&gt;|"m_vif.collect_packets(...)"| MON["yapp_tx_monitor"]
+    MON --&gt;|"m_item_collected_port.write(pkt)"| SB["scoreboard / reference"]
+    MON --&gt;|"m_item_collected_port.write(pkt)"| COV["pkt_cov / gap_cov&lt;br/&gt;coverage collectors"]
     MON --&gt;|"begin_tr / end_tr"| WAVE["Monitor_YAPP_Packet&lt;br/&gt;transaction stream"]</code></pre>
 <h2 id="the-three-jobs">The three jobs<a class="headerlink" href="#the-three-jobs" title="Permanent link">&para;</a></h2>
 <table>

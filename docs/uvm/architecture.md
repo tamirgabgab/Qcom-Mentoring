@@ -43,7 +43,7 @@ flowchart TB
                         kdrv["driver"]
                     end
                 end
-                mcseqr["mcseqr : router_mcsequencer<br/>hbus_seqr → , yapp_seqr →"]
+                mcseqr["mcseqr : router_mcsequencer<br/>m_hbus_seqr → , m_yapp_seqr →"]
                 subgraph rm["router_module : router_module_env"]
                     ref["reference"]
                     sb["scoreboard"]
@@ -101,30 +101,30 @@ references. They come straight from `uvm_top.print_topology()`.
 
 ```mermaid
 flowchart LR
-    ymon["yapp monitor<br/>item_collected_port"]
-    hmon["hbus monitor<br/>item_collected_port"]
+    ymon["yapp monitor<br/>m_item_collected_port"]
+    hmon["hbus monitor<br/>m_item_collected_port"]
     c0["chan0 monitor"]
     c1["chan1 monitor"]
     c2["chan2 monitor"]
     subgraph env["router_module_env"]
-        ye(("yapp_export"))
-        he(("hbus_export"))
-        c0e(("chan0_export"))
-        c1e(("chan1_export"))
-        c2e(("chan2_export"))
+        ye(("m_yapp_export"))
+        he(("m_hbus_export"))
+        c0e(("m_chan0_export"))
+        c1e(("m_chan1_export"))
+        c2e(("m_chan2_export"))
         subgraph ref["reference"]
-            ryi["yapp_in (imp)"]
-            rhi["hbus_in (imp)"]
-            rvo["yapp_valid_out (port)"]
-            rdo["decision_out (port)"]
+            ryi["m_yapp_in (imp)"]
+            rhi["m_hbus_in (imp)"]
+            rvo["m_yapp_valid_out (port)"]
+            rdo["m_decision_out (port)"]
         end
         cov["coverage<br/>(router_cfg_cg)"]
         hcov["hbus_addr_cov · hbus_bits_cov<br/>hbus_data_cov · hbus_counter_cov"]
         subgraph sb["scoreboard"]
-            syi["yapp_in (imp)"]
-            s0["chan0_in (imp)"]
-            s1["chan1_in (imp)"]
-            s2["chan2_in (imp)"]
+            syi["m_yapp_in (imp)"]
+            s0["m_chan0_in (imp)"]
+            s1["m_chan1_in (imp)"]
+            s2["m_chan2_in (imp)"]
         end
         ye --> ryi
         he --> rhi
@@ -176,7 +176,7 @@ sequenceDiagram
     D->>C: bytes on channel addr
     C-->>S: (via channel monitor) packet → compare
     MC->>H: hbus_large_packet_seq (ctrl=63)
-    MC->>Y: yapp_rnd_seq (count == 6)
+    MC->>Y: yapp_rnd_seq (m_count == 6)
     Note over MC: drop objection → drain time 200 ns → end of run_phase
     S->>S: report_phase: 12 matched, 0 mismatched
 ```

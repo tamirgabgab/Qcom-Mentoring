@@ -2436,18 +2436,18 @@
 to look. In a module UVC the imps can be anywhere inside. Exports put them at
 the top.</p>
 <pre class="mermaid"><code>flowchart LR
-    Y["yapp monitor"] --&gt; YE(("yapp_export"))
-    H["hbus monitor"] --&gt; HE(("hbus_export"))
-    C0["chan0 monitor"] --&gt; C0E(("chan0_export"))
-    C1["chan1 monitor"] --&gt; C1E(("chan1_export"))
-    C2["chan2 monitor"] --&gt; C2E(("chan2_export"))
+    Y["yapp monitor"] --&gt; YE(("m_yapp_export"))
+    H["hbus monitor"] --&gt; HE(("m_hbus_export"))
+    C0["chan0 monitor"] --&gt; C0E(("m_chan0_export"))
+    C1["chan1 monitor"] --&gt; C1E(("m_chan1_export"))
+    C2["chan2 monitor"] --&gt; C2E(("m_chan2_export"))
     subgraph ENV["router_module_env"]
-        YE --&gt; R["reference.yapp_in"]
-        HE --&gt; RH["reference.hbus_in"]
-        R2["reference.yapp_valid_out"] --&gt; S["scoreboard.yapp_in"]
-        C0E --&gt; S0["scoreboard.chan0_in"]
-        C1E --&gt; S1["scoreboard.chan1_in"]
-        C2E --&gt; S2["scoreboard.chan2_in"]
+        YE --&gt; R["m_reference.m_yapp_in"]
+        HE --&gt; RH["m_reference.m_hbus_in"]
+        R2["m_reference.m_yapp_valid_out"] --&gt; S["m_scoreboard.m_yapp_in"]
+        C0E --&gt; S0["m_scoreboard.m_chan0_in"]
+        C1E --&gt; S1["m_scoreboard.m_chan1_in"]
+        C2E --&gt; S2["m_scoreboard.m_chan2_in"]
     end</code></pre>
 <h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>
 <h3 id="1-svrouter_module_envsv">1. <code>sv/router_module_env.sv</code><a class="headerlink" href="#1-svrouter_module_envsv" title="Permanent link">&para;</a></h3>

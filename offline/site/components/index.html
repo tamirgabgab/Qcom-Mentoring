@@ -2234,8 +2234,9 @@ pages point at the snapshot where each one first appears.</p>
 <p><strong>How the code is written.</strong> Every class has its own file. The class body holds the
 properties (every one prefixed <code>m_</code>: <code>m_addr</code>, <code>m_monitor</code>, <code>m_vif</code>), the <code>utils</code> macro,
 the <code>extern constraint</code> and <code>extern</code> method prototypes; after <code>endclass</code> come the
-constraint bodies (<code>constraint yapp_packet::c_length { ... }</code>) and then the method bodies
-(<code>function yapp_tx_agent::build_phase(...)</code>). The typedefs and enums of a package live in
+constraint bodies (<code>constraint yapp_packet::c_length {</code>, one statement per line) and then
+the method bodies (<code>function yapp_tx_agent::build_phase(...)</code>), each under a <code>//-----</code>
+delimiter line. The typedefs and enums of a package live in
 its <code>&lt;pkg&gt;_defines.sv</code>, every enum starts with <code>&lt;NAME&gt;_UNDEFINED</code> and its values carry the
 type name (<code>PARITY_TYPE_GOOD</code>), and packed widths are written <code>bit[7:0]</code>. There are no
 <code>uvm_do*</code> macros — a sequence creates its item, calls <code>start_item</code>, randomizes, calls

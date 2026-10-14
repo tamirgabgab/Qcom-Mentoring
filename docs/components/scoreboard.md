@@ -9,13 +9,13 @@ came *out* (three channel monitors) and compares.
 
 ```mermaid
 flowchart LR
-    Y["yapp monitor"] -->|"write_yapp: clone, push to pkt_q[addr]"| SB
+    Y["yapp monitor"] -->|"write_yapp: clone, push to m_pkt_q[addr]"| SB
     subgraph SB["router_scoreboard"]
-        Q0[["pkt_q[0]"]]
-        Q1[["pkt_q[1]"]]
-        Q2[["pkt_q[2]"]]
+        Q0[["m_pkt_q[0]"]]
+        Q1[["m_pkt_q[1]"]]
+        Q2[["m_pkt_q[2]"]]
     end
-    C0["chan0 monitor"] -->|"write_chan0: pop pkt_q[0], compare"| Q0
+    C0["chan0 monitor"] -->|"write_chan0: pop m_pkt_q[0], compare"| Q0
     C1["chan1 monitor"] -->|"write_chan1"| Q1
     C2["chan2 monitor"] -->|"write_chan2"| Q2
 ```

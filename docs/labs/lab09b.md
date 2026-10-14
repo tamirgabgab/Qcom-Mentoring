@@ -21,14 +21,14 @@ from bus traffic · layered TLM connections · UVC package
 
 ```mermaid
 flowchart LR
-    Y["yapp monitor"] -->|"yapp_in"| R
-    H["hbus monitor"] -->|"hbus_in"| R
+    Y["yapp monitor"] -->|"m_yapp_in"| R
+    H["hbus monitor"] -->|"m_hbus_in"| R
     subgraph ENV["router_module_env"]
-        R["router_reference<br/>maxpktsize, router_en"] -->|"yapp_valid_out → yapp_in"| S["router_scoreboard"]
+        R["router_reference<br/>m_maxpktsize, m_router_en"] -->|"m_yapp_valid_out → m_yapp_in"| S["router_scoreboard"]
     end
-    C0["chan0 monitor"] -->|"chan0_in"| S
-    C1["chan1 monitor"] -->|"chan1_in"| S
-    C2["chan2 monitor"] -->|"chan2_in"| S
+    C0["chan0 monitor"] -->|"m_chan0_in"| S
+    C1["chan1 monitor"] -->|"m_chan1_in"| S
+    C2["chan2 monitor"] -->|"m_chan2_in"| S
 ```
 
 ## Solution

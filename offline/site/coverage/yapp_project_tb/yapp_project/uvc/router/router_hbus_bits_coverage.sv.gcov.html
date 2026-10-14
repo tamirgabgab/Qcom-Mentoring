@@ -77,8 +77,8 @@
 <span id="L15"><span class="lineNum">      15</span>                 :             :   covergroup hbus_bits_cg with function sample(bit is_en, int bit_index, bit value);</span>
 <span id="L16"><span class="lineNum">      16</span>                 :             :     option.per_instance = 1;</span>
 <span id="L17"><span class="lineNum">      17</span>                 :             :     reg_cp : coverpoint is_en {</span>
-<span id="L18"><span class="lineNum">      18</span>                 :<span class="tlaGNC tlaBgGNC">        2960 :       bins m_ctrl_reg = {0};</span></span>
-<span id="L19"><span class="lineNum">      19</span>                 :<span class="tlaGNC">        3184 :       bins m_en_reg   = {1};</span></span>
+<span id="L18"><span class="lineNum">      18</span>                 :<span class="tlaGNC tlaBgGNC">        2960 :       bins ctrl_reg = {0};</span></span>
+<span id="L19"><span class="lineNum">      19</span>                 :<span class="tlaGNC">        3184 :       bins en_reg   = {1};</span></span>
 <span id="L20"><span class="lineNum">      20</span>                 :             :     }</span>
 <span id="L21"><span class="lineNum">      21</span>                 :             :     bit_cp : coverpoint bit_index {</span>
 <span id="L22"><span class="lineNum">      22</span>   [<span class="tlaGBC" title="Branch 0 was taken 768 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 768 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 768 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 768 times"> + </span> :<span class="tlaGNC">         768 :       bins b[] = {[0:7]};</span></span>
