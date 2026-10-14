@@ -14,7 +14,7 @@ class router_hbus_addr_coverage extends uvm_subscriber #(hbus_transaction);
 
   int num_sampled;
 
-  covergroup hbus_addr_cg with function sample(bit [15:0] addr, bit write);
+  covergroup hbus_addr_cg with function sample(bit[15:0] addr, bit write);
     option.per_instance = 1;
     addr_cp : coverpoint addr {
       // the registers

@@ -21,7 +21,7 @@ class router_reference extends uvm_component;
   uvm_analysis_port #(yapp_packet) yapp_valid_out;
 
   // Mirrored register fields (reset values of the DUT)
-  bit [5:0] maxpktsize = 6'h3f;
+  bit[5:0] maxpktsize = 6'h3f;
   bit       router_en  = 1'b1;
 
   // Statistics

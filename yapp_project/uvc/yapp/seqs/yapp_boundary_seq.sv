@@ -12,9 +12,7 @@
 //------------------------------------------------------------------------------
 class yapp_boundary_seq extends yapp_base_seq;
 
-  rand bit [5:0] maxpktsize;                // the value programmed into ctrl_reg
-
-  constraint c_max { maxpktsize inside {[2:62]}; }
+  rand bit[5:0] maxpktsize;                // the value programmed into ctrl_reg
 
   // Bookkeeping for the test
   int sent_total;
@@ -24,10 +22,18 @@ class yapp_boundary_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_boundary_seq)
 
+  extern constraint c_max;
+
   extern function new(string name = "yapp_boundary_seq");
   extern task body();
 
 endclass : yapp_boundary_seq
+
+//------------------------------------------------------------------------------
+// yapp_boundary_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_boundary_seq::c_max { maxpktsize inside {[2:62]}; }
 
 //------------------------------------------------------------------------------
 // yapp_boundary_seq -- method implementations

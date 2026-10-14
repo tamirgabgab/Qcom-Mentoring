@@ -12,12 +12,19 @@ class short_yapp_packet extends yapp_packet;
 
   `uvm_object_utils(short_yapp_packet)
 
-  constraint c_short_length { length < 15; }
-  constraint c_no_addr2     { addr != 2'd2; }
+  extern constraint c_short_length;
+  extern constraint c_no_addr2;
 
   extern function new(string name = "short_yapp_packet");
 
 endclass : short_yapp_packet
+
+//------------------------------------------------------------------------------
+// short_yapp_packet -- constraints
+//------------------------------------------------------------------------------
+
+constraint short_yapp_packet::c_short_length { length < 15; }
+constraint short_yapp_packet::c_no_addr2     { addr != 2'd2; }
 
 //------------------------------------------------------------------------------
 // short_yapp_packet -- method implementations

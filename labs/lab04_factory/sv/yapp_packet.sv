@@ -21,16 +21,23 @@
 class yapp_packet extends uvm_sequence_item;
 
   // Packet fields
-  rand bit [1:0] addr;
-  rand bit [5:0] length;
-  rand bit [7:0] payload[];
-       bit [7:0] parity;          // computed, never randomized directly
+  rand bit[1:0] addr;
+  rand bit[5:0] length;
+  rand bit[7:0] payload[];
+       bit[7:0] parity;          // computed, never randomized directly
 
   // Control knobs
   rand parity_type_e parity_type;
   rand int           packet_delay;
 
   `uvm_object_utils(yapp_packet)
+
+  // Constraints (named so sequences can switch them off)
+  extern constraint c_addr_legal;
+  extern constraint c_length;
+  extern constraint c_parity_defined;
+  extern constraint c_parity_dist;
+  extern constraint c_delay;
 
   // Printing, copying, comparing, packing and recording are written by hand
   // (do_print / do_copy / do_compare / do_pack / do_unpack / do_record below):
@@ -42,17 +49,10 @@ class yapp_packet extends uvm_sequence_item;
   extern virtual function void do_unpack(uvm_packer packer);
   extern virtual function void do_record(uvm_recorder recorder);
 
-  // Constraints (named so sequences can switch them off)
-  constraint c_addr_legal  { addr != 2'd3; }
-  constraint c_length      { length inside {[1:63]}; payload.size() == length; }
-  constraint c_parity_defined { parity_type != PARITY_TYPE_UNDEFINED; }
-  constraint c_parity_dist { parity_type dist { PARITY_TYPE_GOOD := 5, PARITY_TYPE_BAD := 1 }; }
-  constraint c_delay       { packet_delay inside {[1:20]}; }
-
   extern function new(string name = "yapp_packet");
 
   // Correct parity: XOR of header and every payload byte
-  extern function bit [7:0] calc_parity();
+  extern function bit[7:0] calc_parity();
 
   // Write the parity byte according to the parity_type knob.
   // A bad parity flips one random bit of the correct value.
@@ -65,6 +65,16 @@ class yapp_packet extends uvm_sequence_item;
 endclass : yapp_packet
 
 //------------------------------------------------------------------------------
+// yapp_packet -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_packet::c_addr_legal     { addr != 2'd3; }
+constraint yapp_packet::c_length         { length inside {[1:63]}; payload.size() == length; }
+constraint yapp_packet::c_parity_defined { parity_type != PARITY_TYPE_UNDEFINED; }
+constraint yapp_packet::c_parity_dist    { parity_type dist { PARITY_TYPE_GOOD := 5, PARITY_TYPE_BAD := 1 }; }
+constraint yapp_packet::c_delay          { packet_delay inside {[1:20]}; }
+
+//------------------------------------------------------------------------------
 // yapp_packet -- method implementations
 //------------------------------------------------------------------------------
 
@@ -73,7 +83,7 @@ function yapp_packet::new(string name = "yapp_packet");
 endfunction : new
 
 //------------------------------------------------------------------------------
-function bit [7:0] yapp_packet::calc_parity();
+function bit[7:0] yapp_packet::calc_parity();
   calc_parity = {length, addr};
   foreach (payload[i]) begin
     calc_parity ^= payload[i];

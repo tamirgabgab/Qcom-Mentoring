@@ -15,17 +15,23 @@ class yapp_gap_seq extends yapp_base_seq;
 
   rand int unsigned count;
 
-  constraint c_count { count inside {[8:40]}; }
-
   // Bookkeeping for the test: gaps asked for after the first packet, per class 0, 1, 2, 3+
   int planned_gap[4];
 
   `uvm_object_utils(yapp_gap_seq)
 
+  extern constraint c_count;
+
   extern function new(string name = "yapp_gap_seq");
   extern task body();
 
 endclass : yapp_gap_seq
+
+//------------------------------------------------------------------------------
+// yapp_gap_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_gap_seq::c_count { count inside {[8:40]}; }
 
 //------------------------------------------------------------------------------
 // yapp_gap_seq -- method implementations

@@ -6,8 +6,8 @@
 // hbus_read_seq: read `addr`; the value is left in `data`
 class hbus_read_seq extends hbus_base_seq;
 
-  rand bit [15:0] addr;
-  bit [7:0]       data;
+  rand bit[15:0] addr;
+  bit[7:0]       data;
 
   `uvm_object_utils(hbus_read_seq)
 

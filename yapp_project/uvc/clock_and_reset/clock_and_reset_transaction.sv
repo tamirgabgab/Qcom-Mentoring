@@ -6,10 +6,10 @@ class clock_and_reset_transaction extends uvm_sequence_item;
   rand int clock_period;   // time units per clock cycle
   rand int reset_cycles;   // clock cycles reset is held high
 
-  constraint c_period { clock_period inside {[2:100]}; clock_period % 2 == 0; }
-  constraint c_reset  { reset_cycles inside {[1:20]}; }
-
   `uvm_object_utils(clock_and_reset_transaction)
+
+  extern constraint c_period;
+  extern constraint c_reset;
 
   // Printing, copying, comparing, packing and recording are written by hand
   // (do_print / do_copy / do_compare / do_pack / do_unpack / do_record below):
@@ -23,6 +23,13 @@ class clock_and_reset_transaction extends uvm_sequence_item;
   extern function new(string name = "clock_and_reset_transaction");
 
 endclass : clock_and_reset_transaction
+
+//------------------------------------------------------------------------------
+// clock_and_reset_transaction -- constraints
+//------------------------------------------------------------------------------
+
+constraint clock_and_reset_transaction::c_period { clock_period inside {[2:100]}; clock_period % 2 == 0; }
+constraint clock_and_reset_transaction::c_reset  { reset_cycles inside {[1:20]}; }
 
 //------------------------------------------------------------------------------
 // clock_and_reset_transaction -- method implementations

@@ -8,18 +8,18 @@
 class channel_packet extends uvm_sequence_item;
 
   // Packet contents (observed)
-  bit [1:0]  addr;
-  bit [5:0]  length;
-  bit [7:0]  payload[];
-  bit [7:0]  parity;
+  bit[1:0]  addr;
+  bit[5:0]  length;
+  bit[7:0]  payload[];
+  bit[7:0]  parity;
   channel_parity_type_e parity_type;
 
   // Receiver response delay (randomized by channel_rx_resp_seq)
   rand int   delay;
 
-  constraint c_delay { delay inside {[0:10]}; }
-
   `uvm_object_utils(channel_packet)
+
+  extern constraint c_delay;
 
   // Printing, copying, comparing, packing and recording are written by hand
   // (do_print / do_copy / do_compare / do_pack / do_unpack / do_record below):
@@ -33,12 +33,18 @@ class channel_packet extends uvm_sequence_item;
   extern function new(string name = "channel_packet");
 
   // Even parity over header and payload
-  extern function bit [7:0] calc_parity();
+  extern function bit[7:0] calc_parity();
 
   // "good" / "bad" for the one-line log messages
   extern function string parity_text();
 
 endclass : channel_packet
+
+//------------------------------------------------------------------------------
+// channel_packet -- constraints
+//------------------------------------------------------------------------------
+
+constraint channel_packet::c_delay { delay inside {[0:10]}; }
 
 //------------------------------------------------------------------------------
 // channel_packet -- method implementations
@@ -49,7 +55,7 @@ function channel_packet::new(string name = "channel_packet");
 endfunction : new
 
 //------------------------------------------------------------------------------
-function bit [7:0] channel_packet::calc_parity();
+function bit[7:0] channel_packet::calc_parity();
   calc_parity = {length, addr};
   foreach (payload[i]) begin
     calc_parity ^= payload[i];

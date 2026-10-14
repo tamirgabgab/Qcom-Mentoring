@@ -25,10 +25,8 @@ class yapp_random_burst_seq extends yapp_base_seq;
 
   rand int unsigned count;
 
-  constraint c_count { count inside {[1:100]}; }
-
   // Knobs (percent unless said otherwise)
-  bit [5:0] maxpktsize   = 6'd63;           // the value in force, for the boundary lengths
+  bit[5:0] maxpktsize   = 6'd63;           // the value in force, for the boundary lengths
   int       addr3_pct    = 5;               // packets to the illegal address 3
   int       bad_pct      = 15;              // packets with bad parity
   int       short_pct    = 0;
@@ -46,18 +44,26 @@ class yapp_random_burst_seq extends yapp_base_seq;
 
   `uvm_object_utils(yapp_random_burst_seq)
 
+  extern constraint c_count;
+
   extern function new(string name = "yapp_random_burst_seq");
   extern task body();
 
   // One draw of each field, from the knobs
-  extern function bit [1:0] pick_addr();
-  extern function bit [5:0] pick_length();
+  extern function bit[1:0] pick_addr();
+  extern function bit[5:0] pick_length();
   extern function int       pick_gap();
 
   // "addr0..3 a/b/c/d, bad n, gap0 n, len lo..hi"
   extern function string summary();
 
 endclass : yapp_random_burst_seq
+
+//------------------------------------------------------------------------------
+// yapp_random_burst_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_random_burst_seq::c_count { count inside {[1:100]}; }
 
 //------------------------------------------------------------------------------
 // yapp_random_burst_seq -- method implementations
@@ -69,8 +75,8 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 task yapp_random_burst_seq::body();
-  bit [1:0]     a;
-  bit [5:0]     len;
+  bit[1:0]     a;
+  bit[5:0]     len;
   parity_type_e par;
   int           gap;
   `uvm_info(get_type_name(), $sformatf("Executing yapp_random_burst_seq (%0d packets, maxpktsize %0d)",
@@ -116,7 +122,7 @@ task yapp_random_burst_seq::body();
 endtask : body
 
 //------------------------------------------------------------------------------
-function bit [1:0] yapp_random_burst_seq::pick_addr();
+function bit[1:0] yapp_random_burst_seq::pick_addr();
   if (rnd::get_int(0, 99, "yapp_random_burst_seq.addr3") < addr3_pct) begin
     return 2'd3;
   end
@@ -124,7 +130,7 @@ function bit [1:0] yapp_random_burst_seq::pick_addr();
 endfunction : pick_addr
 
 //------------------------------------------------------------------------------
-function bit [5:0] yapp_random_burst_seq::pick_length();
+function bit[5:0] yapp_random_burst_seq::pick_length();
   int r;
   int len;
   r = rnd::get_int(0, 99, "yapp_random_burst_seq.length_class");

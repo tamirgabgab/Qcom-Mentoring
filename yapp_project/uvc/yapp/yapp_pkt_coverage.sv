@@ -18,8 +18,8 @@ class yapp_pkt_coverage extends uvm_subscriber #(yapp_packet);
   //   REQ2 all addresses, including the illegal one
   //   REQ3 every length bucket to every legal address with a parity error
   //--------------------------------------------------------------------------
-  covergroup yapp_pkt_cg with function sample(bit [5:0] length,
-                                              bit [1:0] addr,
+  covergroup yapp_pkt_cg with function sample(bit[5:0] length,
+                                              bit[1:0] addr,
                                               parity_type_e parity_type);
     option.per_instance = 1;
     length_cp : coverpoint length {

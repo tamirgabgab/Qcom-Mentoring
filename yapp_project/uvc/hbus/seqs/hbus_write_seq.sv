@@ -6,8 +6,8 @@
 // hbus_write_seq: write `data` to `addr` (both randomizable or set by the user)
 class hbus_write_seq extends hbus_base_seq;
 
-  rand bit [15:0] addr;
-  rand bit [7:0]  data;
+  rand bit[15:0] addr;
+  rand bit[7:0]  data;
 
   `uvm_object_utils(hbus_write_seq)
 

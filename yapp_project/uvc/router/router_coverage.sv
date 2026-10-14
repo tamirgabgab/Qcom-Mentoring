@@ -13,8 +13,8 @@ class router_coverage extends uvm_subscriber #(router_decision);
 
   int num_sampled;
 
-  covergroup router_cfg_cg with function sample(bit [5:0] max, int len_vs_max, router_reason_e reason, bit bad,
-                                                bit [6:0] cnt_en);
+  covergroup router_cfg_cg with function sample(bit[5:0] max, int len_vs_max, router_reason_e reason, bit bad,
+                                                bit[6:0] cnt_en);
     option.per_instance = 1;
     max_cp : coverpoint max {
       bins zero  = {0};

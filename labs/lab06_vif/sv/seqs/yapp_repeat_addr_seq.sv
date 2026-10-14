@@ -7,15 +7,22 @@
 class yapp_repeat_addr_seq extends yapp_base_seq;
 
   // A random SEQUENCE property, randomized when the sequence is randomized
-  rand bit [1:0] seq_addr;
-  constraint c_seq_addr { seq_addr != 2'd3; }
+  rand bit[1:0] seq_addr;
 
   `uvm_object_utils(yapp_repeat_addr_seq)
+
+  extern constraint c_seq_addr;
 
   extern function new(string name = "yapp_repeat_addr_seq");
   extern task body();
 
 endclass : yapp_repeat_addr_seq
+
+//------------------------------------------------------------------------------
+// yapp_repeat_addr_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_repeat_addr_seq::c_seq_addr { seq_addr != 2'd3; }
 
 //------------------------------------------------------------------------------
 // yapp_repeat_addr_seq -- method implementations

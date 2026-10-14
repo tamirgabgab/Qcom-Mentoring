@@ -45,17 +45,17 @@ class router_reference extends uvm_component;
   uvm_analysis_port #(router_decision) decision_out;
 
   // Register mirror (reset values of the DUT)
-  bit [7:0] ctrl_reg = 8'h3f;
-  bit [7:0] en_reg   = 8'h01;
-  bit [5:0] maxpktsize = 6'h3f;             // = ctrl_reg[5:0]
+  bit[7:0] ctrl_reg = 8'h3f;
+  bit[7:0] en_reg   = 8'h01;
+  bit[5:0] maxpktsize = 6'h3f;             // = ctrl_reg[5:0]
   bit       router_en  = 1'b1;              // = en_reg[0]
-  bit [7:0] parity_err_cnt;
-  bit [7:0] oversized_cnt;
-  bit [7:0] addr_cnt[4];                    // addr0..addr3 counters
-  bit [7:0] mem_size;
-  bit [7:0] pkt_mem[64];
+  bit[7:0] parity_err_cnt;
+  bit[7:0] oversized_cnt;
+  bit[7:0] addr_cnt[4];                    // addr0..addr3 counters
+  bit[7:0] mem_size;
+  bit[7:0] pkt_mem[64];
   bit       pkt_mem_known[64];              // written since time 0
-  bit [7:0] scratch_mem[256];               // yapp_mem
+  bit[7:0] scratch_mem[256];               // yapp_mem
   bit       scratch_known[256];
 
   // Knob (uvm_config_db #(bit) "check_reads"): compare every HBUS read with the model
@@ -82,7 +82,7 @@ class router_reference extends uvm_component;
   extern function void write_yapp(yapp_packet pkt);
 
   // What a read of `addr` must return; known = 0 for a memory byte never written
-  extern function bit [7:0] expected_read(bit [15:0] addr, output bit known);
+  extern function bit[7:0] expected_read(bit[15:0] addr, output bit known);
 
   extern function void report_phase(uvm_phase phase);
 
@@ -108,7 +108,7 @@ endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_reference::write_hbus(hbus_transaction tr);
-  bit [7:0] exp;
+  bit[7:0] exp;
   bit       known;
   if (tr.hwr_rd == HBUS_OP_READ) begin
     if (!check_reads) begin
@@ -207,7 +207,7 @@ function void router_reference::write_yapp(yapp_packet pkt);
 endfunction : write_yapp
 
 //------------------------------------------------------------------------------
-function bit [7:0] router_reference::expected_read(bit [15:0] addr, output bit known);
+function bit[7:0] router_reference::expected_read(bit[15:0] addr, output bit known);
   known = 1'b1;
   if (addr >= 16'h1100 && addr <= 16'h11ff) begin
     known = scratch_known[addr[7:0]];

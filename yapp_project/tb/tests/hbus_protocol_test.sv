@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 class hbus_protocol_test extends reg_access_test;
 
-  localparam bit [15:0] UNMAPPED[8] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008,
+  localparam bit[15:0] UNMAPPED[8] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008,
                                         16'h100c, 16'h100e, 16'h100f, 16'h1050};
 
   hbus_master_sequencer hbus_seqr;
@@ -25,8 +25,8 @@ class hbus_protocol_test extends reg_access_test;
   extern virtual task access_checks();
 
   // Raw bus cycles through the HBUS sequencer
-  extern task bus_write(bit [15:0] wr_addr, bit [7:0] wr_data);
-  extern task bus_read(bit [15:0] rd_addr, output bit [7:0] rd_data);
+  extern task bus_write(bit[15:0] wr_addr, bit[7:0] wr_data);
+  extern task bus_read(bit[15:0] rd_addr, output bit[7:0] rd_data);
 
 endclass : hbus_protocol_test
 
@@ -47,7 +47,7 @@ endfunction : connect_phase
 //------------------------------------------------------------------------------
 task hbus_protocol_test::access_checks();
   virtual interface hbus_if vif;
-  bit [7:0] data;
+  bit[7:0] data;
   int       writes_before;
   int       reads_before;
   vif = tb.hbus.monitor.vif;
@@ -107,7 +107,7 @@ task hbus_protocol_test::access_checks();
 endtask : access_checks
 
 //------------------------------------------------------------------------------
-task hbus_protocol_test::bus_write(bit [15:0] wr_addr, bit [7:0] wr_data);
+task hbus_protocol_test::bus_write(bit[15:0] wr_addr, bit[7:0] wr_data);
   hbus_write_seq wr;
   wr = hbus_write_seq::type_id::create("wr");
   if (!wr.randomize() with { addr == wr_addr; data == wr_data; }) begin
@@ -117,7 +117,7 @@ task hbus_protocol_test::bus_write(bit [15:0] wr_addr, bit [7:0] wr_data);
 endtask : bus_write
 
 //------------------------------------------------------------------------------
-task hbus_protocol_test::bus_read(bit [15:0] rd_addr, output bit [7:0] rd_data);
+task hbus_protocol_test::bus_read(bit[15:0] rd_addr, output bit[7:0] rd_data);
   hbus_read_seq rd;
   rd = hbus_read_seq::type_id::create("rd");
   if (!rd.randomize() with { addr == rd_addr; }) begin

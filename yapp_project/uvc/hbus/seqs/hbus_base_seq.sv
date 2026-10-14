@@ -6,8 +6,8 @@
 // Base sequence: objection handling + register address constants
 class hbus_base_seq extends uvm_sequence #(hbus_transaction);
 
-  localparam bit [15:0] CTRL_REG_ADDR = 16'h1000;
-  localparam bit [15:0] EN_REG_ADDR   = 16'h1001;
+  localparam bit[15:0] CTRL_REG_ADDR = 16'h1000;
+  localparam bit[15:0] EN_REG_ADDR   = 16'h1001;
 
   `uvm_object_utils(hbus_base_seq)
 

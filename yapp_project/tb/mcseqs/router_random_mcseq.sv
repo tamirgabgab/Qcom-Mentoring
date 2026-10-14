@@ -57,7 +57,7 @@ class router_random_mcseq extends router_mcseq_base;
   extern task body();
 
   // Draw a configuration and write it; returns the maxpktsize written
-  extern task configure_router(int burst, output bit [5:0] max, output string text);
+  extern task configure_router(int burst, output bit[5:0] max, output string text);
 
   // A few random reads (and scratch-memory writes) over the HBUS
   extern task random_reads(int n);
@@ -78,7 +78,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 task router_random_mcseq::body();
   int                   counts[];
-  bit [5:0]             max;
+  bit[5:0]             max;
   bit                   storm;
   string                cfg_text;
   yapp_random_burst_seq burst;
@@ -141,9 +141,9 @@ task router_random_mcseq::body();
 endtask : body
 
 //------------------------------------------------------------------------------
-task router_random_mcseq::configure_router(int burst, output bit [5:0] max, output string text);
-  bit [7:0] ctrl;
-  bit [7:0] en;
+task router_random_mcseq::configure_router(int burst, output bit[5:0] max, output string text);
+  bit[7:0] ctrl;
+  bit[7:0] en;
   int       r;
   string    on_off;
   if (rnd::get_int(0, 99, "router_random_mcseq.extreme") < extreme_pct) begin
@@ -179,11 +179,11 @@ endtask : configure_router
 
 //------------------------------------------------------------------------------
 task router_random_mcseq::random_reads(int n);
-  bit [15:0] addr;
-  bit [7:0]  data;
-  bit [15:0] regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b,
+  bit[15:0] addr;
+  bit[7:0]  data;
+  bit[15:0] regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b,
                          16'h100d};
-  bit [15:0] unmapped[$] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};
+  bit[15:0] unmapped[$] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};
   for (int i = 0; i < n; i++) begin
     case (rnd::get_int(0, 4, "router_random_mcseq.read_kind"))
       0, 1: begin
@@ -211,9 +211,9 @@ endtask : random_reads
 
 //------------------------------------------------------------------------------
 task router_random_mcseq::final_reads();
-  bit [7:0]  data;
-  bit [7:0]  mem_size;
-  bit [15:0] regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b};
+  bit[7:0]  data;
+  bit[7:0]  mem_size;
+  bit[15:0] regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b};
   foreach (regs[i]) begin
     hbus_read(regs[i], data);
   end

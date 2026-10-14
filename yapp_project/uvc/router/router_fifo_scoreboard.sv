@@ -29,7 +29,7 @@ class router_fifo_scoreboard extends uvm_scoreboard;
   uvm_get_port #(channel_packet)   chan_get[3];
 
   // Register mirror (DUT reset values)
-  bit [5:0] maxpktsize = 6'h3f;
+  bit[5:0] maxpktsize = 6'h3f;
   bit       router_en  = 1'b1;
 
   // Statistics

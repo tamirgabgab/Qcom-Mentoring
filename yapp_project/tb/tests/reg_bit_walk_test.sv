@@ -35,7 +35,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 task reg_bit_walk_test::access_checks();
   uvm_status_e status;
-  bit [7:0]    pattern;
+  bit[7:0]    pattern;
   uvm_reg      all_q[$];
   uvm_reg      rw_q[$];
   uvm_reg      ro_q[$];

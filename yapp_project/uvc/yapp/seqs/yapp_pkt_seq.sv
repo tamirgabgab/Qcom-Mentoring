@@ -13,20 +13,28 @@
 //------------------------------------------------------------------------------
 class yapp_pkt_seq extends yapp_base_seq;
 
-  rand bit [1:0]     pkt_addr;
-  rand bit [5:0]     pkt_len;
+  rand bit[1:0]     pkt_addr;
+  rand bit[5:0]     pkt_len;
   rand parity_type_e pkt_parity;
 
-  constraint c_len    { pkt_len inside {[1:63]}; }
-  constraint c_legal  { soft pkt_addr != 2'd3; }
-  constraint c_parity { pkt_parity != PARITY_TYPE_UNDEFINED; soft pkt_parity == PARITY_TYPE_GOOD; }
-
   `uvm_object_utils(yapp_pkt_seq)
+
+  extern constraint c_len;
+  extern constraint c_legal;
+  extern constraint c_parity;
 
   extern function new(string name = "yapp_pkt_seq");
   extern task body();
 
 endclass : yapp_pkt_seq
+
+//------------------------------------------------------------------------------
+// yapp_pkt_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_pkt_seq::c_len    { pkt_len inside {[1:63]}; }
+constraint yapp_pkt_seq::c_legal  { soft pkt_addr != 2'd3; }
+constraint yapp_pkt_seq::c_parity { pkt_parity != PARITY_TYPE_UNDEFINED; soft pkt_parity == PARITY_TYPE_GOOD; }
 
 //------------------------------------------------------------------------------
 // yapp_pkt_seq -- method implementations

@@ -37,7 +37,7 @@ task pkt_mem_test::access_checks();
   uvm_status_e   status;
   uvm_reg_data_t val;
   hbus_write_seq wr;
-  bit [7:0]      header;
+  bit[7:0]      header;
 
   // 1. a packet with a known address and length
   stage("1. one packet (addr 1, 20 bytes): mem_size_reg and yapp_pkt_mem hold it byte by byte");
@@ -78,7 +78,7 @@ endtask : access_checks
 task pkt_mem_test::check_stored_packet(yapp_packet pkt);
   uvm_status_e   status;
   uvm_reg_data_t val;
-  bit [7:0]      header;
+  bit[7:0]      header;
   int            errors;
   header = {pkt.length, pkt.addr};
   regs.mem_size_reg.read(status, val);

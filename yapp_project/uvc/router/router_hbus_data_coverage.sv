@@ -11,7 +11,7 @@ class router_hbus_data_coverage extends uvm_subscriber #(hbus_transaction);
 
   int num_sampled;
 
-  covergroup hbus_data_cg with function sample(bit write, bit [7:0] data);
+  covergroup hbus_data_cg with function sample(bit write, bit[7:0] data);
     option.per_instance = 1;
     rw_cp : coverpoint write {
       bins read  = {0};

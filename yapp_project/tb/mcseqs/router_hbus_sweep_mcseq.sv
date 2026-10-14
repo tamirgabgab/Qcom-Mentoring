@@ -36,10 +36,10 @@ class router_hbus_sweep_mcseq extends router_mcseq_base;
   extern task body();
 
   // Write `data` to `addr`, then read it back (the reference checks the read)
-  extern task write_read(bit [15:0] addr, bit [7:0] data);
+  extern task write_read(bit[15:0] addr, bit[7:0] data);
 
   // `n` packets to `addr`: 2 bytes, bad parity
-  extern task send(bit [1:0] addr, int n);
+  extern task send(bit[1:0] addr, int n);
 
   // Read the six counters
   extern task read_counters();
@@ -59,9 +59,9 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 task router_hbus_sweep_mcseq::body();
-  bit [7:0]  patterns[4] = '{8'h00, 8'hff, 8'h55, 8'haa};
-  bit [15:0] addr;
-  bit [7:0]  en_masks[4] = '{8'h17, 8'h21, 8'h41, 8'h81};
+  bit[7:0]  patterns[4] = '{8'h00, 8'hff, 8'h55, 8'haa};
+  bit[15:0] addr;
+  bit[7:0]  en_masks[4] = '{8'h17, 8'h21, 8'h41, 8'h81};
   yapp_pkt_seq pkt;
 
   stage("1. one 20-byte packet to address 0, so yapp_pkt_mem holds known bytes");
@@ -142,14 +142,14 @@ task router_hbus_sweep_mcseq::body();
 endtask : body
 
 //------------------------------------------------------------------------------
-task router_hbus_sweep_mcseq::write_read(bit [15:0] addr, bit [7:0] data);
-  bit [7:0] rd;
+task router_hbus_sweep_mcseq::write_read(bit[15:0] addr, bit[7:0] data);
+  bit[7:0] rd;
   hbus_write(addr, data);
   hbus_read(addr, rd);
 endtask : write_read
 
 //------------------------------------------------------------------------------
-task router_hbus_sweep_mcseq::send(bit [1:0] addr, int n);
+task router_hbus_sweep_mcseq::send(bit[1:0] addr, int n);
   yapp_pkt_seq pkt;
   for (int i = 0; i < n; i++) begin
     pkt = yapp_pkt_seq::type_id::create("pkt");
@@ -163,8 +163,8 @@ endtask : send
 
 //------------------------------------------------------------------------------
 task router_hbus_sweep_mcseq::read_counters();
-  bit [7:0]  data;
-  bit [15:0] counters[6] = '{16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b};
+  bit[7:0]  data;
+  bit[15:0] counters[6] = '{16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b};
   foreach (counters[i]) begin
     hbus_read(counters[i], data);
   end
@@ -172,7 +172,7 @@ endtask : read_counters
 
 //------------------------------------------------------------------------------
 task router_hbus_sweep_mcseq::read_window();
-  bit [7:0] data;
+  bit[7:0] data;
   for (int a = 16'h1000; a <= 16'h100f; a++) begin
     hbus_read(16'(a), data);
   end

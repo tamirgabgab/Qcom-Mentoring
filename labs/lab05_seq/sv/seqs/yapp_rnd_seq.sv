@@ -7,14 +7,21 @@
 class yapp_rnd_seq extends yapp_base_seq;
 
   rand int count;
-  constraint c_count { count inside {[1:10]}; }
 
   `uvm_object_utils(yapp_rnd_seq)
+
+  extern constraint c_count;
 
   extern function new(string name = "yapp_rnd_seq");
   extern task body();
 
 endclass : yapp_rnd_seq
+
+//------------------------------------------------------------------------------
+// yapp_rnd_seq -- constraints
+//------------------------------------------------------------------------------
+
+constraint yapp_rnd_seq::c_count { count inside {[1:10]}; }
 
 //------------------------------------------------------------------------------
 // yapp_rnd_seq -- method implementations

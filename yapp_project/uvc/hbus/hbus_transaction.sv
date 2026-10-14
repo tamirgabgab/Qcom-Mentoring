@@ -3,13 +3,13 @@
 //------------------------------------------------------------------------------
 class hbus_transaction extends uvm_sequence_item;
 
-  rand bit [15:0]            haddr;
-  rand bit [7:0]             hdata;   // written data, or data returned by a read
+  rand bit[15:0]            haddr;
+  rand bit[7:0]             hdata;   // written data, or data returned by a read
   rand hbus_op_e  hwr_rd;
 
   `uvm_object_utils(hbus_transaction)
 
-  constraint c_op_defined { hwr_rd != HBUS_OP_UNDEFINED; }
+  extern constraint c_op_defined;
 
   // Printing, copying, comparing, packing and recording are written by hand
   // (do_print / do_copy / do_compare / do_pack / do_unpack / do_record below):
@@ -25,6 +25,12 @@ class hbus_transaction extends uvm_sequence_item;
   extern function string convert2string();
 
 endclass : hbus_transaction
+
+//------------------------------------------------------------------------------
+// hbus_transaction -- constraints
+//------------------------------------------------------------------------------
+
+constraint hbus_transaction::c_op_defined { hwr_rd != HBUS_OP_UNDEFINED; }
 
 //------------------------------------------------------------------------------
 // hbus_transaction -- method implementations

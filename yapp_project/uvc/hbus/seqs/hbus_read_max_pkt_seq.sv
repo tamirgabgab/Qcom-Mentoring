@@ -6,7 +6,7 @@
 // hbus_read_max_pkt_seq: read ctrl_reg back and report maxpktsize
 class hbus_read_max_pkt_seq extends hbus_base_seq;
 
-  bit [7:0] maxpktsize;
+  bit[7:0] maxpktsize;
 
   `uvm_object_utils(hbus_read_max_pkt_seq)
 

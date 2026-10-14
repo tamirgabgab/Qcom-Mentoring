@@ -20,8 +20,8 @@ class router_mcseq_base extends uvm_sequence;
 
   extern task post_body();
 
-  extern task hbus_write(bit [15:0] addr, bit [7:0] data);
-  extern task hbus_read(bit [15:0] addr, output bit [7:0] data);
+  extern task hbus_write(bit[15:0] addr, bit[7:0] data);
+  extern task hbus_read(bit[15:0] addr, output bit[7:0] data);
 
   // A [TEST] STAGE line, as base_test::stage() prints it
   extern function void stage(string what);
@@ -53,7 +53,7 @@ task router_mcseq_base::post_body();
 endtask : post_body
 
 //------------------------------------------------------------------------------
-task router_mcseq_base::hbus_write(bit [15:0] addr, bit [7:0] data);
+task router_mcseq_base::hbus_write(bit[15:0] addr, bit[7:0] data);
   hbus_write_seq wr;
   wr = hbus_write_seq::type_id::create("wr");
   if (!wr.randomize() with { addr == local::addr; data == local::data; }) begin
@@ -63,7 +63,7 @@ task router_mcseq_base::hbus_write(bit [15:0] addr, bit [7:0] data);
 endtask : hbus_write
 
 //------------------------------------------------------------------------------
-task router_mcseq_base::hbus_read(bit [15:0] addr, output bit [7:0] data);
+task router_mcseq_base::hbus_read(bit[15:0] addr, output bit[7:0] data);
   hbus_read_seq rd;
   rd = hbus_read_seq::type_id::create("rd");
   if (!rd.randomize() with { addr == local::addr; }) begin

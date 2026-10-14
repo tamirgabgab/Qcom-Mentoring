@@ -12,7 +12,7 @@ class router_hbus_counter_coverage extends uvm_subscriber #(hbus_transaction);
 
   int num_sampled;
 
-  covergroup hbus_counter_cg with function sample(int counter, bit [7:0] value);
+  covergroup hbus_counter_cg with function sample(int counter, bit[7:0] value);
     option.per_instance = 1;
     counter_cp : coverpoint counter {
       bins parity_err = {0};
