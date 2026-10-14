@@ -4,7 +4,7 @@
 
 [Back to the regression results →](index.md){ .pm-link } [On the project map →](../project-map.md#view=plan&node=cls:random_test){ .pm-link }
 
-**8 of 8 seeds passed** · lab: test plan · extends `base_test` · 169 coverage bins hit.
+**8 of 8 seeds passed** · lab: test plan · extends `base_test` · 182 coverage bins hit.
 
 Random tests: the seed decides the shape of the test, and every result is checked automatically -- no expected value is written by hand.
 
@@ -12,14 +12,14 @@ Random tests: the seed decides the shape of the test, and every result is checke
 
 | Seed | Result | Sim time | Wall | In / fwd / drop | Out ch0/1/2 | Suspends | Errors | Log | Timeline | Waves |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | pass | 12us | 6.5 s | 22 / 7 / 15 | 2/1/4 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/random_test_s1.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s1%2Frandom_test_s1.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/random_test_s1.fst) |
-| 2 | pass | 25us | 11.8 s | 50 / 12 / 38 | 4/2/6 | 10 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/random_test_s2.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s2%2Frandom_test_s2.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/random_test_s2.fst) |
-| 3 | pass | 47us | 17.2 s | 89 / 53 / 36 | 14/13/26 | 8 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/random_test_s3.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s3%2Frandom_test_s3.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/random_test_s3.fst) |
-| 4 | pass | 36us | 14.7 s | 81 / 7 / 74 | 1/2/4 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/random_test_s4.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s4%2Frandom_test_s4.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/random_test_s4.fst) |
-| 5 | pass | 16us | 7.2 s | 36 / 21 / 15 | 9/6/6 | 5 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/random_test_s5.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s5%2Frandom_test_s5.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/random_test_s5.fst) |
-| 6 | pass | 15us | 6.2 s | 24 / 8 / 16 | 0/2/6 | 4 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/random_test_s6.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s6%2Frandom_test_s6.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/random_test_s6.fst) |
-| 7 | pass | 44us | 18.5 s | 89 / 24 / 65 | 6/5/13 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/random_test_s7.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s7%2Frandom_test_s7.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/random_test_s7.fst) |
-| 8 | pass | 46us | 19.9 s | 95 / 55 / 40 | 12/16/27 | 16 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/random_test_s8.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s8%2Frandom_test_s8.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/random_test_s8.fst) |
+| 1 | pass | 15us | 8.6 s | 22 / 7 / 15 | 2/2/3 | 7 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/random_test_s1.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s1%2Frandom_test_s1.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s1/random_test_s1.fst) |
+| 2 | pass | 34us | 19.3 s | 74 / 46 / 28 | 15/8/23 | 8 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/random_test_s2.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s2%2Frandom_test_s2.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s2/random_test_s2.fst) |
+| 3 | pass | 6us | 4.1 s | 11 / 7 / 4 | 2/2/3 | 2 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/random_test_s3.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s3%2Frandom_test_s3.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s3/random_test_s3.fst) |
+| 4 | pass | 32us | 17.8 s | 61 / 33 / 28 | 9/3/21 | 3 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/random_test_s4.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s4%2Frandom_test_s4.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s4/random_test_s4.fst) |
+| 5 | pass | 33us | 18.2 s | 73 / 23 / 50 | 6/5/12 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/random_test_s5.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s5%2Frandom_test_s5.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s5/random_test_s5.fst) |
+| 6 | pass | 12us | 7.8 s | 24 / 7 / 17 | 2/1/4 | 4 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/random_test_s6.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s6%2Frandom_test_s6.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s6/random_test_s6.fst) |
+| 7 | pass | 37us | 18.8 s | 85 / 0 / 85 | 0/0/0 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/random_test_s7.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s7%2Frandom_test_s7.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s7/random_test_s7.fst) |
+| 8 | pass | 35us | 21.4 s | 80 / 28 / 52 | 7/9/12 | 0 | 0 | [log ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/random_test_s8.log) | [timeline ↗](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/timeline.md) | [Surfer ↗](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_test_s8%2Frandom_test_s8.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) [.fst](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/regression/yapp_project_tb/random_test_s8/random_test_s8.fst) |
 
 ## The plan of the test
 
@@ -49,34 +49,34 @@ Expected:
 
 ## Seed 1: what happened
 
-- YAPP driver sent **22** packet(s) (3 with bad parity); the input monitor saw 22.
+- YAPP driver sent **22** packet(s) (2 with bad parity); the input monitor saw 22.
 - Router: **7** forwarded, **15** dropped (7 oversized, 8 router disabled).
-- Packets out: ch0 **2**, ch1 **1**, ch2 **4**.
+- Packets out: ch0 **2**, ch1 **2**, ch2 **3**.
 - Scoreboard: 7 matched, 0 mismatched, 0 unexpected.
-- Back-pressure: in_suspend asserted **0** time(s).
-- Error pulses: 2.
-- HBUS: 30 write(s), 78 read(s).
+- Back-pressure: in_suspend asserted **7** time(s), longest hold 57 cycle(s).
+- Error pulses: 1.
+- HBUS: 30 write(s), 95 read(s).
 
 ### Stages
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_STALLY, ch1 RX_FAST, ch2 RX_STALLY |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_SLOW, ch1 CHANNEL_RX_PROFILE_STALLY, ch2 CHANNEL_RX_PROFILE_SLOW |
 | 0 | random scenario: 22 packets in 6 bursts |
 | 250 | burst 1/6: ctrl=0x3e (maxpktsize 62) en=0xb3 (router on, counter enables 1011001), 4 packet(s) |
-| 2330 | burst 1/6 sent: addr0..3 2/0/2/0, bad parity 1, gap 0 1, length 1..63 |
-| 2620 | burst 2/6: ctrl=0x12 (maxpktsize 18) en=0xfe (router OFF, counter enables 1111111), 3 packet(s) |
-| 4340 | burst 2/6 sent: addr0..3 0/0/3/0, bad parity 0, gap 0 1, length 40..63 |
-| 4540 | burst 3/6: ctrl=0xf4 (maxpktsize 52) en=0x73 (router on, counter enables 0111001), 3 packet(s) |
-| 5770 | burst 3/6 sent: addr0..3 0/1/2/0, bad parity 1, gap 0 2, length 16..52 |
-| 6100 | burst 4/6: ctrl=0xc1 (maxpktsize 1) en=0x33 (router on, counter enables 0011001), 3 packet(s) |
-| 6810 | burst 4/6 sent: addr0..3 1/1/1/0, bad parity 0, gap 0 0, length 2..50 |
-| 7150 | burst 5/6: ctrl=0xe4 (maxpktsize 36) en=0xc3 (router on, counter enables 1100001), 4 packet(s) |
-| 8790 | burst 5/6 sent: addr0..3 1/1/2/0, bad parity 0, gap 0 1, length 1..57 |
-| 8960 | burst 6/6: ctrl=0x1f (maxpktsize 31) en=0x22 (router OFF, counter enables 0010001), 5 packet(s) |
-| 10290 | burst 6/6 sent: addr0..3 1/1/2/1, bad parity 1, gap 0 2, length 1..37 |
-| 10290 | final reads: every register and the stored packet, checked against the reference model |
-| 11815 | done: 22 packets (7 forwarded, 15 dropped), 0 storm burst(s), 7 scoreboard matches, 78 HBUS reads checked, 2 error pulses for 2 bad packets |
+| 3430 | burst 1/6 sent: addr0..3 1/0/3/0, bad parity 0, gap 0 1, length 32..63 |
+| 3600 | burst 2/6: ctrl=0xc2 (maxpktsize 2) en=0x22 (router OFF, counter enables 0010001), 3 packet(s) |
+| 4620 | burst 2/6 sent: addr0..3 0/1/2/0, bad parity 0, gap 0 2, length 8..58 |
+| 5020 | burst 3/6: ctrl=0xed (maxpktsize 45) en=0x09 (router on, counter enables 0000100), 3 packet(s) |
+| 6930 | burst 3/6 sent: addr0..3 0/2/1/0, bad parity 1, gap 0 2, length 23..44 |
+| 7110 | burst 4/6: ctrl=0x3e (maxpktsize 62) en=0x11 (router on, counter enables 0001000), 3 packet(s) |
+| 8880 | burst 4/6 sent: addr0..3 1/0/2/0, bad parity 0, gap 0 0, length 9..63 |
+| 9280 | burst 5/6: ctrl=0x10 (maxpktsize 16) en=0xf3 (router on, counter enables 1111001), 4 packet(s) |
+| 11390 | burst 5/6 sent: addr0..3 0/1/3/0, bad parity 0, gap 0 1, length 18..60 |
+| 11540 | burst 6/6: ctrl=0xfe (maxpktsize 62) en=0xfc (router OFF, counter enables 1111110), 5 packet(s) |
+| 12520 | burst 6/6 sent: addr0..3 1/2/2/0, bad parity 1, gap 0 1, length 1..31 |
+| 12520 | final reads: every register and the stored packet, checked against the reference model |
+| 14585 | done: 22 packets (7 forwarded, 15 dropped), 0 storm burst(s), 7 scoreboard matches, 95 HBUS reads checked, 1 error pulses for 1 bad packets |
 
 ### Pictures
 
@@ -93,6 +93,10 @@ The moments the report draws from the signal trace of this run (the same picture
 **first packet out on channel 2**
 
 ![first packet out on channel 2](../assets/regression/random_test/wave_first_packet_out.svg)
+
+**first back-pressure on the input port**
+
+![first back-pressure on the input port](../assets/regression/random_test/wave_first_suspend.svg)
 
 **first error pulse after a bad-parity packet**
 

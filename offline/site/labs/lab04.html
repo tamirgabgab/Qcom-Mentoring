@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1163,6 +1193,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1183,30 +1280,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1271,7 +1351,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -1293,14 +1373,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1977,10 +2057,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1998,8 +2078,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2400,16 +2480,16 @@ types and change configuration without touching the UVC.</p>
 <h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>
 <h3 id="1-new-type_idcreate">1. <code>new()</code> → <code>type_id::create()</code><a class="headerlink" href="#1-new-type_idcreate" title="Permanent link">&para;</a></h3>
 <p>In <code>router_test_lib.sv</code>, <code>router_tb.sv</code>, <code>yapp_env.sv</code>, <code>yapp_tx_agent.sv</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">tb</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">router_tb</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"tb"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">yapp</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">agent</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_tx_agent</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"agent"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">monitor</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"monitor"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">m_tb</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">router_tb</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"tb"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">m_yapp</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">m_agent</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_tx_agent</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"agent"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">m_monitor</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"monitor"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 </code></pre></div>
 <h3 id="2-short_yapp_packet-end-of-svyapp_packetsv">2. <code>short_yapp_packet</code> — end of <code>sv/yapp_packet.sv</code><a class="headerlink" href="#2-short_yapp_packet-end-of-svyapp_packetsv" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span><span class="w"> </span><span class="nc">short_yapp_packet</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">yapp_packet</span><span class="p">;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="no">`uvm_object_utils</span><span class="p">(</span><span class="n">short_yapp_packet</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="k">constraint</span><span class="w"> </span><span class="n">c_short_length</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="k">constraint</span><span class="w"> </span><span class="n">c_no_addr2</span><span class="w">     </span><span class="p">{</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2'd2</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">     </span><span class="c1">// removed again in Lab 5!</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="k">constraint</span><span class="w"> </span><span class="n">c_short_length</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="k">constraint</span><span class="w"> </span><span class="n">c_no_addr2</span><span class="w">     </span><span class="p">{</span><span class="w"> </span><span class="n">m_addr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">2'd2</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">     </span><span class="c1">// removed again in Lab 5!</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">function</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"short_yapp_packet"</span><span class="p">);</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">super</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="k">endfunction</span>
@@ -2441,7 +2521,7 @@ types and change configuration without touching the UVC.</p>
 <a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="kd">class</span><span class="w"> </span><span class="nc">base_test</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_test</span><span class="p">;</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">  </span><span class="n">router_tb</span><span class="w"> </span><span class="n">tb</span><span class="p">;</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">  </span><span class="n">router_tb</span><span class="w"> </span><span class="n">m_tb</span><span class="p">;</span>
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
 <a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">base_test</span><span class="p">)</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
@@ -2470,7 +2550,7 @@ types and change configuration without touching the UVC.</p>
 <a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Executing the build phase of the test"</span><span class="p">,</span><span class="w"> </span><span class="n">UVM_HIGH</span><span class="p">)</span>
 <a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="w">  </span><span class="n">uvm_config_int</span><span class="o">::</span><span class="n">set</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">"*"</span><span class="p">,</span><span class="w"> </span><span class="s">"recording_detail"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// transaction recording</span>
 <a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="w">  </span><span class="n">configure_sequences</span><span class="p">();</span><span class="w">                                   </span><span class="c1">// before the tb is built!</span>
-<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">  </span><span class="n">tb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_tb</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"tb"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">  </span><span class="n">m_tb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_tb</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"tb"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">build_phase</span>
 <a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>
 <a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="c1">//------------------------------------------------------------------------------</span>
@@ -2569,7 +2649,7 @@ types and change configuration without touching the UVC.</p>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_tb</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_env</span><span class="p">;</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">yapp_env</span><span class="w"> </span><span class="n">yapp</span><span class="p">;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">yapp_env</span><span class="w"> </span><span class="n">m_yapp</span><span class="p">;</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">router_tb</span><span class="p">)</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
@@ -2591,7 +2671,7 @@ types and change configuration without touching the UVC.</p>
 <a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="n">build_phase</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Executing the build phase of the testbench"</span><span class="p">,</span><span class="w"> </span><span class="n">UVM_HIGH</span><span class="p">)</span>
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">  </span><span class="c1">// type_id::create() instead of new(): a test can now override the type</span>
-<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="n">yapp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="n">m_yapp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">build_phase</span>
 </code></pre></div>
 <h2 id="run">Run<a class="headerlink" href="#run" title="Permanent link">&para;</a></h2>

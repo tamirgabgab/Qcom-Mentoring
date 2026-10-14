@@ -1,6 +1,6 @@
 # random_backpressure_test seed 1
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 18us · wall 8.2 s · log [`random_backpressure_test_s1.log`](random_backpressure_test_s1.log)
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 18us · wall 9.7 s · log [`random_backpressure_test_s1.log`](random_backpressure_test_s1.log)
 
 Waves: `random_backpressure_test_s1.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_backpressure_test_s1%2Frandom_backpressure_test_s1.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
@@ -19,7 +19,7 @@ Waves: `random_backpressure_test_s1.fst` (GTKWave, Surfer or the VS Code wave vi
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_SLOW, ch1 RX_STALLY, ch2 RX_SLOW |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_SLOW, ch1 CHANNEL_RX_PROFILE_STALLY, ch2 CHANNEL_RX_PROFILE_SLOW |
 | 0 | random scenario: 25 packets in 6 bursts |
 | 200 | burst 1/6: ctrl=0x05 (maxpktsize 5) en=0x15 (router on, counter enables 0001010), 4 packet(s) |
 | 2530 | burst 1/6 sent: addr0..3 0/0/4/0, bad parity 0, gap 0 3, length 46..63 |
@@ -69,7 +69,7 @@ Waves: `random_backpressure_test_s1.fst` (GTKWave, Surfer or the VS Code wave vi
 | time (ns) | who | event |
 |---|---|---|
 | 0 | yapp monitor | YAPP monitor running |
-| 0 | **test** | STAGE: receivers: ch0 RX_SLOW, ch1 RX_STALLY, ch2 RX_SLOW |
+| 0 | **test** | STAGE: receivers: ch0 CHANNEL_RX_PROFILE_SLOW, ch1 CHANNEL_RX_PROFILE_STALLY, ch2 CHANNEL_RX_PROFILE_SLOW |
 | 0 | **test** | STAGE: random scenario: 25 packets in 6 bursts |
 | 0 | clk/rst driver | Starting clock (period 10) and holding reset for 5 cycles |
 | 0 | **DUT** | RESET asserted |

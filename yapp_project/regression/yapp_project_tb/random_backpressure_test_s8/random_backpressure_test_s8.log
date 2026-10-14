@@ -324,10 +324,10 @@ Name                               Type                          Size  Value
 ----------------------------------------------------------------------------------------------------------------
 UVM_INFO tests/base_test.sv(96) @ 0: uvm_test_top [TEST] === random_backpressure_test  seed 8 ===
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_monitor.sv(63) @ 0: uvm_test_top.tb.yapp.agent.monitor [yapp_tx_monitor] YAPP monitor running
-UVM_INFO tests/base_test.sv(101) @ 0: uvm_test_top [TEST] STAGE: receivers: ch0 RX_FAST, ch1 RX_NORMAL, ch2 RX_STALLY
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(49) @ 0: uvm_test_top.tb.chan0.rx_agent.sequencer@@rx_seq0 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile RX_FAST)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(49) @ 0: uvm_test_top.tb.chan1.rx_agent.sequencer@@rx_seq1 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile RX_NORMAL)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(49) @ 0: uvm_test_top.tb.chan2.rx_agent.sequencer@@rx_seq2 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile RX_STALLY)
+UVM_INFO tests/base_test.sv(101) @ 0: uvm_test_top [TEST] STAGE: receivers: ch0 CHANNEL_RX_PROFILE_FAST, ch1 CHANNEL_RX_PROFILE_NORMAL, ch2 CHANNEL_RX_PROFILE_STALLY
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(45) @ 0: uvm_test_top.tb.chan0.rx_agent.sequencer@@rx_seq0 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile CHANNEL_RX_PROFILE_FAST)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(45) @ 0: uvm_test_top.tb.chan1.rx_agent.sequencer@@rx_seq1 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile CHANNEL_RX_PROFILE_NORMAL)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/channel/seqs/channel_rx_random_seq.sv(45) @ 0: uvm_test_top.tb.chan2.rx_agent.sequencer@@rx_seq2 [channel_rx_random_seq] Executing channel_rx_random_seq (forever, profile CHANNEL_RX_PROFILE_STALLY)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/clock_and_reset/seqs/clk10_rst5_seq.sv(27) @ 0: uvm_test_top.tb.clk_rst.agent.sequencer@@clk10_rst5_seq [clk10_rst5_seq] Executing clk10_rst5_seq
 UVM_INFO mcseqs/router_mcseq_base.sv(79) @ 0: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: random scenario: 75 packets in 2 bursts
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_write_seq.sv(30) @ 0: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.wr [hbus_write_seq] Executing hbus_write_seq addr=0x1000 data=0x05
@@ -386,7 +386,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(6
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 410: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x100d data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 410: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x100d data=0x00
 UVM_INFO mcseqs/router_mcseq_base.sv(79) @ 410: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 1/2: ctrl=0x05 (maxpktsize 5) en=0xff (router on, counter enables 1111111), 38 packet(s)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_random_burst_seq.sv(77) @ 410: uvm_test_top.tb.yapp.agent.sequencer@@scenario.burst0 [yapp_random_burst_seq] Executing yapp_random_burst_seq (38 packets, maxpktsize 5)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_random_burst_seq.sv(83) @ 410: uvm_test_top.tb.yapp.agent.sequencer@@scenario.burst0 [yapp_random_burst_seq] Executing yapp_random_burst_seq (38 packets, maxpktsize 5)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 410: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #1: addr=2 len=51 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 415: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x100d data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 425: reporter [DUT] IN  pkt #1 header: addr=2 len=51 -> DROP (oversized: len 51 > maxpktsize 5)
@@ -681,7 +681,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(6
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 18230: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed READ  addr=0x1040 data=0x6d
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/seqs/hbus_read_seq.sv(37) @ 18230: uvm_test_top.tb.hbus.masters[0].sequencer@@scenario.rd [hbus_read_seq] Read addr=0x1040 data=0x6d
 UVM_INFO mcseqs/router_mcseq_base.sv(79) @ 18230: uvm_test_top.tb.mcseqr@@scenario [TEST] STAGE: burst 2/2: ctrl=0xeb (maxpktsize 43) en=0xff (router on, counter enables 1111111), 37 packet(s)
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_random_burst_seq.sv(77) @ 18230: uvm_test_top.tb.yapp.agent.sequencer@@scenario.burst1 [yapp_random_burst_seq] Executing yapp_random_burst_seq (37 packets, maxpktsize 43)
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_random_burst_seq.sv(83) @ 18230: uvm_test_top.tb.yapp.agent.sequencer@@scenario.burst1 [yapp_random_burst_seq] Executing yapp_random_burst_seq (37 packets, maxpktsize 43)
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 18230: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #39: addr=2 len=61 parity=good delay=0
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 18235: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1040 data=0x6d
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(262) @ 18245: reporter [DUT] IN  pkt #39 header: addr=2 len=61 -> DROP (oversized: len 61 > maxpktsize 43)
@@ -1399,5 +1399,5 @@ UVM_FATAL :    0
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 37us; walltime 13.141 s; speed 2.825 us/s
-- Verilator: cpu 1.697 s on 1 threads; allocated 43 MB
+- Verilator: $finish at 37us; walltime 17.443 s; speed 2.128 us/s
+- Verilator: cpu 1.936 s on 1 threads; allocated 43 MB

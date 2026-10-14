@@ -187,6 +187,18 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
 .pm-node.feature-card .chip:hover rect { fill-opacity: .3; }
 .pm-node.feature-card .chip text { font-size: 10px; }
 .pm-edge.kind-covers path.line { stroke: var(--k-feature); marker-end: url(#pm-triangle); }
+/* the Coverage view: one card per collector with a bar per covergroup and a chip per coverpoint */
+.pm-node.cov-card text.bar { font-size: 10.5px; fill: var(--pm-muted); }
+.pm-node.cov-card rect.track { fill: var(--pm-border); fill-opacity: .55; }
+.pm-node.cov-card rect.fill { fill: var(--sk, var(--k-coverage)); }
+.pm-node.cov-card .chip rect { fill: var(--sk, var(--pm-border)); fill-opacity: .12; stroke: var(--sk, var(--pm-border)); }
+.pm-node.cov-card .chip:hover rect { fill-opacity: .3; }
+.pm-node.cov-card .chip text { font-size: 10px; }
+.pm.lod-far .pm-node.cov-card text.bar, .pm.lod-far .pm-node.cov-card rect.track, .pm.lod-far .pm-node.cov-card rect.fill { display: none; }
+.pm[data-view="cov"]:not(.arrows-off) .pm-edge { opacity: .35; }
+.pm[data-view="cov"]:not(.arrows-off) .pm-edge.hover, .pm[data-view="cov"]:not(.arrows-off) .pm-edge.path,
+.pm[data-view="cov"]:not(.arrows-off) .pm-edge.selected { opacity: 1; }
+.pm[data-view="cov"]:not(.arrows-off).has-sel .pm-edge.dim { opacity: 0; pointer-events: none; }
 .pm-status { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 0 6px; border-radius: 8px; color: #fff; background: var(--sk, var(--pm-muted)); vertical-align: middle; }
 .pm-panel-body .pm-counts { margin: 4px 0 8px; }
 .pm-panel-body .pm-spec { color: var(--pm-muted); font-size: 12px; margin: 0 0 4px; }

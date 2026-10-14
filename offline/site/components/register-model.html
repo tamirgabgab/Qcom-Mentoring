@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1289,6 +1319,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1309,30 +1406,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1395,7 +1475,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1417,14 +1497,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1927,10 +2007,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1948,8 +2028,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2825,9 +2905,9 @@ an IP-XACT file). Three layers:</p>
 <a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="k">function</span><span class="w"> </span><span class="n">uvm_sequence_item</span><span class="w"> </span><span class="n">hbus_reg_adapter</span><span class="o">::</span><span class="n">reg2bus</span><span class="p">(</span><span class="kt">const</span><span class="w"> </span><span class="k">ref</span><span class="w"> </span><span class="n">uvm_reg_bus_op</span><span class="w"> </span><span class="n">rw</span><span class="p">);</span>
 <a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">  </span><span class="n">hbus_transaction</span><span class="w"> </span><span class="n">tr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_transaction</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"tr"</span><span class="p">);</span>
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">haddr</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">rw</span><span class="p">.</span><span class="n">addr</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">hdata</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">rw</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">hwr_rd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rw</span><span class="p">.</span><span class="n">kind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">UVM_WRITE</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HBUS_WRITE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">HBUS_READ</span><span class="p">;</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">m_haddr</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">rw</span><span class="p">.</span><span class="n">addr</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">m_hdata</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">rw</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="n">tr</span><span class="p">.</span><span class="n">m_hwr_rd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rw</span><span class="p">.</span><span class="n">kind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">UVM_WRITE</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HBUS_OP_WRITE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">HBUS_OP_READ</span><span class="p">;</span>
 <a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">tr</span><span class="p">;</span>
 <a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">reg2bus</span>
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
@@ -2838,9 +2918,9 @@ an IP-XACT file). Three layers:</p>
 <a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">    </span><span class="no">`uvm_fatal</span><span class="p">(</span><span class="s">"NOT_HBUS_TYPE"</span><span class="p">,</span><span class="w"> </span><span class="s">"Provided bus_item is not of type hbus_transaction"</span><span class="p">)</span>
 <a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">kind</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">hwr_rd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HBUS_WRITE</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">UVM_WRITE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">UVM_READ</span><span class="p">;</span>
-<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">addr</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">haddr</span><span class="p">;</span>
-<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">data</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">hdata</span><span class="p">;</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">kind</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">m_hwr_rd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HBUS_OP_WRITE</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">UVM_WRITE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">UVM_READ</span><span class="p">;</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">addr</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">m_haddr</span><span class="p">;</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">data</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">m_hdata</span><span class="p">;</span>
 <a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">  </span><span class="n">rw</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UVM_IS_OK</span><span class="p">;</span>
 <a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">bus2reg</span>
 </code></pre></div>
@@ -2849,15 +2929,15 @@ into the request item: the map reads it back from the same object after
 <code>finish_item()</code>.</p>
 <h2 id="integration-lab-11b">Integration (Lab 11B)<a class="headerlink" href="#integration-lab-11b" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// router_tb::build_phase</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">yapp_rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_router_regs_t</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_rm"</span><span class="p">);</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">yapp_rm</span><span class="p">.</span><span class="n">build</span><span class="p">();</span><span class="w">                               </span><span class="c1">// registers, fields, maps</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">yapp_rm</span><span class="p">.</span><span class="n">lock_model</span><span class="p">();</span><span class="w">                          </span><span class="c1">// freeze and compute addresses</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">yapp_rm</span><span class="p">.</span><span class="n">set_hdl_path_root</span><span class="p">(</span><span class="s">"hw_top.dut.u_regs"</span><span class="p">);</span><span class="w"> </span><span class="c1">// backdoor root: the register block of the router</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">yapp_rm</span><span class="p">.</span><span class="n">default_map</span><span class="p">.</span><span class="n">set_auto_predict</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">       </span><span class="c1">// mirror follows every access</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">reg2hbus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_reg_adapter</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"reg2hbus"</span><span class="p">);</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">m_yapp_rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_router_regs_t</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_rm"</span><span class="p">);</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">build</span><span class="p">();</span><span class="w">                               </span><span class="c1">// registers, fields, maps</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">lock_model</span><span class="p">();</span><span class="w">                          </span><span class="c1">// freeze and compute addresses</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">set_hdl_path_root</span><span class="p">(</span><span class="s">"hw_top.dut.u_regs"</span><span class="p">);</span><span class="w"> </span><span class="c1">// backdoor root: the register block of the router</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">default_map</span><span class="p">.</span><span class="n">set_auto_predict</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">       </span><span class="c1">// mirror follows every access</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">m_reg2hbus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_reg_adapter</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"reg2hbus"</span><span class="p">);</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1">// router_tb::connect_phase</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">yapp_rm</span><span class="p">.</span><span class="n">default_map</span><span class="p">.</span><span class="n">set_sequencer</span><span class="p">(</span><span class="n">hbus</span><span class="p">.</span><span class="n">masters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">sequencer</span><span class="p">,</span><span class="w"> </span><span class="n">reg2hbus</span><span class="p">);</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">default_map</span><span class="p">.</span><span class="n">set_sequencer</span><span class="p">(</span><span class="n">m_hbus</span><span class="p">.</span><span class="n">m_masters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">m_sequencer</span><span class="p">,</span><span class="w"> </span><span class="n">m_reg2hbus</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="the-access-api-lab-11c">The access API (Lab 11C)<a class="headerlink" href="#the-access-api-lab-11c" title="Permanent link">&para;</a></h2>
 <table>
@@ -2935,7 +3015,7 @@ into the request item: the map reads it back from the same object after
 knows which sequencer to use.</p>
 <h2 id="introspection">Introspection<a class="headerlink" href="#introspection" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">uvm_reg</span><span class="w"> </span><span class="n">q</span><span class="p">[$];</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">tb</span><span class="p">.</span><span class="n">yapp_rm</span><span class="p">.</span><span class="n">get_registers</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">m_tb</span><span class="p">.</span><span class="n">m_yapp_rm</span><span class="p">.</span><span class="n">get_registers</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">rw_q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">get_rights</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"RW"</span><span class="p">);</span>
 </code></pre></div>
 <p><code>reg_introspection_test</code> builds RW and RO queues this way and runs the access

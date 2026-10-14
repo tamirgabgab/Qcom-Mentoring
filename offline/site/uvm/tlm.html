@@ -14,7 +14,7 @@
         <link rel="prev" href="factory-config.html">
       
       
-        <link rel="next" href="../components/index.html">
+        <link rel="next" href="coverage.html">
       
       
         
@@ -506,6 +506,8 @@
       
         
       
+        
+      
     
     
     
@@ -788,6 +790,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1267,6 +1297,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1287,30 +1384,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1373,7 +1453,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1395,14 +1475,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1905,10 +1985,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1926,8 +2006,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2268,8 +2348,8 @@ instead of signals. UVM has many flavours; the course uses four.</p>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="no">`uvm_analysis_imp_decl</span><span class="p">(</span><span class="n">_chan0</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_scoreboard</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_scoreboard</span><span class="p">;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">uvm_analysis_imp_yapp</span><span class="w">  </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">,</span><span class="w">    </span><span class="n">router_scoreboard</span><span class="p">)</span><span class="w"> </span><span class="n">yapp_in</span><span class="p">;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="n">uvm_analysis_imp_chan0</span><span class="w"> </span><span class="p">#(</span><span class="n">channel_packet</span><span class="p">,</span><span class="w"> </span><span class="n">router_scoreboard</span><span class="p">)</span><span class="w"> </span><span class="n">chan0_in</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">uvm_analysis_imp_yapp</span><span class="w">  </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">,</span><span class="w">    </span><span class="n">router_scoreboard</span><span class="p">)</span><span class="w"> </span><span class="n">m_yapp_in</span><span class="p">;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="n">uvm_analysis_imp_chan0</span><span class="w"> </span><span class="p">#(</span><span class="n">channel_packet</span><span class="p">,</span><span class="w"> </span><span class="n">router_scoreboard</span><span class="p">)</span><span class="w"> </span><span class="n">m_chan0_in</span><span class="p">;</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">write_yapp</span><span class="w"> </span><span class="p">(</span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="k">endfunction</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">write_chan0</span><span class="p">(</span><span class="n">channel_packet</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">endfunction</span>
 </code></pre></div>
@@ -2331,7 +2411,7 @@ and blocking calls, which a function cannot do.</p>
 <tr>
 <td><code>uvm_driver::seq_item_port</code></td>
 <td><code>uvm_sequencer::seq_item_export</code></td>
-<td><code>driver.seq_item_port.connect(sequencer.seq_item_export)</code></td>
+<td><code>m_driver.seq_item_port.connect(m_sequencer.seq_item_export)</code></td>
 </tr>
 </tbody>
 </table>
@@ -2391,13 +2471,13 @@ and always in a <code>connect_phase</code> — the components must exist first.<
         
         
           
-          <a href="../components/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
+          <a href="coverage.html" class="md-footer__link md-footer__link--next" aria-label="Next: Functional coverage">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Overview
+                Functional coverage
               </div>
             </div>
             <div class="md-footer__button md-icon">

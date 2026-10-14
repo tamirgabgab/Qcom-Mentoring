@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1163,6 +1193,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1183,30 +1280,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1271,7 +1351,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -1293,14 +1373,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1911,10 +1991,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1932,8 +2012,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2267,9 +2347,11 @@ stimulus.</p>
   <code>sample()</code> is called by the testbench, here once per collected packet.</li>
 <li>The monitor is the right source: it reports what the DUT really received,
   whatever the sequence intended. A <code>uvm_subscriber</code> with an <code>analysis_export</code>
-  hangs on the monitor's <code>item_collected_port</code> and samples in <code>write()</code>.</li>
+  hangs on the monitor's <code>m_item_collected_port</code> and samples in <code>write()</code>.</li>
 <li><strong>Holes</strong> are bins no run hit; <strong>closing</strong> them means writing stimulus that
   reaches them (<code>yapp_coverage_seq</code>) — the regression merges every run.</li>
+<li>The general picture (what coverage answers, the vocabulary, the
+  coverage-driven loop) is on <a href="../uvm/coverage.html">Functional coverage</a>.</li>
 </ul>
 <pre class="mermaid"><code>flowchart LR
     M["yapp_tx_monitor&lt;br/&gt;item_collected_port"] --&gt; C["yapp_pkt_coverage&lt;br/&gt;(uvm_subscriber)&lt;br/&gt;write() → yapp_pkt_cg.sample()"]
@@ -2303,12 +2385,12 @@ stimulus.</p>
 <p>The Cadence lab writes the covergroup <strong>inside the monitor</strong>. This repository
 puts it in its own file: <code>yapp_pkt_coverage</code>, a `uvm_subscriber</p>
 <h1 id="yapp_packet-that-the-agent-connects-to-the-monitors">(yapp_packet)` that the agent connects to the monitor's<a class="headerlink" href="#yapp_packet-that-the-agent-connects-to-the-monitors" title="Permanent link">&para;</a></h1>
-<p><code>item_collected_port</code>. The bins are the same, so the percentage is the same;
+<p><code>m_item_collected_port</code>. The bins are the same, so the percentage is the same;
 the monitor only observes and publishes, and the coverage model can be
 replaced or left out without touching it (see
 <a href="../components/coverage.html#where-the-covergroups-live">Functional coverage</a>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">                                            </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">                                            </span><span class="kt">bit</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">                                            </span><span class="n">parity_type_e</span><span class="w"> </span><span class="n">parity_type</span><span class="p">);</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="n">option</span><span class="p">.</span><span class="n">per_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">length_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="p">{</span>
@@ -2323,11 +2405,11 @@ replaced or left out without touching it (see
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">illegal_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">};</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">parity_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">parity_type</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">BAD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_BAD</span><span class="p">};</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="n">len_x_addr_x_parity</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">cross</span><span class="w"> </span><span class="n">length_cp</span><span class="p">,</span><span class="w"> </span><span class="n">addr_cp</span><span class="p">,</span><span class="w"> </span><span class="n">parity_cp</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">illegal_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">addr_cp</span><span class="p">.</span><span class="n">illegal_addr</span><span class="p">);</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="k">endgroup</span>
@@ -2338,11 +2420,11 @@ replaced or left out without touching it (see
 <a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="k">endfunction</span>
 <a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
 <a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_pkt_coverage</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">t</span><span class="p">);</span><span class="w">   </span><span class="c1">// every packet the monitor publishes</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">parity_type</span><span class="p">);</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">m_parity_type</span><span class="p">);</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="k">endfunction</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
 <a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="c1">// yapp_tx_agent::connect_phase</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">pkt_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_pkt_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
 </code></pre></div>
 <h3 id="2-stimulus-that-closes-the-model-yapp_coverage_seq">2. Stimulus that closes the model — <code>yapp_coverage_seq</code><a class="headerlink" href="#2-stimulus-that-closes-the-model-yapp_coverage_seq" title="Permanent link">&para;</a></h3>
 <p>Every length bucket × every address (0..3) × good/bad parity = 40 packets.
@@ -2354,8 +2436,8 @@ The packet's <code>c_addr_legal</code> constraint is switched off to reach addre
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">bad</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_packet</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"req"</span><span class="p">);</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="n">c_addr_legal</span><span class="p">.</span><span class="n">constraint_mode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// before randomize(): allow addr 3</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">req</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="n">addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lengths</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">                                    </span><span class="n">req</span><span class="p">.</span><span class="n">parity_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="n">bad</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">BAD_PARITY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">GOOD_PARITY</span><span class="p">);</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">req</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="n">m_addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="n">m_length</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lengths</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">                                    </span><span class="n">req</span><span class="p">.</span><span class="n">m_parity_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="n">bad</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">PARITY_TYPE_BAD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">PARITY_TYPE_GOOD</span><span class="p">);</span><span class="w"> </span><span class="p">})</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">          </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Randomization failed"</span><span class="p">)</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="n">start_item</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="n">finish_item</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>

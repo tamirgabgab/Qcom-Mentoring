@@ -1,6 +1,6 @@
 # random_backpressure_test seed 4
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 17us · wall 7.6 s · log [`random_backpressure_test_s4.log`](random_backpressure_test_s4.log)
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 17us · wall 9.2 s · log [`random_backpressure_test_s4.log`](random_backpressure_test_s4.log)
 
 Waves: `random_backpressure_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_backpressure_test_s4%2Frandom_backpressure_test_s4.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
@@ -19,7 +19,7 @@ Waves: `random_backpressure_test_s4.fst` (GTKWave, Surfer or the VS Code wave vi
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_STALLY, ch1 RX_STALLY, ch2 RX_STALLY |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_STALLY, ch1 CHANNEL_RX_PROFILE_STALLY, ch2 CHANNEL_RX_PROFILE_STALLY |
 | 0 | random scenario: 31 packets in 4 bursts |
 | 410 | burst 1/4: ctrl=0xdb (maxpktsize 27) en=0x35 (router on, counter enables 0011010), 9 packet(s) |
 | 5340 | burst 1/4 sent: addr0..3 5/2/1/1, bad parity 1, gap 0 6, length 41..59 |
@@ -65,7 +65,7 @@ Waves: `random_backpressure_test_s4.fst` (GTKWave, Surfer or the VS Code wave vi
 | time (ns) | who | event |
 |---|---|---|
 | 0 | yapp monitor | YAPP monitor running |
-| 0 | **test** | STAGE: receivers: ch0 RX_STALLY, ch1 RX_STALLY, ch2 RX_STALLY |
+| 0 | **test** | STAGE: receivers: ch0 CHANNEL_RX_PROFILE_STALLY, ch1 CHANNEL_RX_PROFILE_STALLY, ch2 CHANNEL_RX_PROFILE_STALLY |
 | 0 | **test** | STAGE: random scenario: 31 packets in 4 bursts |
 | 0 | clk/rst driver | Starting clock (period 10) and holding reset for 5 cycles |
 | 0 | **DUT** | RESET asserted |

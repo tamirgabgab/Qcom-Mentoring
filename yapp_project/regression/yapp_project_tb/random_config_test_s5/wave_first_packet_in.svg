@@ -114,5 +114,5 @@
 <text class="lbl" x="110" y="362.2" text-anchor="end">data_vld_2</text>
 <path class="sig" d="M118,370 L162,370 L162,370 L206,370 L206,370 L250,370 L250,370 L294,370 L294,370 L338,370 L338,370 L382,370 L382,370 L426,370 L426,370 L470,370 L470,370 L514,370 L514,370 L558,370 L558,370 L602,370 L602,370 L646,370 L646,370 L690,370 L690,370 L734,370 L734,370 L778,370 L778,370 L822,370 L822,370 L866,370 L866,370 L910,370 L910,370 L954,370 L954,370 L998,370 L998,370 L1042,370 L1042,370 L1086,370 L1086,370 L1130,370 L1130,370 L1174,370 L1174,370 L1218,370 L1218,370 L1262,370 L1262,370 L1306,370 L1306,370 L1350,370 L1350,370 L1394,370 L1394,370 L1438,370"/>
 <text class="note" x="118" y="402">cycle 0 = rising edge at t = 335 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
-<text class="note" x="118" y="415">IN  pkt #1 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 40)   (… the packet goes on past the picture)</text>
+<text class="note" x="118" y="415">IN  pkt #1 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 0)   (… the packet goes on past the picture)</text>
 </svg>

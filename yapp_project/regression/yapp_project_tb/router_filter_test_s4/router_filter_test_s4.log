@@ -334,7 +334,7 @@ UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/yapp_router_tracer.sv(398) @ 
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 75: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1000 data=0x0a
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(141) @ 75: uvm_test_top.tb.router_module.reference [router_reference] maxpktsize is now 10
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 90: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0xff
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_boundary_seq.sv(51) @ 90: uvm_test_top.tb.yapp.agent.sequencer@@bnd_seq [yapp_boundary_seq] Executing yapp_boundary_seq (maxpktsize 10, lengths '{'h9, 'ha, 'hb, 'h3f})
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_boundary_seq.sv(57) @ 90: uvm_test_top.tb.yapp.agent.sequencer@@bnd_seq [yapp_boundary_seq] Executing yapp_boundary_seq (maxpktsize 10, lengths '{'h9, 'ha, 'hb, 'h3f})
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 90: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #1: addr=0 len=9 parity=good delay=18
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 95: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0xff
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 95: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0xff)
@@ -493,7 +493,7 @@ UVM_INFO tests/reg_function_test.sv(95) @ 6680: uvm_test_top [REG_FUNC] parity_e
 UVM_INFO tests/base_test.sv(101) @ 6680: uvm_test_top [TEST] STAGE: 2. en_reg=0x01: the same traffic, the same drops, the counters do not move
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 6685: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected READ  addr=0x1004 data=0x00
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_master_driver.sv(56) @ 6700: uvm_test_top.tb.hbus.masters[0].driver [hbus_master_driver] Executed WRITE addr=0x1001 data=0x01
-UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_boundary_seq.sv(51) @ 6700: uvm_test_top.tb.yapp.agent.sequencer@@bnd_seq [yapp_boundary_seq] Executing yapp_boundary_seq (maxpktsize 10, lengths '{'h9, 'ha, 'hb, 'h3f})
+UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/seqs/yapp_boundary_seq.sv(57) @ 6700: uvm_test_top.tb.yapp.agent.sequencer@@bnd_seq [yapp_boundary_seq] Executing yapp_boundary_seq (maxpktsize 10, lengths '{'h9, 'ha, 'hb, 'h3f})
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/yapp/yapp_tx_driver.sv(76) @ 6700: uvm_test_top.tb.yapp.agent.driver [yapp_tx_driver] TX pkt #17: addr=0 len=9 parity=good delay=20
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/hbus/hbus_monitor.sv(62) @ 6705: uvm_test_top.tb.hbus.monitor [hbus_monitor] Collected WRITE addr=0x1001 data=0x01
 UVM_INFO /home/user/qcom-mentoring/yapp_project/tb/../uvc/router/router_reference.sv(146) @ 6705: uvm_test_top.tb.router_module.reference [router_reference] router_en is now 1 (en_reg 0x01)
@@ -724,5 +724,5 @@ UVM_FATAL :    0
 
 - /home/user/qcom-mentoring/scripts/uvm_src/src/base/uvm_root.svh:633: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.052 2026-09-05
-- Verilator: $finish at 13us; walltime 1.205 s; speed 11.037 us/s
-- Verilator: cpu 0.268 s on 1 threads; allocated 40 MB
+- Verilator: $finish at 13us; walltime 1.597 s; speed 8.328 us/s
+- Verilator: cpu 0.325 s on 1 threads; allocated 39 MB

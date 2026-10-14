@@ -15,7 +15,7 @@
 <text class="lbl" x="110" y="98.2" text-anchor="end">hen</text>
 <path class="sig" d="M140.0,106 L184.0,106 L184.0,106 L228.0,106 L228.0,106 L272.0,106 L272.0,106 L272.0,80 L316.0,80 L316.0,80 L316.0,106 L360.0,106 L360.0,106 L360.0,80 L404.0,80 L404.0,80 L404.0,106 L448.0,106 L448.0,106 L448.0,80 L492.0,80"/>
 <text class="lbl" x="110" y="142.2" text-anchor="end">hwr_rd</text>
-<path class="sig" d="M140.0,150 L184.0,150 L184.0,150 L228.0,150 L228.0,150 L272.0,150 L272.0,150 L272.0,124 L316.0,124 L316.0,124 L316.0,150 L360.0,150 L360.0,150 L360.0,124 L404.0,124 L404.0,124 L404.0,150 L448.0,150 L448.0,150 L448.0,124 L492.0,124"/>
+<path class="sig" d="M140.0,150 L184.0,150 L184.0,150 L228.0,150 L228.0,150 L272.0,150 L272.0,150 L272.0,124 L316.0,124 L316.0,124 L316.0,150 L360.0,150 L360.0,150 L360.0,124 L404.0,124 L404.0,124 L404.0,150 L448.0,150 L448.0,150 L492.0,150"/>
 <text class="lbl" x="110" y="186.2" text-anchor="end">haddr</text>
 <line class="idle" x1="140.0" y1="181.0" x2="184.0" y2="181.0"/>
 <line class="idle" x1="184.0" y1="181.0" x2="228.0" y2="181.0"/>
@@ -27,20 +27,20 @@
 <text class="txt" x="382.0" y="185.0">1001</text>
 <line class="idle" x1="404.0" y1="181.0" x2="448.0" y2="181.0"/>
 <path class="bus" d="M448.0,181.0 L453.0,168 L487.0,168 L492.0,181.0 L487.0,194 L453.0,194 Z"/>
-<text class="txt" x="470.0" y="185.0">11A0</text>
+<text class="txt" x="470.0" y="185.0">100D</text>
 <text class="lbl" x="110" y="230.2" text-anchor="end">hdata</text>
 <line class="idle" x1="140.0" y1="225.0" x2="184.0" y2="225.0"/>
 <line class="idle" x1="184.0" y1="225.0" x2="228.0" y2="225.0"/>
 <line class="idle" x1="228.0" y1="225.0" x2="272.0" y2="225.0"/>
 <path class="bus" d="M272.0,225.0 L277.0,212 L311.0,212 L316.0,225.0 L311.0,238 L277.0,238 Z"/>
-<text class="txt" x="294.0" y="229.0">9C</text>
+<text class="txt" x="294.0" y="229.0">9D</text>
 <line class="idle" x1="316.0" y1="225.0" x2="360.0" y2="225.0"/>
 <path class="bus" d="M360.0,225.0 L365.0,212 L399.0,212 L404.0,225.0 L399.0,238 L365.0,238 Z"/>
-<text class="txt" x="382.0" y="229.0">01</text>
+<text class="txt" x="382.0" y="229.0">FF</text>
 <line class="idle" x1="404.0" y1="225.0" x2="448.0" y2="225.0"/>
 <path class="bus" d="M448.0,225.0 L453.0,212 L487.0,212 L492.0,225.0 L487.0,238 L453.0,238 Z"/>
-<text class="txt" x="470.0" y="229.0">7B</text>
+<text class="txt" x="470.0" y="229.0">00</text>
 <text class="note" x="118" y="270">cycle 0 = rising edge at t = 35 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
-<text class="note" x="118" y="283">Collected WRITE addr=0x1000 data=0x9c</text>
+<text class="note" x="118" y="283">Collected WRITE addr=0x1000 data=0x9d</text>
 <text class="note" x="118" y="296">write: one hen cycle, stored on its rising edge; read: haddr in cycle 1, data from the DUT in cycle 2</text>
 </svg>

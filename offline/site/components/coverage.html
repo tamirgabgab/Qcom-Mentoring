@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1300,6 +1330,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1320,30 +1417,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1406,7 +1486,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1428,14 +1508,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1938,10 +2018,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1959,8 +2039,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2310,7 +2390,9 @@
 whether the DUT was right (that is the scoreboard's job). It samples what the
 <strong>monitors</strong> publish (the YAPP packets, the HBUS cycles) and what the reference
 model decided, because they see what <em>actually</em> happened on the bus, whatever
-the sequences intended.</p>
+the sequences intended. The concepts (covergroups, bins, crosses, the
+coverage-driven loop) are on <a href="../uvm/coverage.html">Functional coverage</a> in the
+UVM chapter; this page is about the collectors of this project.</p>
 <h2 id="where-the-covergroups-live">Where the covergroups live<a class="headerlink" href="#where-the-covergroups-live" title="Permanent link">&para;</a></h2>
 <p>Every covergroup has <strong>its own file</strong>: a <em>coverage collector</em>, a
 <code>uvm_subscriber</code> that holds one covergroup and samples it in <code>write()</code>. The
@@ -2343,7 +2425,7 @@ collectors subscribe.</p>
 <td><code>tb.yapp.agent.gap_cov</code></td>
 <td><code>yapp_project/uvc/yapp/yapp_gap_coverage.sv</code></td>
 <td><code>yapp_gap_cg</code> (ROUTE-04)</td>
-<td>the gap before every packet, which the monitor writes into <code>packet_delay</code></td>
+<td>the gap before every packet, which the monitor writes into <code>m_packet_delay</code></td>
 </tr>
 <tr>
 <td><code>tb.router_module.coverage</code></td>
@@ -2384,7 +2466,7 @@ collector can sample what <em>another</em> component decided (the reference mode
 drop reason), which the monitor never sees. The bins are the same, so the
 percentage is the same.</p>
 <h2 id="hbus-coverage">HBUS coverage<a class="headerlink" href="#hbus-coverage" title="Permanent link">&para;</a></h2>
-<p>The four HBUS collectors subscribe to <code>router_module_env.hbus_export</code>, next
+<p>The four HBUS collectors subscribe to <code>router_module_env.m_hbus_export</code>, next
 to the reference model. They live in the router module UVC, not in the HBUS
 UVC: the HBUS UVC is generic, the address map belongs to the router.</p>
 <table>
@@ -2423,9 +2505,9 @@ every address of the window, reads the whole register window back after each
 write to a register, a hole or a read-only byte (so a write that lands on the
 wrong register is caught), walks the bits of <code>ctrl_reg</code> / <code>en_reg</code>, fills
 <code>yapp_mem</code> with the four patterns and a random value, and sends 1020
-two-byte bad-parity packets (oversized at <code>maxpktsize = 1</code>, so dropped) to
+two-byte bad-parity packets (oversized at <code>m_maxpktsize = 1</code>, so dropped) to
 take every counter to 255. Every read is checked by the reference model
-(<code>check_reads = 1</code>), and the test fails unless the four covergroups reach
+(<code>m_check_reads = 1</code>), and the test fails unless the four covergroups reach
 100 %. Making the RTL write <code>ctrl_reg</code> on a write to the hole 0x1002 makes it
 fail with <code>HBUS read 0x1000 returned 0x00, the model expects 0xaa</code>.</p>
 <h2 id="the-requirements-lab-10">The requirements (Lab 10)<a class="headerlink" href="#the-requirements-lab-10" title="Permanent link">&para;</a></h2>
@@ -2451,13 +2533,13 @@ fail with <code>HBUS read 0x1000 returned 0x00, the model expects 0xaa</code>.</
 <tr>
 <td>REQ3</td>
 <td>every length bucket to every legal address <strong>with</strong> a parity error</td>
-<td><code>len_x_addr_x_parity</code> cross, ignoring <code>GOOD_PARITY</code> and <code>illegal_addr</code></td>
+<td><code>len_x_addr_x_parity</code> cross, ignoring <code>PARITY_TYPE_GOOD</code> and <code>illegal_addr</code></td>
 </tr>
 </tbody>
 </table>
 <h2 id="the-covergroup">The covergroup<a class="headerlink" href="#the-covergroup" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">                                            </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">                                            </span><span class="kt">bit</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">                                            </span><span class="n">parity_type_e</span><span class="w"> </span><span class="n">parity_type</span><span class="p">);</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="n">option</span><span class="p">.</span><span class="n">per_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">length_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="p">{</span>
@@ -2472,11 +2554,11 @@ fail with <code>HBUS read 0x1000 returned 0x00, the model expects 0xaa</code>.</
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">illegal_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">};</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">parity_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">parity_type</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">BAD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_BAD</span><span class="p">};</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="n">len_x_addr_x_parity</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">cross</span><span class="w"> </span><span class="n">length_cp</span><span class="p">,</span><span class="w"> </span><span class="n">addr_cp</span><span class="p">,</span><span class="w"> </span><span class="n">parity_cp</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">illegal_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">addr_cp</span><span class="p">.</span><span class="n">illegal_addr</span><span class="p">);</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="k">endgroup</span>
@@ -2489,13 +2571,13 @@ fail with <code>HBUS read 0x1000 returned 0x00, the model expects 0xaa</code>.</
 <li><code>illegal_addr</code> is a normal bin, not <code>illegal_bins</code>: REQ2 wants to <em>count</em>
   packets to address 3, not flag them as errors.</li>
 <li>The cross is <strong>restricted</strong> with <code>ignore_bins</code> so that only the combinations
-  REQ3 cares about count towards 100%: 5 lengths × 3 addresses × BAD_PARITY =
+  REQ3 cares about count towards 100%: 5 lengths × 3 addresses × PARITY_TYPE_BAD =
   15 bins.</li>
 <li><code>parity_cp</code> names its two bins. An enum coverpoint without bins gets one bin
   per value on Xcelium, but Verilator bins it by value range.</li>
 <li>Verilator ignores <code>ignore_bins</code> written with <code>binsof() intersect</code>, so under
   <code>`ifdef VERILATOR</code> the collector builds the same 15-bin cross from two extra
-  coverpoints that hold only the legal addresses and only <code>BAD_PARITY</code> -- see
+  coverpoints that hold only the legal addresses and only <code>PARITY_TYPE_BAD</code> -- see
   <a href="../appendix/verilator.html#what-differs-from-xcelium">Simulating with Verilator</a>.</li>
 </ul>
 <h2 id="sampling">Sampling<a class="headerlink" href="#sampling" title="Permanent link">&para;</a></h2>
@@ -2513,7 +2595,7 @@ t.parity_type)</code> for every packet the <a href="monitor.html">monitor</a> pu
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kd">class</span><span class="w"> </span><span class="nc">yapp_pkt_coverage</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_subscriber</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">);</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_sampled</span><span class="p">;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_sampled</span><span class="p">;</span>
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="c1">//--------------------------------------------------------------------------</span>
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="c1">// Functional coverage (Lab 10)</span>
@@ -2521,8 +2603,8 @@ t.parity_type)</code> for every packet the <a href="monitor.html">monitor</a> pu
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="c1">//   REQ2 all addresses, including the illegal one</span>
 <a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="c1">//   REQ3 every length bucket to every legal address with a parity error</span>
 <a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="c1">//--------------------------------------------------------------------------</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">                                              </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="k">covergroup</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">length</span><span class="p">,</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">                                              </span><span class="kt">bit</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
 <a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">                                              </span><span class="n">parity_type_e</span><span class="w"> </span><span class="n">parity_type</span><span class="p">);</span>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="n">option</span><span class="p">.</span><span class="n">per_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">    </span><span class="n">length_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="p">{</span>
@@ -2538,19 +2620,19 @@ t.parity_type)</code> for every packet the <a href="monitor.html">monitor</a> pu
 <a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">    </span><span class="c1">// one bin per enum value, written out (Verilator 5.052 bins an enum by range)</span>
 <a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">    </span><span class="n">parity_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">parity_type</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">      </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
-<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">      </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">BAD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">      </span><span class="k">bins</span><span class="w"> </span><span class="n">good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">      </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_BAD</span><span class="p">};</span>
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">    </span><span class="c1">// REQ3: only legal addresses and only BAD_PARITY are interesting</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">    </span><span class="c1">// REQ3: only legal addresses and only PARITY_TYPE_BAD are interesting</span>
 <a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="no">`ifdef</span><span class="w"> </span><span class="n">VERILATOR</span>
 <a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">    </span><span class="c1">// (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is</span>
 <a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">    </span><span class="c1">// built from coverpoints that hold only the interesting bins: same 15 bins)</span>
 <a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">    </span><span class="n">legal_addr_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">bins</span><span class="w"> </span><span class="n">legal</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{[</span><span class="mi">0</span><span class="o">:</span><span class="mi">2</span><span class="p">]};</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">    </span><span class="n">bad_parity_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">parity_type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">BAD_PARITY</span><span class="p">};</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">    </span><span class="n">bad_parity_cp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">coverpoint</span><span class="w"> </span><span class="n">parity_type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">bins</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_BAD</span><span class="p">};</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">    </span><span class="n">len_x_addr_x_parity</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">cross</span><span class="w"> </span><span class="n">length_cp</span><span class="p">,</span><span class="w"> </span><span class="n">legal_addr_cp</span><span class="p">,</span><span class="w"> </span><span class="n">bad_parity_cp</span><span class="p">;</span>
 <a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="no">`else</span>
 <a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">    </span><span class="n">len_x_addr_x_parity</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">cross</span><span class="w"> </span><span class="n">length_cp</span><span class="p">,</span><span class="w"> </span><span class="n">addr_cp</span><span class="p">,</span><span class="w"> </span><span class="n">parity_cp</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">      </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">GOOD_PARITY</span><span class="p">};</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">      </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">good_parity</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">parity_cp</span><span class="p">)</span><span class="w"> </span><span class="k">intersect</span><span class="w"> </span><span class="p">{</span><span class="n">PARITY_TYPE_GOOD</span><span class="p">};</span>
 <a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">      </span><span class="k">ignore_bins</span><span class="w"> </span><span class="n">illegal_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">binsof</span><span class="p">(</span><span class="n">addr_cp</span><span class="p">.</span><span class="n">illegal_addr</span><span class="p">);</span>
 <a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="no">`endif</span>
@@ -2578,19 +2660,19 @@ t.parity_type)</code> for every packet the <a href="monitor.html">monitor</a> pu
 <a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>
 <a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_pkt_coverage</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">t</span><span class="p">);</span>
-<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a><span class="w">  </span><span class="n">num_sampled</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="w">  </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">parity_type</span><span class="p">);</span>
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a><span class="w">  </span><span class="n">m_num_sampled</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="w">  </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">m_parity_type</span><span class="p">);</span>
 <a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">write</span>
 <a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>
 <a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_pkt_coverage</span><span class="o">::</span><span class="n">report_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP packet coverage: %0d packets sampled, coverage %.1f%%"</span><span class="p">,</span>
-<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a><span class="w">                                       </span><span class="n">num_sampled</span><span class="p">,</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">get_inst_coverage</span><span class="p">()),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a><span class="w">                                       </span><span class="n">m_num_sampled</span><span class="p">,</span><span class="w"> </span><span class="n">yapp_pkt_cg</span><span class="p">.</span><span class="n">get_inst_coverage</span><span class="p">()),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">report_phase</span>
 </code></pre></div>
 <p>The agent builds the collectors and connects them (<code>yapp_tx_agent</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">pkt_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">gap_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_pkt_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_gap_cov</span><span class="p">.</span><span class="n">analysis_export</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="closing-the-holes">Closing the holes<a class="headerlink" href="#closing-the-holes" title="Permanent link">&para;</a></h2>
 <table>

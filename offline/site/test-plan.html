@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1392,6 +1422,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="coverage-results.html" class="md-nav__link">
         
@@ -1412,30 +1509,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1498,7 +1578,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1520,14 +1600,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2030,10 +2110,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -2051,8 +2131,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2525,7 +2605,7 @@
 </tr>
 <tr>
 <td><strong>ROUTE-04</strong><br><span class="st st-covered">covered</span></td>
-<td><strong>Packets back to back with the minimum gap</strong><br><em>Stimulus:</em> yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; packet_delay is the number of idle cycles. Random traffic keeps 1..20.<br><em>Check:</em> The YAPP monitor counts the idle cycles before every packet; the test compares them with the gaps the sequence asked for. Scoreboard: every packet delivered.<br><em>Coverage:</em> <code>gap_cp (yapp_gap_cg): back_to_back, one, two, longer</code></td>
+<td><strong>Packets back to back with the minimum gap</strong><br><em>Stimulus:</em> yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; m_packet_delay is the number of idle cycles. Random traffic keeps 1..20.<br><em>Check:</em> The YAPP monitor counts the idle cycles before every packet; the test compares them with the gaps the sequence asked for. Scoreboard: every packet delivered.<br><em>Coverage:</em> <code>gap_cp (yapp_gap_cg): back_to_back, one, two, longer</code></td>
 <td><code>back_to_back_test</code><br><code>coverage_test</code><br><code>scoreboard_drop_test</code></td>
 </tr>
 </tbody>
@@ -2558,12 +2638,12 @@
 </tr>
 <tr>
 <td><strong>PKT-04</strong><br><span class="st st-covered">covered</span></td>
-<td><strong>Even bitwise parity over header and payload</strong><br><em>Stimulus:</em> Every good packet: parity = XOR of the header and all payload bytes (yapp_packet::calc_parity).<br><em>Check:</em> The channel monitor recomputes the parity and tags the packet CHANNEL_GOOD_PARITY; the DUT counts nothing in parity_err_cnt_reg; no error pulse.<br><em>Coverage:</em> <code>parity_cp</code></td>
+<td><strong>Even bitwise parity over header and payload</strong><br><em>Stimulus:</em> Every good packet: parity = XOR of the header and all payload bytes (yapp_packet::calc_parity).<br><em>Check:</em> The channel monitor recomputes the parity and tags the packet CHANNEL_PARITY_TYPE_GOOD; the DUT counts nothing in parity_err_cnt_reg; no error pulse.<br><em>Coverage:</em> <code>parity_cp</code></td>
 <td><code>reg_function_test</code><br><code>coverage_test</code><br><code>router_filter_test</code></td>
 </tr>
 <tr>
 <td><strong>PKT-05</strong><br><span class="st st-covered">covered</span></td>
-<td><strong>A wrong parity byte is detected -- and the packet still delivered</strong><br><em>Stimulus:</em> parity_type == BAD_PARITY flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq).<br><em>Check:</em> parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md).<br><em>Coverage:</em> <code>parity_cp, len_x_addr_x_parity (REQ3)</code></td>
+<td><strong>A wrong parity byte is detected -- and the packet still delivered</strong><br><em>Stimulus:</em> m_parity_type == PARITY_TYPE_BAD flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq).<br><em>Check:</em> parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md).<br><em>Coverage:</em> <code>parity_cp, len_x_addr_x_parity (REQ3)</code></td>
 <td><code>reg_function_test</code><br><code>parity_error_test</code><br><code>test_uvc_integration</code><br><code>random_parity_test</code></td>
 </tr>
 </tbody>
@@ -2895,7 +2975,7 @@
 </tr>
 <tr>
 <td><strong>COV-03</strong><br><span class="st st-covered">covered</span></td>
-<td><strong>REQ3: every length bucket to every legal address with a parity error</strong><br><em>Stimulus:</em> yapp_coverage_seq: each length with BAD_PARITY to addresses 0..2.<br><em>Check:</em> The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins.<br><em>Coverage:</em> <code>len_x_addr_x_parity</code></td>
+<td><strong>REQ3: every length bucket to every legal address with a parity error</strong><br><em>Stimulus:</em> yapp_coverage_seq: each length with PARITY_TYPE_BAD to addresses 0..2.<br><em>Check:</em> The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins.<br><em>Coverage:</em> <code>len_x_addr_x_parity</code></td>
 <td><code>coverage_test</code></td>
 </tr>
 <tr>

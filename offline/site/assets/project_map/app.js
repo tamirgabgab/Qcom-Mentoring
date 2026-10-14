@@ -14,7 +14,7 @@
   "use strict";
 
   const SVG_NS = "http://www.w3.org/2000/svg";
-  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)", env: "Environment", plan: "Test plan" };
+  const VIEW_LABEL = { hierarchy: "Hierarchy", tlm: "TLM / data flow", classes: "Classes (UML)", env: "Environment", plan: "Test plan", cov: "Coverage" };
   // status of a test-plan item -> label (colours in app.css, .st-<status>)
   const STATUS_LABEL = { covered: "covered", partial: "partial", gap: "gap", excluded: "excluded" };
   // colours of the stages of a test plan (the Test plan view and the panel)
@@ -232,7 +232,7 @@
       r.innerHTML = "";
       // toolbar
       this.views = el("div", { class: "pm-views" });
-      ["hierarchy", "tlm", "classes", "env", "plan"].forEach(v => {
+      ["hierarchy", "tlm", "classes", "env", "plan", "cov"].forEach(v => {
         this.views.append(el("button", { "data-view": v, onclick: () => this.switchView(v) }, [VIEW_LABEL[v]]));
       });
       this.crumbs = el("nav", { class: "pm-crumbs" });
@@ -331,7 +331,7 @@
       this.help = el("div", { class: "pm-help", onclick: e => { if (e.target === this.help) this.help.classList.remove("open"); } }, [
         el("div", { class: "card", html:
           "<h3 style='margin-top:0'>Keyboard</h3><table>" +
-          "<tr><td><kbd>1</kbd> … <kbd>5</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan</td></tr>" +
+          "<tr><td><kbd>1</kbd> … <kbd>6</kbd></td><td>Hierarchy / TLM / Classes / Environment / Test plan / Coverage</td></tr>" +
           "<tr><td><kbd>/</kbd></td><td>search (<kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd> in the results)</td></tr>" +
           "<tr><td><kbd>Enter</kbd> / double-click</td><td>open the selected component</td></tr>" +
           "<tr><td><kbd>c</kbd></td><td>source column on / off (on, it opens for the selected item and folds to a strip when empty)</td></tr>" +
@@ -532,6 +532,7 @@
       if (view === "tlm") return this.state.variant ? "tlm:lab09d" : "tlm:main";
       if (view === "env") return "env:main";
       if (view === "plan") return "plan:main";
+      if (view === "cov") return "cov:main";
       const g = this.state.group ? `uml:${this.state.group}` : "uml:all";
       return this.state.full && this.scenes[g + ":full"] ? g + ":full" : g;
     }
@@ -722,6 +723,7 @@
         : s.view === "tlm" ? "hover a box for its arrows · click a port or an arrow to highlight the whole path · drag a box, or a dashed frame by its label, to move it"
         : s.view === "env" ? "the whole environment on one page · click a box for its role and code · double-click to open it in the Hierarchy"
         : s.view === "plan" ? "top: the DUT features and what verifies them (click a chip for the item) · below: the tests · arrows: feature → test, who extends whom"
+        : s.view === "cov" ? "left: who publishes what the collectors sample · right: one card per collector, a bar per covergroup, a chip per coverpoint (hit / bins) · click a card for every bin and the tests that hit it"
         : "click a class to see its file · Members shows fields and methods · drag a class to move it";
     }
     // ---- level of detail: zoomed far out, only the names are drawn, each as big as its box allows
@@ -934,6 +936,9 @@
       } else if (it.style === "feature_card") {
         grp.classList.add("test-card", "feature-card");
         this.drawFeatureCard(grp, it);
+      } else if (it.style === "cov_card") {
+        grp.classList.add("test-card", "cov-card");
+        this.drawCovCard(grp, it);
       } else {
         grp.append(svg("rect", { class: "stripe", width: 5, height: it.h, rx: 2 }));
         const t = svg("text", { class: "label", x: 14, y: 19 }); t.textContent = it.label; grp.append(t);
@@ -976,6 +981,42 @@
           const tt = svg("title"); tt.textContent = `${pi.id} · ${pi.t} — ${STATUS_LABEL[pi.s] || pi.s}` + (pi.n ? ` (${pi.n} test${pi.n > 1 ? "s" : ""})` : ""); cg.append(tt);
           cg.style.pointerEvents = "all";
           cg.addEventListener("click", ev => { ev.stopPropagation(); this.select(it.id); this.scrollPanelTo(`pi-${pi.id}`); });
+          grp.append(cg);
+        });
+      }
+    }
+    // A coverage collector in the Coverage view: name, class and path, its role, one bar per
+    // covergroup (bins hit over the committed regression) and one chip per coverpoint.
+    drawCovCard(grp, it) {
+      grp.append(svg("rect", { class: "stripe", width: it.w, height: 5, rx: 2 }));
+      const t = svg("text", { class: "label", x: 12, y: 24 }); t.textContent = it.label; grp.append(t);
+      if (it.sub) { const st = svg("text", { class: "sub", x: 12, y: 39 }); st.textContent = trunc(it.sub, 64); grp.append(st); }
+      let y = 44;
+      (it.lines || []).forEach(l => { y += 15; const lt = svg("text", { class: "purpose", x: 12, y: y - 3 }); lt.textContent = l; grp.append(lt); });
+      const groups = it.groups || [];
+      const status = (c, n) => c >= n ? "covered" : c ? "partial" : "gap";
+      groups.forEach(g => {
+        y += 8;
+        const bt = svg("text", { class: "bar", x: 12, y: y + 9 });
+        bt.textContent = `${g.name}   ${g.pct.toFixed(1)}%   ·   ${g.covered} / ${g.total} bins`; grp.append(bt);
+        const w = it.w - 24;
+        grp.append(svg("rect", { class: "track", x: 12, y: y + 13, width: w, height: 6, rx: 3 }));
+        grp.append(svg("rect", { class: `fill st-${status(g.covered, g.total)}`, x: 12, y: y + 13, width: Math.max(2, w * (g.total ? g.covered / g.total : 0)), height: 6, rx: 3 }));
+        y += 20;
+      });
+      const chips = groups.flatMap(g => g.points.map(p => ({ g, p })));
+      if (chips.length) {
+        y += 8;
+        const perRow = 3, cw = (it.w - 24 - 6 * (perRow - 1)) / perRow;
+        chips.forEach(({ g, p }, i) => {
+          const c = i % perRow, r = Math.floor(i / perRow);
+          const x = 12 + c * (cw + 6), cy = y + r * 24;
+          const cg = svg("g", { class: `chip st-${status(p.covered, p.total)}` });
+          cg.append(svg("rect", { x, y: cy, width: cw, height: 18, rx: 4 }));
+          const ct = svg("text", { x: x + 6, y: cy + 12.5 }); ct.textContent = trunc(`${p.name}${p.cross ? " ×" : ""}  ${p.covered}/${p.total}`, Math.floor(cw / 5.8)); cg.append(ct);
+          const tt = svg("title"); tt.textContent = `${g.name}.${p.name}${p.cross ? " (cross)" : ""}: ${p.covered} of ${p.total} bins hit` + (p.covered < p.total ? ` — ${p.total - p.covered} hole${p.total - p.covered > 1 ? "s" : ""}` : ""); cg.append(tt);
+          cg.style.pointerEvents = "all";
+          cg.addEventListener("click", ev => { ev.stopPropagation(); this.select(it.id); this.scrollPanelTo(`cp-${g.name}-${p.name}`); });
           grp.append(cg);
         });
       }
@@ -1480,6 +1521,7 @@
         else if (k === "3") this.switchView("classes");
         else if (k === "4") this.switchView("env");
         else if (k === "5") this.switchView("plan");
+        else if (k === "6") this.switchView("cov");
         else if (k === "Escape" || k === "Backspace") { e.preventDefault(); if (this.help.classList.contains("open")) this.help.classList.remove("open"); else this.up(); }
         else if (k === "f") this.fitNext();
         else if (k === "h") this.home();
@@ -1767,6 +1809,7 @@
         t.innerHTML = "<tr><th>coverpoint</th><th>bin</th><th>hits</th><th>tests</th><th></th></tr>";
         g.points.forEach(p => p.bins.forEach((b, i) => {
           const tr = el("tr", { class: b.hits ? "" : "hole" });
+          if (!i) tr.id = `cp-${g.name}-${p.name}`;
           const label = i ? "" : `<code>${esc(p.name)}</code>${p.cross ? " <span class='role'>cross</span>" : ""} <span class='role'>${p.covered}/${p.total}</span>`;
           tr.innerHTML = `<td>${label}</td><td><code>${esc(b.name)}</code></td><td>${b.hits ? b.hits : "<b>hole</b>"}</td>` +
                          `<td class="role"></td><td class="ln">L${b.line}</td>`;
@@ -2030,6 +2073,19 @@
         body.append(el("p", {}, [el("a", { href: this.docUrl("test-plan.md") + "#coverage-matrix", target: "_blank", rel: "noopener" }, ["Coverage matrix ↗"]),
           " — every item against every test on one page, on the site."]));
         add('<p class="empty">With <b>Arrows</b> on, the arrows stay faint until a card is selected: then only its own are drawn.</p>');
+      } else if (s.view === "cov") {
+        const cols = s.items.filter(it => it.style === "cov_card").map(it => this.N[it.id]).filter(Boolean);
+        let covered = 0, total = 0, runs = 0, html = null, groups = 0;
+        cols.forEach(n => (n.coverage || []).forEach(g => { covered += g.covered; total += g.total; runs = g.runs || runs; html = html || g.html; groups++; }));
+        const rn = Object.values(this.N).find(n => n.regression), r = rn ? rn.regression : null;
+        add(md(`Functional coverage of the committed regression: **${covered} of ${total} bins hit (${total ? (100 * covered / total).toFixed(1) : "0.0"}%)** over ${runs} runs${r ? ` (${r.date}, commit ${r.commit})` : ""}, ${cols.length} collectors, ${groups} covergroups.\n\nLeft: who publishes the transactions the collectors sample: the YAPP monitor, the reference model (its decision per packet) and the HBUS monitor through the module env's export. Right: one card per collector, with a bar per covergroup (bins hit / bins) and a chip per coverpoint (hit / bins; red means holes). Click a card for every bin with the tests that hit it; click a chip to jump to that coverpoint in the panel.`));
+        const links = el("ul");
+        links.append(el("li", {}, [el("a", { href: this.docUrl("coverage-results.md"), target: "_top" }, ["Coverage results: every covergroup, merged"])]));
+        if (html) links.append(el("li", {}, [el("a", { href: this.docUrl(html), target: "_blank", rel: "noopener" }, ["Annotated source (genhtml) ↗"])]));
+        links.append(el("li", {}, [el("a", { href: this.docUrl("regression/index.md"), target: "_top" }, ["Regression results: the runs behind these numbers"])]));
+        links.append(el("li", {}, [el("a", { href: this.docUrl("uvm/coverage.md"), target: "_top" }, ["Functional coverage in UVM (the concepts)"])]));
+        body.append(links);
+        add('<p class="empty">The numbers come from <code>yapp_project/regression/coverage.json</code>: <code>make regress</code>, then <code>make sim-report</code>, then <code>make map</code>.</p>');
       } else if (s.view === "tlm") {
         add(md("Left to right: who controls whom and where the data goes. Sequences run on **sequencers**, items reach the **drivers** through `seq_item_port`, pins reach the DUT through the virtual interfaces, **monitors** publish on analysis ports, the **router module UVC** receives them through exports: the reference model filters, the scoreboard compares.\n\nClick a port or an arrow to light up the complete path. The **Lab 9D** button swaps in the FIFO-based scoreboard."));
       } else {
@@ -2044,6 +2100,7 @@
       const groupOf = n => {
         if (s.view === "classes") return n.group_label || "UVM library";
         if (s.view === "plan") return n.kind === "test" ? "Tests" : "Features";
+        if (s.view === "cov") return n.kind === "coverage" ? "Collectors" : "Publishers";
         if (!n.parent || !this.N[n.parent]) return n.scope === "hw" ? "Hardware" : "Top level";
         return n.scope === "tb" ? "uvm_test_top." + n.parent : n.parent;
       };

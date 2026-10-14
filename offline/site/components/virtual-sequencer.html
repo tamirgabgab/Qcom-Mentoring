@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1256,6 +1286,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1276,30 +1373,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1362,7 +1442,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1384,14 +1464,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1894,10 +1974,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1915,8 +1995,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2239,8 +2319,8 @@ on it starts sub-sequences on those handles.</p>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_mcsequencer</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_sequencer</span><span class="p">;</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="n">hbus_master_sequencer</span><span class="w"> </span><span class="n">hbus_seqr</span><span class="p">;</span><span class="w">   </span><span class="c1">// assigned by router_tb in connect_phase</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="n">yapp_tx_sequencer</span><span class="w">     </span><span class="n">yapp_seqr</span><span class="p">;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="n">hbus_master_sequencer</span><span class="w"> </span><span class="n">m_hbus_seqr</span><span class="p">;</span><span class="w">   </span><span class="c1">// assigned by router_tb in connect_phase</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="n">yapp_tx_sequencer</span><span class="w">     </span><span class="n">m_yapp_seqr</span><span class="p">;</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">router_mcsequencer</span><span class="p">)</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
@@ -2258,8 +2338,8 @@ on it starts sub-sequences on those handles.</p>
 </code></pre></div>
 <p>The handles are assigned in <code>router_tb.connect_phase</code> with <strong>hierarchical
 references</strong> (no config strings, no wildcards):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">mcseqr</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus</span><span class="p">.</span><span class="n">masters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">sequencer</span><span class="p">;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">mcseqr</span><span class="p">.</span><span class="n">yapp_seqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp</span><span class="p">.</span><span class="n">agent</span><span class="p">.</span><span class="n">sequencer</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">m_mcseqr</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_hbus</span><span class="p">.</span><span class="n">m_masters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">m_sequencer</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">m_mcseqr</span><span class="p">.</span><span class="n">m_yapp_seqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_yapp</span><span class="p">.</span><span class="n">m_agent</span><span class="p">.</span><span class="n">m_sequencer</span><span class="p">;</span>
 </code></pre></div>
 <h2 id="the-sequence">The sequence<a class="headerlink" href="#the-sequence" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">//------------------------------------------------------------------------------</span>
@@ -2289,7 +2369,7 @@ references</strong> (no config strings, no wildcards):</p>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_mcseq_base</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_sequence</span><span class="p">;</span>
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_reads</span><span class="p">;</span><span class="w">                            </span><span class="c1">// HBUS reads done through hbus_read()</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_reads</span><span class="p">;</span><span class="w">                            </span><span class="c1">// HBUS reads done through hbus_read()</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">  </span><span class="no">`uvm_object_utils</span><span class="p">(</span><span class="n">router_mcseq_base</span><span class="p">)</span>
 <a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">  </span><span class="no">`uvm_declare_p_sequencer</span><span class="p">(</span><span class="n">router_mcsequencer</span><span class="p">)</span>
@@ -2299,8 +2379,8 @@ references</strong> (no config strings, no wildcards):</p>
 <a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>
 <a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">task</span><span class="w"> </span><span class="n">post_body</span><span class="p">();</span>
 <a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>
-<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">task</span><span class="w"> </span><span class="n">hbus_write</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
-<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">task</span><span class="w"> </span><span class="n">hbus_read</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">task</span><span class="w"> </span><span class="n">hbus_write</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">task</span><span class="w"> </span><span class="n">hbus_read</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
 <a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">  </span><span class="c1">// A [TEST] STAGE line, as base_test::stage() prints it</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">stage</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">what</span><span class="p">);</span>
@@ -2332,25 +2412,25 @@ references</strong> (no config strings, no wildcards):</p>
 <a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">post_body</span>
 <a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>
 <a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a><span class="c1">//------------------------------------------------------------------------------</span>
-<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="k">task</span><span class="w"> </span><span class="n">router_mcseq_base</span><span class="o">::</span><span class="n">hbus_write</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="k">task</span><span class="w"> </span><span class="n">router_mcseq_base</span><span class="o">::</span><span class="n">hbus_write</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
 <a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a><span class="w">  </span><span class="n">hbus_write_seq</span><span class="w"> </span><span class="n">wr</span><span class="p">;</span>
 <a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="w">  </span><span class="n">wr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_write_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"wr"</span><span class="p">);</span>
-<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">wr</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">addr</span><span class="p">;</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">wr</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">addr</span><span class="p">;</span><span class="w"> </span><span class="n">m_data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_write_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="w">  </span><span class="n">wr</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="w">  </span><span class="n">wr</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hbus_write</span>
 <a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a>
 <a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a><span class="c1">//------------------------------------------------------------------------------</span>
-<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="k">task</span><span class="w"> </span><span class="n">router_mcseq_base</span><span class="o">::</span><span class="n">hbus_read</span><span class="p">(</span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="k">task</span><span class="w"> </span><span class="n">router_mcseq_base</span><span class="o">::</span><span class="n">hbus_read</span><span class="p">(</span><span class="kt">bit</span><span class="p">[</span><span class="mi">15</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
 <a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a><span class="w">  </span><span class="n">hbus_read_seq</span><span class="w"> </span><span class="n">rd</span><span class="p">;</span>
 <a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a><span class="w">  </span><span class="n">rd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_read_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"rd"</span><span class="p">);</span>
-<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rd</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">addr</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rd</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">local</span><span class="o">::</span><span class="n">addr</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_read_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a><span class="w">  </span><span class="n">rd</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a><span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rd</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
-<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a><span class="w">  </span><span class="n">num_reads</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a><span class="w">  </span><span class="n">rd</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a><span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rd</span><span class="p">.</span><span class="n">m_data</span><span class="p">;</span>
+<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a><span class="w">  </span><span class="n">m_num_reads</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hbus_read</span>
 <a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a>
 <a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a><span class="c1">//------------------------------------------------------------------------------</span>
@@ -2374,11 +2454,11 @@ references</strong> (no config strings, no wildcards):</p>
 <a id="__codelineno-2-110" name="__codelineno-2-110" href="#__codelineno-2-110"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-111" name="__codelineno-2-111" href="#__codelineno-2-111"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_simple_mcseq</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">router_mcseq_base</span><span class="p">;</span>
 <a id="__codelineno-2-112" name="__codelineno-2-112" href="#__codelineno-2-112"></a>
-<a id="__codelineno-2-113" name="__codelineno-2-113" href="#__codelineno-2-113"></a><span class="w">  </span><span class="n">hbus_small_packet_seq</span><span class="w"> </span><span class="n">hbus_small_seq</span><span class="p">;</span>
-<a id="__codelineno-2-114" name="__codelineno-2-114" href="#__codelineno-2-114"></a><span class="w">  </span><span class="n">hbus_large_packet_seq</span><span class="w"> </span><span class="n">hbus_large_seq</span><span class="p">;</span>
-<a id="__codelineno-2-115" name="__codelineno-2-115" href="#__codelineno-2-115"></a><span class="w">  </span><span class="n">hbus_read_max_pkt_seq</span><span class="w"> </span><span class="n">hbus_read_seq</span><span class="p">;</span>
-<a id="__codelineno-2-116" name="__codelineno-2-116" href="#__codelineno-2-116"></a><span class="w">  </span><span class="n">yapp_012_seq</span><span class="w">          </span><span class="n">yapp_012</span><span class="p">;</span>
-<a id="__codelineno-2-117" name="__codelineno-2-117" href="#__codelineno-2-117"></a><span class="w">  </span><span class="n">yapp_rnd_seq</span><span class="w">          </span><span class="n">yapp_rnd</span><span class="p">;</span>
+<a id="__codelineno-2-113" name="__codelineno-2-113" href="#__codelineno-2-113"></a><span class="w">  </span><span class="n">hbus_small_packet_seq</span><span class="w"> </span><span class="n">m_hbus_small_seq</span><span class="p">;</span>
+<a id="__codelineno-2-114" name="__codelineno-2-114" href="#__codelineno-2-114"></a><span class="w">  </span><span class="n">hbus_large_packet_seq</span><span class="w"> </span><span class="n">m_hbus_large_seq</span><span class="p">;</span>
+<a id="__codelineno-2-115" name="__codelineno-2-115" href="#__codelineno-2-115"></a><span class="w">  </span><span class="n">hbus_read_max_pkt_seq</span><span class="w"> </span><span class="n">m_hbus_read_seq</span><span class="p">;</span>
+<a id="__codelineno-2-116" name="__codelineno-2-116" href="#__codelineno-2-116"></a><span class="w">  </span><span class="n">yapp_012_seq</span><span class="w">          </span><span class="n">m_yapp_012</span><span class="p">;</span>
+<a id="__codelineno-2-117" name="__codelineno-2-117" href="#__codelineno-2-117"></a><span class="w">  </span><span class="n">yapp_rnd_seq</span><span class="w">          </span><span class="n">m_yapp_rnd</span><span class="p">;</span>
 <a id="__codelineno-2-118" name="__codelineno-2-118" href="#__codelineno-2-118"></a>
 <a id="__codelineno-2-119" name="__codelineno-2-119" href="#__codelineno-2-119"></a><span class="w">  </span><span class="no">`uvm_object_utils</span><span class="p">(</span><span class="n">router_simple_mcseq</span><span class="p">)</span>
 <a id="__codelineno-2-120" name="__codelineno-2-120" href="#__codelineno-2-120"></a>
@@ -2400,55 +2480,55 @@ references</strong> (no config strings, no wildcards):</p>
 <a id="__codelineno-2-136" name="__codelineno-2-136" href="#__codelineno-2-136"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Executing router_simple_mcseq sequence"</span><span class="p">,</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-2-137" name="__codelineno-2-137" href="#__codelineno-2-137"></a>
 <a id="__codelineno-2-138" name="__codelineno-2-138" href="#__codelineno-2-138"></a><span class="w">  </span><span class="c1">// Small packets allowed, router enabled -- and check the register</span>
-<a id="__codelineno-2-139" name="__codelineno-2-139" href="#__codelineno-2-139"></a><span class="w">  </span><span class="n">hbus_small_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_small_packet_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_small_seq"</span><span class="p">);</span>
-<a id="__codelineno-2-140" name="__codelineno-2-140" href="#__codelineno-2-140"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">hbus_small_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-139" name="__codelineno-2-139" href="#__codelineno-2-139"></a><span class="w">  </span><span class="n">m_hbus_small_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_small_packet_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_small_seq"</span><span class="p">);</span>
+<a id="__codelineno-2-140" name="__codelineno-2-140" href="#__codelineno-2-140"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_hbus_small_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-141" name="__codelineno-2-141" href="#__codelineno-2-141"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_small_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-142" name="__codelineno-2-142" href="#__codelineno-2-142"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-143" name="__codelineno-2-143" href="#__codelineno-2-143"></a><span class="w">  </span><span class="n">hbus_small_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-143" name="__codelineno-2-143" href="#__codelineno-2-143"></a><span class="w">  </span><span class="n">m_hbus_small_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-144" name="__codelineno-2-144" href="#__codelineno-2-144"></a>
-<a id="__codelineno-2-145" name="__codelineno-2-145" href="#__codelineno-2-145"></a><span class="w">  </span><span class="n">hbus_read_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_read_max_pkt_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_read_seq"</span><span class="p">);</span>
-<a id="__codelineno-2-146" name="__codelineno-2-146" href="#__codelineno-2-146"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">hbus_read_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-145" name="__codelineno-2-145" href="#__codelineno-2-145"></a><span class="w">  </span><span class="n">m_hbus_read_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_read_max_pkt_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_read_seq"</span><span class="p">);</span>
+<a id="__codelineno-2-146" name="__codelineno-2-146" href="#__codelineno-2-146"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_hbus_read_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-147" name="__codelineno-2-147" href="#__codelineno-2-147"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_read_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-148" name="__codelineno-2-148" href="#__codelineno-2-148"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-149" name="__codelineno-2-149" href="#__codelineno-2-149"></a><span class="w">  </span><span class="n">hbus_read_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-149" name="__codelineno-2-149" href="#__codelineno-2-149"></a><span class="w">  </span><span class="n">m_hbus_read_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-150" name="__codelineno-2-150" href="#__codelineno-2-150"></a>
 <a id="__codelineno-2-151" name="__codelineno-2-151" href="#__codelineno-2-151"></a><span class="w">  </span><span class="c1">// Six packets to channels 0, 1, 2</span>
 <a id="__codelineno-2-152" name="__codelineno-2-152" href="#__codelineno-2-152"></a><span class="w">  </span><span class="k">repeat</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-2-153" name="__codelineno-2-153" href="#__codelineno-2-153"></a><span class="w">    </span><span class="n">yapp_012</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_012_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_012"</span><span class="p">);</span>
-<a id="__codelineno-2-154" name="__codelineno-2-154" href="#__codelineno-2-154"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_012</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-153" name="__codelineno-2-153" href="#__codelineno-2-153"></a><span class="w">    </span><span class="n">m_yapp_012</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_012_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_012"</span><span class="p">);</span>
+<a id="__codelineno-2-154" name="__codelineno-2-154" href="#__codelineno-2-154"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_yapp_012</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-155" name="__codelineno-2-155" href="#__codelineno-2-155"></a><span class="w">      </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"yapp_012.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-156" name="__codelineno-2-156" href="#__codelineno-2-156"></a><span class="w">    </span><span class="k">end</span>
-<a id="__codelineno-2-157" name="__codelineno-2-157" href="#__codelineno-2-157"></a><span class="w">    </span><span class="n">yapp_012</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">yapp_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-157" name="__codelineno-2-157" href="#__codelineno-2-157"></a><span class="w">    </span><span class="n">m_yapp_012</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_yapp_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-158" name="__codelineno-2-158" href="#__codelineno-2-158"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-2-159" name="__codelineno-2-159" href="#__codelineno-2-159"></a>
 <a id="__codelineno-2-160" name="__codelineno-2-160" href="#__codelineno-2-160"></a><span class="w">  </span><span class="c1">// Large packets allowed -- and check the register</span>
-<a id="__codelineno-2-161" name="__codelineno-2-161" href="#__codelineno-2-161"></a><span class="w">  </span><span class="n">hbus_large_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_large_packet_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_large_seq"</span><span class="p">);</span>
-<a id="__codelineno-2-162" name="__codelineno-2-162" href="#__codelineno-2-162"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">hbus_large_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-161" name="__codelineno-2-161" href="#__codelineno-2-161"></a><span class="w">  </span><span class="n">m_hbus_large_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_large_packet_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_large_seq"</span><span class="p">);</span>
+<a id="__codelineno-2-162" name="__codelineno-2-162" href="#__codelineno-2-162"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_hbus_large_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-163" name="__codelineno-2-163" href="#__codelineno-2-163"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_large_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-164" name="__codelineno-2-164" href="#__codelineno-2-164"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-165" name="__codelineno-2-165" href="#__codelineno-2-165"></a><span class="w">  </span><span class="n">hbus_large_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-165" name="__codelineno-2-165" href="#__codelineno-2-165"></a><span class="w">  </span><span class="n">m_hbus_large_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-166" name="__codelineno-2-166" href="#__codelineno-2-166"></a>
-<a id="__codelineno-2-167" name="__codelineno-2-167" href="#__codelineno-2-167"></a><span class="w">  </span><span class="n">hbus_read_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_read_max_pkt_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_read_seq"</span><span class="p">);</span>
-<a id="__codelineno-2-168" name="__codelineno-2-168" href="#__codelineno-2-168"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">hbus_read_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-167" name="__codelineno-2-167" href="#__codelineno-2-167"></a><span class="w">  </span><span class="n">m_hbus_read_seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hbus_read_max_pkt_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"hbus_read_seq"</span><span class="p">);</span>
+<a id="__codelineno-2-168" name="__codelineno-2-168" href="#__codelineno-2-168"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_hbus_read_seq</span><span class="p">.</span><span class="n">randomize</span><span class="p">())</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-169" name="__codelineno-2-169" href="#__codelineno-2-169"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"hbus_read_seq.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-170" name="__codelineno-2-170" href="#__codelineno-2-170"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-171" name="__codelineno-2-171" href="#__codelineno-2-171"></a><span class="w">  </span><span class="n">hbus_read_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-171" name="__codelineno-2-171" href="#__codelineno-2-171"></a><span class="w">  </span><span class="n">m_hbus_read_seq</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_hbus_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-172" name="__codelineno-2-172" href="#__codelineno-2-172"></a>
 <a id="__codelineno-2-173" name="__codelineno-2-173" href="#__codelineno-2-173"></a><span class="w">  </span><span class="c1">// Six random packets</span>
-<a id="__codelineno-2-174" name="__codelineno-2-174" href="#__codelineno-2-174"></a><span class="w">  </span><span class="n">yapp_rnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_rnd_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_rnd"</span><span class="p">);</span>
-<a id="__codelineno-2-175" name="__codelineno-2-175" href="#__codelineno-2-175"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_rnd</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">yapp_rnd</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-174" name="__codelineno-2-174" href="#__codelineno-2-174"></a><span class="w">  </span><span class="n">m_yapp_rnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_rnd_seq</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"yapp_rnd"</span><span class="p">);</span>
+<a id="__codelineno-2-175" name="__codelineno-2-175" href="#__codelineno-2-175"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_yapp_rnd</span><span class="p">.</span><span class="n">randomize</span><span class="p">()</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_yapp_rnd</span><span class="p">.</span><span class="n">m_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-176" name="__codelineno-2-176" href="#__codelineno-2-176"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"yapp_rnd.randomize() failed"</span><span class="p">)</span>
 <a id="__codelineno-2-177" name="__codelineno-2-177" href="#__codelineno-2-177"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-2-178" name="__codelineno-2-178" href="#__codelineno-2-178"></a><span class="w">  </span><span class="n">yapp_rnd</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">yapp_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-2-178" name="__codelineno-2-178" href="#__codelineno-2-178"></a><span class="w">  </span><span class="n">m_yapp_rnd</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">p_sequencer</span><span class="p">.</span><span class="n">m_yapp_seqr</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-2-179" name="__codelineno-2-179" href="#__codelineno-2-179"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">body</span>
 </code></pre></div>
 <ul>
 <li><code>`uvm_declare_p_sequencer(router_mcsequencer)</code> adds a typed
   <code>p_sequencer</code> handle (and a cast check when the sequence starts).</li>
 <li>Each sub-sequence is created through the factory, randomized (the one
-  constraint in this sequence is <code>yapp_rnd.count == 6</code>) and started with
-  <code>seq.start(p_sequencer.hbus_seqr, this)</code> or
-  <code>seq.start(p_sequencer.yapp_seqr, this)</code>: the first argument picks the
+  constraint in this sequence is <code>m_yapp_rnd.m_count == 6</code>) and started with
+  <code>seq.start(p_sequencer.m_hbus_seqr, this)</code> or
+  <code>seq.start(p_sequencer.m_yapp_seqr, this)</code>: the first argument picks the
   <strong>real</strong> sequencer, the second makes this sequence the parent. The course
   writes <code>`uvm_do_on(seq, seqr)</code> / <code>`uvm_do_on_with</code> for the same thing.</li>
 <li><code>start()</code> blocks until the sub-sequence's <code>body()</code> returns, which is what

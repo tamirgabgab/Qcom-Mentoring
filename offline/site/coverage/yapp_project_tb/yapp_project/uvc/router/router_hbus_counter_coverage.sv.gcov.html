@@ -72,27 +72,27 @@
 <span id="L10"><span class="lineNum">      10</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L11"><span class="lineNum">      11</span>                 :             : class router_hbus_counter_coverage extends uvm_subscriber #(hbus_transaction);</span>
 <span id="L12"><span class="lineNum">      12</span>                 :             : </span>
-<span id="L13"><span class="lineNum">      13</span>                 :             :   int num_sampled;</span>
+<span id="L13"><span class="lineNum">      13</span>                 :             :   int m_num_sampled;</span>
 <span id="L14"><span class="lineNum">      14</span>                 :             : </span>
-<span id="L15"><span class="lineNum">      15</span>                 :             :   covergroup hbus_counter_cg with function sample(int counter, bit [7:0] value);</span>
+<span id="L15"><span class="lineNum">      15</span>                 :             :   covergroup hbus_counter_cg with function sample(int counter, bit[7:0] value);</span>
 <span id="L16"><span class="lineNum">      16</span>                 :             :     option.per_instance = 1;</span>
 <span id="L17"><span class="lineNum">      17</span>                 :             :     counter_cp : coverpoint counter {</span>
-<span id="L18"><span class="lineNum">      18</span>                 :<span class="tlaGNC tlaBgGNC">         678 :       bins parity_err = {0};</span></span>
-<span id="L19"><span class="lineNum">      19</span>                 :<span class="tlaGNC">         674 :       bins oversized  = {1};</span></span>
-<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC">         696 :       bins addr0      = {2};</span></span>
-<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">         679 :       bins addr1      = {3};</span></span>
+<span id="L18"><span class="lineNum">      18</span>                 :<span class="tlaGNC tlaBgGNC">         679 :       bins parity_err = {0};</span></span>
+<span id="L19"><span class="lineNum">      19</span>                 :<span class="tlaGNC">         675 :       bins oversized  = {1};</span></span>
+<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC">         694 :       bins addr0      = {2};</span></span>
+<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">         680 :       bins addr1      = {3};</span></span>
 <span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">         686 :       bins addr2      = {4};</span></span>
-<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         682 :       bins addr3      = {5};</span></span>
+<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         692 :       bins addr3      = {5};</span></span>
 <span id="L24"><span class="lineNum">      24</span>                 :             :     }</span>
 <span id="L25"><span class="lineNum">      25</span>                 :             :     value_cp : coverpoint value {</span>
-<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC">        3568 :       bins zero = {8'd0};</span></span>
-<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         355 :       bins mid  = {[8'd1:8'd254]};</span></span>
+<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC">        3575 :       bins zero = {8'd0};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         359 :       bins mid  = {[8'd1:8'd254]};</span></span>
 <span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         172 :       bins max  = {8'd255};</span></span>
 <span id="L29"><span class="lineNum">      29</span>                 :             :     }</span>
-<span id="L30"><span class="lineNum">      30</span>   [<span class="tlaGBC" title="Branch 0 was taken 40 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 75 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 581 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 28 times"> + </span> :<span class="tlaGNC">         632 :     counter_x_value : cross counter_cp, value_cp;</span></span>
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 65 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 586 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 69 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 597 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 38 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 632 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 36 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 55 times"> + </span> 
-<span class="lineNum">        </span>    <span class="tlaGBC" title="Branch 14 was taken 583 times"> + </span><span class="tlaGBC" title="Branch 15 was taken 36 times"> + </span><span class="tlaGBC" title="Branch 16 was taken 53 times"> + </span><span class="tlaGBC" title="Branch 17 was taken 589 times"> + </span>]
+<span id="L30"><span class="lineNum">      30</span>   [<span class="tlaGBC" title="Branch 0 was taken 40 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 75 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 579 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 28 times"> + </span> :<span class="tlaGNC">         638 :     counter_x_value : cross counter_cp, value_cp;</span></span>
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 67 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 585 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 69 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 597 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 42 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 638 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 36 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 54 times"> + </span> 
+<span class="lineNum">        </span>    <span class="tlaGBC" title="Branch 14 was taken 585 times"> + </span><span class="tlaGBC" title="Branch 15 was taken 36 times"> + </span><span class="tlaGBC" title="Branch 16 was taken 52 times"> + </span><span class="tlaGBC" title="Branch 17 was taken 591 times"> + </span>]
 <span id="L31"><span class="lineNum">      31</span>                 :             :   endgroup : hbus_counter_cg</span>
 <span id="L32"><span class="lineNum">      32</span>                 :             : </span>
 <span id="L33"><span class="lineNum">      33</span>                 :             :   `uvm_component_utils(router_hbus_counter_coverage)</span>
@@ -118,10 +118,10 @@
 <span id="L53"><span class="lineNum">      53</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L54"><span class="lineNum">      54</span>                 :             : function void router_hbus_counter_coverage::write(hbus_transaction t);</span>
 <span id="L55"><span class="lineNum">      55</span>                 :             :   int counter;</span>
-<span id="L56"><span class="lineNum">      56</span>                 :             :   if (t.hwr_rd != HBUS_READ) begin</span>
+<span id="L56"><span class="lineNum">      56</span>                 :             :   if (t.m_hwr_rd != HBUS_OP_READ) begin</span>
 <span id="L57"><span class="lineNum">      57</span>                 :             :     return;</span>
 <span id="L58"><span class="lineNum">      58</span>                 :             :   end</span>
-<span id="L59"><span class="lineNum">      59</span>                 :             :   case (t.haddr)</span>
+<span id="L59"><span class="lineNum">      59</span>                 :             :   case (t.m_haddr)</span>
 <span id="L60"><span class="lineNum">      60</span>                 :             :     16'h1004: counter = 0;</span>
 <span id="L61"><span class="lineNum">      61</span>                 :             :     16'h1005: counter = 1;</span>
 <span id="L62"><span class="lineNum">      62</span>                 :             :     16'h1009: counter = 2;</span>
@@ -130,14 +130,14 @@
 <span id="L65"><span class="lineNum">      65</span>                 :             :     16'h1006: counter = 5;</span>
 <span id="L66"><span class="lineNum">      66</span>                 :             :     default:  return;                       // not a counter</span>
 <span id="L67"><span class="lineNum">      67</span>                 :             :   endcase</span>
-<span id="L68"><span class="lineNum">      68</span>                 :             :   num_sampled++;</span>
-<span id="L69"><span class="lineNum">      69</span>                 :             :   hbus_counter_cg.sample(counter, t.hdata);</span>
+<span id="L68"><span class="lineNum">      68</span>                 :             :   m_num_sampled++;</span>
+<span id="L69"><span class="lineNum">      69</span>                 :             :   hbus_counter_cg.sample(counter, t.m_hdata);</span>
 <span id="L70"><span class="lineNum">      70</span>                 :             : endfunction : write</span>
 <span id="L71"><span class="lineNum">      71</span>                 :             : </span>
 <span id="L72"><span class="lineNum">      72</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L73"><span class="lineNum">      73</span>                 :             : function void router_hbus_counter_coverage::report_phase(uvm_phase phase);</span>
 <span id="L74"><span class="lineNum">      74</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;HBUS counter value coverage: %0d counter reads sampled, coverage %.1f%%&quot;,</span>
-<span id="L75"><span class="lineNum">      75</span>                 :             :                                        num_sampled, hbus_counter_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L75"><span class="lineNum">      75</span>                 :             :                                        m_num_sampled, hbus_counter_cg.get_inst_coverage()), UVM_LOW)</span>
 <span id="L76"><span class="lineNum">      76</span>                 :             : endfunction : report_phase</span>
         </pre>
               </td>

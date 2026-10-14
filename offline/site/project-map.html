@@ -564,6 +564,8 @@
       
         
       
+        
+      
     
     
     
@@ -736,6 +738,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1223,6 +1253,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="coverage-results.html" class="md-nav__link">
         
@@ -1243,30 +1340,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1329,7 +1409,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1351,14 +1431,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1861,10 +1941,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1882,8 +1962,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2156,8 +2236,8 @@
 
 <h1 id="project-map">Project map<a class="headerlink" href="#project-map" title="Permanent link">&para;</a></h1>
 <p>One picture of the whole project that you can look into: <strong>click</strong> a box for its role, its file
-and its lab, <strong>double-click</strong> to open it. Five views: Hierarchy, TLM / data flow, Classes (UML),
-Environment, Test plan. The <strong>Source</strong> column on the right opens by itself with the complete
+and its lab, <strong>double-click</strong> to open it. Six views: Hierarchy, TLM / data flow, Classes (UML),
+Environment, Test plan, Coverage (keys <span class="keys"><kbd class="key-1">1</kbd></span> … <span class="keys"><kbd class="key-6">6</kbd></span>). The <strong>Source</strong> column on the right opens by itself with the complete
 file of whatever is selected (one class per file) and folds to a thin strip when there is nothing
 to show. Press <span class="keys"><kbd class="key-question">?</kbd></span> inside the map for the shortcuts.</p>
 <style>.md-grid { max-width: none; }</style>
@@ -2228,6 +2308,15 @@ to show. Press <span class="keys"><kbd class="key-question">?</kbd></span> insid
   faint until a card is selected: then only its own are drawn. The same data generates the
   <a href="test-plan.html">test plan</a> page, with a <a href="test-plan.html#coverage-matrix">coverage matrix</a> of
   every item against every test.</li>
+<li><strong>Coverage</strong> — the functional coverage of the committed regression on one page. On the left,
+  who publishes what the collectors sample: the YAPP monitor, the reference model (its decision
+  per packet) and the HBUS monitor through the module env's export. On the right, one card per
+  <strong>coverage collector</strong>: a bar per covergroup (bins hit over every run) and a chip per
+  coverpoint (hit / bins, red when it has holes). Click a card for every bin with the tests
+  that hit it, click a chip to jump to that coverpoint in the panel; the panel of the view
+  itself gives the totals and links to the <a href="coverage-results.html">coverage results</a>, the
+  annotated source and the <a href="regression/index.html">regression results</a>. The concepts are on
+  <a href="uvm/coverage.html">Functional coverage in UVM</a>.</li>
 </ul>
 <p><strong>Arrows, moving boxes, column widths.</strong> Arrows are orthogonal (horizontal and vertical runs,
 rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM
@@ -2269,9 +2358,10 @@ and the waves (Surfer) on GitHub, plus a link to its page in the
 <a href="regression/index.html">regression results</a>; the test cards carry the same as badges. A <strong>coverage
 collector</strong> (yellow) lists the merged bins of the committed regression with the tests that hit
 each one, a red row for a hole, and links to the annotated source and the
-<a href="coverage-results.html">coverage results</a>. With nothing selected it
+<a href="coverage-results.html">coverage results</a>; the Coverage view shows the same collectors as cards.
+With nothing selected it
 lists the <strong>items in this view</strong>, grouped by parent (or by package in Classes, features and
-tests in the Test plan) and with a filter box. The <strong>Source</strong> column (toolbar button or <span class="keys"><kbd class="key-c">C</kbd></span>)
+tests in the Test plan, publishers and collectors in Coverage) and with a filter box. The <strong>Source</strong> column (toolbar button or <span class="keys"><kbd class="key-c">C</kbd></span>)
 is a third column with the whole file of the selected class, module or RTL block, the item's
 lines marked; it can be downloaded or opened on GitHub from there. It opens when a box with a
 file is selected and folds to a strip labelled "Source" otherwise; the × on it switches it off

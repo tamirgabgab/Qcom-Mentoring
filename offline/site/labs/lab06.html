@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1163,6 +1193,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1183,30 +1280,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1271,7 +1351,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -1293,14 +1373,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2010,10 +2090,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -2031,8 +2111,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2594,10 +2674,10 @@ database between them.</p>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="kd">class</span><span class="w"> </span><span class="nc">yapp_tx_monitor</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_monitor</span><span class="p">;</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="c1">// Virtual interface, set by tb_top through yapp_vif_config</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">vif</span><span class="p">;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">m_vif</span><span class="p">;</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="c1">// Statistics</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">;</span>
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
 <a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">yapp_tx_monitor</span><span class="p">)</span>
 <a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
@@ -2625,7 +2705,7 @@ database between them.</p>
 <a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">connect_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">  </span><span class="c1">// get() returns 1 on success: always check it, a missing vif is fatal later</span>
-<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">m_vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="s">"NOVIF"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"virtual interface must be set for: "</span><span class="p">,</span><span class="w"> </span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".vif"</span><span class="p">})</span>
 <a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">connect_phase</span>
@@ -2640,14 +2720,14 @@ database between them.</p>
 <a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="k">task</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">collect_packets</span><span class="p">();</span>
 <a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="w">  </span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">pkt</span><span class="p">;</span>
 <a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">  </span><span class="c1">// Nothing to observe while reset is active</span>
-<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">  </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">vif</span><span class="p">.</span><span class="n">clock</span><span class="p">);</span>
-<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">  </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">m_vif</span><span class="p">.</span><span class="n">clock</span><span class="p">);</span>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">m_vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
 <a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="w">  </span><span class="k">forever</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="w">    </span><span class="n">pkt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_packet</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"pkt"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="w">    </span><span class="n">vif</span><span class="p">.</span><span class="n">collect_packets</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity</span><span class="p">);</span>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="w">    </span><span class="n">m_vif</span><span class="p">.</span><span class="n">collect_packets</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity</span><span class="p">);</span>
 <a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="w">    </span><span class="kt">void</span><span class="p">'(</span><span class="n">begin_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span><span class="w"> </span><span class="s">"Monitor_YAPP_Packet"</span><span class="p">));</span>
-<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">parity</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">calc_parity</span><span class="p">())</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">GOOD_PARITY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">BAD_PARITY</span><span class="p">;</span>
-<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="w">    </span><span class="n">num_pkt_col</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">calc_parity</span><span class="p">())</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">PARITY_TYPE_GOOD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">PARITY_TYPE_BAD</span><span class="p">;</span>
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="w">    </span><span class="n">m_num_pkt_col</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"Packet collected:</span><span class="se">\n</span><span class="s">%s"</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">sprint</span><span class="p">()),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a><span class="w">    </span><span class="n">end_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a><span class="w">  </span><span class="k">end</span>
@@ -2656,13 +2736,13 @@ database between them.</p>
 <a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">report_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span>
-<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a><span class="w">            </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP monitor report: %0d packets collected"</span><span class="p">,</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a><span class="w">            </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP monitor report: %0d packets collected"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">report_phase</span>
 <a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>
 <a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">do_print</span><span class="p">(</span><span class="n">uvm_printer</span><span class="w"> </span><span class="n">printer</span><span class="p">);</span>
 <a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="n">do_print</span><span class="p">(</span><span class="n">printer</span><span class="p">);</span>
-<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_pkt_col"</span><span class="p">,</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_pkt_col"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">m_num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
 <a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">do_print</span>
 </code></pre></div>
 <h3 id="4-driver-svyapp_tx_driversv">4. Driver — <code>sv/yapp_tx_driver.sv</code><a class="headerlink" href="#4-driver-svyapp_tx_driversv" title="Permanent link">&para;</a></h3>
@@ -2673,10 +2753,10 @@ database between them.</p>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kd">class</span><span class="w"> </span><span class="nc">yapp_tx_driver</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_driver</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">);</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="c1">// Virtual interface, set by tb_top through yapp_vif_config</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">vif</span><span class="p">;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">m_vif</span><span class="p">;</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="c1">// Statistics</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_sent</span><span class="p">;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_sent</span><span class="p">;</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">yapp_tx_driver</span><span class="p">)</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
@@ -2709,7 +2789,7 @@ database between them.</p>
 <a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>
 <a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_driver</span><span class="o">::</span><span class="n">connect_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
-<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">m_vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="s">"NOVIF"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"virtual interface must be set for: "</span><span class="p">,</span><span class="w"> </span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".vif"</span><span class="p">})</span>
 <a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">connect_phase</span>
@@ -2722,8 +2802,8 @@ database between them.</p>
 <a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
 <a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a><span class="k">task</span><span class="w"> </span><span class="n">yapp_tx_driver</span><span class="o">::</span><span class="n">reset_signals</span><span class="p">();</span>
-<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a><span class="w">  </span><span class="n">vif</span><span class="p">.</span><span class="n">yapp_reset</span><span class="p">();</span>
-<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a><span class="w">  </span><span class="n">m_vif</span><span class="p">.</span><span class="n">yapp_reset</span><span class="p">();</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">m_vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
 <a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">reset_signals</span>
 <a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>
 <a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a><span class="c1">//------------------------------------------------------------------------------</span>
@@ -2739,20 +2819,20 @@ database between them.</p>
 <a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a><span class="k">task</span><span class="w"> </span><span class="n">yapp_tx_driver</span><span class="o">::</span><span class="n">send_to_dut</span><span class="p">(</span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a><span class="w">  </span><span class="kt">void</span><span class="p">'(</span><span class="n">begin_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span><span class="w"> </span><span class="s">"Driver_YAPP_Packet"</span><span class="p">));</span><span class="w">   </span><span class="c1">// transaction recording</span>
 <a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"Packet is </span><span class="se">\n</span><span class="s">%s"</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">sprint</span><span class="p">()),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
-<a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a><span class="w">  </span><span class="n">vif</span><span class="p">.</span><span class="n">send_to_dut</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">packet_delay</span><span class="p">);</span>
-<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a><span class="w">  </span><span class="n">num_sent</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a><span class="w">  </span><span class="n">m_vif</span><span class="p">.</span><span class="n">send_to_dut</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_packet_delay</span><span class="p">);</span>
+<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a><span class="w">  </span><span class="n">m_num_sent</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a><span class="w">  </span><span class="n">end_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">send_to_dut</span>
 <a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>
 <a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_driver</span><span class="o">::</span><span class="n">report_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
-<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP driver report: %0d packets sent"</span><span class="p">,</span><span class="w"> </span><span class="n">num_sent</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP driver report: %0d packets sent"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_sent</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">report_phase</span>
 <a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a>
 <a id="__codelineno-3-84" name="__codelineno-3-84" href="#__codelineno-3-84"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_driver</span><span class="o">::</span><span class="n">do_print</span><span class="p">(</span><span class="n">uvm_printer</span><span class="w"> </span><span class="n">printer</span><span class="p">);</span>
 <a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="n">do_print</span><span class="p">(</span><span class="n">printer</span><span class="p">);</span>
-<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_sent"</span><span class="p">,</span><span class="w"> </span><span class="n">num_sent</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">num_sent</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
+<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_sent"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_sent</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">m_num_sent</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
 <a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">do_print</span>
 </code></pre></div>
 <p>(The pieces to copy are also in <code>sv/driver_example.sv</code> and

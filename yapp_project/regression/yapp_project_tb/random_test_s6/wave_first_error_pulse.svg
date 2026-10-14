@@ -13,7 +13,7 @@
 <text class="lbl" x="110" y="54.2" text-anchor="end">clock</text>
 <path class="clk" d="M118,62 L118,36 L140.0,36 L140.0,62 L162,62 L162,62 L162,36 L184.0,36 L184.0,62 L206,62 L206,62 L206,36 L228.0,36 L228.0,62 L250,62 L250,62 L250,36 L272.0,36 L272.0,62 L294,62 L294,62 L294,36 L316.0,36 L316.0,62 L338,62 L338,62 L338,36 L360.0,36 L360.0,62 L382,62 L382,62 L382,36 L404.0,36 L404.0,62 L426,62 L426,62 L426,36 L448.0,36 L448.0,62 L470,62"/>
 <text class="lbl" x="110" y="98.2" text-anchor="end">in_data_vld</text>
-<path class="sig" d="M140.0,106 L184.0,106 L184.0,106 L184.0,80 L228.0,80 L228.0,80 L272.0,80 L272.0,80 L272.0,106 L316.0,106 L316.0,106 L316.0,80 L360.0,80 L360.0,80 L404.0,80 L404.0,80 L448.0,80 L448.0,80 L492.0,80"/>
+<path class="sig" d="M140.0,106 L184.0,106 L184.0,106 L184.0,80 L228.0,80 L228.0,80 L272.0,80 L272.0,80 L272.0,106 L316.0,106 L316.0,106 L360.0,106 L360.0,106 L360.0,80 L404.0,80 L404.0,80 L448.0,80 L448.0,80 L492.0,80"/>
 <text class="lbl" x="110" y="142.2" text-anchor="end">in_data</text>
 <line class="idle" x1="140.0" y1="137.0" x2="184.0" y2="137.0"/>
 <path class="bus" d="M184.0,137.0 L189.0,124 L223.0,124 L228.0,137.0 L223.0,150 L189.0,150 Z"/>
@@ -22,14 +22,13 @@
 <text class="txt" x="250.0" y="141.0">95</text>
 <path class="bus" d="M272.0,137.0 L277.0,124 L311.0,124 L316.0,137.0 L311.0,150 L277.0,150 Z"/>
 <text class="txt" x="294.0" y="141.0">91</text>
-<path class="bus" d="M316.0,137.0 L321.0,124 L355.0,124 L360.0,137.0 L355.0,150 L321.0,150 Z"/>
-<text class="txt" x="338.0" y="141.0">EA</text>
+<line class="idle" x1="316.0" y1="137.0" x2="360.0" y2="137.0"/>
 <path class="bus" d="M360.0,137.0 L365.0,124 L399.0,124 L404.0,137.0 L399.0,150 L365.0,150 Z"/>
-<text class="txt" x="382.0" y="141.0">D2</text>
+<text class="txt" x="382.0" y="141.0">F2</text>
 <path class="bus" d="M404.0,137.0 L409.0,124 L443.0,124 L448.0,137.0 L443.0,150 L409.0,150 Z"/>
-<text class="txt" x="426.0" y="141.0">46</text>
+<text class="txt" x="426.0" y="141.0">D2</text>
 <path class="bus" d="M448.0,137.0 L453.0,124 L487.0,124 L492.0,137.0 L487.0,150 L453.0,150 Z"/>
-<text class="txt" x="470.0" y="141.0">19</text>
+<text class="txt" x="470.0" y="141.0">46</text>
 <text class="lbl" x="110" y="186.2" text-anchor="end">in_phase</text>
 <line class="idle" x1="140.0" y1="181.0" x2="184.0" y2="181.0"/>
 <path class="bus" d="M184.0,181.0 L189.0,168 L223.0,168 L228.0,181.0 L223.0,194 L189.0,194 Z"/>
@@ -38,10 +37,11 @@
 <text class="txt" x="250.0" y="185.0">PAY</text>
 <path class="bus" d="M272.0,181.0 L277.0,168 L311.0,168 L316.0,181.0 L311.0,194 L277.0,194 Z"/>
 <text class="txt" x="294.0" y="185.0">PAR</text>
-<path class="bus" d="M316.0,181.0 L321.0,168 L355.0,168 L360.0,181.0 L355.0,194 L321.0,194 Z"/>
-<text class="txt" x="338.0" y="185.0">HDR</text>
-<path class="bus" d="M360.0,181.0 L365.0,168 L487.0,168 L492.0,181.0 L487.0,194 L365.0,194 Z"/>
-<text class="txt" x="426.0" y="185.0">PAY</text>
+<line class="idle" x1="316.0" y1="181.0" x2="360.0" y2="181.0"/>
+<path class="bus" d="M360.0,181.0 L365.0,168 L399.0,168 L404.0,181.0 L399.0,194 L365.0,194 Z"/>
+<text class="txt" x="382.0" y="185.0">HDR</text>
+<path class="bus" d="M404.0,181.0 L409.0,168 L487.0,168 L492.0,181.0 L487.0,194 L409.0,194 Z"/>
+<text class="txt" x="448.0" y="185.0">PAY</text>
 <text class="lbl" x="110" y="230.2" text-anchor="end">fsm state</text>
 <path class="bus" d="M118,225.0 L123,212 L157,212 L162,225.0 L157,238 L123,238 Z"/>
 <text class="txt" x="140.0" y="229.0">IDLE</text>
@@ -49,12 +49,12 @@
 <text class="txt" x="184.0" y="229.0">PAYL</text>
 <path class="bus" d="M206,225.0 L211,212 L245,212 L250,225.0 L245,238 L211,238 Z"/>
 <text class="txt" x="228.0" y="229.0">PAR</text>
-<path class="bus" d="M250,225.0 L255,212 L289,212 L294,225.0 L289,238 L255,238 Z"/>
-<text class="txt" x="272.0" y="229.0">IDLE</text>
-<path class="bus" d="M294,225.0 L299,212 L465,212 L470,225.0 L465,238 L299,238 Z"/>
-<text class="txt" x="382.0" y="229.0">PAYL</text>
+<path class="bus" d="M250,225.0 L255,212 L333,212 L338,225.0 L333,238 L255,238 Z"/>
+<text class="txt" x="294.0" y="229.0">IDLE</text>
+<path class="bus" d="M338,225.0 L343,212 L465,212 L470,225.0 L465,238 L343,238 Z"/>
+<text class="txt" x="404.0" y="229.0">PAYL</text>
 <text class="lbl" x="110" y="274.2" text-anchor="end">error</text>
 <path class="sig" d="M118,282 L162,282 L162,282 L206,282 L206,282 L250,282 L250,282 L294,282 L294,282 L294,256 L338,256 L338,256 L338,282 L382,282 L382,282 L426,282 L426,282 L470,282"/>
-<text class="note" x="118" y="314">cycle 0 = rising edge at t = 4765 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
+<text class="note" x="118" y="314">cycle 0 = rising edge at t = 4285 ns; TB-driven signals change on the falling edge, DUT outputs on the rising edge</text>
 <text class="note" x="118" y="327">ERROR pulse, 1 cycle(s) after the bad-parity packet</text>
 </svg>

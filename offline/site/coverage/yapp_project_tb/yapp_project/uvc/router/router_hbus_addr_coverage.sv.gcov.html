@@ -74,50 +74,50 @@
 <span id="L12"><span class="lineNum">      12</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L13"><span class="lineNum">      13</span>                 :             : class router_hbus_addr_coverage extends uvm_subscriber #(hbus_transaction);</span>
 <span id="L14"><span class="lineNum">      14</span>                 :             : </span>
-<span id="L15"><span class="lineNum">      15</span>                 :             :   int num_sampled;</span>
+<span id="L15"><span class="lineNum">      15</span>                 :             :   int m_num_sampled;</span>
 <span id="L16"><span class="lineNum">      16</span>                 :             : </span>
-<span id="L17"><span class="lineNum">      17</span>                 :             :   covergroup hbus_addr_cg with function sample(bit [15:0] addr, bit write);</span>
+<span id="L17"><span class="lineNum">      17</span>                 :             :   covergroup hbus_addr_cg with function sample(bit[15:0] addr, bit write);</span>
 <span id="L18"><span class="lineNum">      18</span>                 :             :     option.per_instance = 1;</span>
 <span id="L19"><span class="lineNum">      19</span>                 :             :     addr_cp : coverpoint addr {</span>
 <span id="L20"><span class="lineNum">      20</span>                 :             :       // the registers</span>
-<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC tlaBgGNC">        1135 :       bins ctrl           = {16'h1000};</span></span>
-<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">        1164 :       bins en             = {16'h1001};</span></span>
-<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         710 :       bins parity_cnt     = {16'h1004};</span></span>
-<span id="L24"><span class="lineNum">      24</span>                 :<span class="tlaGNC">         702 :       bins oversized_cnt  = {16'h1005};</span></span>
-<span id="L25"><span class="lineNum">      25</span>                 :<span class="tlaGNC">         710 :       bins addr3_cnt      = {16'h1006};</span></span>
-<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC">         728 :       bins addr0_cnt      = {16'h1009};</span></span>
-<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         707 :       bins addr1_cnt      = {16'h100a};</span></span>
+<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC tlaBgGNC">        1128 :       bins ctrl           = {16'h1000};</span></span>
+<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">        1159 :       bins en             = {16'h1001};</span></span>
+<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         711 :       bins parity_cnt     = {16'h1004};</span></span>
+<span id="L24"><span class="lineNum">      24</span>                 :<span class="tlaGNC">         703 :       bins m_oversized_cnt  = {16'h1005};</span></span>
+<span id="L25"><span class="lineNum">      25</span>                 :<span class="tlaGNC">         720 :       bins addr3_cnt      = {16'h1006};</span></span>
+<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC">         726 :       bins addr0_cnt      = {16'h1009};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">         708 :       bins addr1_cnt      = {16'h100a};</span></span>
 <span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         714 :       bins addr2_cnt      = {16'h100b};</span></span>
-<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         758 :       bins mem_size       = {16'h100d};</span></span>
+<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         752 :       bins m_mem_size       = {16'h100d};</span></span>
 <span id="L30"><span class="lineNum">      30</span>                 :             :       // the unmapped addresses between them: read 0, writes ignored</span>
-<span id="L31"><span class="lineNum">      31</span>   [<span class="tlaGBC" title="Branch 0 was taken 580 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 580 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 578 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 579 times"> + </span> :<span class="tlaGNC">         586 :       bins reg_hole[]     = {16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};</span></span>
-<span class="lineNum">        </span>       <span class="tlaGBC" title="Branch 4 was taken 583 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 576 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 586 times"> + </span>]
+<span id="L31"><span class="lineNum">      31</span>   [<span class="tlaGBC" title="Branch 0 was taken 581 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 575 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 579 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 581 times"> + </span> :<span class="tlaGNC">         589 :       bins reg_hole[]     = {16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};</span></span>
+<span class="lineNum">        </span>       <span class="tlaGBC" title="Branch 4 was taken 582 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 574 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 589 times"> + </span>]
 <span id="L32"><span class="lineNum">      32</span>                 :             :       // yapp_pkt_mem (read-only), the unmapped range, yapp_mem (read-write)</span>
-<span id="L33"><span class="lineNum">      33</span>                 :<span class="tlaGNC">          58 :       bins pkt_mem_first  = {16'h1010};</span></span>
-<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        1946 :       bins pkt_mem_mid    = {[16'h1011:16'h104e]};</span></span>
-<span id="L35"><span class="lineNum">      35</span>                 :<span class="tlaGNC">          17 :       bins pkt_mem_last   = {16'h104f};</span></span>
-<span id="L36"><span class="lineNum">      36</span>                 :<span class="tlaGNC">          16 :       bins gap_first      = {16'h1050};</span></span>
-<span id="L37"><span class="lineNum">      37</span>                 :<span class="tlaGNC">         123 :       bins gap_mid        = {[16'h1051:16'h10fe]};</span></span>
+<span id="L33"><span class="lineNum">      33</span>                 :<span class="tlaGNC">          57 :       bins pkt_mem_first  = {16'h1010};</span></span>
+<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        1840 :       bins pkt_mem_mid    = {[16'h1011:16'h104e]};</span></span>
+<span id="L35"><span class="lineNum">      35</span>                 :<span class="tlaGNC">          16 :       bins pkt_mem_last   = {16'h104f};</span></span>
+<span id="L36"><span class="lineNum">      36</span>                 :<span class="tlaGNC">          17 :       bins gap_first      = {16'h1050};</span></span>
+<span id="L37"><span class="lineNum">      37</span>                 :<span class="tlaGNC">         112 :       bins gap_mid        = {[16'h1051:16'h10fe]};</span></span>
 <span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">           9 :       bins gap_last       = {16'h10ff};</span></span>
-<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">          54 :       bins yapp_mem_first = {16'h1100};</span></span>
-<span id="L40"><span class="lineNum">      40</span>                 :<span class="tlaGNC">       14220 :       bins yapp_mem_mid   = {[16'h1101:16'h11fe]};</span></span>
-<span id="L41"><span class="lineNum">      41</span>                 :<span class="tlaGNC">          48 :       bins yapp_mem_last  = {16'h11ff};</span></span>
+<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">          64 :       bins yapp_mem_first = {16'h1100};</span></span>
+<span id="L40"><span class="lineNum">      40</span>                 :<span class="tlaGNC">       14174 :       bins yapp_mem_mid   = {[16'h1101:16'h11fe]};</span></span>
+<span id="L41"><span class="lineNum">      41</span>                 :<span class="tlaGNC">          54 :       bins yapp_mem_last  = {16'h11ff};</span></span>
 <span id="L42"><span class="lineNum">      42</span>                 :             :     }</span>
 <span id="L43"><span class="lineNum">      43</span>                 :             :     rw_cp : coverpoint write {</span>
-<span id="L44"><span class="lineNum">      44</span>                 :<span class="tlaGNC">       18792 :       bins read  = {0};</span></span>
-<span id="L45"><span class="lineNum">      45</span>                 :<span class="tlaGNC">        9089 :       bins write = {1};</span></span>
+<span id="L44"><span class="lineNum">      44</span>                 :<span class="tlaGNC">       18661 :       bins read  = {0};</span></span>
+<span id="L45"><span class="lineNum">      45</span>                 :<span class="tlaGNC">        9064 :       bins write = {1};</span></span>
 <span id="L46"><span class="lineNum">      46</span>                 :             :     }</span>
-<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 696 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 32 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 679 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 28 times"> + </span> :<span class="tlaGNC">        7618 :     addr_x_rw : cross addr_cp, rw_cp;</span></span>
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 686 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 682 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 760 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 375 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 761 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 403 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 8 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 8 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 14 was taken 5 times"> + </span><span class="tlaGBC" title="Branch 15 was taken 4 times"> + </span><span class="tlaGBC" title="Branch 16 was taken 99 times"> + </span><span class="tlaGBC" title="Branch 17 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 18 was taken 730 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 19 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 20 was taken 674 times"> + </span><span class="tlaGBC" title="Branch 21 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 22 was taken 678 times"> + </span><span class="tlaGBC" title="Branch 23 was taken 32 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 24 was taken 50 times"> + </span><span class="tlaGBC" title="Branch 25 was taken 8 times"> + </span><span class="tlaGBC" title="Branch 26 was taken 13 times"> + </span><span class="tlaGBC" title="Branch 27 was taken 4 times"> + </span><span class="tlaGBC" title="Branch 28 was taken 1698 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 29 was taken 248 times"> + </span><span class="tlaGBC" title="Branch 30 was taken 560 times"> + </span><span class="tlaGBC" title="Branch 31 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 32 was taken 560 times"> + </span><span class="tlaGBC" title="Branch 33 was taken 20 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 34 was taken 558 times"> + </span><span class="tlaGBC" title="Branch 35 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 36 was taken 559 times"> + </span><span class="tlaGBC" title="Branch 37 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 38 was taken 563 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 39 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 40 was taken 556 times"> + </span><span class="tlaGBC" title="Branch 41 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 42 was taken 566 times"> + </span><span class="tlaGBC" title="Branch 43 was taken 20 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 44 was taken 25 times"> + </span><span class="tlaGBC" title="Branch 45 was taken 29 times"> + </span><span class="tlaGBC" title="Branch 46 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 47 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 48 was taken 6602 times"> + </span> 
-<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 49 was taken 7618 times"> + </span>]
+<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 694 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 32 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 680 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 28 times"> + </span> :<span class="tlaGNC">        7595 :     addr_x_rw : cross addr_cp, rw_cp;</span></span>
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 686 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 692 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 758 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 370 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 761 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 398 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 9 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 8 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 14 was taken 5 times"> + </span><span class="tlaGBC" title="Branch 15 was taken 4 times"> + </span><span class="tlaGBC" title="Branch 16 was taken 88 times"> + </span><span class="tlaGBC" title="Branch 17 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 18 was taken 724 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 19 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 20 was taken 675 times"> + </span><span class="tlaGBC" title="Branch 21 was taken 28 times"> + </span><span class="tlaGBC" title="Branch 22 was taken 679 times"> + </span><span class="tlaGBC" title="Branch 23 was taken 32 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 24 was taken 49 times"> + </span><span class="tlaGBC" title="Branch 25 was taken 8 times"> + </span><span class="tlaGBC" title="Branch 26 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 27 was taken 4 times"> + </span><span class="tlaGBC" title="Branch 28 was taken 1592 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 29 was taken 248 times"> + </span><span class="tlaGBC" title="Branch 30 was taken 561 times"> + </span><span class="tlaGBC" title="Branch 31 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 32 was taken 555 times"> + </span><span class="tlaGBC" title="Branch 33 was taken 20 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 34 was taken 559 times"> + </span><span class="tlaGBC" title="Branch 35 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 36 was taken 561 times"> + </span><span class="tlaGBC" title="Branch 37 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 38 was taken 562 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 39 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 40 was taken 554 times"> + </span><span class="tlaGBC" title="Branch 41 was taken 20 times"> + </span><span class="tlaGBC" title="Branch 42 was taken 569 times"> + </span><span class="tlaGBC" title="Branch 43 was taken 20 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 44 was taken 30 times"> + </span><span class="tlaGBC" title="Branch 45 was taken 34 times"> + </span><span class="tlaGBC" title="Branch 46 was taken 27 times"> + </span><span class="tlaGBC" title="Branch 47 was taken 27 times"> + </span><span class="tlaGBC" title="Branch 48 was taken 6579 times"> + </span> 
+<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 49 was taken 7595 times"> + </span>]
 <span id="L48"><span class="lineNum">      48</span>                 :             :   endgroup : hbus_addr_cg</span>
 <span id="L49"><span class="lineNum">      49</span>                 :             : </span>
 <span id="L50"><span class="lineNum">      50</span>                 :             :   `uvm_component_utils(router_hbus_addr_coverage)</span>
@@ -142,14 +142,14 @@
 <span id="L69"><span class="lineNum">      69</span>                 :             : </span>
 <span id="L70"><span class="lineNum">      70</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L71"><span class="lineNum">      71</span>                 :             : function void router_hbus_addr_coverage::write(hbus_transaction t);</span>
-<span id="L72"><span class="lineNum">      72</span>                 :             :   num_sampled++;</span>
-<span id="L73"><span class="lineNum">      73</span>                 :             :   hbus_addr_cg.sample(t.haddr, t.hwr_rd == HBUS_WRITE);</span>
+<span id="L72"><span class="lineNum">      72</span>                 :             :   m_num_sampled++;</span>
+<span id="L73"><span class="lineNum">      73</span>                 :             :   hbus_addr_cg.sample(t.m_haddr, t.m_hwr_rd == HBUS_OP_WRITE);</span>
 <span id="L74"><span class="lineNum">      74</span>                 :             : endfunction : write</span>
 <span id="L75"><span class="lineNum">      75</span>                 :             : </span>
 <span id="L76"><span class="lineNum">      76</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L77"><span class="lineNum">      77</span>                 :             : function void router_hbus_addr_coverage::report_phase(uvm_phase phase);</span>
 <span id="L78"><span class="lineNum">      78</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;HBUS address coverage: %0d accesses sampled, coverage %.1f%%&quot;,</span>
-<span id="L79"><span class="lineNum">      79</span>                 :             :                                        num_sampled, hbus_addr_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L79"><span class="lineNum">      79</span>                 :             :                                        m_num_sampled, hbus_addr_cg.get_inst_coverage()), UVM_LOW)</span>
 <span id="L80"><span class="lineNum">      80</span>                 :             : endfunction : report_phase</span>
         </pre>
               </td>

@@ -73,16 +73,16 @@
 <span id="L11"><span class="lineNum">      11</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L12"><span class="lineNum">      12</span>                 :             : class yapp_gap_coverage extends uvm_subscriber #(yapp_packet);</span>
 <span id="L13"><span class="lineNum">      13</span>                 :             : </span>
-<span id="L14"><span class="lineNum">      14</span>                 :             :   int num_sampled;</span>
+<span id="L14"><span class="lineNum">      14</span>                 :             :   int m_num_sampled;</span>
 <span id="L15"><span class="lineNum">      15</span>                 :             : </span>
 <span id="L16"><span class="lineNum">      16</span>                 :             :   // ROUTE-04: packets back to back (gap 0) and with short gaps</span>
 <span id="L17"><span class="lineNum">      17</span>                 :             :   covergroup yapp_gap_cg with function sample(int gap);</span>
 <span id="L18"><span class="lineNum">      18</span>                 :             :     option.per_instance = 1;</span>
 <span id="L19"><span class="lineNum">      19</span>                 :             :     gap_cp : coverpoint gap {</span>
-<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC tlaBgGNC">         767 :       bins back_to_back = {0};</span></span>
-<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">         603 :       bins one          = {1};</span></span>
-<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">         292 :       bins two          = {2};</span></span>
-<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">        5606 :       bins longer       = {[3:$]};</span></span>
+<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC tlaBgGNC">         774 :       bins back_to_back = {0};</span></span>
+<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">         606 :       bins one          = {1};</span></span>
+<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">         299 :       bins two          = {2};</span></span>
+<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">        5549 :       bins longer       = {[3:$]};</span></span>
 <span id="L24"><span class="lineNum">      24</span>                 :             :     }</span>
 <span id="L25"><span class="lineNum">      25</span>                 :             :   endgroup : yapp_gap_cg</span>
 <span id="L26"><span class="lineNum">      26</span>                 :             : </span>
@@ -108,17 +108,17 @@
 <span id="L46"><span class="lineNum">      46</span>                 :             : </span>
 <span id="L47"><span class="lineNum">      47</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L48"><span class="lineNum">      48</span>                 :             : function void yapp_gap_coverage::write(yapp_packet t);</span>
-<span id="L49"><span class="lineNum">      49</span>                 :             :   if (t.packet_delay &lt; 0) begin</span>
+<span id="L49"><span class="lineNum">      49</span>                 :             :   if (t.m_packet_delay &lt; 0) begin</span>
 <span id="L50"><span class="lineNum">      50</span>                 :             :     return;                                 // the first packet after reset has no gap</span>
 <span id="L51"><span class="lineNum">      51</span>                 :             :   end</span>
-<span id="L52"><span class="lineNum">      52</span>                 :             :   num_sampled++;</span>
-<span id="L53"><span class="lineNum">      53</span>                 :             :   yapp_gap_cg.sample(t.packet_delay);</span>
+<span id="L52"><span class="lineNum">      52</span>                 :             :   m_num_sampled++;</span>
+<span id="L53"><span class="lineNum">      53</span>                 :             :   yapp_gap_cg.sample(t.m_packet_delay);</span>
 <span id="L54"><span class="lineNum">      54</span>                 :             : endfunction : write</span>
 <span id="L55"><span class="lineNum">      55</span>                 :             : </span>
 <span id="L56"><span class="lineNum">      56</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L57"><span class="lineNum">      57</span>                 :             : function void yapp_gap_coverage::report_phase(uvm_phase phase);</span>
 <span id="L58"><span class="lineNum">      58</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;YAPP gap coverage: %0d gaps sampled, coverage %.1f%%&quot;,</span>
-<span id="L59"><span class="lineNum">      59</span>                 :             :                                        num_sampled, yapp_gap_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L59"><span class="lineNum">      59</span>                 :             :                                        m_num_sampled, yapp_gap_cg.get_inst_coverage()), UVM_LOW)</span>
 <span id="L60"><span class="lineNum">      60</span>                 :             : endfunction : report_phase</span>
         </pre>
               </td>

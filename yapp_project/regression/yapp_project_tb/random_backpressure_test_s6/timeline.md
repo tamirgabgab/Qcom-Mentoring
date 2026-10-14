@@ -1,6 +1,6 @@
 # random_backpressure_test seed 6
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 19us · wall 6.6 s · log [`random_backpressure_test_s6.log`](random_backpressure_test_s6.log)
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 19us · wall 8.6 s · log [`random_backpressure_test_s6.log`](random_backpressure_test_s6.log)
 
 Waves: `random_backpressure_test_s6.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_backpressure_test_s6%2Frandom_backpressure_test_s6.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
@@ -19,7 +19,7 @@ Waves: `random_backpressure_test_s6.fst` (GTKWave, Surfer or the VS Code wave vi
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_SLOW, ch1 RX_SLOW, ch2 RX_SLOW |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_SLOW, ch1 CHANNEL_RX_PROFILE_SLOW, ch2 CHANNEL_RX_PROFILE_SLOW |
 | 0 | random scenario: 30 packets in 2 bursts |
 | 220 | burst 1/2: ctrl=0x77 (maxpktsize 55) en=0xb7 (router on, counter enables 1011011), 16 packet(s) |
 | 10250 | burst 1/2 sent: addr0..3 1/2/13/0, bad parity 0, gap 0 13, length 6..63 |
@@ -65,7 +65,7 @@ Waves: `random_backpressure_test_s6.fst` (GTKWave, Surfer or the VS Code wave vi
 | time (ns) | who | event |
 |---|---|---|
 | 0 | yapp monitor | YAPP monitor running |
-| 0 | **test** | STAGE: receivers: ch0 RX_SLOW, ch1 RX_SLOW, ch2 RX_SLOW |
+| 0 | **test** | STAGE: receivers: ch0 CHANNEL_RX_PROFILE_SLOW, ch1 CHANNEL_RX_PROFILE_SLOW, ch2 CHANNEL_RX_PROFILE_SLOW |
 | 0 | **test** | STAGE: random scenario: 30 packets in 2 bursts |
 | 0 | clk/rst driver | Starting clock (period 10) and holding reset for 5 cycles |
 | 0 | **DUT** | RESET asserted |

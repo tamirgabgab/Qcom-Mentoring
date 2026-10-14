@@ -1,38 +1,38 @@
 # random_parity_test seed 4
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 11us · wall 11.9 s · log [`random_parity_test_s4.log`](random_parity_test_s4.log)
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 13us · wall 12.7 s · log [`random_parity_test_s4.log`](random_parity_test_s4.log)
 
 Waves: `random_parity_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_parity_test_s4%2Frandom_parity_test_s4.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
 
 ## Summary
 
-- YAPP driver sent **56** packet(s) (18 with bad parity); the input monitor saw 56.
-- Router: **38** forwarded, **18** dropped (7 illegal address 3, 11 oversized).
-- Packets out: ch0 **9**, ch1 **8**, ch2 **21**.
-- Scoreboard: 38 matched, 0 mismatched, 0 unexpected.
-- Back-pressure: in_suspend asserted **3** time(s), longest hold 22 cycle(s).
-- Error pulses: 18.
-- HBUS: 20 write(s), 37 read(s).
+- YAPP driver sent **39** packet(s) (11 with bad parity); the input monitor saw 39.
+- Router: **26** forwarded, **13** dropped (5 illegal address 3, 8 oversized).
+- Packets out: ch0 **7**, ch1 **6**, ch2 **13**.
+- Scoreboard: 26 matched, 0 mismatched, 0 unexpected.
+- Back-pressure: in_suspend asserted **2** time(s), longest hold 14 cycle(s).
+- Error pulses: 11.
+- HBUS: 25 write(s), 48 read(s).
 
 ## Stages
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_SLOW, ch1 RX_STALLY, ch2 RX_NORMAL |
-| 0 | random scenario: 56 packets in 5 bursts |
-| 310 | burst 1/5: ctrl=0x4f (maxpktsize 15) en=0xff (router on, counter enables 1111111), 11 packet(s) |
-| 4240 | burst 1/5 sent: addr0..3 4/0/2/5, bad parity 2, gap 0 9, length 1..63 |
-| 4450 | burst 2/5: ctrl=0x1e (maxpktsize 30) en=0xff (router on, counter enables 1111111), 11 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 4880 | burst 2/5 sent: addr0..3 1/1/8/1, bad parity 4, gap 0 11, length 1..3 |
-| 5150 | burst 3/5: ctrl=0x1a (maxpktsize 26) en=0xff (router on, counter enables 1111111), 11 packet(s) |
-| 9090 | burst 3/5 sent: addr0..3 3/3/5/0, bad parity 3, gap 0 5, length 1..63 |
-| 9270 | burst 4/5: ctrl=0xb7 (maxpktsize 55) en=0x73 (router on, counter enables 0111001), 12 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 9700 | burst 4/5 sent: addr0..3 3/3/4/2, bad parity 7, gap 0 11, length 1..3 |
-| 9930 | burst 5/5: ctrl=0x7b (maxpktsize 59) en=0xff (router on, counter enables 1111111), 11 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 10360 | burst 5/5 sent: addr0..3 2/3/4/2, bad parity 2, gap 0 11, length 1..3 |
-| 10360 | final reads: every register and the stored packet, checked against the reference model |
-| 10865 | done: 56 packets (38 forwarded, 18 dropped), 3 storm burst(s), 38 scoreboard matches, 36 HBUS reads checked, 18 error pulses for 18 bad packets |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_NORMAL, ch1 CHANNEL_RX_PROFILE_SLOW, ch2 CHANNEL_RX_PROFILE_FAST |
+| 0 | random scenario: 39 packets in 5 bursts |
+| 370 | burst 1/5: ctrl=0x5e (maxpktsize 30) en=0x01 (router on, counter enables 0000000), 8 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
+| 700 | burst 1/5 sent: addr0..3 3/1/3/1, bad parity 3, gap 0 8, length 1..3 |
+| 1040 | burst 2/5: ctrl=0xd4 (maxpktsize 20) en=0x13 (router on, counter enables 0001001), 8 packet(s) |
+| 4020 | burst 2/5 sent: addr0..3 1/4/1/2, bad parity 2, gap 0 4, length 3..63 |
+| 4230 | burst 3/5: ctrl=0x70 (maxpktsize 48) en=0xc3 (router on, counter enables 1100001), 7 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
+| 4530 | burst 3/5 sent: addr0..3 1/3/2/1, bad parity 1, gap 0 7, length 1..3 |
+| 4870 | burst 4/5: ctrl=0xfd (maxpktsize 61) en=0xff (router on, counter enables 1111111), 8 packet(s) |
+| 7470 | burst 4/5 sent: addr0..3 1/0/5/2, bad parity 2, gap 0 3, length 1..63 |
+| 7780 | burst 5/5: ctrl=0xfe (maxpktsize 62) en=0xf9 (router on, counter enables 1111100), 8 packet(s) |
+| 12170 | burst 5/5 sent: addr0..3 2/2/3/1, bad parity 3, gap 0 1, length 4..63 |
+| 12170 | final reads: every register and the stored packet, checked against the reference model |
+| 12705 | done: 39 packets (26 forwarded, 13 dropped), 2 storm burst(s), 26 scoreboard matches, 45 HBUS reads checked, 11 error pulses for 11 bad packets |
 
 ## Pictures
 
@@ -66,751 +66,617 @@ Waves: `random_parity_test_s4.fst` (GTKWave, Surfer or the VS Code wave viewer).
 
 ## Timeline
 
-744 events.
+610 events.
 
 | time (ns) | who | event |
 |---|---|---|
 | 0 | yapp monitor | YAPP monitor running |
-| 0 | **test** | STAGE: receivers: ch0 RX_SLOW, ch1 RX_STALLY, ch2 RX_NORMAL |
-| 0 | **test** | STAGE: random scenario: 56 packets in 5 bursts |
+| 0 | **test** | STAGE: receivers: ch0 CHANNEL_RX_PROFILE_NORMAL, ch1 CHANNEL_RX_PROFILE_SLOW, ch2 CHANNEL_RX_PROFILE_FAST |
+| 0 | **test** | STAGE: random scenario: 39 packets in 5 bursts |
 | 0 | clk/rst driver | Starting clock (period 10) and holding reset for 5 cycles |
 | 0 | **DUT** | RESET asserted |
 | 50 | **DUT** | RESET released: router_en=1 maxpktsize=63 |
-| 70 | hbus driver | Executed WRITE addr=0x1000 data=0x4f |
-| 75 | **DUT** | CONFIG router_en=1 maxpktsize=15 |
-| 75 | hbus monitor | Collected WRITE addr=0x1000 data=0x4f |
-| 75 | reference | maxpktsize is now 15 |
-| 90 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
-| 95 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 95 | reference | router_en is now 1 (en_reg 0xff) |
-| 120 | hbus driver | Executed READ  addr=0x1015 data=0x00 |
-| 125 | hbus monitor | Collected READ  addr=0x1015 data=0x00 |
-| 150 | hbus driver | Executed READ  addr=0x10f1 data=0x00 |
-| 155 | hbus monitor | Collected READ  addr=0x10f1 data=0x00 |
-| 170 | hbus driver | Executed WRITE addr=0x1111 data=0x77 |
-| 175 | hbus monitor | Collected WRITE addr=0x1111 data=0x77 |
-| 200 | hbus driver | Executed READ  addr=0x1111 data=0x77 |
-| 205 | hbus monitor | Collected READ  addr=0x1111 data=0x77 |
-| 230 | hbus driver | Executed READ  addr=0x100d data=0x00 |
-| 235 | hbus monitor | Collected READ  addr=0x100d data=0x00 |
-| 250 | hbus driver | Executed WRITE addr=0x11de data=0xd5 |
-| 255 | hbus monitor | Collected WRITE addr=0x11de data=0xd5 |
-| 280 | hbus driver | Executed READ  addr=0x11de data=0xd5 |
-| 285 | hbus monitor | Collected READ  addr=0x11de data=0xd5 |
-| 310 | hbus driver | Executed READ  addr=0x1005 data=0x00 |
-| 310 | **test** | STAGE: burst 1/5: ctrl=0x4f (maxpktsize 15) en=0xff (router on, counter enables 1111111), 11 packet(s) |
-| 310 | yapp driver | TX pkt #1: addr=3 len=1 parity=good delay=6 |
-| 315 | hbus monitor | Collected READ  addr=0x1005 data=0x00 |
-| 385 | **DUT** | IN  pkt #1 header: addr=3 len=1 -> DROP (illegal address 3) |
-| 405 | **DUT** | IN  pkt #1 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0) |
-| 405 | yapp monitor | RX pkt #1 on the input: addr=3 len=1 parity=good gap=33 |
-| 405 | reference | Packet dropped: illegal address 3 (len=1) |
-| 405 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
-| 410 | yapp driver | TX pkt #1 accepted by the DUT |
-| 410 | yapp driver | TX pkt #2: addr=3 len=63 parity=good delay=0 |
-| 415 | **DUT** | IN  pkt #2 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 15) |
-| 1055 | **DUT** | IN  pkt #2 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
-| 1055 | yapp monitor | RX pkt #2 on the input: addr=3 len=63 parity=good gap=0 |
-| 1055 | reference | Packet dropped: illegal address 3 (len=63) |
-| 1055 | **DUT** | ROUTER DROPS PACKET addr=3 length=63 (    illegal address) |
-| 1060 | yapp driver | TX pkt #2 accepted by the DUT |
-| 1060 | yapp driver | TX pkt #3: addr=3 len=63 parity=bad delay=0 |
-| 1065 | **DUT** | IN  pkt #3 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 15) |
-| 1705 | **DUT** | IN  pkt #3 complete: addr=3 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0) |
-| 1705 | yapp monitor | RX pkt #3 on the input: addr=3 len=63 parity=bad gap=0 |
-| 1705 | reference | Packet dropped: illegal address 3 (len=63) |
-| 1705 | **DUT** | ROUTER DROPS PACKET addr=3 length=63 (    illegal address) |
-| 1710 | yapp driver | TX pkt #3 accepted by the DUT |
-| 1710 | yapp driver | TX pkt #4: addr=0 len=16 parity=bad delay=0 |
-| 1715 | **DUT** | IN  pkt #4 header: addr=0 len=16 -> DROP (oversized: len 16 > maxpktsize 15) |
-| 1770 | **DUT** | ERROR pulse, 6 cycle(s) after the bad-parity packet |
-| 1770 | error checker | error pulse 6 cycles after the bad packet (0 still owed) |
-| 1885 | **DUT** | IN  pkt #4 complete: addr=0 len=16 parity=BAD dropped, 18 bytes in 18 cycles (held 0) |
-| 1885 | yapp monitor | RX pkt #4 on the input: addr=0 len=16 parity=bad gap=0 |
-| 1885 | reference | Packet dropped: length 16 > maxpktsize 15 (addr=0) |
-| 1885 | **DUT** | ROUTER DROPS PACKET addr=0 length=16 (length > maxpktsize) |
-| 1890 | yapp driver | TX pkt #4 accepted by the DUT |
-| 1890 | yapp driver | TX pkt #5: addr=2 len=14 parity=good delay=20 |
-| 1970 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
-| 1970 | error checker | error pulse 8 cycles after the bad packet (0 still owed) |
-| 2095 | **DUT** | IN  pkt #5 header: addr=2 len=14 -> channel 2 |
-| 2155 | **DUT** | OUT ch2 pkt #1 start: addr=2 len=14 (receiver waited 5 cycle(s)) |
-| 2245 | **DUT** | IN  pkt #5 complete: addr=2 len=14 parity=ok forwarded, 16 bytes in 16 cycles (held 0) |
-| 2245 | yapp monitor | RX pkt #5 on the input: addr=2 len=14 parity=good gap=20 |
-| 2245 | reference | Packet forwarded: addr=2 len=14 -> channel 2 |
-| 2250 | yapp driver | TX pkt #5 accepted by the DUT |
-| 2250 | yapp driver | TX pkt #6: addr=3 len=47 parity=good delay=0 |
-| 2255 | **DUT** | IN  pkt #6 header: addr=3 len=47 -> DROP (oversized: len 47 > maxpktsize 15) |
-| 2300 | ch2 driver | ch2: packet consumed (response delay 5) |
-| 2415 | **DUT** | OUT ch2 pkt #1 done: 16 bytes in 27 cycles |
-| 2415 | ch2 monitor | ch2 RX pkt #1: addr=2 len=14 parity=good |
-| 2415 | scoreboard | ch2 pkt matched: addr=2 len=14 (1 matched so far) |
-| 2735 | **DUT** | IN  pkt #6 complete: addr=3 len=47 parity=ok dropped, 49 bytes in 49 cycles (held 0) |
-| 2735 | yapp monitor | RX pkt #6 on the input: addr=3 len=47 parity=good gap=0 |
-| 2735 | reference | Packet dropped: illegal address 3 (len=47) |
-| 2735 | **DUT** | ROUTER DROPS PACKET addr=3 length=47 (    illegal address) |
-| 2740 | yapp driver | TX pkt #6 accepted by the DUT |
-| 2740 | yapp driver | TX pkt #7: addr=0 len=53 parity=good delay=0 |
-| 2745 | **DUT** | IN  pkt #7 header: addr=0 len=53 -> DROP (oversized: len 53 > maxpktsize 15) |
-| 3040 | ch2 driver | ch2: packet consumed (response delay 10) |
-| 3285 | **DUT** | IN  pkt #7 complete: addr=0 len=53 parity=ok dropped, 55 bytes in 55 cycles (held 0) |
-| 3285 | yapp monitor | RX pkt #7 on the input: addr=0 len=53 parity=good gap=0 |
-| 3285 | reference | Packet dropped: length 53 > maxpktsize 15 (addr=0) |
-| 3285 | **DUT** | ROUTER DROPS PACKET addr=0 length=53 (length > maxpktsize) |
-| 3290 | yapp driver | TX pkt #7 accepted by the DUT |
-| 3290 | yapp driver | TX pkt #8: addr=0 len=1 parity=good delay=0 |
-| 3295 | **DUT** | IN  pkt #8 header: addr=0 len=1 -> channel 0 |
-| 3315 | **DUT** | IN  pkt #8 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 3315 | yapp monitor | RX pkt #8 on the input: addr=0 len=1 parity=good gap=0 |
-| 3315 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
-| 3320 | yapp driver | TX pkt #8 accepted by the DUT |
-| 3320 | yapp driver | TX pkt #9: addr=0 len=15 parity=good delay=0 |
-| 3325 | **DUT** | IN  pkt #9 header: addr=0 len=15 -> channel 0 |
-| 3455 | **DUT** | SUSPEND asserted: FIFO 0 full, byte 0x2b held (pkt #9) |
-| 3535 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=1 (receiver waited 23 cycle(s)) |
-| 3545 | **DUT** | SUSPEND released after 9 cycle(s) |
-| 3550 | ch0 driver | ch0: packet consumed (response delay 23) |
-| 3565 | **DUT** | SUSPEND asserted: FIFO 0 full, byte 0x3d held (pkt #9) |
-| 3765 | **DUT** | OUT ch0 pkt #1 done: 3 bytes in 24 cycles |
-| 3765 | ch0 monitor | ch0 RX pkt #1: addr=0 len=1 parity=good |
-| 3765 | scoreboard | ch0 pkt matched: addr=0 len=1 (2 matched so far) |
-| 3775 | **DUT** | SUSPEND released after 21 cycle(s) |
-| 3775 | **DUT** | OUT ch0 pkt #2 start: addr=0 len=15 (receiver waited 0 cycle(s)) |
-| 3785 | **DUT** | IN  pkt #9 complete: addr=0 len=15 parity=ok forwarded, 17 bytes in 47 cycles (held 30) |
-| 3785 | yapp monitor | RX pkt #9 on the input: addr=0 len=15 parity=good gap=0 |
-| 3785 | reference | Packet forwarded: addr=0 len=15 -> channel 0 |
-| 3790 | yapp driver | TX pkt #9 accepted by the DUT |
-| 3790 | yapp driver | TX pkt #10: addr=3 len=1 parity=good delay=0 |
-| 3795 | **DUT** | IN  pkt #10 header: addr=3 len=1 -> DROP (illegal address 3) |
-| 3815 | **DUT** | IN  pkt #10 complete: addr=3 len=1 parity=ok dropped, 3 bytes in 3 cycles (held 0) |
-| 3815 | yapp monitor | RX pkt #10 on the input: addr=3 len=1 parity=good gap=0 |
-| 3815 | reference | Packet dropped: illegal address 3 (len=1) |
-| 3815 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
-| 3820 | yapp driver | TX pkt #10 accepted by the DUT |
-| 3820 | yapp driver | TX pkt #11: addr=2 len=40 parity=good delay=0 |
-| 3825 | **DUT** | IN  pkt #11 header: addr=2 len=40 -> DROP (oversized: len 40 > maxpktsize 15) |
-| 3935 | **DUT** | OUT ch0 pkt #2 done: 17 bytes in 17 cycles |
-| 3935 | ch0 monitor | ch0 RX pkt #2: addr=0 len=15 parity=good |
-| 3935 | scoreboard | ch0 pkt matched: addr=0 len=15 (3 matched so far) |
-| 4090 | ch0 driver | ch0: packet consumed (response delay 20) |
-| 4235 | **DUT** | IN  pkt #11 complete: addr=2 len=40 parity=ok dropped, 42 bytes in 42 cycles (held 0) |
-| 4235 | yapp monitor | RX pkt #11 on the input: addr=2 len=40 parity=good gap=0 |
-| 4235 | reference | Packet dropped: length 40 > maxpktsize 15 (addr=2) |
-| 4235 | **DUT** | ROUTER DROPS PACKET addr=2 length=40 (length > maxpktsize) |
-| 4240 | yapp driver | TX pkt #11 accepted by the DUT |
-| 4240 | **test** | STAGE: burst 1/5 sent: addr0..3 4/0/2/5, bad parity 2, gap 0 9, length 1..63 |
-| 4260 | hbus driver | Executed WRITE addr=0x1000 data=0x1e |
-| 4265 | **DUT** | CONFIG router_en=1 maxpktsize=30 |
-| 4265 | hbus monitor | Collected WRITE addr=0x1000 data=0x1e |
-| 4265 | reference | maxpktsize is now 30 |
-| 4280 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
-| 4285 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 4285 | reference | router_en is now 1 (en_reg 0xff) |
-| 4300 | hbus driver | Executed WRITE addr=0x113c data=0xe3 |
-| 4305 | hbus monitor | Collected WRITE addr=0x113c data=0xe3 |
-| 4330 | hbus driver | Executed READ  addr=0x113c data=0xe3 |
-| 4335 | hbus monitor | Collected READ  addr=0x113c data=0xe3 |
-| 4360 | hbus driver | Executed READ  addr=0x1000 data=0x1e |
-| 4365 | hbus monitor | Collected READ  addr=0x1000 data=0x1e |
-| 4390 | hbus driver | Executed READ  addr=0x106e data=0x00 |
-| 4395 | hbus monitor | Collected READ  addr=0x106e data=0x00 |
-| 4420 | hbus driver | Executed READ  addr=0x103d data=0x60 |
-| 4425 | hbus monitor | Collected READ  addr=0x103d data=0x60 |
-| 4450 | hbus driver | Executed READ  addr=0x1074 data=0x00 |
-| 4450 | **test** | STAGE: burst 2/5: ctrl=0x1e (maxpktsize 30) en=0xff (router on, counter enables 1111111), 11 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 4450 | yapp driver | TX pkt #12: addr=3 len=1 parity=bad delay=0 |
-| 4455 | hbus monitor | Collected READ  addr=0x1074 data=0x00 |
-| 4465 | **DUT** | IN  pkt #12 header: addr=3 len=1 -> DROP (illegal address 3) |
-| 4485 | **DUT** | IN  pkt #12 complete: addr=3 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0) |
-| 4485 | yapp monitor | RX pkt #12 on the input: addr=3 len=1 parity=bad gap=22 |
-| 4485 | reference | Packet dropped: illegal address 3 (len=1) |
-| 4485 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
-| 4490 | yapp driver | TX pkt #12 accepted by the DUT |
-| 4490 | yapp driver | TX pkt #13: addr=2 len=1 parity=good delay=0 |
-| 4495 | **DUT** | IN  pkt #13 header: addr=2 len=1 -> channel 2 |
-| 4510 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
-| 4510 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
-| 4515 | **DUT** | IN  pkt #13 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 4515 | yapp monitor | RX pkt #13 on the input: addr=2 len=1 parity=good gap=0 |
-| 4515 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 4520 | yapp driver | TX pkt #13 accepted by the DUT |
-| 4520 | yapp driver | TX pkt #14: addr=0 len=1 parity=bad delay=0 |
-| 4525 | **DUT** | IN  pkt #14 header: addr=0 len=1 -> channel 0 |
-| 4545 | **DUT** | IN  pkt #14 complete: addr=0 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 4545 | yapp monitor | RX pkt #14 on the input: addr=0 len=1 parity=bad gap=0 |
-| 4545 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
-| 4550 | yapp driver | TX pkt #14 accepted by the DUT |
-| 4550 | yapp driver | TX pkt #15: addr=2 len=1 parity=bad delay=0 |
-| 4555 | **DUT** | IN  pkt #15 header: addr=2 len=1 -> channel 2 |
-| 4570 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
-| 4570 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
-| 4575 | **DUT** | IN  pkt #15 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 4575 | yapp monitor | RX pkt #15 on the input: addr=2 len=1 parity=bad gap=0 |
-| 4575 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 4580 | yapp driver | TX pkt #15 accepted by the DUT |
-| 4580 | yapp driver | TX pkt #16: addr=1 len=2 parity=good delay=0 |
-| 4585 | **DUT** | IN  pkt #16 header: addr=1 len=2 -> channel 1 |
-| 4605 | **DUT** | OUT ch2 pkt #2 start: addr=2 len=1 (receiver waited 10 cycle(s)) |
-| 4615 | **DUT** | IN  pkt #16 complete: addr=1 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
-| 4615 | yapp monitor | RX pkt #16 on the input: addr=1 len=2 parity=good gap=0 |
-| 4615 | reference | Packet forwarded: addr=1 len=2 -> channel 1 |
-| 4620 | ch2 driver | ch2: packet consumed (response delay 10) |
-| 4620 | yapp driver | TX pkt #16 accepted by the DUT |
-| 4620 | yapp driver | TX pkt #17: addr=2 len=3 parity=good delay=0 |
-| 4625 | **DUT** | IN  pkt #17 header: addr=2 len=3 -> channel 2 |
-| 4630 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet |
-| 4630 | error checker | error pulse 5 cycles after the bad packet (0 still owed) |
-| 4665 | **DUT** | IN  pkt #17 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 4665 | **DUT** | OUT ch1 pkt #1 start: addr=1 len=2 (receiver waited 7 cycle(s)) |
-| 4665 | **DUT** | OUT ch2 pkt #2 done: 3 bytes in 7 cycles |
-| 4665 | ch2 monitor | ch2 RX pkt #2: addr=2 len=1 parity=good |
-| 4665 | scoreboard | ch2 pkt matched: addr=2 len=1 (4 matched so far) |
-| 4665 | yapp monitor | RX pkt #17 on the input: addr=2 len=3 parity=good gap=0 |
-| 4665 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
-| 4670 | yapp driver | TX pkt #17 accepted by the DUT |
-| 4670 | yapp driver | TX pkt #18: addr=2 len=2 parity=good delay=0 |
-| 4675 | **DUT** | IN  pkt #18 header: addr=2 len=2 -> channel 2 |
-| 4675 | **DUT** | OUT ch2 pkt #3 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 4690 | ch1 driver | ch1: packet consumed (response delay 7) |
-| 4695 | **DUT** | OUT ch2 pkt #3 done: 3 bytes in 3 cycles |
-| 4695 | ch2 monitor | ch2 RX pkt #3: addr=2 len=1 parity=bad |
-| 4695 | scoreboard | ch2 pkt matched: addr=2 len=1 (5 matched so far) |
-| 4705 | **DUT** | IN  pkt #18 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
-| 4705 | **DUT** | OUT ch1 pkt #1 done: 4 bytes in 5 cycles |
-| 4705 | **DUT** | OUT ch2 pkt #4 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
-| 4705 | ch1 monitor | ch1 RX pkt #1: addr=1 len=2 parity=good |
-| 4705 | scoreboard | ch1 pkt matched: addr=1 len=2 (6 matched so far) |
-| 4705 | yapp monitor | RX pkt #18 on the input: addr=2 len=2 parity=good gap=0 |
-| 4705 | reference | Packet forwarded: addr=2 len=2 -> channel 2 |
-| 4710 | yapp driver | TX pkt #18 accepted by the DUT |
-| 4710 | yapp driver | TX pkt #19: addr=2 len=3 parity=bad delay=0 |
-| 4715 | **DUT** | IN  pkt #19 header: addr=2 len=3 -> channel 2 |
-| 4745 | **DUT** | OUT ch2 pkt #4 done: 5 bytes in 5 cycles |
-| 4745 | ch2 monitor | ch2 RX pkt #4: addr=2 len=3 parity=good |
-| 4745 | scoreboard | ch2 pkt matched: addr=2 len=3 (7 matched so far) |
-| 4755 | **DUT** | IN  pkt #19 complete: addr=2 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0) |
-| 4755 | **DUT** | OUT ch2 pkt #5 start: addr=2 len=2 (receiver waited 0 cycle(s)) |
-| 4755 | yapp monitor | RX pkt #19 on the input: addr=2 len=3 parity=bad gap=0 |
-| 4755 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
-| 4760 | yapp driver | TX pkt #19 accepted by the DUT |
-| 4760 | yapp driver | TX pkt #20: addr=2 len=2 parity=good delay=0 |
-| 4765 | **DUT** | IN  pkt #20 header: addr=2 len=2 -> channel 2 |
-| 4785 | **DUT** | OUT ch2 pkt #5 done: 4 bytes in 4 cycles |
-| 4785 | ch2 monitor | ch2 RX pkt #5: addr=2 len=2 parity=good |
-| 4785 | scoreboard | ch2 pkt matched: addr=2 len=2 (8 matched so far) |
-| 4795 | **DUT** | IN  pkt #20 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
-| 4795 | **DUT** | OUT ch2 pkt #6 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
-| 4795 | yapp monitor | RX pkt #20 on the input: addr=2 len=2 parity=good gap=0 |
-| 4795 | reference | Packet forwarded: addr=2 len=2 -> channel 2 |
-| 4800 | yapp driver | TX pkt #20 accepted by the DUT |
-| 4800 | yapp driver | TX pkt #21: addr=2 len=3 parity=good delay=0 |
-| 4805 | **DUT** | IN  pkt #21 header: addr=2 len=3 -> channel 2 |
-| 4830 | **DUT** | ERROR pulse, 7 cycle(s) after the bad-parity packet |
-| 4830 | error checker | error pulse 7 cycles after the bad packet (0 still owed) |
-| 4830 | ch2 driver | ch2: packet consumed (response delay 3) |
-| 4830 | ch1 driver | ch1: packet consumed (response delay 0) |
-| 4845 | **DUT** | IN  pkt #21 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 4845 | yapp monitor | RX pkt #21 on the input: addr=2 len=3 parity=good gap=0 |
-| 4845 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
-| 4850 | yapp driver | TX pkt #21 accepted by the DUT |
-| 4850 | yapp driver | TX pkt #22: addr=2 len=1 parity=good delay=0 |
-| 4855 | **DUT** | IN  pkt #22 header: addr=2 len=1 -> channel 2 |
-| 4875 | **DUT** | IN  pkt #22 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 4875 | yapp monitor | RX pkt #22 on the input: addr=2 len=1 parity=good gap=0 |
-| 4875 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 4880 | yapp driver | TX pkt #22 accepted by the DUT |
-| 4880 | **test** | STAGE: burst 2/5 sent: addr0..3 1/1/8/1, bad parity 4, gap 0 11, length 1..3 |
-| 4900 | hbus driver | Executed WRITE addr=0x1000 data=0x1a |
-| 4905 | **DUT** | CONFIG router_en=1 maxpktsize=26 |
-| 4905 | hbus monitor | Collected WRITE addr=0x1000 data=0x1a |
-| 4905 | reference | maxpktsize is now 26 |
-| 4920 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
-| 4925 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 4925 | reference | router_en is now 1 (en_reg 0xff) |
-| 4935 | **DUT** | OUT ch0 pkt #3 start: addr=0 len=1 (receiver waited 40 cycle(s)) |
-| 4945 | **DUT** | OUT ch2 pkt #6 done: 5 bytes in 16 cycles |
-| 4945 | ch2 monitor | ch2 RX pkt #6: addr=2 len=3 parity=bad |
-| 4945 | scoreboard | ch2 pkt matched: addr=2 len=3 (9 matched so far) |
-| 4950 | ch0 driver | ch0: packet consumed (response delay 40) |
-| 4950 | ch2 driver | ch2: packet consumed (response delay 10) |
-| 4950 | hbus driver | Executed READ  addr=0x1009 data=0x05 |
-| 4955 | hbus monitor | Collected READ  addr=0x1009 data=0x05 |
-| 4970 | hbus driver | Executed WRITE addr=0x1197 data=0x89 |
-| 4975 | **DUT** | OUT ch2 pkt #7 start: addr=2 len=2 (receiver waited 2 cycle(s)) |
-| 4975 | hbus monitor | Collected WRITE addr=0x1197 data=0x89 |
-| 5000 | ch2 driver | ch2: packet consumed (response delay 1) |
-| 5000 | hbus driver | Executed READ  addr=0x1197 data=0x89 |
-| 5005 | hbus monitor | Collected READ  addr=0x1197 data=0x89 |
-| 5020 | hbus driver | Executed WRITE addr=0x11b3 data=0xf7 |
-| 5025 | hbus monitor | Collected WRITE addr=0x11b3 data=0xf7 |
-| 5050 | hbus driver | Executed READ  addr=0x11b3 data=0xf7 |
-| 5055 | hbus monitor | Collected READ  addr=0x11b3 data=0xf7 |
-| 5065 | **DUT** | OUT ch2 pkt #7 done: 4 bytes in 10 cycles |
-| 5065 | ch2 monitor | ch2 RX pkt #7: addr=2 len=2 parity=good |
-| 5065 | scoreboard | ch2 pkt matched: addr=2 len=2 (10 matched so far) |
-| 5070 | hbus driver | Executed WRITE addr=0x1124 data=0x7a |
-| 5075 | **DUT** | OUT ch2 pkt #8 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
-| 5075 | hbus monitor | Collected WRITE addr=0x1124 data=0x7a |
-| 5100 | hbus driver | Executed READ  addr=0x1124 data=0x7a |
-| 5105 | hbus monitor | Collected READ  addr=0x1124 data=0x7a |
-| 5115 | **DUT** | OUT ch2 pkt #8 done: 5 bytes in 5 cycles |
-| 5115 | ch2 monitor | ch2 RX pkt #8: addr=2 len=3 parity=good |
-| 5115 | scoreboard | ch2 pkt matched: addr=2 len=3 (11 matched so far) |
-| 5120 | hbus driver | Executed WRITE addr=0x1189 data=0xf1 |
-| 5125 | **DUT** | OUT ch2 pkt #9 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 5125 | hbus monitor | Collected WRITE addr=0x1189 data=0xf1 |
-| 5145 | **DUT** | OUT ch2 pkt #9 done: 3 bytes in 3 cycles |
-| 5145 | ch2 monitor | ch2 RX pkt #9: addr=2 len=1 parity=good |
-| 5145 | scoreboard | ch2 pkt matched: addr=2 len=1 (12 matched so far) |
-| 5150 | hbus driver | Executed READ  addr=0x1189 data=0xf1 |
-| 5150 | **test** | STAGE: burst 3/5: ctrl=0x1a (maxpktsize 26) en=0xff (router on, counter enables 1111111), 11 packet(s) |
-| 5150 | yapp driver | TX pkt #23: addr=1 len=63 parity=good delay=5 |
-| 5155 | hbus monitor | Collected READ  addr=0x1189 data=0xf1 |
-| 5215 | **DUT** | IN  pkt #23 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 26) |
-| 5275 | **DUT** | OUT ch0 pkt #3 done: 3 bytes in 35 cycles |
-| 5275 | ch0 monitor | ch0 RX pkt #3: addr=0 len=1 parity=bad |
-| 5275 | scoreboard | ch0 pkt matched: addr=0 len=1 (13 matched so far) |
-| 5680 | ch2 driver | ch2: packet consumed (response delay 5) |
-| 5850 | ch0 driver | ch0: packet consumed (response delay 31) |
-| 5855 | **DUT** | IN  pkt #23 complete: addr=1 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
-| 5855 | yapp monitor | RX pkt #23 on the input: addr=1 len=63 parity=good gap=33 |
-| 5855 | reference | Packet dropped: length 63 > maxpktsize 26 (addr=1) |
-| 5855 | **DUT** | ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize) |
-| 5860 | yapp driver | TX pkt #23 accepted by the DUT |
-| 5860 | yapp driver | TX pkt #24: addr=2 len=41 parity=bad delay=1 |
-| 5875 | **DUT** | IN  pkt #24 header: addr=2 len=41 -> DROP (oversized: len 41 > maxpktsize 26) |
-| 6295 | **DUT** | IN  pkt #24 complete: addr=2 len=41 parity=BAD dropped, 43 bytes in 43 cycles (held 0) |
-| 6295 | yapp monitor | RX pkt #24 on the input: addr=2 len=41 parity=bad gap=1 |
-| 6295 | reference | Packet dropped: length 41 > maxpktsize 26 (addr=2) |
-| 6295 | **DUT** | ROUTER DROPS PACKET addr=2 length=41 (length > maxpktsize) |
-| 6300 | yapp driver | TX pkt #24 accepted by the DUT |
-| 6300 | yapp driver | TX pkt #25: addr=0 len=58 parity=bad delay=16 |
-| 6310 | **DUT** | ERROR pulse, 1 cycle(s) after the bad-parity packet |
-| 6310 | error checker | error pulse 1 cycles after the bad packet (0 still owed) |
-| 6465 | **DUT** | IN  pkt #25 header: addr=0 len=58 -> DROP (oversized: len 58 > maxpktsize 26) |
-| 7055 | **DUT** | IN  pkt #25 complete: addr=0 len=58 parity=BAD dropped, 60 bytes in 60 cycles (held 0) |
-| 7055 | yapp monitor | RX pkt #25 on the input: addr=0 len=58 parity=bad gap=16 |
-| 7055 | reference | Packet dropped: length 58 > maxpktsize 26 (addr=0) |
-| 7055 | **DUT** | ROUTER DROPS PACKET addr=0 length=58 (length > maxpktsize) |
-| 7060 | yapp driver | TX pkt #25 accepted by the DUT |
-| 7060 | yapp driver | TX pkt #26: addr=2 len=4 parity=good delay=18 |
-| 7090 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 7090 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
-| 7245 | **DUT** | IN  pkt #26 header: addr=2 len=4 -> channel 2 |
-| 7295 | **DUT** | IN  pkt #26 complete: addr=2 len=4 parity=ok forwarded, 6 bytes in 6 cycles (held 0) |
-| 7295 | yapp monitor | RX pkt #26 on the input: addr=2 len=4 parity=good gap=18 |
-| 7295 | reference | Packet forwarded: addr=2 len=4 -> channel 2 |
-| 7300 | yapp driver | TX pkt #26 accepted by the DUT |
-| 7300 | yapp driver | TX pkt #27: addr=1 len=36 parity=good delay=1 |
-| 7315 | **DUT** | IN  pkt #27 header: addr=1 len=36 -> DROP (oversized: len 36 > maxpktsize 26) |
-| 7325 | **DUT** | OUT ch2 pkt #10 start: addr=2 len=4 (receiver waited 7 cycle(s)) |
-| 7370 | ch2 driver | ch2: packet consumed (response delay 7) |
-| 7475 | **DUT** | OUT ch2 pkt #10 done: 6 bytes in 16 cycles |
-| 7475 | ch2 monitor | ch2 RX pkt #10: addr=2 len=4 parity=good |
-| 7475 | scoreboard | ch2 pkt matched: addr=2 len=4 (14 matched so far) |
-| 7685 | **DUT** | IN  pkt #27 complete: addr=1 len=36 parity=ok dropped, 38 bytes in 38 cycles (held 0) |
-| 7685 | yapp monitor | RX pkt #27 on the input: addr=1 len=36 parity=good gap=1 |
-| 7685 | reference | Packet dropped: length 36 > maxpktsize 26 (addr=1) |
-| 7685 | **DUT** | ROUTER DROPS PACKET addr=1 length=36 (length > maxpktsize) |
-| 7690 | yapp driver | TX pkt #27 accepted by the DUT |
-| 7690 | yapp driver | TX pkt #28: addr=0 len=47 parity=bad delay=0 |
-| 7695 | **DUT** | IN  pkt #28 header: addr=0 len=47 -> DROP (oversized: len 47 > maxpktsize 26) |
-| 7950 | ch2 driver | ch2: packet consumed (response delay 9) |
-| 8175 | **DUT** | IN  pkt #28 complete: addr=0 len=47 parity=BAD dropped, 49 bytes in 49 cycles (held 0) |
-| 8175 | yapp monitor | RX pkt #28 on the input: addr=0 len=47 parity=bad gap=0 |
-| 8175 | reference | Packet dropped: length 47 > maxpktsize 26 (addr=0) |
-| 8175 | **DUT** | ROUTER DROPS PACKET addr=0 length=47 (length > maxpktsize) |
-| 8180 | yapp driver | TX pkt #28 accepted by the DUT |
-| 8180 | yapp driver | TX pkt #29: addr=1 len=1 parity=good delay=1 |
-| 8195 | **DUT** | IN  pkt #29 header: addr=1 len=1 -> channel 1 |
-| 8210 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
-| 8210 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
-| 8215 | **DUT** | IN  pkt #29 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 8215 | yapp monitor | RX pkt #29 on the input: addr=1 len=1 parity=good gap=1 |
-| 8215 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
-| 8220 | yapp driver | TX pkt #29 accepted by the DUT |
-| 8220 | yapp driver | TX pkt #30: addr=0 len=24 parity=good delay=0 |
-| 8225 | **DUT** | IN  pkt #30 header: addr=0 len=24 -> channel 0 |
-| 8225 | **DUT** | OUT ch1 pkt #2 start: addr=1 len=1 (receiver waited 2 cycle(s)) |
-| 8240 | ch1 driver | ch1: packet consumed (response delay 2) |
-| 8385 | **DUT** | SUSPEND asserted: FIFO 0 full, byte 0x54 held (pkt #30) |
-| 8595 | **DUT** | OUT ch0 pkt #4 start: addr=0 len=24 (receiver waited 36 cycle(s)) |
-| 8605 | **DUT** | SUSPEND released after 22 cycle(s) |
-| 8695 | **DUT** | IN  pkt #30 complete: addr=0 len=24 parity=ok forwarded, 26 bytes in 48 cycles (held 22) |
-| 8695 | yapp monitor | RX pkt #30 on the input: addr=0 len=24 parity=good gap=0 |
-| 8695 | reference | Packet forwarded: addr=0 len=24 -> channel 0 |
-| 8700 | yapp driver | TX pkt #30 accepted by the DUT |
-| 8700 | yapp driver | TX pkt #31: addr=2 len=17 parity=good delay=0 |
-| 8705 | **DUT** | IN  pkt #31 header: addr=2 len=17 -> channel 2 |
-| 8725 | **DUT** | OUT ch2 pkt #11 start: addr=2 len=17 (receiver waited 1 cycle(s)) |
-| 8840 | ch0 driver | ch0: packet consumed (response delay 36) |
-| 8865 | **DUT** | OUT ch1 pkt #2 done: 3 bytes in 65 cycles |
-| 8865 | ch1 monitor | ch1 RX pkt #2: addr=1 len=1 parity=good |
-| 8865 | scoreboard | ch1 pkt matched: addr=1 len=1 (15 matched so far) |
-| 8885 | **DUT** | IN  pkt #31 complete: addr=2 len=17 parity=ok forwarded, 19 bytes in 19 cycles (held 0) |
-| 8885 | yapp monitor | RX pkt #31 on the input: addr=2 len=17 parity=good gap=0 |
-| 8885 | reference | Packet forwarded: addr=2 len=17 -> channel 2 |
-| 8890 | yapp driver | TX pkt #31 accepted by the DUT |
-| 8890 | yapp driver | TX pkt #32: addr=2 len=9 parity=good delay=0 |
-| 8895 | **DUT** | IN  pkt #32 header: addr=2 len=9 -> channel 2 |
-| 8900 | ch2 driver | ch2: packet consumed (response delay 1) |
-| 8935 | **DUT** | OUT ch2 pkt #11 done: 19 bytes in 22 cycles |
-| 8935 | ch2 monitor | ch2 RX pkt #11: addr=2 len=17 parity=good |
-| 8935 | scoreboard | ch2 pkt matched: addr=2 len=17 (16 matched so far) |
-| 8945 | **DUT** | OUT ch2 pkt #12 start: addr=2 len=9 (receiver waited 0 cycle(s)) |
-| 8995 | **DUT** | IN  pkt #32 complete: addr=2 len=9 parity=ok forwarded, 11 bytes in 11 cycles (held 0) |
-| 8995 | yapp monitor | RX pkt #32 on the input: addr=2 len=9 parity=good gap=0 |
-| 8995 | reference | Packet forwarded: addr=2 len=9 -> channel 2 |
-| 9000 | yapp driver | TX pkt #32 accepted by the DUT |
-| 9000 | yapp driver | TX pkt #33: addr=2 len=7 parity=good delay=0 |
-| 9005 | **DUT** | IN  pkt #33 header: addr=2 len=7 -> channel 2 |
-| 9045 | **DUT** | OUT ch2 pkt #12 done: 11 bytes in 11 cycles |
-| 9045 | ch2 monitor | ch2 RX pkt #12: addr=2 len=9 parity=good |
-| 9045 | scoreboard | ch2 pkt matched: addr=2 len=9 (17 matched so far) |
-| 9055 | **DUT** | OUT ch2 pkt #13 start: addr=2 len=7 (receiver waited 0 cycle(s)) |
-| 9075 | **DUT** | OUT ch0 pkt #4 done: 26 bytes in 49 cycles |
-| 9075 | ch0 monitor | ch0 RX pkt #4: addr=0 len=24 parity=good |
-| 9075 | scoreboard | ch0 pkt matched: addr=0 len=24 (18 matched so far) |
-| 9085 | **DUT** | IN  pkt #33 complete: addr=2 len=7 parity=ok forwarded, 9 bytes in 9 cycles (held 0) |
-| 9085 | yapp monitor | RX pkt #33 on the input: addr=2 len=7 parity=good gap=0 |
-| 9085 | reference | Packet forwarded: addr=2 len=7 -> channel 2 |
-| 9090 | yapp driver | TX pkt #33 accepted by the DUT |
-| 9090 | **test** | STAGE: burst 3/5 sent: addr0..3 3/3/5/0, bad parity 3, gap 0 5, length 1..63 |
-| 9110 | hbus driver | Executed WRITE addr=0x1000 data=0xb7 |
-| 9115 | **DUT** | CONFIG router_en=1 maxpktsize=55 |
-| 9115 | hbus monitor | Collected WRITE addr=0x1000 data=0xb7 |
-| 9115 | reference | maxpktsize is now 55 |
-| 9130 | hbus driver | Executed WRITE addr=0x1001 data=0x73 |
-| 9135 | **DUT** | OUT ch2 pkt #13 done: 9 bytes in 9 cycles |
-| 9135 | ch2 monitor | ch2 RX pkt #13: addr=2 len=7 parity=good |
-| 9135 | scoreboard | ch2 pkt matched: addr=2 len=7 (19 matched so far) |
-| 9135 | hbus monitor | Collected WRITE addr=0x1001 data=0x73 |
-| 9135 | reference | router_en is now 1 (en_reg 0x73) |
-| 9160 | hbus driver | Executed READ  addr=0x10f9 data=0x00 |
-| 9165 | hbus monitor | Collected READ  addr=0x10f9 data=0x00 |
-| 9190 | hbus driver | Executed READ  addr=0x100d data=0x07 |
-| 9195 | hbus monitor | Collected READ  addr=0x100d data=0x07 |
-| 9210 | hbus driver | Executed WRITE addr=0x11ef data=0xba |
-| 9215 | hbus monitor | Collected WRITE addr=0x11ef data=0xba |
-| 9230 | ch1 driver | ch1: packet consumed (response delay 61) |
-| 9240 | hbus driver | Executed READ  addr=0x11ef data=0xba |
-| 9245 | hbus monitor | Collected READ  addr=0x11ef data=0xba |
-| 9270 | hbus driver | Executed READ  addr=0x1035 data=0x82 |
-| 9270 | **test** | STAGE: burst 4/5: ctrl=0xb7 (maxpktsize 55) en=0x73 (router on, counter enables 0111001), 12 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 9270 | yapp driver | TX pkt #34: addr=2 len=2 parity=good delay=0 |
-| 9275 | hbus monitor | Collected READ  addr=0x1035 data=0x82 |
-| 9285 | **DUT** | IN  pkt #34 header: addr=2 len=2 -> channel 2 |
-| 9290 | ch2 driver | ch2: packet consumed (response delay 2) |
-| 9315 | **DUT** | IN  pkt #34 complete: addr=2 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
-| 9315 | yapp monitor | RX pkt #34 on the input: addr=2 len=2 parity=good gap=19 |
-| 9315 | reference | Packet forwarded: addr=2 len=2 -> channel 2 |
-| 9320 | yapp driver | TX pkt #34 accepted by the DUT |
-| 9320 | yapp driver | TX pkt #35: addr=1 len=1 parity=bad delay=0 |
-| 9325 | **DUT** | IN  pkt #35 header: addr=1 len=1 -> channel 1 |
-| 9345 | **DUT** | IN  pkt #35 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 9345 | yapp monitor | RX pkt #35 on the input: addr=1 len=1 parity=bad gap=0 |
-| 9345 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
-| 9350 | yapp driver | TX pkt #35 accepted by the DUT |
-| 9350 | yapp driver | TX pkt #36: addr=0 len=1 parity=good delay=0 |
-| 9355 | **DUT** | IN  pkt #36 header: addr=0 len=1 -> channel 0 |
-| 9365 | **DUT** | OUT ch0 pkt #5 start: addr=0 len=1 (receiver waited 0 cycle(s)) |
-| 9370 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
-| 9370 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
-| 9375 | **DUT** | IN  pkt #36 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 9375 | yapp monitor | RX pkt #36 on the input: addr=0 len=1 parity=good gap=0 |
-| 9375 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
-| 9380 | yapp driver | TX pkt #36 accepted by the DUT |
-| 9380 | yapp driver | TX pkt #37: addr=2 len=1 parity=good delay=0 |
-| 9385 | **DUT** | IN  pkt #37 header: addr=2 len=1 -> channel 2 |
-| 9385 | **DUT** | OUT ch0 pkt #5 done: 3 bytes in 3 cycles |
-| 9385 | ch0 monitor | ch0 RX pkt #5: addr=0 len=1 parity=good |
-| 9385 | scoreboard | ch0 pkt matched: addr=0 len=1 (20 matched so far) |
-| 9405 | **DUT** | IN  pkt #37 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 9405 | **DUT** | OUT ch2 pkt #14 start: addr=2 len=2 (receiver waited 11 cycle(s)) |
-| 9405 | yapp monitor | RX pkt #37 on the input: addr=2 len=1 parity=good gap=0 |
-| 9405 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 9410 | yapp driver | TX pkt #37 accepted by the DUT |
-| 9410 | yapp driver | TX pkt #38: addr=0 len=1 parity=bad delay=0 |
-| 9415 | **DUT** | IN  pkt #38 header: addr=0 len=1 -> channel 0 |
-| 9425 | **DUT** | OUT ch0 pkt #6 start: addr=0 len=1 (receiver waited 0 cycle(s)) |
-| 9425 | **DUT** | OUT ch1 pkt #3 start: addr=1 len=1 (receiver waited 9 cycle(s)) |
-| 9430 | ch2 driver | ch2: packet consumed (response delay 10) |
-| 9435 | **DUT** | IN  pkt #38 complete: addr=0 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 9435 | yapp monitor | RX pkt #38 on the input: addr=0 len=1 parity=bad gap=0 |
-| 9435 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
-| 9440 | ch1 driver | ch1: packet consumed (response delay 9) |
-| 9440 | yapp driver | TX pkt #38 accepted by the DUT |
-| 9440 | yapp driver | TX pkt #39: addr=1 len=3 parity=good delay=0 |
-| 9445 | **DUT** | IN  pkt #39 header: addr=1 len=3 -> channel 1 |
-| 9445 | **DUT** | OUT ch0 pkt #6 done: 3 bytes in 3 cycles |
-| 9445 | ch0 monitor | ch0 RX pkt #6: addr=0 len=1 parity=bad |
-| 9445 | scoreboard | ch0 pkt matched: addr=0 len=1 (21 matched so far) |
-| 9450 | **DUT** | ERROR pulse, 1 cycle(s) after the bad-parity packet |
-| 9450 | error checker | error pulse 1 cycles after the bad packet (0 still owed) |
-| 9485 | **DUT** | IN  pkt #39 complete: addr=1 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 9485 | yapp monitor | RX pkt #39 on the input: addr=1 len=3 parity=good gap=0 |
-| 9485 | reference | Packet forwarded: addr=1 len=3 -> channel 1 |
-| 9490 | yapp driver | TX pkt #39 accepted by the DUT |
-| 9490 | yapp driver | TX pkt #40: addr=0 len=3 parity=good delay=0 |
-| 9495 | **DUT** | IN  pkt #40 header: addr=0 len=3 -> channel 0 |
-| 9505 | **DUT** | OUT ch0 pkt #7 start: addr=0 len=3 (receiver waited 0 cycle(s)) |
-| 9525 | **DUT** | OUT ch2 pkt #14 done: 4 bytes in 13 cycles |
-| 9525 | ch2 monitor | ch2 RX pkt #14: addr=2 len=2 parity=good |
-| 9525 | scoreboard | ch2 pkt matched: addr=2 len=2 (22 matched so far) |
-| 9535 | **DUT** | IN  pkt #40 complete: addr=0 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 9535 | **DUT** | OUT ch1 pkt #3 done: 3 bytes in 12 cycles |
-| 9535 | **DUT** | OUT ch2 pkt #15 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 9535 | ch1 monitor | ch1 RX pkt #3: addr=1 len=1 parity=bad |
-| 9535 | scoreboard | ch1 pkt matched: addr=1 len=1 (23 matched so far) |
-| 9535 | yapp monitor | RX pkt #40 on the input: addr=0 len=3 parity=good gap=0 |
-| 9535 | reference | Packet forwarded: addr=0 len=3 -> channel 0 |
-| 9540 | yapp driver | TX pkt #40 accepted by the DUT |
-| 9540 | yapp driver | TX pkt #41: addr=1 len=1 parity=bad delay=0 |
-| 9545 | **DUT** | IN  pkt #41 header: addr=1 len=1 -> channel 1 |
-| 9545 | **DUT** | OUT ch0 pkt #7 done: 5 bytes in 5 cycles |
-| 9545 | **DUT** | OUT ch1 pkt #4 start: addr=1 len=3 (receiver waited 0 cycle(s)) |
-| 9545 | ch0 monitor | ch0 RX pkt #7: addr=0 len=3 parity=good |
-| 9545 | scoreboard | ch0 pkt matched: addr=0 len=3 (24 matched so far) |
-| 9555 | **DUT** | OUT ch2 pkt #15 done: 3 bytes in 3 cycles |
-| 9555 | ch2 monitor | ch2 RX pkt #15: addr=2 len=1 parity=good |
-| 9555 | scoreboard | ch2 pkt matched: addr=2 len=1 (25 matched so far) |
-| 9565 | **DUT** | IN  pkt #41 complete: addr=1 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 9565 | yapp monitor | RX pkt #41 on the input: addr=1 len=1 parity=bad gap=0 |
-| 9565 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
-| 9570 | yapp driver | TX pkt #41 accepted by the DUT |
-| 9570 | yapp driver | TX pkt #42: addr=2 len=1 parity=bad delay=0 |
-| 9575 | **DUT** | IN  pkt #42 header: addr=2 len=1 -> channel 2 |
-| 9585 | **DUT** | OUT ch1 pkt #4 done: 5 bytes in 5 cycles |
-| 9585 | **DUT** | OUT ch2 pkt #16 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 9585 | ch1 monitor | ch1 RX pkt #4: addr=1 len=3 parity=good |
-| 9585 | scoreboard | ch1 pkt matched: addr=1 len=3 (26 matched so far) |
-| 9595 | **DUT** | IN  pkt #42 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 9595 | **DUT** | OUT ch1 pkt #5 start: addr=1 len=1 (receiver waited 0 cycle(s)) |
-| 9595 | yapp monitor | RX pkt #42 on the input: addr=2 len=1 parity=bad gap=0 |
-| 9595 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 9600 | yapp driver | TX pkt #42 accepted by the DUT |
-| 9600 | yapp driver | TX pkt #43: addr=3 len=1 parity=bad delay=0 |
-| 9605 | **DUT** | IN  pkt #43 header: addr=3 len=1 -> DROP (illegal address 3) |
-| 9605 | **DUT** | OUT ch2 pkt #16 done: 3 bytes in 3 cycles |
-| 9605 | ch2 monitor | ch2 RX pkt #16: addr=2 len=1 parity=bad |
-| 9605 | scoreboard | ch2 pkt matched: addr=2 len=1 (27 matched so far) |
-| 9610 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet (1 more owed) |
-| 9610 | error checker | error pulse 4 cycles after the bad packet (1 still owed) |
-| 9615 | **DUT** | OUT ch1 pkt #5 done: 3 bytes in 3 cycles |
-| 9615 | ch1 monitor | ch1 RX pkt #5: addr=1 len=1 parity=bad |
-| 9615 | scoreboard | ch1 pkt matched: addr=1 len=1 (28 matched so far) |
-| 9625 | **DUT** | IN  pkt #43 complete: addr=3 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0) |
-| 9625 | yapp monitor | RX pkt #43 on the input: addr=3 len=1 parity=bad gap=0 |
-| 9625 | reference | Packet dropped: illegal address 3 (len=1) |
-| 9625 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
-| 9630 | yapp driver | TX pkt #43 accepted by the DUT |
-| 9630 | yapp driver | TX pkt #44: addr=2 len=1 parity=bad delay=0 |
-| 9635 | **DUT** | IN  pkt #44 header: addr=2 len=1 -> channel 2 |
-| 9645 | **DUT** | OUT ch2 pkt #17 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 9650 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet (1 more owed) |
-| 9650 | error checker | error pulse 5 cycles after the bad packet (1 still owed) |
-| 9655 | **DUT** | IN  pkt #44 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
-| 9655 | yapp monitor | RX pkt #44 on the input: addr=2 len=1 parity=bad gap=0 |
-| 9655 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 9660 | yapp driver | TX pkt #44 accepted by the DUT |
-| 9660 | yapp driver | TX pkt #45: addr=3 len=1 parity=bad delay=1 |
-| 9665 | **DUT** | OUT ch2 pkt #17 done: 3 bytes in 3 cycles |
-| 9665 | ch2 monitor | ch2 RX pkt #17: addr=2 len=1 parity=bad |
-| 9665 | scoreboard | ch2 pkt matched: addr=2 len=1 (29 matched so far) |
-| 9670 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet (1 more owed) |
-| 9670 | error checker | error pulse 4 cycles after the bad packet (1 still owed) |
-| 9675 | **DUT** | IN  pkt #45 header: addr=3 len=1 -> DROP (illegal address 3) |
-| 9680 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
-| 9680 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
-| 9695 | **DUT** | IN  pkt #45 complete: addr=3 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0) |
-| 9695 | yapp monitor | RX pkt #45 on the input: addr=3 len=1 parity=bad gap=1 |
-| 9695 | reference | Packet dropped: illegal address 3 (len=1) |
-| 9695 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
-| 9700 | ch0 driver | ch0: packet consumed (response delay 22) |
-| 9700 | yapp driver | TX pkt #45 accepted by the DUT |
-| 9700 | **test** | STAGE: burst 4/5 sent: addr0..3 3/3/4/2, bad parity 7, gap 0 11, length 1..3 |
-| 9720 | hbus driver | Executed WRITE addr=0x1000 data=0x7b |
-| 9725 | **DUT** | CONFIG router_en=1 maxpktsize=59 |
-| 9725 | hbus monitor | Collected WRITE addr=0x1000 data=0x7b |
-| 9725 | reference | maxpktsize is now 59 |
-| 9740 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
-| 9745 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
-| 9745 | reference | router_en is now 1 (en_reg 0xff) |
-| 9750 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet |
-| 9750 | error checker | error pulse 5 cycles after the bad packet (0 still owed) |
-| 9770 | hbus driver | Executed READ  addr=0x1021 data=0x8b |
-| 9775 | hbus monitor | Collected READ  addr=0x1021 data=0x8b |
-| 9790 | hbus driver | Executed WRITE addr=0x1168 data=0x26 |
-| 9795 | hbus monitor | Collected WRITE addr=0x1168 data=0x26 |
-| 9820 | hbus driver | Executed READ  addr=0x1168 data=0x26 |
-| 9825 | hbus monitor | Collected READ  addr=0x1168 data=0x26 |
-| 9850 | hbus driver | Executed READ  addr=0x10f7 data=0x00 |
-| 9855 | hbus monitor | Collected READ  addr=0x10f7 data=0x00 |
-| 9860 | ch2 driver | ch2: packet consumed (response delay 8) |
-| 9860 | ch1 driver | ch1: packet consumed (response delay 8) |
-| 9880 | hbus driver | Executed READ  addr=0x100d data=0x01 |
-| 9885 | hbus monitor | Collected READ  addr=0x100d data=0x01 |
-| 9900 | hbus driver | Executed WRITE addr=0x11d6 data=0x69 |
-| 9905 | hbus monitor | Collected WRITE addr=0x11d6 data=0x69 |
-| 9930 | hbus driver | Executed READ  addr=0x11d6 data=0x69 |
-| 9930 | **test** | STAGE: burst 5/5: ctrl=0x7b (maxpktsize 59) en=0xff (router on, counter enables 1111111), 11 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
-| 9930 | yapp driver | TX pkt #46: addr=1 len=3 parity=good delay=0 |
-| 9935 | hbus monitor | Collected READ  addr=0x11d6 data=0x69 |
-| 9945 | **DUT** | IN  pkt #46 header: addr=1 len=3 -> channel 1 |
-| 9985 | **DUT** | IN  pkt #46 complete: addr=1 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 9985 | yapp monitor | RX pkt #46 on the input: addr=1 len=3 parity=good gap=24 |
-| 9985 | reference | Packet forwarded: addr=1 len=3 -> channel 1 |
-| 9990 | yapp driver | TX pkt #46 accepted by the DUT |
-| 9990 | yapp driver | TX pkt #47: addr=2 len=3 parity=good delay=0 |
-| 9995 | **DUT** | IN  pkt #47 header: addr=2 len=3 -> channel 2 |
-| 10035 | **DUT** | IN  pkt #47 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
-| 10035 | yapp monitor | RX pkt #47 on the input: addr=2 len=3 parity=good gap=0 |
-| 10035 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
-| 10040 | yapp driver | TX pkt #47 accepted by the DUT |
-| 10040 | yapp driver | TX pkt #48: addr=1 len=1 parity=good delay=0 |
-| 10045 | **DUT** | IN  pkt #48 header: addr=1 len=1 -> channel 1 |
-| 10055 | **DUT** | OUT ch1 pkt #6 start: addr=1 len=3 (receiver waited 10 cycle(s)) |
-| 10065 | **DUT** | IN  pkt #48 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 10065 | yapp monitor | RX pkt #48 on the input: addr=1 len=1 parity=good gap=0 |
-| 10065 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
-| 10070 | yapp driver | TX pkt #48 accepted by the DUT |
-| 10070 | yapp driver | TX pkt #49: addr=2 len=2 parity=bad delay=0 |
-| 10075 | **DUT** | IN  pkt #49 header: addr=2 len=2 -> channel 2 |
-| 10090 | ch1 driver | ch1: packet consumed (response delay 10) |
-| 10095 | **DUT** | OUT ch2 pkt #18 start: addr=2 len=3 (receiver waited 9 cycle(s)) |
-| 10105 | **DUT** | IN  pkt #49 complete: addr=2 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0) |
-| 10105 | yapp monitor | RX pkt #49 on the input: addr=2 len=2 parity=bad gap=0 |
-| 10105 | reference | Packet forwarded: addr=2 len=2 -> channel 2 |
-| 10110 | yapp driver | TX pkt #49 accepted by the DUT |
-| 10110 | yapp driver | TX pkt #50: addr=2 len=1 parity=good delay=0 |
-| 10115 | **DUT** | IN  pkt #50 header: addr=2 len=1 -> channel 2 |
-| 10130 | ch2 driver | ch2: packet consumed (response delay 9) |
-| 10135 | **DUT** | IN  pkt #50 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 10135 | yapp monitor | RX pkt #50 on the input: addr=2 len=1 parity=good gap=0 |
-| 10135 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 10140 | yapp driver | TX pkt #50 accepted by the DUT |
-| 10140 | yapp driver | TX pkt #51: addr=0 len=1 parity=good delay=0 |
-| 10145 | **DUT** | IN  pkt #51 header: addr=0 len=1 -> channel 0 |
-| 10145 | **DUT** | OUT ch1 pkt #6 done: 5 bytes in 10 cycles |
-| 10145 | ch1 monitor | ch1 RX pkt #6: addr=1 len=3 parity=good |
-| 10145 | scoreboard | ch1 pkt matched: addr=1 len=3 (30 matched so far) |
-| 10150 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
-| 10150 | error checker | error pulse 4 cycles after the bad packet (0 still owed) |
-| 10155 | **DUT** | OUT ch1 pkt #7 start: addr=1 len=1 (receiver waited 0 cycle(s)) |
-| 10155 | **DUT** | OUT ch2 pkt #18 done: 5 bytes in 7 cycles |
-| 10155 | ch2 monitor | ch2 RX pkt #18: addr=2 len=3 parity=good |
-| 10155 | scoreboard | ch2 pkt matched: addr=2 len=3 (31 matched so far) |
-| 10165 | **DUT** | IN  pkt #51 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 10165 | **DUT** | OUT ch2 pkt #19 start: addr=2 len=2 (receiver waited 0 cycle(s)) |
-| 10165 | yapp monitor | RX pkt #51 on the input: addr=0 len=1 parity=good gap=0 |
-| 10165 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
-| 10170 | yapp driver | TX pkt #51 accepted by the DUT |
-| 10170 | yapp driver | TX pkt #52: addr=2 len=1 parity=good delay=0 |
-| 10175 | **DUT** | IN  pkt #52 header: addr=2 len=1 -> channel 2 |
-| 10175 | **DUT** | OUT ch1 pkt #7 done: 3 bytes in 3 cycles |
-| 10175 | ch1 monitor | ch1 RX pkt #7: addr=1 len=1 parity=good |
-| 10175 | scoreboard | ch1 pkt matched: addr=1 len=1 (32 matched so far) |
-| 10195 | **DUT** | IN  pkt #52 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 10195 | **DUT** | OUT ch2 pkt #19 done: 4 bytes in 4 cycles |
-| 10195 | ch2 monitor | ch2 RX pkt #19: addr=2 len=2 parity=bad |
-| 10195 | scoreboard | ch2 pkt matched: addr=2 len=2 (33 matched so far) |
-| 10195 | yapp monitor | RX pkt #52 on the input: addr=2 len=1 parity=good gap=0 |
-| 10195 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
-| 10200 | yapp driver | TX pkt #52 accepted by the DUT |
-| 10200 | yapp driver | TX pkt #53: addr=3 len=2 parity=good delay=0 |
-| 10205 | **DUT** | IN  pkt #53 header: addr=3 len=2 -> DROP (illegal address 3) |
-| 10205 | **DUT** | OUT ch2 pkt #20 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 10225 | **DUT** | OUT ch2 pkt #20 done: 3 bytes in 3 cycles |
-| 10225 | ch2 monitor | ch2 RX pkt #20: addr=2 len=1 parity=good |
-| 10225 | scoreboard | ch2 pkt matched: addr=2 len=1 (34 matched so far) |
-| 10235 | **DUT** | IN  pkt #53 complete: addr=3 len=2 parity=ok dropped, 4 bytes in 4 cycles (held 0) |
-| 10235 | **DUT** | OUT ch2 pkt #21 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
-| 10235 | yapp monitor | RX pkt #53 on the input: addr=3 len=2 parity=good gap=0 |
-| 10235 | reference | Packet dropped: illegal address 3 (len=2) |
-| 10235 | **DUT** | ROUTER DROPS PACKET addr=3 length=2 (    illegal address) |
-| 10240 | yapp driver | TX pkt #53 accepted by the DUT |
-| 10240 | yapp driver | TX pkt #54: addr=3 len=3 parity=bad delay=0 |
-| 10245 | **DUT** | IN  pkt #54 header: addr=3 len=3 -> DROP (illegal address 3) |
-| 10255 | **DUT** | OUT ch2 pkt #21 done: 3 bytes in 3 cycles |
-| 10255 | ch2 monitor | ch2 RX pkt #21: addr=2 len=1 parity=good |
-| 10255 | scoreboard | ch2 pkt matched: addr=2 len=1 (35 matched so far) |
-| 10260 | ch2 driver | ch2: packet consumed (response delay 1) |
-| 10285 | **DUT** | IN  pkt #54 complete: addr=3 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0) |
-| 10285 | yapp monitor | RX pkt #54 on the input: addr=3 len=3 parity=bad gap=0 |
-| 10285 | reference | Packet dropped: illegal address 3 (len=3) |
-| 10285 | **DUT** | ROUTER DROPS PACKET addr=3 length=3 (    illegal address) |
-| 10290 | yapp driver | TX pkt #54 accepted by the DUT |
-| 10290 | yapp driver | TX pkt #55: addr=1 len=1 parity=good delay=0 |
-| 10295 | **DUT** | IN  pkt #55 header: addr=1 len=1 -> channel 1 |
-| 10305 | **DUT** | OUT ch1 pkt #8 start: addr=1 len=1 (receiver waited 0 cycle(s)) |
-| 10315 | **DUT** | IN  pkt #55 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
-| 10315 | yapp monitor | RX pkt #55 on the input: addr=1 len=1 parity=good gap=0 |
-| 10315 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
-| 10320 | yapp driver | TX pkt #55 accepted by the DUT |
-| 10320 | yapp driver | TX pkt #56: addr=0 len=2 parity=good delay=0 |
-| 10325 | **DUT** | IN  pkt #56 header: addr=0 len=2 -> channel 0 |
-| 10325 | **DUT** | OUT ch1 pkt #8 done: 3 bytes in 3 cycles |
-| 10325 | ch1 monitor | ch1 RX pkt #8: addr=1 len=1 parity=good |
-| 10325 | scoreboard | ch1 pkt matched: addr=1 len=1 (36 matched so far) |
-| 10350 | **DUT** | ERROR pulse, 6 cycle(s) after the bad-parity packet |
-| 10350 | error checker | error pulse 6 cycles after the bad packet (0 still owed) |
-| 10355 | **DUT** | IN  pkt #56 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
-| 10355 | yapp monitor | RX pkt #56 on the input: addr=0 len=2 parity=good gap=0 |
-| 10355 | reference | Packet forwarded: addr=0 len=2 -> channel 0 |
-| 10360 | yapp driver | TX pkt #56 accepted by the DUT |
-| 10360 | **test** | STAGE: burst 5/5 sent: addr0..3 2/3/4/2, bad parity 2, gap 0 11, length 1..3 |
-| 10360 | **test** | STAGE: final reads: every register and the stored packet, checked against the reference model |
-| 10390 | hbus driver | Executed READ  addr=0x1000 data=0x7b |
-| 10395 | hbus monitor | Collected READ  addr=0x1000 data=0x7b |
-| 10415 | **DUT** | OUT ch0 pkt #8 start: addr=0 len=1 (receiver waited 26 cycle(s)) |
-| 10420 | hbus driver | Executed READ  addr=0x1001 data=0xff |
-| 10425 | hbus monitor | Collected READ  addr=0x1001 data=0xff |
-| 10430 | ch0 driver | ch0: packet consumed (response delay 26) |
-| 10450 | hbus driver | Executed READ  addr=0x1004 data=0x12 |
-| 10455 | hbus monitor | Collected READ  addr=0x1004 data=0x12 |
-| 10480 | hbus driver | Executed READ  addr=0x1005 data=0x0b |
-| 10485 | hbus monitor | Collected READ  addr=0x1005 data=0x0b |
-| 10510 | hbus driver | Executed READ  addr=0x1006 data=0x08 |
-| 10515 | hbus monitor | Collected READ  addr=0x1006 data=0x08 |
-| 10540 | hbus driver | Executed READ  addr=0x1009 data=0x0d |
-| 10545 | hbus monitor | Collected READ  addr=0x1009 data=0x0d |
-| 10570 | hbus driver | Executed READ  addr=0x100a data=0x0a |
-| 10575 | hbus monitor | Collected READ  addr=0x100a data=0x0a |
-| 10600 | hbus driver | Executed READ  addr=0x100b data=0x17 |
-| 10605 | hbus monitor | Collected READ  addr=0x100b data=0x17 |
-| 10630 | hbus driver | Executed READ  addr=0x100d data=0x02 |
-| 10635 | hbus monitor | Collected READ  addr=0x100d data=0x02 |
-| 10660 | hbus driver | Executed READ  addr=0x1010 data=0x08 |
-| 10665 | hbus monitor | Collected READ  addr=0x1010 data=0x08 |
-| 10690 | hbus driver | Executed READ  addr=0x1011 data=0x46 |
-| 10695 | hbus monitor | Collected READ  addr=0x1011 data=0x46 |
-| 10705 | **DUT** | OUT ch0 pkt #8 done: 3 bytes in 30 cycles |
-| 10705 | ch0 monitor | ch0 RX pkt #8: addr=0 len=1 parity=good |
-| 10705 | scoreboard | ch0 pkt matched: addr=0 len=1 (37 matched so far) |
-| 10715 | **DUT** | OUT ch0 pkt #9 start: addr=0 len=2 (receiver waited 0 cycle(s)) |
-| 10720 | hbus driver | Executed READ  addr=0x1012 data=0x05 |
-| 10725 | hbus monitor | Collected READ  addr=0x1012 data=0x05 |
-| 10740 | ch1 driver | ch1: packet consumed (response delay 4) |
-| 10745 | **DUT** | OUT ch0 pkt #9 done: 4 bytes in 4 cycles |
-| 10745 | ch0 monitor | ch0 RX pkt #9: addr=0 len=2 parity=good |
-| 10745 | scoreboard | ch0 pkt matched: addr=0 len=2 (38 matched so far) |
-| 10820 | ch0 driver | ch0: packet consumed (response delay 26) |
-| 10865 | **test** | STAGE: done: 56 packets (38 forwarded, 18 dropped), 3 storm burst(s), 38 scoreboard matches, 36 HBUS reads checked, 18 error pulses for 18 bad packets |
-| 11065 | error checker | error pulse report: 18 bad packets, 18 pulses, 0 outside 1..10 cycles, at most 2 owed at once |
-| 11065 | ch0 monitor | Channel 0 report: 9 packets collected |
-| 11065 | ch1 monitor | Channel 1 report: 8 packets collected |
-| 11065 | ch2 monitor | Channel 2 report: 21 packets collected |
-| 11065 | hbus monitor | HBUS report: 20 writes, 37 reads |
-| 11065 | coverage | Coverage of the router configuration: 78.3% · maxpktsize 0 / 1 / 2..61 / 62 / 63 : 0 / 0 / 56 / 0 / 0 packets · length < max / = max / max+1 / > max+1 : 44 / 1 / 1 / 10 · forwarded good / bad : 29 / 9 · dropped address 3 good / bad : 5 / 5 · dropped oversized good / bad : 4 / 4 · counter enables none / mixed / all : 0 / 12 / 44 |
-| 11065 | coverage | HBUS address coverage: 57 accesses sampled, coverage 40.3% |
-| 11065 | coverage | HBUS register bits coverage: 10 writes to ctrl_reg/en_reg, coverage 86.4% |
-| 11065 | coverage | HBUS counter value coverage: 8 counter reads sampled, coverage 55.6% |
-| 11065 | coverage | HBUS yapp_mem data coverage: 20 accesses sampled, coverage 29.4% |
-| 11065 | reference | --- Reference model report --- · forwarded to scoreboard : 38 · dropped (router disabled) : 0 · dropped (oversized) : 8 · dropped (address 3) : 10 · counters parity/oversized/addr0..3 : 18 / 11 / 13 10 23 8 |
-| 11065 | reference | HBUS reads checked against the model: 36 (0 mismatches, 1 of memory bytes never written) |
-| 11065 | scoreboard | --- Scoreboard report --- · packets received : 38 · packets matched : 38 · packets mismatched: 0 · packets unexpected: 0 · packets to addr 3 : 0 · left in queue 0/1/2: 0 / 0 / 0 |
-| 11065 | yapp driver | YAPP driver report: 56 packets sent |
-| 11065 | coverage | YAPP gap coverage: 55 gaps sampled, coverage 75.0% |
-| 11065 | yapp monitor | YAPP monitor report: 56 packets collected, 18 with bad parity |
-| 11065 | yapp monitor | YAPP gaps: 44 back to back, 4 of 1 cycle, 0 of 2, 7 longer |
-| 11065 | coverage | YAPP packet coverage: 56 packets sampled, coverage 73.3% |
+| 70 | hbus driver | Executed WRITE addr=0x1000 data=0x5e |
+| 75 | **DUT** | CONFIG router_en=1 maxpktsize=30 |
+| 75 | hbus monitor | Collected WRITE addr=0x1000 data=0x5e |
+| 75 | reference | maxpktsize is now 30 |
+| 90 | hbus driver | Executed WRITE addr=0x1001 data=0x01 |
+| 95 | hbus monitor | Collected WRITE addr=0x1001 data=0x01 |
+| 95 | reference | router_en is now 1 (en_reg 0x01) |
+| 110 | hbus driver | Executed WRITE addr=0x11be data=0xcf |
+| 115 | hbus monitor | Collected WRITE addr=0x11be data=0xcf |
+| 140 | hbus driver | Executed READ  addr=0x11be data=0xcf |
+| 145 | hbus monitor | Collected READ  addr=0x11be data=0xcf |
+| 160 | hbus driver | Executed WRITE addr=0x11ab data=0x3d |
+| 165 | hbus monitor | Collected WRITE addr=0x11ab data=0x3d |
+| 190 | hbus driver | Executed READ  addr=0x11ab data=0x3d |
+| 195 | hbus monitor | Collected READ  addr=0x11ab data=0x3d |
+| 220 | hbus driver | Executed READ  addr=0x1004 data=0x00 |
+| 225 | hbus monitor | Collected READ  addr=0x1004 data=0x00 |
+| 240 | hbus driver | Executed WRITE addr=0x117c data=0x53 |
+| 245 | hbus monitor | Collected WRITE addr=0x117c data=0x53 |
+| 270 | hbus driver | Executed READ  addr=0x117c data=0x53 |
+| 275 | hbus monitor | Collected READ  addr=0x117c data=0x53 |
+| 290 | hbus driver | Executed WRITE addr=0x1168 data=0xde |
+| 295 | hbus monitor | Collected WRITE addr=0x1168 data=0xde |
+| 320 | hbus driver | Executed READ  addr=0x1168 data=0xde |
+| 325 | hbus monitor | Collected READ  addr=0x1168 data=0xde |
+| 340 | hbus driver | Executed WRITE addr=0x1177 data=0x48 |
+| 345 | hbus monitor | Collected WRITE addr=0x1177 data=0x48 |
+| 370 | hbus driver | Executed READ  addr=0x1177 data=0x48 |
+| 370 | **test** | STAGE: burst 1/5: ctrl=0x5e (maxpktsize 30) en=0x01 (router on, counter enables 0000000), 8 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
+| 370 | yapp driver | TX pkt #1: addr=3 len=3 parity=good delay=0 |
+| 375 | hbus monitor | Collected READ  addr=0x1177 data=0x48 |
+| 385 | **DUT** | IN  pkt #1 header: addr=3 len=3 -> DROP (illegal address 3) |
+| 425 | **DUT** | IN  pkt #1 complete: addr=3 len=3 parity=ok dropped, 5 bytes in 5 cycles (held 0) |
+| 425 | yapp monitor | RX pkt #1 on the input: addr=3 len=3 parity=good gap=33 |
+| 425 | reference | Packet dropped: illegal address 3 (len=3) |
+| 425 | **DUT** | ROUTER DROPS PACKET addr=3 length=3 (    illegal address) |
+| 430 | yapp driver | TX pkt #1 accepted by the DUT |
+| 430 | yapp driver | TX pkt #2: addr=2 len=1 parity=good delay=0 |
+| 435 | **DUT** | IN  pkt #2 header: addr=2 len=1 -> channel 2 |
+| 445 | **DUT** | OUT ch2 pkt #1 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
+| 455 | **DUT** | IN  pkt #2 complete: addr=2 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
+| 455 | yapp monitor | RX pkt #2 on the input: addr=2 len=1 parity=good gap=0 |
+| 455 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
+| 460 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 460 | yapp driver | TX pkt #2 accepted by the DUT |
+| 460 | yapp driver | TX pkt #3: addr=1 len=1 parity=good delay=0 |
+| 465 | **DUT** | IN  pkt #3 header: addr=1 len=1 -> channel 1 |
+| 475 | **DUT** | OUT ch2 pkt #1 done: 3 bytes in 4 cycles |
+| 475 | ch2 monitor | ch2 RX pkt #1: addr=2 len=1 parity=good |
+| 475 | scoreboard | ch2 pkt matched: addr=2 len=1 (1 matched so far) |
+| 485 | **DUT** | IN  pkt #3 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
+| 485 | yapp monitor | RX pkt #3 on the input: addr=1 len=1 parity=good gap=0 |
+| 485 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
+| 490 | yapp driver | TX pkt #3 accepted by the DUT |
+| 490 | yapp driver | TX pkt #4: addr=0 len=2 parity=good delay=0 |
+| 495 | **DUT** | IN  pkt #4 header: addr=0 len=2 -> channel 0 |
+| 525 | **DUT** | IN  pkt #4 complete: addr=0 len=2 parity=ok forwarded, 4 bytes in 4 cycles (held 0) |
+| 525 | yapp monitor | RX pkt #4 on the input: addr=0 len=2 parity=good gap=0 |
+| 525 | reference | Packet forwarded: addr=0 len=2 -> channel 0 |
+| 530 | yapp driver | TX pkt #4 accepted by the DUT |
+| 530 | yapp driver | TX pkt #5: addr=0 len=3 parity=bad delay=0 |
+| 535 | **DUT** | IN  pkt #5 header: addr=0 len=3 -> channel 0 |
+| 535 | **DUT** | OUT ch0 pkt #1 start: addr=0 len=2 (receiver waited 3 cycle(s)) |
+| 560 | ch0 driver | ch0: packet consumed (response delay 3) |
+| 575 | **DUT** | IN  pkt #5 complete: addr=0 len=3 parity=BAD forwarded, 5 bytes in 5 cycles (held 0) |
+| 575 | yapp monitor | RX pkt #5 on the input: addr=0 len=3 parity=bad gap=0 |
+| 575 | reference | Packet forwarded: addr=0 len=3 -> channel 0 |
+| 580 | yapp driver | TX pkt #5 accepted by the DUT |
+| 580 | yapp driver | TX pkt #6: addr=0 len=2 parity=bad delay=0 |
+| 585 | **DUT** | IN  pkt #6 header: addr=0 len=2 -> channel 0 |
+| 615 | **DUT** | IN  pkt #6 complete: addr=0 len=2 parity=BAD forwarded, 4 bytes in 4 cycles (held 0) |
+| 615 | yapp monitor | RX pkt #6 on the input: addr=0 len=2 parity=bad gap=0 |
+| 615 | reference | Packet forwarded: addr=0 len=2 -> channel 0 |
+| 620 | yapp driver | TX pkt #6 accepted by the DUT |
+| 620 | yapp driver | TX pkt #7: addr=2 len=3 parity=good delay=0 |
+| 625 | **DUT** | IN  pkt #7 header: addr=2 len=3 -> channel 2 |
+| 630 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet (1 more owed) |
+| 630 | error checker | error pulse 5 cycles after the bad packet (1 still owed) |
+| 635 | **DUT** | OUT ch2 pkt #2 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
+| 660 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 665 | **DUT** | IN  pkt #7 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
+| 665 | yapp monitor | RX pkt #7 on the input: addr=2 len=3 parity=good gap=0 |
+| 665 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
+| 670 | yapp driver | TX pkt #7 accepted by the DUT |
+| 670 | yapp driver | TX pkt #8: addr=2 len=1 parity=bad delay=0 |
+| 675 | **DUT** | IN  pkt #8 header: addr=2 len=1 -> channel 2 |
+| 675 | **DUT** | OUT ch0 pkt #1 done: 4 bytes in 15 cycles |
+| 675 | ch0 monitor | ch0 RX pkt #1: addr=0 len=2 parity=good |
+| 675 | scoreboard | ch0 pkt matched: addr=0 len=2 (2 matched so far) |
+| 685 | **DUT** | OUT ch0 pkt #2 start: addr=0 len=3 (receiver waited 0 cycle(s)) |
+| 685 | **DUT** | OUT ch2 pkt #2 done: 5 bytes in 6 cycles |
+| 685 | ch2 monitor | ch2 RX pkt #2: addr=2 len=3 parity=good |
+| 685 | scoreboard | ch2 pkt matched: addr=2 len=3 (3 matched so far) |
+| 695 | **DUT** | IN  pkt #8 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
+| 695 | **DUT** | OUT ch2 pkt #3 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
+| 695 | yapp monitor | RX pkt #8 on the input: addr=2 len=1 parity=bad gap=0 |
+| 695 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
+| 700 | yapp driver | TX pkt #8 accepted by the DUT |
+| 700 | **test** | STAGE: burst 1/5 sent: addr0..3 3/1/3/1, bad parity 3, gap 0 8, length 1..3 |
+| 710 | **DUT** | ERROR pulse, 9 cycle(s) after the bad-parity packet (1 more owed) |
+| 710 | error checker | error pulse 9 cycles after the bad packet (1 still owed) |
+| 715 | **DUT** | OUT ch2 pkt #3 done: 3 bytes in 3 cycles |
+| 715 | ch2 monitor | ch2 RX pkt #3: addr=2 len=1 parity=bad |
+| 715 | scoreboard | ch2 pkt matched: addr=2 len=1 (4 matched so far) |
+| 720 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
+| 720 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
+| 720 | hbus driver | Executed WRITE addr=0x1000 data=0xd4 |
+| 725 | **DUT** | OUT ch0 pkt #2 done: 5 bytes in 5 cycles |
+| 725 | **DUT** | CONFIG router_en=1 maxpktsize=20 |
+| 725 | ch0 monitor | ch0 RX pkt #2: addr=0 len=3 parity=bad |
+| 725 | scoreboard | ch0 pkt matched: addr=0 len=3 (5 matched so far) |
+| 725 | hbus monitor | Collected WRITE addr=0x1000 data=0xd4 |
+| 725 | reference | maxpktsize is now 20 |
+| 735 | **DUT** | OUT ch0 pkt #3 start: addr=0 len=2 (receiver waited 0 cycle(s)) |
+| 740 | hbus driver | Executed WRITE addr=0x1001 data=0x13 |
+| 745 | hbus monitor | Collected WRITE addr=0x1001 data=0x13 |
+| 745 | reference | router_en is now 1 (en_reg 0x13) |
+| 765 | **DUT** | OUT ch0 pkt #3 done: 4 bytes in 4 cycles |
+| 765 | ch0 monitor | ch0 RX pkt #3: addr=0 len=2 parity=bad |
+| 765 | scoreboard | ch0 pkt matched: addr=0 len=2 (6 matched so far) |
+| 770 | hbus driver | Executed READ  addr=0x100d data=0x01 |
+| 775 | hbus monitor | Collected READ  addr=0x100d data=0x01 |
+| 790 | hbus driver | Executed WRITE addr=0x1149 data=0x4d |
+| 795 | hbus monitor | Collected WRITE addr=0x1149 data=0x4d |
+| 820 | hbus driver | Executed READ  addr=0x1149 data=0x4d |
+| 825 | hbus monitor | Collected READ  addr=0x1149 data=0x4d |
+| 850 | hbus driver | Executed READ  addr=0x100d data=0x01 |
+| 855 | hbus monitor | Collected READ  addr=0x100d data=0x01 |
+| 870 | hbus driver | Executed WRITE addr=0x110b data=0xf4 |
+| 875 | **DUT** | OUT ch1 pkt #1 start: addr=1 len=1 (receiver waited 40 cycle(s)) |
+| 875 | hbus monitor | Collected WRITE addr=0x110b data=0xf4 |
+| 890 | ch1 driver | ch1: packet consumed (response delay 40) |
+| 900 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 900 | hbus driver | Executed READ  addr=0x110b data=0xf4 |
+| 905 | hbus monitor | Collected READ  addr=0x110b data=0xf4 |
+| 920 | hbus driver | Executed WRITE addr=0x111b data=0x45 |
+| 925 | hbus monitor | Collected WRITE addr=0x111b data=0x45 |
+| 950 | hbus driver | Executed READ  addr=0x111b data=0x45 |
+| 955 | hbus monitor | Collected READ  addr=0x111b data=0x45 |
+| 980 | hbus driver | Executed READ  addr=0x1020 data=0x00 |
+| 985 | hbus monitor | Collected READ  addr=0x1020 data=0x00 |
+| 1010 | hbus driver | Executed READ  addr=0x101c data=0x00 |
+| 1015 | hbus monitor | Collected READ  addr=0x101c data=0x00 |
+| 1040 | hbus driver | Executed READ  addr=0x1047 data=0x00 |
+| 1040 | **test** | STAGE: burst 2/5: ctrl=0xd4 (maxpktsize 20) en=0x13 (router on, counter enables 0001001), 8 packet(s) |
+| 1040 | yapp driver | TX pkt #9: addr=1 len=20 parity=good delay=0 |
+| 1045 | hbus monitor | Collected READ  addr=0x1047 data=0x00 |
+| 1055 | **DUT** | IN  pkt #9 header: addr=1 len=20 -> channel 1 |
+| 1110 | ch0 driver | ch0: packet consumed (response delay 10) |
+| 1205 | **DUT** | SUSPEND asserted: FIFO 1 full, byte 0xba held (pkt #9) |
+| 1305 | **DUT** | OUT ch1 pkt #1 done: 3 bytes in 44 cycles |
+| 1305 | ch1 monitor | ch1 RX pkt #1: addr=1 len=1 parity=good |
+| 1305 | scoreboard | ch1 pkt matched: addr=1 len=1 (7 matched so far) |
+| 1315 | **DUT** | SUSPEND released after 11 cycle(s) |
+| 1315 | **DUT** | OUT ch1 pkt #2 start: addr=1 len=20 (receiver waited 0 cycle(s)) |
+| 1375 | **DUT** | IN  pkt #9 complete: addr=1 len=20 parity=ok forwarded, 22 bytes in 33 cycles (held 11) |
+| 1375 | yapp monitor | RX pkt #9 on the input: addr=1 len=20 parity=good gap=35 |
+| 1375 | reference | Packet forwarded: addr=1 len=20 -> channel 1 |
+| 1380 | yapp driver | TX pkt #9 accepted by the DUT |
+| 1380 | yapp driver | TX pkt #10: addr=1 len=34 parity=good delay=1 |
+| 1395 | **DUT** | IN  pkt #10 header: addr=1 len=34 -> DROP (oversized: len 34 > maxpktsize 20) |
+| 1525 | **DUT** | OUT ch1 pkt #2 done: 22 bytes in 22 cycles |
+| 1525 | ch1 monitor | ch1 RX pkt #2: addr=1 len=20 parity=good |
+| 1525 | scoreboard | ch1 pkt matched: addr=1 len=20 (8 matched so far) |
+| 1745 | **DUT** | IN  pkt #10 complete: addr=1 len=34 parity=ok dropped, 36 bytes in 36 cycles (held 0) |
+| 1745 | yapp monitor | RX pkt #10 on the input: addr=1 len=34 parity=good gap=1 |
+| 1745 | reference | Packet dropped: length 34 > maxpktsize 20 (addr=1) |
+| 1745 | **DUT** | ROUTER DROPS PACKET addr=1 length=34 (length > maxpktsize) |
+| 1750 | yapp driver | TX pkt #10 accepted by the DUT |
+| 1750 | yapp driver | TX pkt #11: addr=2 len=3 parity=good delay=0 |
+| 1755 | **DUT** | IN  pkt #11 header: addr=2 len=3 -> channel 2 |
+| 1765 | **DUT** | OUT ch2 pkt #4 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
+| 1795 | **DUT** | IN  pkt #11 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
+| 1795 | yapp monitor | RX pkt #11 on the input: addr=2 len=3 parity=good gap=0 |
+| 1795 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
+| 1800 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 1800 | yapp driver | TX pkt #11 accepted by the DUT |
+| 1800 | yapp driver | TX pkt #12: addr=3 len=20 parity=good delay=7 |
+| 1815 | **DUT** | OUT ch2 pkt #4 done: 5 bytes in 6 cycles |
+| 1815 | ch2 monitor | ch2 RX pkt #4: addr=2 len=3 parity=good |
+| 1815 | scoreboard | ch2 pkt matched: addr=2 len=3 (9 matched so far) |
+| 1875 | **DUT** | IN  pkt #12 header: addr=3 len=20 -> DROP (illegal address 3) |
+| 1910 | ch1 driver | ch1: packet consumed (response delay 40) |
+| 2085 | **DUT** | IN  pkt #12 complete: addr=3 len=20 parity=ok dropped, 22 bytes in 22 cycles (held 0) |
+| 2085 | yapp monitor | RX pkt #12 on the input: addr=3 len=20 parity=good gap=7 |
+| 2085 | reference | Packet dropped: illegal address 3 (len=20) |
+| 2085 | **DUT** | ROUTER DROPS PACKET addr=3 length=20 (    illegal address) |
+| 2090 | yapp driver | TX pkt #12 accepted by the DUT |
+| 2090 | yapp driver | TX pkt #13: addr=3 len=14 parity=bad delay=6 |
+| 2155 | **DUT** | IN  pkt #13 header: addr=3 len=14 -> DROP (illegal address 3) |
+| 2300 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 2305 | **DUT** | IN  pkt #13 complete: addr=3 len=14 parity=BAD dropped, 16 bytes in 16 cycles (held 0) |
+| 2305 | yapp monitor | RX pkt #13 on the input: addr=3 len=14 parity=bad gap=6 |
+| 2305 | reference | Packet dropped: illegal address 3 (len=14) |
+| 2305 | **DUT** | ROUTER DROPS PACKET addr=3 length=14 (    illegal address) |
+| 2310 | yapp driver | TX pkt #13 accepted by the DUT |
+| 2310 | yapp driver | TX pkt #14: addr=1 len=63 parity=bad delay=0 |
+| 2315 | **DUT** | IN  pkt #14 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 20) |
+| 2330 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
+| 2330 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
+| 2955 | **DUT** | IN  pkt #14 complete: addr=1 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0) |
+| 2955 | yapp monitor | RX pkt #14 on the input: addr=1 len=63 parity=bad gap=0 |
+| 2955 | reference | Packet dropped: length 63 > maxpktsize 20 (addr=1) |
+| 2955 | **DUT** | ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize) |
+| 2960 | yapp driver | TX pkt #14 accepted by the DUT |
+| 2960 | yapp driver | TX pkt #15: addr=1 len=63 parity=good delay=20 |
+| 2990 | **DUT** | ERROR pulse, 3 cycle(s) after the bad-parity packet |
+| 2990 | error checker | error pulse 3 cycles after the bad packet (0 still owed) |
+| 3165 | **DUT** | IN  pkt #15 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 20) |
+| 3805 | **DUT** | IN  pkt #15 complete: addr=1 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
+| 3805 | yapp monitor | RX pkt #15 on the input: addr=1 len=63 parity=good gap=20 |
+| 3805 | reference | Packet dropped: length 63 > maxpktsize 20 (addr=1) |
+| 3805 | **DUT** | ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize) |
+| 3810 | yapp driver | TX pkt #15 accepted by the DUT |
+| 3810 | yapp driver | TX pkt #16: addr=0 len=19 parity=good delay=0 |
+| 3815 | **DUT** | IN  pkt #16 header: addr=0 len=19 -> channel 0 |
+| 3825 | **DUT** | OUT ch0 pkt #4 start: addr=0 len=19 (receiver waited 0 cycle(s)) |
+| 4015 | **DUT** | IN  pkt #16 complete: addr=0 len=19 parity=ok forwarded, 21 bytes in 21 cycles (held 0) |
+| 4015 | yapp monitor | RX pkt #16 on the input: addr=0 len=19 parity=good gap=0 |
+| 4015 | reference | Packet forwarded: addr=0 len=19 -> channel 0 |
+| 4020 | ch0 driver | ch0: packet consumed (response delay 0) |
+| 4020 | yapp driver | TX pkt #16 accepted by the DUT |
+| 4020 | **test** | STAGE: burst 2/5 sent: addr0..3 1/4/1/2, bad parity 2, gap 0 4, length 3..63 |
+| 4040 | hbus driver | Executed WRITE addr=0x1000 data=0x70 |
+| 4045 | **DUT** | CONFIG router_en=1 maxpktsize=48 |
+| 4045 | hbus monitor | Collected WRITE addr=0x1000 data=0x70 |
+| 4045 | reference | maxpktsize is now 48 |
+| 4055 | **DUT** | OUT ch0 pkt #4 done: 21 bytes in 24 cycles |
+| 4055 | ch0 monitor | ch0 RX pkt #4: addr=0 len=19 parity=good |
+| 4055 | scoreboard | ch0 pkt matched: addr=0 len=19 (10 matched so far) |
+| 4060 | hbus driver | Executed WRITE addr=0x1001 data=0xc3 |
+| 4065 | hbus monitor | Collected WRITE addr=0x1001 data=0xc3 |
+| 4065 | reference | router_en is now 1 (en_reg 0xc3) |
+| 4090 | hbus driver | Executed READ  addr=0x100d data=0x13 |
+| 4095 | hbus monitor | Collected READ  addr=0x100d data=0x13 |
+| 4110 | hbus driver | Executed WRITE addr=0x1131 data=0x0a |
+| 4115 | hbus monitor | Collected WRITE addr=0x1131 data=0x0a |
+| 4140 | hbus driver | Executed READ  addr=0x1131 data=0x0a |
+| 4145 | hbus monitor | Collected READ  addr=0x1131 data=0x0a |
+| 4170 | hbus driver | Executed READ  addr=0x1023 data=0xf8 |
+| 4175 | hbus monitor | Collected READ  addr=0x1023 data=0xf8 |
+| 4200 | hbus driver | Executed READ  addr=0x1002 data=0x00 |
+| 4205 | hbus monitor | Collected READ  addr=0x1002 data=0x00 |
+| 4230 | hbus driver | Executed READ  addr=0x1000 data=0x70 |
+| 4230 | **test** | STAGE: burst 3/5: ctrl=0x70 (maxpktsize 48) en=0xc3 (router on, counter enables 1100001), 7 packet(s) -- storm: 1..3-byte packets back to back, half with bad parity |
+| 4230 | yapp driver | TX pkt #17: addr=2 len=3 parity=good delay=0 |
+| 4235 | hbus monitor | Collected READ  addr=0x1000 data=0x70 |
+| 4245 | **DUT** | IN  pkt #17 header: addr=2 len=3 -> channel 2 |
+| 4255 | **DUT** | OUT ch2 pkt #5 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
+| 4285 | **DUT** | IN  pkt #17 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
+| 4285 | yapp monitor | RX pkt #17 on the input: addr=2 len=3 parity=good gap=22 |
+| 4285 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
+| 4290 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 4290 | yapp driver | TX pkt #17 accepted by the DUT |
+| 4290 | yapp driver | TX pkt #18: addr=0 len=1 parity=good delay=0 |
+| 4295 | **DUT** | IN  pkt #18 header: addr=0 len=1 -> channel 0 |
+| 4300 | ch0 driver | ch0: packet consumed (response delay 2) |
+| 4305 | **DUT** | OUT ch2 pkt #5 done: 5 bytes in 6 cycles |
+| 4305 | ch2 monitor | ch2 RX pkt #5: addr=2 len=3 parity=good |
+| 4305 | scoreboard | ch2 pkt matched: addr=2 len=3 (11 matched so far) |
+| 4315 | **DUT** | IN  pkt #18 complete: addr=0 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
+| 4315 | yapp monitor | RX pkt #18 on the input: addr=0 len=1 parity=good gap=0 |
+| 4315 | reference | Packet forwarded: addr=0 len=1 -> channel 0 |
+| 4320 | yapp driver | TX pkt #18 accepted by the DUT |
+| 4320 | yapp driver | TX pkt #19: addr=1 len=1 parity=good delay=0 |
+| 4325 | **DUT** | IN  pkt #19 header: addr=1 len=1 -> channel 1 |
+| 4345 | **DUT** | IN  pkt #19 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
+| 4345 | yapp monitor | RX pkt #19 on the input: addr=1 len=1 parity=good gap=0 |
+| 4345 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
+| 4350 | yapp driver | TX pkt #19 accepted by the DUT |
+| 4350 | yapp driver | TX pkt #20: addr=1 len=1 parity=good delay=0 |
+| 4355 | **DUT** | IN  pkt #20 header: addr=1 len=1 -> channel 1 |
+| 4375 | **DUT** | IN  pkt #20 complete: addr=1 len=1 parity=ok forwarded, 3 bytes in 3 cycles (held 0) |
+| 4375 | yapp monitor | RX pkt #20 on the input: addr=1 len=1 parity=good gap=0 |
+| 4375 | reference | Packet forwarded: addr=1 len=1 -> channel 1 |
+| 4380 | yapp driver | TX pkt #20 accepted by the DUT |
+| 4380 | yapp driver | TX pkt #21: addr=2 len=3 parity=good delay=0 |
+| 4385 | **DUT** | IN  pkt #21 header: addr=2 len=3 -> channel 2 |
+| 4395 | **DUT** | OUT ch0 pkt #5 start: addr=0 len=1 (receiver waited 9 cycle(s)) |
+| 4395 | **DUT** | OUT ch2 pkt #6 start: addr=2 len=3 (receiver waited 0 cycle(s)) |
+| 4410 | ch0 driver | ch0: packet consumed (response delay 8) |
+| 4425 | **DUT** | IN  pkt #21 complete: addr=2 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
+| 4425 | yapp monitor | RX pkt #21 on the input: addr=2 len=3 parity=good gap=0 |
+| 4425 | reference | Packet forwarded: addr=2 len=3 -> channel 2 |
+| 4430 | yapp driver | TX pkt #21 accepted by the DUT |
+| 4430 | yapp driver | TX pkt #22: addr=1 len=3 parity=good delay=0 |
+| 4435 | **DUT** | IN  pkt #22 header: addr=1 len=3 -> channel 1 |
+| 4435 | **DUT** | OUT ch2 pkt #6 done: 5 bytes in 5 cycles |
+| 4435 | ch2 monitor | ch2 RX pkt #6: addr=2 len=3 parity=good |
+| 4435 | scoreboard | ch2 pkt matched: addr=2 len=3 (12 matched so far) |
+| 4445 | **DUT** | OUT ch0 pkt #5 done: 3 bytes in 6 cycles |
+| 4445 | ch0 monitor | ch0 RX pkt #5: addr=0 len=1 parity=good |
+| 4445 | scoreboard | ch0 pkt matched: addr=0 len=1 (13 matched so far) |
+| 4475 | **DUT** | IN  pkt #22 complete: addr=1 len=3 parity=ok forwarded, 5 bytes in 5 cycles (held 0) |
+| 4475 | yapp monitor | RX pkt #22 on the input: addr=1 len=3 parity=good gap=0 |
+| 4475 | reference | Packet forwarded: addr=1 len=3 -> channel 1 |
+| 4480 | yapp driver | TX pkt #22 accepted by the DUT |
+| 4480 | yapp driver | TX pkt #23: addr=3 len=3 parity=bad delay=0 |
+| 4485 | **DUT** | IN  pkt #23 header: addr=3 len=3 -> DROP (illegal address 3) |
+| 4525 | **DUT** | IN  pkt #23 complete: addr=3 len=3 parity=BAD dropped, 5 bytes in 5 cycles (held 0) |
+| 4525 | yapp monitor | RX pkt #23 on the input: addr=3 len=3 parity=bad gap=0 |
+| 4525 | reference | Packet dropped: illegal address 3 (len=3) |
+| 4525 | **DUT** | ROUTER DROPS PACKET addr=3 length=3 (    illegal address) |
+| 4530 | yapp driver | TX pkt #23 accepted by the DUT |
+| 4530 | **test** | STAGE: burst 3/5 sent: addr0..3 1/3/2/1, bad parity 1, gap 0 7, length 1..3 |
+| 4550 | hbus driver | Executed WRITE addr=0x1000 data=0xfd |
+| 4555 | **DUT** | CONFIG router_en=1 maxpktsize=61 |
+| 4555 | hbus monitor | Collected WRITE addr=0x1000 data=0xfd |
+| 4555 | reference | maxpktsize is now 61 |
+| 4565 | **DUT** | OUT ch1 pkt #3 start: addr=1 len=1 (receiver waited 23 cycle(s)) |
+| 4570 | hbus driver | Executed WRITE addr=0x1001 data=0xff |
+| 4575 | hbus monitor | Collected WRITE addr=0x1001 data=0xff |
+| 4575 | reference | router_en is now 1 (en_reg 0xff) |
+| 4580 | ch1 driver | ch1: packet consumed (response delay 23) |
+| 4590 | **DUT** | ERROR pulse, 6 cycle(s) after the bad-parity packet |
+| 4590 | error checker | error pulse 6 cycles after the bad packet (0 still owed) |
+| 4600 | hbus driver | Executed READ  addr=0x1048 data=0x2c |
+| 4605 | hbus monitor | Collected READ  addr=0x1048 data=0x2c |
+| 4620 | hbus driver | Executed WRITE addr=0x1184 data=0x78 |
+| 4625 | hbus monitor | Collected WRITE addr=0x1184 data=0x78 |
+| 4650 | hbus driver | Executed READ  addr=0x1184 data=0x78 |
+| 4655 | hbus monitor | Collected READ  addr=0x1184 data=0x78 |
+| 4680 | hbus driver | Executed READ  addr=0x100d data=0x03 |
+| 4685 | hbus monitor | Collected READ  addr=0x100d data=0x03 |
+| 4710 | hbus driver | Executed READ  addr=0x108e data=0x00 |
+| 4715 | hbus monitor | Collected READ  addr=0x108e data=0x00 |
+| 4740 | hbus driver | Executed READ  addr=0x1005 data=0x00 |
+| 4745 | hbus monitor | Collected READ  addr=0x1005 data=0x00 |
+| 4760 | hbus driver | Executed WRITE addr=0x1172 data=0x4d |
+| 4765 | hbus monitor | Collected WRITE addr=0x1172 data=0x4d |
+| 4790 | ch0 driver | ch0: packet consumed (response delay 2) |
+| 4790 | hbus driver | Executed READ  addr=0x1172 data=0x4d |
+| 4795 | hbus monitor | Collected READ  addr=0x1172 data=0x4d |
+| 4820 | hbus driver | Executed READ  addr=0x1005 data=0x00 |
+| 4825 | hbus monitor | Collected READ  addr=0x1005 data=0x00 |
+| 4840 | hbus driver | Executed WRITE addr=0x1121 data=0xb5 |
+| 4845 | hbus monitor | Collected WRITE addr=0x1121 data=0xb5 |
+| 4870 | hbus driver | Executed READ  addr=0x1121 data=0xb5 |
+| 4870 | **test** | STAGE: burst 4/5: ctrl=0xfd (maxpktsize 61) en=0xff (router on, counter enables 1111111), 8 packet(s) |
+| 4870 | yapp driver | TX pkt #24: addr=2 len=10 parity=good delay=1 |
+| 4875 | hbus monitor | Collected READ  addr=0x1121 data=0xb5 |
+| 4890 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 4895 | **DUT** | IN  pkt #24 header: addr=2 len=10 -> channel 2 |
+| 4905 | **DUT** | OUT ch2 pkt #7 start: addr=2 len=10 (receiver waited 0 cycle(s)) |
+| 4995 | **DUT** | OUT ch1 pkt #3 done: 3 bytes in 44 cycles |
+| 4995 | ch1 monitor | ch1 RX pkt #3: addr=1 len=1 parity=good |
+| 4995 | scoreboard | ch1 pkt matched: addr=1 len=1 (14 matched so far) |
+| 5005 | **DUT** | IN  pkt #24 complete: addr=2 len=10 parity=ok forwarded, 12 bytes in 12 cycles (held 0) |
+| 5005 | **DUT** | OUT ch1 pkt #4 start: addr=1 len=1 (receiver waited 0 cycle(s)) |
+| 5005 | yapp monitor | RX pkt #24 on the input: addr=2 len=10 parity=good gap=36 |
+| 5005 | reference | Packet forwarded: addr=2 len=10 -> channel 2 |
+| 5010 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 5010 | yapp driver | TX pkt #24 accepted by the DUT |
+| 5010 | yapp driver | TX pkt #25: addr=3 len=63 parity=good delay=1 |
+| 5025 | **DUT** | IN  pkt #25 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 61) |
+| 5025 | **DUT** | OUT ch1 pkt #4 done: 3 bytes in 3 cycles |
+| 5025 | **DUT** | OUT ch2 pkt #7 done: 12 bytes in 13 cycles |
+| 5025 | ch1 monitor | ch1 RX pkt #4: addr=1 len=1 parity=good |
+| 5025 | scoreboard | ch1 pkt matched: addr=1 len=1 (15 matched so far) |
+| 5025 | ch2 monitor | ch2 RX pkt #7: addr=2 len=10 parity=good |
+| 5025 | scoreboard | ch2 pkt matched: addr=2 len=10 (16 matched so far) |
+| 5035 | **DUT** | OUT ch1 pkt #5 start: addr=1 len=3 (receiver waited 0 cycle(s)) |
+| 5075 | **DUT** | OUT ch1 pkt #5 done: 5 bytes in 5 cycles |
+| 5075 | ch1 monitor | ch1 RX pkt #5: addr=1 len=3 parity=good |
+| 5075 | scoreboard | ch1 pkt matched: addr=1 len=3 (17 matched so far) |
+| 5180 | ch1 driver | ch1: packet consumed (response delay 40) |
+| 5510 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 5665 | **DUT** | IN  pkt #25 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
+| 5665 | yapp monitor | RX pkt #25 on the input: addr=3 len=63 parity=good gap=1 |
+| 5665 | reference | Packet dropped: illegal address 3 (len=63) |
+| 5665 | **DUT** | ROUTER DROPS PACKET addr=3 length=63 (    illegal address) |
+| 5670 | yapp driver | TX pkt #25 accepted by the DUT |
+| 5670 | yapp driver | TX pkt #26: addr=3 len=1 parity=bad delay=0 |
+| 5675 | **DUT** | IN  pkt #26 header: addr=3 len=1 -> DROP (illegal address 3) |
+| 5695 | **DUT** | IN  pkt #26 complete: addr=3 len=1 parity=BAD dropped, 3 bytes in 3 cycles (held 0) |
+| 5695 | yapp monitor | RX pkt #26 on the input: addr=3 len=1 parity=bad gap=0 |
+| 5695 | reference | Packet dropped: illegal address 3 (len=1) |
+| 5695 | **DUT** | ROUTER DROPS PACKET addr=3 length=1 (    illegal address) |
+| 5700 | yapp driver | TX pkt #26 accepted by the DUT |
+| 5700 | yapp driver | TX pkt #27: addr=2 len=1 parity=bad delay=0 |
+| 5705 | **DUT** | IN  pkt #27 header: addr=2 len=1 -> channel 2 |
+| 5715 | **DUT** | OUT ch2 pkt #8 start: addr=2 len=1 (receiver waited 0 cycle(s)) |
+| 5725 | **DUT** | IN  pkt #27 complete: addr=2 len=1 parity=BAD forwarded, 3 bytes in 3 cycles (held 0) |
+| 5725 | yapp monitor | RX pkt #27 on the input: addr=2 len=1 parity=bad gap=0 |
+| 5725 | reference | Packet forwarded: addr=2 len=1 -> channel 2 |
+| 5730 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 5730 | yapp driver | TX pkt #27 accepted by the DUT |
+| 5730 | yapp driver | TX pkt #28: addr=2 len=18 parity=good delay=1 |
+| 5745 | **DUT** | IN  pkt #28 header: addr=2 len=18 -> channel 2 |
+| 5745 | **DUT** | OUT ch2 pkt #8 done: 3 bytes in 4 cycles |
+| 5745 | ch2 monitor | ch2 RX pkt #8: addr=2 len=1 parity=bad |
+| 5745 | scoreboard | ch2 pkt matched: addr=2 len=1 (18 matched so far) |
+| 5750 | **DUT** | ERROR pulse, 5 cycle(s) after the bad-parity packet (1 more owed) |
+| 5750 | error checker | error pulse 5 cycles after the bad packet (1 still owed) |
+| 5755 | **DUT** | OUT ch2 pkt #9 start: addr=2 len=18 (receiver waited 0 cycle(s)) |
+| 5810 | **DUT** | ERROR pulse, 8 cycle(s) after the bad-parity packet |
+| 5810 | error checker | error pulse 8 cycles after the bad packet (0 still owed) |
+| 5935 | **DUT** | IN  pkt #28 complete: addr=2 len=18 parity=ok forwarded, 20 bytes in 20 cycles (held 0) |
+| 5935 | yapp monitor | RX pkt #28 on the input: addr=2 len=18 parity=good gap=1 |
+| 5935 | reference | Packet forwarded: addr=2 len=18 -> channel 2 |
+| 5940 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 5940 | yapp driver | TX pkt #28 accepted by the DUT |
+| 5940 | yapp driver | TX pkt #29: addr=2 len=63 parity=good delay=2 |
+| 5955 | **DUT** | OUT ch2 pkt #9 done: 20 bytes in 21 cycles |
+| 5955 | ch2 monitor | ch2 RX pkt #9: addr=2 len=18 parity=good |
+| 5955 | scoreboard | ch2 pkt matched: addr=2 len=18 (19 matched so far) |
+| 5965 | **DUT** | IN  pkt #29 header: addr=2 len=63 -> DROP (oversized: len 63 > maxpktsize 61) |
+| 6370 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 6605 | **DUT** | IN  pkt #29 complete: addr=2 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
+| 6605 | yapp monitor | RX pkt #29 on the input: addr=2 len=63 parity=good gap=2 |
+| 6605 | reference | Packet dropped: length 63 > maxpktsize 61 (addr=2) |
+| 6605 | **DUT** | ROUTER DROPS PACKET addr=2 length=63 (length > maxpktsize) |
+| 6610 | yapp driver | TX pkt #29 accepted by the DUT |
+| 6610 | yapp driver | TX pkt #30: addr=2 len=18 parity=good delay=1 |
+| 6625 | **DUT** | IN  pkt #30 header: addr=2 len=18 -> channel 2 |
+| 6635 | **DUT** | OUT ch2 pkt #10 start: addr=2 len=18 (receiver waited 0 cycle(s)) |
+| 6815 | **DUT** | IN  pkt #30 complete: addr=2 len=18 parity=ok forwarded, 20 bytes in 20 cycles (held 0) |
+| 6815 | yapp monitor | RX pkt #30 on the input: addr=2 len=18 parity=good gap=1 |
+| 6815 | reference | Packet forwarded: addr=2 len=18 -> channel 2 |
+| 6820 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 6820 | yapp driver | TX pkt #30 accepted by the DUT |
+| 6820 | yapp driver | TX pkt #31: addr=0 len=63 parity=good delay=0 |
+| 6825 | **DUT** | IN  pkt #31 header: addr=0 len=63 -> DROP (oversized: len 63 > maxpktsize 61) |
+| 6835 | **DUT** | OUT ch2 pkt #10 done: 20 bytes in 21 cycles |
+| 6835 | ch2 monitor | ch2 RX pkt #10: addr=2 len=18 parity=good |
+| 6835 | scoreboard | ch2 pkt matched: addr=2 len=18 (20 matched so far) |
+| 7020 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 7465 | **DUT** | IN  pkt #31 complete: addr=0 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
+| 7465 | yapp monitor | RX pkt #31 on the input: addr=0 len=63 parity=good gap=0 |
+| 7465 | reference | Packet dropped: length 63 > maxpktsize 61 (addr=0) |
+| 7465 | **DUT** | ROUTER DROPS PACKET addr=0 length=63 (length > maxpktsize) |
+| 7470 | yapp driver | TX pkt #31 accepted by the DUT |
+| 7470 | **test** | STAGE: burst 4/5 sent: addr0..3 1/0/5/2, bad parity 2, gap 0 3, length 1..63 |
+| 7490 | hbus driver | Executed WRITE addr=0x1000 data=0xfe |
+| 7495 | **DUT** | CONFIG router_en=1 maxpktsize=62 |
+| 7495 | hbus monitor | Collected WRITE addr=0x1000 data=0xfe |
+| 7495 | reference | maxpktsize is now 62 |
+| 7510 | hbus driver | Executed WRITE addr=0x1001 data=0xf9 |
+| 7515 | hbus monitor | Collected WRITE addr=0x1001 data=0xf9 |
+| 7515 | reference | router_en is now 1 (en_reg 0xf9) |
+| 7530 | hbus driver | Executed WRITE addr=0x11f2 data=0x9a |
+| 7535 | hbus monitor | Collected WRITE addr=0x11f2 data=0x9a |
+| 7560 | hbus driver | Executed READ  addr=0x11f2 data=0x9a |
+| 7565 | hbus monitor | Collected READ  addr=0x11f2 data=0x9a |
+| 7590 | hbus driver | Executed READ  addr=0x100d data=0x3f |
+| 7595 | hbus monitor | Collected READ  addr=0x100d data=0x3f |
+| 7610 | hbus driver | Executed WRITE addr=0x11d9 data=0xb6 |
+| 7615 | hbus monitor | Collected WRITE addr=0x11d9 data=0xb6 |
+| 7640 | hbus driver | Executed READ  addr=0x11d9 data=0xb6 |
+| 7645 | hbus monitor | Collected READ  addr=0x11d9 data=0xb6 |
+| 7670 | hbus driver | Executed READ  addr=0x1001 data=0xf9 |
+| 7675 | hbus monitor | Collected READ  addr=0x1001 data=0xf9 |
+| 7690 | hbus driver | Executed WRITE addr=0x1150 data=0xaf |
+| 7695 | hbus monitor | Collected WRITE addr=0x1150 data=0xaf |
+| 7720 | hbus driver | Executed READ  addr=0x1150 data=0xaf |
+| 7725 | hbus monitor | Collected READ  addr=0x1150 data=0xaf |
+| 7750 | hbus driver | Executed READ  addr=0x100d data=0x3f |
+| 7755 | hbus monitor | Collected READ  addr=0x100d data=0x3f |
+| 7780 | hbus driver | Executed READ  addr=0x100f data=0x00 |
+| 7780 | **test** | STAGE: burst 5/5: ctrl=0xfe (maxpktsize 62) en=0xf9 (router on, counter enables 1111100), 8 packet(s) |
+| 7780 | yapp driver | TX pkt #32: addr=0 len=30 parity=good delay=1 |
+| 7785 | hbus monitor | Collected READ  addr=0x100f data=0x00 |
+| 7805 | **DUT** | IN  pkt #32 header: addr=0 len=30 -> channel 0 |
+| 7915 | **DUT** | OUT ch0 pkt #6 start: addr=0 len=30 (receiver waited 10 cycle(s)) |
+| 8115 | **DUT** | IN  pkt #32 complete: addr=0 len=30 parity=ok forwarded, 32 bytes in 32 cycles (held 0) |
+| 8115 | yapp monitor | RX pkt #32 on the input: addr=0 len=30 parity=good gap=33 |
+| 8115 | reference | Packet forwarded: addr=0 len=30 -> channel 0 |
+| 8120 | yapp driver | TX pkt #32 accepted by the DUT |
+| 8120 | yapp driver | TX pkt #33: addr=2 len=39 parity=bad delay=4 |
+| 8165 | **DUT** | IN  pkt #33 header: addr=2 len=39 -> channel 2 |
+| 8175 | **DUT** | OUT ch2 pkt #11 start: addr=2 len=39 (receiver waited 0 cycle(s)) |
+| 8220 | ch0 driver | ch0: packet consumed (response delay 10) |
+| 8335 | **DUT** | OUT ch0 pkt #6 done: 32 bytes in 43 cycles |
+| 8335 | ch0 monitor | ch0 RX pkt #6: addr=0 len=30 parity=good |
+| 8335 | scoreboard | ch0 pkt matched: addr=0 len=30 (21 matched so far) |
+| 8360 | ch0 driver | ch0: packet consumed (response delay 10) |
+| 8565 | **DUT** | IN  pkt #33 complete: addr=2 len=39 parity=BAD forwarded, 41 bytes in 41 cycles (held 0) |
+| 8565 | yapp monitor | RX pkt #33 on the input: addr=2 len=39 parity=bad gap=4 |
+| 8565 | reference | Packet forwarded: addr=2 len=39 -> channel 2 |
+| 8570 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 8570 | yapp driver | TX pkt #33 accepted by the DUT |
+| 8570 | yapp driver | TX pkt #34: addr=1 len=60 parity=good delay=4 |
+| 8585 | **DUT** | OUT ch2 pkt #11 done: 41 bytes in 42 cycles |
+| 8585 | ch2 monitor | ch2 RX pkt #11: addr=2 len=39 parity=bad |
+| 8585 | scoreboard | ch2 pkt matched: addr=2 len=39 (22 matched so far) |
+| 8610 | **DUT** | ERROR pulse, 4 cycle(s) after the bad-parity packet |
+| 8610 | error checker | error pulse 4 cycles after the bad packet (0 still owed) |
+| 8615 | **DUT** | IN  pkt #34 header: addr=1 len=60 -> channel 1 |
+| 8775 | **DUT** | SUSPEND asserted: FIFO 1 full, byte 0x35 held (pkt #34) |
+| 8870 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 8905 | **DUT** | OUT ch1 pkt #6 start: addr=1 len=60 (receiver waited 28 cycle(s)) |
+| 8915 | **DUT** | SUSPEND released after 14 cycle(s) |
+| 9365 | **DUT** | IN  pkt #34 complete: addr=1 len=60 parity=ok forwarded, 62 bytes in 76 cycles (held 14) |
+| 9365 | yapp monitor | RX pkt #34 on the input: addr=1 len=60 parity=good gap=4 |
+| 9365 | reference | Packet forwarded: addr=1 len=60 -> channel 1 |
+| 9370 | yapp driver | TX pkt #34 accepted by the DUT |
+| 9370 | yapp driver | TX pkt #35: addr=3 len=63 parity=good delay=19 |
+| 9510 | ch1 driver | ch1: packet consumed (response delay 28) |
+| 9565 | **DUT** | IN  pkt #35 header: addr=3 len=63 -> DROP (oversized: len 63 > maxpktsize 62) |
+| 9895 | **DUT** | OUT ch1 pkt #6 done: 62 bytes in 100 cycles |
+| 9895 | ch1 monitor | ch1 RX pkt #6: addr=1 len=60 parity=good |
+| 9895 | scoreboard | ch1 pkt matched: addr=1 len=60 (23 matched so far) |
+| 9980 | ch1 driver | ch1: packet consumed (response delay 37) |
+| 10205 | **DUT** | IN  pkt #35 complete: addr=3 len=63 parity=ok dropped, 65 bytes in 65 cycles (held 0) |
+| 10205 | yapp monitor | RX pkt #35 on the input: addr=3 len=63 parity=good gap=19 |
+| 10205 | reference | Packet dropped: illegal address 3 (len=63) |
+| 10205 | **DUT** | ROUTER DROPS PACKET addr=3 length=63 (    illegal address) |
+| 10210 | yapp driver | TX pkt #35 accepted by the DUT |
+| 10210 | yapp driver | TX pkt #36: addr=1 len=63 parity=bad delay=3 |
+| 10245 | **DUT** | IN  pkt #36 header: addr=1 len=63 -> DROP (oversized: len 63 > maxpktsize 62) |
+| 10885 | **DUT** | IN  pkt #36 complete: addr=1 len=63 parity=BAD dropped, 65 bytes in 65 cycles (held 0) |
+| 10885 | yapp monitor | RX pkt #36 on the input: addr=1 len=63 parity=bad gap=3 |
+| 10885 | reference | Packet dropped: length 63 > maxpktsize 62 (addr=1) |
+| 10885 | **DUT** | ROUTER DROPS PACKET addr=1 length=63 (length > maxpktsize) |
+| 10890 | yapp driver | TX pkt #36 accepted by the DUT |
+| 10890 | yapp driver | TX pkt #37: addr=2 len=46 parity=bad delay=15 |
+| 10910 | **DUT** | ERROR pulse, 2 cycle(s) after the bad-parity packet |
+| 10910 | error checker | error pulse 2 cycles after the bad packet (0 still owed) |
+| 11045 | **DUT** | IN  pkt #37 header: addr=2 len=46 -> channel 2 |
+| 11055 | **DUT** | OUT ch2 pkt #12 start: addr=2 len=46 (receiver waited 0 cycle(s)) |
+| 11515 | **DUT** | IN  pkt #37 complete: addr=2 len=46 parity=BAD forwarded, 48 bytes in 48 cycles (held 0) |
+| 11515 | yapp monitor | RX pkt #37 on the input: addr=2 len=46 parity=bad gap=15 |
+| 11515 | reference | Packet forwarded: addr=2 len=46 -> channel 2 |
+| 11520 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 11520 | yapp driver | TX pkt #37 accepted by the DUT |
+| 11520 | yapp driver | TX pkt #38: addr=0 len=55 parity=good delay=0 |
+| 11525 | **DUT** | IN  pkt #38 header: addr=0 len=55 -> channel 0 |
+| 11530 | **DUT** | ERROR pulse, 1 cycle(s) after the bad-parity packet |
+| 11530 | error checker | error pulse 1 cycles after the bad packet (0 still owed) |
+| 11535 | **DUT** | OUT ch2 pkt #12 done: 48 bytes in 49 cycles |
+| 11535 | ch2 monitor | ch2 RX pkt #12: addr=2 len=46 parity=bad |
+| 11535 | scoreboard | ch2 pkt matched: addr=2 len=46 (24 matched so far) |
+| 11615 | **DUT** | OUT ch0 pkt #7 start: addr=0 len=55 (receiver waited 8 cycle(s)) |
+| 11800 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 12085 | **DUT** | IN  pkt #38 complete: addr=0 len=55 parity=ok forwarded, 57 bytes in 57 cycles (held 0) |
+| 12085 | yapp monitor | RX pkt #38 on the input: addr=0 len=55 parity=good gap=0 |
+| 12085 | reference | Packet forwarded: addr=0 len=55 -> channel 0 |
+| 12090 | yapp driver | TX pkt #38 accepted by the DUT |
+| 12090 | yapp driver | TX pkt #39: addr=2 len=4 parity=good delay=2 |
+| 12115 | **DUT** | IN  pkt #39 header: addr=2 len=4 -> channel 2 |
+| 12125 | **DUT** | OUT ch2 pkt #13 start: addr=2 len=4 (receiver waited 0 cycle(s)) |
+| 12165 | **DUT** | IN  pkt #39 complete: addr=2 len=4 parity=ok forwarded, 6 bytes in 6 cycles (held 0) |
+| 12165 | yapp monitor | RX pkt #39 on the input: addr=2 len=4 parity=good gap=2 |
+| 12165 | reference | Packet forwarded: addr=2 len=4 -> channel 2 |
+| 12170 | ch0 driver | ch0: packet consumed (response delay 8) |
+| 12170 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 12170 | yapp driver | TX pkt #39 accepted by the DUT |
+| 12170 | **test** | STAGE: burst 5/5 sent: addr0..3 2/2/3/1, bad parity 3, gap 0 1, length 4..63 |
+| 12170 | **test** | STAGE: final reads: every register and the stored packet, checked against the reference model |
+| 12185 | **DUT** | OUT ch2 pkt #13 done: 6 bytes in 7 cycles |
+| 12185 | ch2 monitor | ch2 RX pkt #13: addr=2 len=4 parity=good |
+| 12185 | scoreboard | ch2 pkt matched: addr=2 len=4 (25 matched so far) |
+| 12200 | hbus driver | Executed READ  addr=0x1000 data=0xfe |
+| 12205 | hbus monitor | Collected READ  addr=0x1000 data=0xfe |
+| 12230 | hbus driver | Executed READ  addr=0x1001 data=0xf9 |
+| 12235 | hbus monitor | Collected READ  addr=0x1001 data=0xf9 |
+| 12260 | hbus driver | Executed READ  addr=0x1004 data=0x05 |
+| 12265 | hbus monitor | Collected READ  addr=0x1004 data=0x05 |
+| 12285 | **DUT** | OUT ch0 pkt #7 done: 57 bytes in 68 cycles |
+| 12285 | ch0 monitor | ch0 RX pkt #7: addr=0 len=55 parity=good |
+| 12285 | scoreboard | ch0 pkt matched: addr=0 len=55 (26 matched so far) |
+| 12290 | hbus driver | Executed READ  addr=0x1005 data=0x03 |
+| 12295 | hbus monitor | Collected READ  addr=0x1005 data=0x03 |
+| 12320 | hbus driver | Executed READ  addr=0x1006 data=0x04 |
+| 12325 | hbus monitor | Collected READ  addr=0x1006 data=0x04 |
+| 12350 | hbus driver | Executed READ  addr=0x1009 data=0x04 |
+| 12355 | hbus monitor | Collected READ  addr=0x1009 data=0x04 |
+| 12380 | hbus driver | Executed READ  addr=0x100a data=0x02 |
+| 12385 | hbus monitor | Collected READ  addr=0x100a data=0x02 |
+| 12410 | hbus driver | Executed READ  addr=0x100b data=0x0a |
+| 12415 | hbus monitor | Collected READ  addr=0x100b data=0x0a |
+| 12440 | hbus driver | Executed READ  addr=0x100d data=0x04 |
+| 12445 | hbus monitor | Collected READ  addr=0x100d data=0x04 |
+| 12470 | hbus driver | Executed READ  addr=0x1010 data=0x12 |
+| 12475 | hbus monitor | Collected READ  addr=0x1010 data=0x12 |
+| 12500 | hbus driver | Executed READ  addr=0x1011 data=0x6e |
+| 12505 | hbus monitor | Collected READ  addr=0x1011 data=0x6e |
+| 12530 | hbus driver | Executed READ  addr=0x1012 data=0x64 |
+| 12535 | hbus monitor | Collected READ  addr=0x1012 data=0x64 |
+| 12560 | hbus driver | Executed READ  addr=0x1013 data=0x78 |
+| 12565 | hbus monitor | Collected READ  addr=0x1013 data=0x78 |
+| 12590 | hbus driver | Executed READ  addr=0x1014 data=0xda |
+| 12595 | hbus monitor | Collected READ  addr=0x1014 data=0xda |
+| 12650 | ch2 driver | ch2: packet consumed (response delay 0) |
+| 12705 | **test** | STAGE: done: 39 packets (26 forwarded, 13 dropped), 2 storm burst(s), 26 scoreboard matches, 45 HBUS reads checked, 11 error pulses for 11 bad packets |
+| 12820 | ch0 driver | ch0: packet consumed (response delay 10) |
+| 12905 | error checker | error pulse report: 11 bad packets, 11 pulses, 0 outside 1..10 cycles, at most 2 owed at once |
+| 12905 | ch0 monitor | Channel 0 report: 7 packets collected |
+| 12905 | ch1 monitor | Channel 1 report: 6 packets collected |
+| 12905 | ch2 monitor | Channel 2 report: 13 packets collected |
+| 12905 | hbus monitor | HBUS report: 25 writes, 48 reads |
+| 12905 | coverage | Coverage of the router configuration: 87.0% · maxpktsize 0 / 1 / 2..61 / 62 / 63 : 0 / 0 / 31 / 8 / 0 packets · length < max / = max / max+1 / > max+1 : 29 / 2 / 2 / 6 · forwarded good / bad : 20 / 6 · dropped address 3 good / bad : 4 / 3 · dropped oversized good / bad : 4 / 2 · counter enables none / mixed / all : 8 / 23 / 8 |
+| 12905 | coverage | HBUS address coverage: 73 accesses sampled, coverage 45.5% |
+| 12905 | coverage | HBUS register bits coverage: 10 writes to ctrl_reg/en_reg, coverage 93.2% |
+| 12905 | coverage | HBUS counter value coverage: 9 counter reads sampled, coverage 59.3% |
+| 12905 | coverage | HBUS yapp_mem data coverage: 30 accesses sampled, coverage 29.4% |
+| 12905 | reference | --- Reference model report --- · forwarded to scoreboard : 26 · dropped (router disabled) : 0 · dropped (oversized) : 6 · dropped (address 3) : 7 · counters parity/oversized/addr0..3 : 5 / 3 / 4 2 10 4 |
+| 12905 | reference | HBUS reads checked against the model: 45 (0 mismatches, 3 of memory bytes never written) |
+| 12905 | scoreboard | --- Scoreboard report --- · packets received : 26 · packets matched : 26 · packets mismatched: 0 · packets unexpected: 0 · packets to addr 3 : 0 · left in queue 0/1/2: 0 / 0 / 0 |
+| 12905 | yapp driver | YAPP driver report: 39 packets sent |
+| 12905 | coverage | YAPP gap coverage: 38 gaps sampled, coverage 100.0% |
+| 12905 | yapp monitor | YAPP monitor report: 39 packets collected, 11 with bad parity |
+| 12905 | yapp monitor | YAPP gaps: 20 back to back, 4 of 1 cycle, 2 of 2, 12 longer |
+| 12905 | coverage | YAPP packet coverage: 39 packets sampled, coverage 66.7% |

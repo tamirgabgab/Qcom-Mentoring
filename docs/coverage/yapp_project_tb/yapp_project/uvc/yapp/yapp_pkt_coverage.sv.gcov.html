@@ -72,7 +72,7 @@
 <span id="L10"><span class="lineNum">      10</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L11"><span class="lineNum">      11</span>                 :             : class yapp_pkt_coverage extends uvm_subscriber #(yapp_packet);</span>
 <span id="L12"><span class="lineNum">      12</span>                 :             : </span>
-<span id="L13"><span class="lineNum">      13</span>                 :             :   int num_sampled;</span>
+<span id="L13"><span class="lineNum">      13</span>                 :             :   int m_num_sampled;</span>
 <span id="L14"><span class="lineNum">      14</span>                 :             : </span>
 <span id="L15"><span class="lineNum">      15</span>                 :             :   //--------------------------------------------------------------------------</span>
 <span id="L16"><span class="lineNum">      16</span>                 :             :   // Functional coverage (Lab 10)</span>
@@ -80,39 +80,39 @@
 <span id="L18"><span class="lineNum">      18</span>                 :             :   //   REQ2 all addresses, including the illegal one</span>
 <span id="L19"><span class="lineNum">      19</span>                 :             :   //   REQ3 every length bucket to every legal address with a parity error</span>
 <span id="L20"><span class="lineNum">      20</span>                 :             :   //--------------------------------------------------------------------------</span>
-<span id="L21"><span class="lineNum">      21</span>                 :             :   covergroup yapp_pkt_cg with function sample(bit [5:0] length,</span>
-<span id="L22"><span class="lineNum">      22</span>                 :             :                                               bit [1:0] addr,</span>
+<span id="L21"><span class="lineNum">      21</span>                 :             :   covergroup yapp_pkt_cg with function sample(bit[5:0] length,</span>
+<span id="L22"><span class="lineNum">      22</span>                 :             :                                               bit[1:0] addr,</span>
 <span id="L23"><span class="lineNum">      23</span>                 :             :                                               parity_type_e parity_type);</span>
 <span id="L24"><span class="lineNum">      24</span>                 :             :     option.per_instance = 1;</span>
 <span id="L25"><span class="lineNum">      25</span>                 :             :     length_cp : coverpoint length {</span>
-<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC tlaBgGNC">        1316 :       bins MIN    = {1};</span></span>
-<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">        4506 :       bins SMALL  = {[2:10]};</span></span>
-<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         568 :       bins MEDIUM = {[11:40]};</span></span>
-<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         597 :       bins LARGE  = {[41:62]};</span></span>
-<span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         353 :       bins MAX    = {63};</span></span>
+<span id="L26"><span class="lineNum">      26</span>                 :<span class="tlaGNC tlaBgGNC">        1305 :       bins MIN    = {1};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">        4518 :       bins SMALL  = {[2:10]};</span></span>
+<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         571 :       bins MEDIUM = {[11:40]};</span></span>
+<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">         565 :       bins LARGE  = {[41:62]};</span></span>
+<span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         341 :       bins MAX    = {63};</span></span>
 <span id="L31"><span class="lineNum">      31</span>                 :             :     }</span>
 <span id="L32"><span class="lineNum">      32</span>                 :             :     addr_cp : coverpoint addr {</span>
-<span id="L33"><span class="lineNum">      33</span>      [<span class="tlaGBC" title="Branch 0 was taken 2563 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1549 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 2005 times"> + </span>]:<span class="tlaGNC">        2563 :       bins legal[]      = {[0:2]};</span></span>
-<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        1223 :       bins illegal_addr = {3};</span></span>
+<span id="L33"><span class="lineNum">      33</span>      [<span class="tlaGBC" title="Branch 0 was taken 2547 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1581 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 1976 times"> + </span>]:<span class="tlaGNC">        2547 :       bins legal[]      = {[0:2]};</span></span>
+<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        1196 :       bins illegal_addr = {3};</span></span>
 <span id="L35"><span class="lineNum">      35</span>                 :             :     }</span>
 <span id="L36"><span class="lineNum">      36</span>                 :             :     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)</span>
 <span id="L37"><span class="lineNum">      37</span>                 :             :     parity_cp : coverpoint parity_type {</span>
-<span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">        2899 :       bins good = {GOOD_PARITY};</span></span>
-<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">        4441 :       bins bad  = {BAD_PARITY};</span></span>
+<span id="L38"><span class="lineNum">      38</span>                 :<span class="tlaGNC">        2849 :       bins good = {PARITY_TYPE_GOOD};</span></span>
+<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">        4451 :       bins bad  = {PARITY_TYPE_BAD};</span></span>
 <span id="L40"><span class="lineNum">      40</span>                 :             :     }</span>
-<span id="L41"><span class="lineNum">      41</span>                 :             :     // REQ3: only legal addresses and only BAD_PARITY are interesting</span>
+<span id="L41"><span class="lineNum">      41</span>                 :             :     // REQ3: only legal addresses and only PARITY_TYPE_BAD are interesting</span>
 <span id="L42"><span class="lineNum">      42</span>                 :             : `ifdef VERILATOR</span>
 <span id="L43"><span class="lineNum">      43</span>                 :             :     // (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is</span>
 <span id="L44"><span class="lineNum">      44</span>                 :             :     // built from coverpoints that hold only the interesting bins: same 15 bins)</span>
-<span id="L45"><span class="lineNum">      45</span>      [<span class="tlaGBC" title="Branch 0 was taken 2563 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1549 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 2005 times"> + </span>]:<span class="tlaGNC">        2563 :     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }</span></span>
-<span id="L46"><span class="lineNum">      46</span>                 :<span class="tlaGNC">        4441 :     bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }</span></span>
-<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 24 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 41 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 5 times"> + </span> :<span class="tlaGNC">        1046 :     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;</span></span>
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 16 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 21 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 45 times"> + </span> 
-<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 11 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 14 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 35 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 1033 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 1033 times"> + </span> 
-<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 14 was taken 1046 times"> + </span>]
+<span id="L45"><span class="lineNum">      45</span>      [<span class="tlaGBC" title="Branch 0 was taken 2547 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 1581 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 1976 times"> + </span>]:<span class="tlaGNC">        2547 :     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }</span></span>
+<span id="L46"><span class="lineNum">      46</span>                 :<span class="tlaGNC">        4451 :     bad_parity_cp : coverpoint parity_type { bins bad = {PARITY_TYPE_BAD}; }</span></span>
+<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 22 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 17 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 38 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 12 times"> + </span> :<span class="tlaGNC">        1038 :     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;</span></span>
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 4 was taken 14 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 25 times"> + </span><span class="tlaGBC" title="Branch 6 was taken 21 times"> + </span><span class="tlaGBC" title="Branch 7 was taken 29 times"> + </span><span class="tlaGBC" title="Branch 8 was taken 43 times"> + </span> 
+<span class="lineNum">        </span> <span class="tlaGBC" title="Branch 9 was taken 12 times"> + </span><span class="tlaGBC" title="Branch 10 was taken 23 times"> + </span><span class="tlaGBC" title="Branch 11 was taken 29 times"> + </span><span class="tlaGBC" title="Branch 12 was taken 1038 times"> + </span><span class="tlaGBC" title="Branch 13 was taken 1034 times"> + </span> 
+<span class="lineNum">        </span>             <span class="tlaGBC" title="Branch 14 was taken 1037 times"> + </span>]
 <span id="L48"><span class="lineNum">      48</span>                 :             : `else</span>
 <span id="L49"><span class="lineNum">      49</span>                 :             :     len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {</span>
-<span id="L50"><span class="lineNum">      50</span>                 :             :       ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};</span>
+<span id="L50"><span class="lineNum">      50</span>                 :             :       ignore_bins good_parity  = binsof(parity_cp) intersect {PARITY_TYPE_GOOD};</span>
 <span id="L51"><span class="lineNum">      51</span>                 :             :       ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);</span>
 <span id="L52"><span class="lineNum">      52</span>                 :             :     }</span>
 <span id="L53"><span class="lineNum">      53</span>                 :             : `endif</span>
@@ -140,14 +140,14 @@
 <span id="L75"><span class="lineNum">      75</span>                 :             : </span>
 <span id="L76"><span class="lineNum">      76</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L77"><span class="lineNum">      77</span>                 :             : function void yapp_pkt_coverage::write(yapp_packet t);</span>
-<span id="L78"><span class="lineNum">      78</span>                 :             :   num_sampled++;</span>
-<span id="L79"><span class="lineNum">      79</span>                 :             :   yapp_pkt_cg.sample(t.length, t.addr, t.parity_type);</span>
+<span id="L78"><span class="lineNum">      78</span>                 :             :   m_num_sampled++;</span>
+<span id="L79"><span class="lineNum">      79</span>                 :             :   yapp_pkt_cg.sample(t.m_length, t.m_addr, t.m_parity_type);</span>
 <span id="L80"><span class="lineNum">      80</span>                 :             : endfunction : write</span>
 <span id="L81"><span class="lineNum">      81</span>                 :             : </span>
 <span id="L82"><span class="lineNum">      82</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L83"><span class="lineNum">      83</span>                 :             : function void yapp_pkt_coverage::report_phase(uvm_phase phase);</span>
 <span id="L84"><span class="lineNum">      84</span>                 :             :   `uvm_info(get_type_name(), $sformatf(&quot;YAPP packet coverage: %0d packets sampled, coverage %.1f%%&quot;,</span>
-<span id="L85"><span class="lineNum">      85</span>                 :             :                                        num_sampled, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)</span>
+<span id="L85"><span class="lineNum">      85</span>                 :             :                                        m_num_sampled, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)</span>
 <span id="L86"><span class="lineNum">      86</span>                 :             : endfunction : report_phase</span>
         </pre>
               </td>

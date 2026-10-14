@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1267,6 +1297,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1287,30 +1384,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1373,7 +1453,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1395,14 +1475,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1905,10 +1985,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1926,8 +2006,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2261,17 +2341,17 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
 <tbody>
 <tr>
 <td><strong>collect</strong></td>
-<td><code>vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles)</code> on the rising edge; a byte counts when <code>in_data_vld &amp;&amp; !in_suspend</code>; <code>idle_cycles</code> is the gap before the header</td>
+<td><code>m_vif.collect_packets(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, idle_cycles)</code> on the rising edge; a byte counts when <code>in_data_vld &amp;&amp; !in_suspend</code>; <code>idle_cycles</code> is the gap before the header</td>
 <td>6 (gap: test plan)</td>
 </tr>
 <tr>
 <td><strong>publish</strong></td>
-<td><code>uvm_analysis_port #(yapp_packet) item_collected_port;</code> constructed in <code>new()</code>, <code>write(pkt)</code> after each packet</td>
+<td><code>uvm_analysis_port #(yapp_packet) m_item_collected_port;</code> constructed in <code>new()</code>, <code>write(pkt)</code> after each packet</td>
 <td>9A</td>
 </tr>
 <tr>
 <td><strong>cover</strong></td>
-<td>not in the monitor: <code>yapp_pkt_coverage</code> (<code>yapp_pkt_cg</code>) and <code>yapp_gap_coverage</code> (<code>yapp_gap_cg</code>) subscribe to <code>item_collected_port</code>; the monitor writes the gap it measured into the packet's <code>packet_delay</code> (-1 for the first packet) so the gap collector can sample it — see <a href="coverage.html">Functional coverage</a></td>
+<td>not in the monitor: <code>yapp_pkt_coverage</code> (<code>yapp_pkt_cg</code>) and <code>yapp_gap_coverage</code> (<code>yapp_gap_cg</code>) subscribe to <code>m_item_collected_port</code>; the monitor writes the gap it measured into the packet's <code>m_packet_delay</code> (-1 for the first packet) so the gap collector can sample it — see <a href="coverage.html">Functional coverage</a></td>
 <td>10 (gap: test plan)</td>
 </tr>
 </tbody>
@@ -2289,22 +2369,22 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kd">class</span><span class="w"> </span><span class="nc">yapp_tx_monitor</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_monitor</span><span class="p">;</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="c1">// Virtual interface, set by tb_top through yapp_vif_config</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">vif</span><span class="p">;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">yapp_if</span><span class="w"> </span><span class="n">m_vif</span><span class="p">;</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="c1">// Analysis port: the scoreboard / reference model subscribe here</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">uvm_analysis_port</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">)</span><span class="w"> </span><span class="n">item_collected_port</span><span class="p">;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">uvm_analysis_port</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">)</span><span class="w"> </span><span class="n">m_item_collected_port</span><span class="p">;</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
 <a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="c1">// Statistics</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">;</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_bad_parity</span><span class="p">;</span><span class="w">   </span><span class="c1">// packets seen with a wrong parity byte (Lab 11C uses it)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">;</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_bad_parity</span><span class="p">;</span><span class="w">   </span><span class="c1">// packets seen with a wrong parity byte (Lab 11C uses it)</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="c1">// Gap before each packet: idle cycles since the previous packet's parity</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="c1">// byte (test plan ROUTE-04), also written into the collected packet's</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="c1">// packet_delay (-1 for the first packet after reset). num_gap[0..2] count</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="c1">// gaps of 0, 1 and 2 cycles, num_gap[3] the longer ones; the first packet</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="c1">// after reset is not counted.</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">last_gap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_gap</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_last_gap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_num_gap</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
 <a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">yapp_tx_monitor</span><span class="p">)</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
@@ -2327,12 +2407,12 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
 <a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>
 <a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="k">function</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="k">new</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">uvm_component</span><span class="w"> </span><span class="n">parent</span><span class="p">);</span>
 <a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">parent</span><span class="p">);</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="n">item_collected_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"item_collected_port"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="n">m_item_collected_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"item_collected_port"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">new</span>
 <a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>
 <a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">connect_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">yapp_vif_config</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="s">"vif"</span><span class="p">,</span><span class="w"> </span><span class="n">m_vif</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">    </span><span class="no">`uvm_error</span><span class="p">(</span><span class="s">"NOVIF"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"virtual interface must be set for: "</span><span class="p">,</span><span class="w"> </span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".vif"</span><span class="p">})</span>
 <a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">connect_phase</span>
@@ -2349,32 +2429,32 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
 <a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">;</span>
 <a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="w">  </span><span class="kt">bit</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
 <a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a><span class="w">  </span><span class="c1">// Nothing to observe while reset is active</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a><span class="w">  </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">vif</span><span class="p">.</span><span class="n">clock</span><span class="p">);</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a><span class="w">  </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">m_vif</span><span class="p">.</span><span class="n">clock</span><span class="p">);</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a><span class="w">  </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="n">m_vif</span><span class="p">.</span><span class="n">reset</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">);</span>
 <a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a><span class="w">  </span><span class="k">forever</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a><span class="w">    </span><span class="c1">// A NEW object per packet: subscribers keep the handle (analysis FIFOs</span>
 <a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a><span class="w">    </span><span class="c1">// do not clone), so re-using one object would corrupt earlier packets.</span>
 <a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="w">    </span><span class="n">pkt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yapp_packet</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"pkt"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a><span class="w">    </span><span class="n">vif</span><span class="p">.</span><span class="n">collect_packets</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity</span><span class="p">,</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">);</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a><span class="w">    </span><span class="n">m_vif</span><span class="p">.</span><span class="n">collect_packets</span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_payload</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity</span><span class="p">,</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">);</span>
 <a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">      </span><span class="n">pkt</span><span class="p">.</span><span class="n">packet_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w">                </span><span class="c1">// no previous packet: no gap</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">      </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_packet_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w">                </span><span class="c1">// no previous packet: no gap</span>
 <a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a><span class="w">      </span><span class="n">pkt</span><span class="p">.</span><span class="n">packet_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">;</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="w">      </span><span class="n">last_gap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">;</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a><span class="w">      </span><span class="n">num_gap</span><span class="p">[(</span><span class="n">idle_cycles</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a><span class="w">      </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_packet_delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">;</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="w">      </span><span class="n">m_last_gap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">;</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a><span class="w">      </span><span class="n">m_num_gap</span><span class="p">[(</span><span class="n">idle_cycles</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a><span class="w">    </span><span class="k">end</span>
 <a id="__codelineno-0-87" name="__codelineno-0-87" href="#__codelineno-0-87"></a><span class="w">    </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b0</span><span class="p">;</span>
 <a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a><span class="w">    </span><span class="kt">void</span><span class="p">'(</span><span class="n">begin_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span><span class="w"> </span><span class="s">"Monitor_YAPP_Packet"</span><span class="p">));</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a><span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">parity</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">calc_parity</span><span class="p">())</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">GOOD_PARITY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">BAD_PARITY</span><span class="p">;</span>
-<a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a><span class="w">    </span><span class="n">num_pkt_col</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">parity_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BAD_PARITY</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a><span class="w">      </span><span class="n">num_bad_parity</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a><span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">calc_parity</span><span class="p">())</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">PARITY_TYPE_GOOD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">PARITY_TYPE_BAD</span><span class="p">;</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a><span class="w">    </span><span class="n">m_num_pkt_col</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_parity_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PARITY_TYPE_BAD</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a><span class="w">      </span><span class="n">m_num_bad_parity</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-0-93" name="__codelineno-0-93" href="#__codelineno-0-93"></a><span class="w">    </span><span class="k">end</span>
 <a id="__codelineno-0-94" name="__codelineno-0-94" href="#__codelineno-0-94"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95" href="#__codelineno-0-95"></a><span class="w">              </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"RX pkt #%0d on the input: addr=%0d len=%0d parity=%s gap=%0d"</span><span class="p">,</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span>
-<a id="__codelineno-0-96" name="__codelineno-0-96" href="#__codelineno-0-96"></a><span class="w">                        </span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity_text</span><span class="p">(),</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_MEDIUM</span><span class="p">)</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95" href="#__codelineno-0-95"></a><span class="w">              </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"RX pkt #%0d on the input: addr=%0d len=%0d parity=%s gap=%0d"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_addr</span><span class="p">,</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96" href="#__codelineno-0-96"></a><span class="w">                        </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">parity_text</span><span class="p">(),</span><span class="w"> </span><span class="n">idle_cycles</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_MEDIUM</span><span class="p">)</span>
 <a id="__codelineno-0-97" name="__codelineno-0-97" href="#__codelineno-0-97"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"Packet collected:</span><span class="se">\n</span><span class="s">%s"</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">sprint</span><span class="p">()),</span><span class="w"> </span><span class="n">UVM_HIGH</span><span class="p">)</span>
-<a id="__codelineno-0-98" name="__codelineno-0-98" href="#__codelineno-0-98"></a><span class="w">    </span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98" href="#__codelineno-0-98"></a><span class="w">    </span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-0-99" name="__codelineno-0-99" href="#__codelineno-0-99"></a><span class="w">    </span><span class="n">end_tr</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-0-100" name="__codelineno-0-100" href="#__codelineno-0-100"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-0-101" name="__codelineno-0-101" href="#__codelineno-0-101"></a><span class="k">endtask</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">collect_packets</span>
@@ -2383,16 +2463,16 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
 <a id="__codelineno-0-104" name="__codelineno-0-104" href="#__codelineno-0-104"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">report_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-0-105" name="__codelineno-0-105" href="#__codelineno-0-105"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span>
 <a id="__codelineno-0-106" name="__codelineno-0-106" href="#__codelineno-0-106"></a><span class="w">            </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP monitor report: %0d packets collected, %0d with bad parity"</span><span class="p">,</span>
-<a id="__codelineno-0-107" name="__codelineno-0-107" href="#__codelineno-0-107"></a><span class="w">                      </span><span class="n">num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="n">num_bad_parity</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-107" name="__codelineno-0-107" href="#__codelineno-0-107"></a><span class="w">                      </span><span class="n">m_num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_bad_parity</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-108" name="__codelineno-0-108" href="#__codelineno-0-108"></a><span class="w">  </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span>
 <a id="__codelineno-0-109" name="__codelineno-0-109" href="#__codelineno-0-109"></a><span class="w">            </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"YAPP gaps: %0d back to back, %0d of 1 cycle, %0d of 2, %0d longer"</span><span class="p">,</span>
-<a id="__codelineno-0-110" name="__codelineno-0-110" href="#__codelineno-0-110"></a><span class="w">                      </span><span class="n">num_gap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">num_gap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">num_gap</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">num_gap</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-110" name="__codelineno-0-110" href="#__codelineno-0-110"></a><span class="w">                      </span><span class="n">m_num_gap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">m_num_gap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">m_num_gap</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">m_num_gap</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-111" name="__codelineno-0-111" href="#__codelineno-0-111"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">report_phase</span>
 <a id="__codelineno-0-112" name="__codelineno-0-112" href="#__codelineno-0-112"></a>
 <a id="__codelineno-0-113" name="__codelineno-0-113" href="#__codelineno-0-113"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-114" name="__codelineno-0-114" href="#__codelineno-0-114"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">yapp_tx_monitor</span><span class="o">::</span><span class="n">do_print</span><span class="p">(</span><span class="n">uvm_printer</span><span class="w"> </span><span class="n">printer</span><span class="p">);</span>
 <a id="__codelineno-0-115" name="__codelineno-0-115" href="#__codelineno-0-115"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="n">do_print</span><span class="p">(</span><span class="n">printer</span><span class="p">);</span>
-<a id="__codelineno-0-116" name="__codelineno-0-116" href="#__codelineno-0-116"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_pkt_col"</span><span class="p">,</span><span class="w"> </span><span class="n">num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
+<a id="__codelineno-0-116" name="__codelineno-0-116" href="#__codelineno-0-116"></a><span class="w">  </span><span class="n">printer</span><span class="p">.</span><span class="n">print_field</span><span class="p">(</span><span class="s">"num_pkt_col"</span><span class="p">,</span><span class="w"> </span><span class="n">m_num_pkt_col</span><span class="p">,</span><span class="w"> </span><span class="p">$</span><span class="n">bits</span><span class="p">(</span><span class="n">m_num_pkt_col</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_DEC</span><span class="p">);</span>
 <a id="__codelineno-0-117" name="__codelineno-0-117" href="#__codelineno-0-117"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">do_print</span>
 </code></pre></div>
 <h2 id="design-notes">Design notes<a class="headerlink" href="#design-notes" title="Permanent link">&para;</a></h2>
@@ -2406,9 +2486,9 @@ measures — scoreboard, reference model, coverage collectors — hangs off it.<
   updates it with a non-blocking assignment), so <code>in_data_vld &amp;&amp; !in_suspend</code>
   is exactly the DUT's own acceptance condition.</li>
 <li><strong>parity_type is derived</strong>: the monitor recomputes the parity and marks the
-  packet <code>GOOD_PARITY</code> / <code>BAD_PARITY</code>. The channel monitor does the same.</li>
-<li><code>num_pkt_col</code> and <code>num_bad_parity</code> are plain counters printed in
-  <code>report_phase</code>; <code>reg_function_test</code> uses <code>num_bad_parity</code> to know what the
+  packet <code>PARITY_TYPE_GOOD</code> / <code>PARITY_TYPE_BAD</code>. The channel monitor does the same.</li>
+<li><code>m_num_pkt_col</code> and <code>m_num_bad_parity</code> are plain counters printed in
+  <code>report_phase</code>; <code>reg_function_test</code> uses <code>m_num_bad_parity</code> to know what the
   DUT's parity counter should read.</li>
 <li>The channel monitor additionally checks that a packet's address matches the
   <code>channel_id</code> of the channel it arrived on — a cheap built-in checker.</li>

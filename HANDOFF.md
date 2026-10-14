@@ -703,6 +703,11 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
   סשן 8 סבב 3 — תוכן לימודי (סעיף 8 פריט 7) ו-history/trend של הרגרסיה.
 
 ### סטטוס git
+- **סשן 8 סבב 4 (2026-10-14), אותו ענף `claude/confident-rubin-m1zkvc`, `main` ff אחרי כל push:** `b7b756e` (defines +
+  enums), `4b8b85a` (extern constraints + `bit[7:0]`), `0d19dae` (`m_` + `runtime_names()` במפה), `425d25e` (`sv_style.py`
+  כללים 5–10), `acc82e8` (לשונית Coverage), `626a136` (עמוד coverage, nav, מעבר שמות באתר), `551f3f1`/`b63c755` (HANDOFF),
+  ואחריהם commit הדוח (רגרסיה מחדש: 100 ריצות עם גלים, `yapp_project/regression` 33 MB, דפי Regression/Coverage מחדש,
+  אתר offline, צילומי README כולל `map_coverage.png`, export).
 - **ענף סשן 8: `claude/confident-rubin-m1zkvc`** (אותו ענף כמו סשנים 5 ו-7; `main` ff אחרי כל push). commits של סשן 8:
   `9cbb6f1` (coverage collectors + דוח coverage), `edd70b9` (HBUS coverage + `hbus_sweep_test` + register-map.md), `2aafca1`/`094da66`
   (HANDOFF), ואחריהם סבב 3: הדוח המכווץ + `runs.json`, דפי Regression results + המפה, CI artifact, סבב הניקיון, HANDOFF.

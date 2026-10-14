@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1163,6 +1193,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1183,30 +1280,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1271,7 +1351,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -1293,14 +1373,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1966,10 +2046,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1987,8 +2067,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2401,20 +2481,20 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_reference</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_component</span><span class="p">;</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="c1">// Inputs</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="n">uvm_analysis_imp_yapp</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">,</span><span class="w">      </span><span class="n">router_reference</span><span class="p">)</span><span class="w"> </span><span class="n">yapp_in</span><span class="p">;</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="n">uvm_analysis_imp_hbus</span><span class="w"> </span><span class="p">#(</span><span class="n">hbus_transaction</span><span class="p">,</span><span class="w"> </span><span class="n">router_reference</span><span class="p">)</span><span class="w"> </span><span class="n">hbus_in</span><span class="p">;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="n">uvm_analysis_imp_yapp</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">,</span><span class="w">      </span><span class="n">router_reference</span><span class="p">)</span><span class="w"> </span><span class="n">m_yapp_in</span><span class="p">;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="n">uvm_analysis_imp_hbus</span><span class="w"> </span><span class="p">#(</span><span class="n">hbus_transaction</span><span class="p">,</span><span class="w"> </span><span class="n">router_reference</span><span class="p">)</span><span class="w"> </span><span class="n">m_hbus_in</span><span class="p">;</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="c1">// Output: packets the router is expected to deliver</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="n">uvm_analysis_port</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">)</span><span class="w"> </span><span class="n">yapp_valid_out</span><span class="p">;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="n">uvm_analysis_port</span><span class="w"> </span><span class="p">#(</span><span class="n">yapp_packet</span><span class="p">)</span><span class="w"> </span><span class="n">m_yapp_valid_out</span><span class="p">;</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="c1">// Mirrored register fields (reset values of the DUT)</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">maxpktsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">6'h3f</span><span class="p">;</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="kt">bit</span><span class="w">       </span><span class="n">router_en</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="kt">bit</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">m_maxpktsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">6'h3f</span><span class="p">;</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="kt">bit</span><span class="w">       </span><span class="n">m_router_en</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mb">1'b1</span><span class="p">;</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="c1">// Statistics</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">packets_forwarded</span><span class="p">;</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dropped_disabled</span><span class="p">;</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dropped_size</span><span class="p">;</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dropped_addr</span><span class="p">;</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_packets_forwarded</span><span class="p">;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_dropped_disabled</span><span class="p">;</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_dropped_size</span><span class="p">;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">m_dropped_addr</span><span class="p">;</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">router_reference</span><span class="p">)</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
@@ -2435,24 +2515,24 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
 <a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="k">function</span><span class="w"> </span><span class="n">router_reference</span><span class="o">::</span><span class="k">new</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">uvm_component</span><span class="w"> </span><span class="n">parent</span><span class="p">);</span>
 <a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">parent</span><span class="p">);</span>
-<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">  </span><span class="n">yapp_in</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"yapp_in"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">  </span><span class="n">hbus_in</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"hbus_in"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">  </span><span class="n">yapp_valid_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"yapp_valid_out"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">  </span><span class="n">m_yapp_in</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"yapp_in"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">  </span><span class="n">m_hbus_in</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"hbus_in"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">  </span><span class="n">m_yapp_valid_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">"yapp_valid_out"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">new</span>
 <a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a>
 <a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">router_reference</span><span class="o">::</span><span class="n">write_hbus</span><span class="p">(</span><span class="n">hbus_transaction</span><span class="w"> </span><span class="n">tr</span><span class="p">);</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">hwr_rd</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HBUS_WRITE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">m_hwr_rd</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HBUS_OP_WRITE</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w">  </span><span class="k">end</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">haddr</span><span class="p">)</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">m_haddr</span><span class="p">)</span>
 <a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="w">    </span><span class="mh">16'h1000</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">      </span><span class="n">maxpktsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">hdata</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">      </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"maxpktsize is now %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">maxpktsize</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">      </span><span class="n">m_maxpktsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">m_hdata</span><span class="p">[</span><span class="mi">5</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">      </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"maxpktsize is now %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">m_maxpktsize</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="w">    </span><span class="k">end</span>
 <a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="w">    </span><span class="mh">16'h1001</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="w">      </span><span class="n">router_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">hdata</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a><span class="w">      </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"router_en is now %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">router_en</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="w">      </span><span class="n">m_router_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">m_hdata</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a><span class="w">      </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"router_en is now %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">m_router_en</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="w">    </span><span class="k">end</span>
 <a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="p">;</span>
 <a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a><span class="w">  </span><span class="k">endcase</span>
@@ -2460,19 +2540,19 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a>
 <a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">router_reference</span><span class="o">::</span><span class="n">write_yapp</span><span class="p">(</span><span class="n">yapp_packet</span><span class="w"> </span><span class="n">pkt</span><span class="p">);</span>
-<a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">router_en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="w">    </span><span class="n">dropped_disabled</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_router_en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="w">    </span><span class="n">m_dropped_disabled</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Packet dropped: router disabled"</span><span class="p">,</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
-<a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2'd3</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">    </span><span class="n">dropped_addr</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_addr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2'd3</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">    </span><span class="n">m_dropped_addr</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span><span class="w"> </span><span class="s">"Packet dropped: illegal address 3"</span><span class="p">,</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">maxpktsize</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="w">    </span><span class="n">dropped_size</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_maxpktsize</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="w">    </span><span class="n">m_dropped_size</span><span class="o">++</span><span class="p">;</span>
 <a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a><span class="w">    </span><span class="no">`uvm_info</span><span class="p">(</span><span class="n">get_type_name</span><span class="p">(),</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a><span class="w">              </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"Packet dropped: length %0d &gt; maxpktsize %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">maxpktsize</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a><span class="w">              </span><span class="p">$</span><span class="n">sformatf</span><span class="p">(</span><span class="s">"Packet dropped: length %0d &gt; maxpktsize %0d"</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">.</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="n">m_maxpktsize</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-87" name="__codelineno-0-87" href="#__codelineno-0-87"></a><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-<a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a><span class="w">    </span><span class="n">packets_forwarded</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a><span class="w">    </span><span class="n">yapp_valid_out</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a><span class="w">    </span><span class="n">m_packets_forwarded</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a><span class="w">    </span><span class="n">m_yapp_valid_out</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
 <a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a><span class="w">  </span><span class="k">end</span>
 <a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">write_yapp</span>
 <a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a>
@@ -2483,7 +2563,7 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-0-97" name="__codelineno-0-97" href="#__codelineno-0-97"></a><span class="w">    </span><span class="s">"  dropped (router disabled) : %0d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
 <a id="__codelineno-0-98" name="__codelineno-0-98" href="#__codelineno-0-98"></a><span class="w">    </span><span class="s">"  dropped (oversized)       : %0d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
 <a id="__codelineno-0-99" name="__codelineno-0-99" href="#__codelineno-0-99"></a><span class="w">    </span><span class="s">"  dropped (address 3)       : %0d"</span><span class="p">},</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100" href="#__codelineno-0-100"></a><span class="w">    </span><span class="n">packets_forwarded</span><span class="p">,</span><span class="w"> </span><span class="n">dropped_disabled</span><span class="p">,</span><span class="w"> </span><span class="n">dropped_size</span><span class="p">,</span><span class="w"> </span><span class="n">dropped_addr</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100" href="#__codelineno-0-100"></a><span class="w">    </span><span class="n">m_packets_forwarded</span><span class="p">,</span><span class="w"> </span><span class="n">m_dropped_disabled</span><span class="p">,</span><span class="w"> </span><span class="n">m_dropped_size</span><span class="p">,</span><span class="w"> </span><span class="n">m_dropped_addr</span><span class="p">),</span><span class="w"> </span><span class="n">UVM_LOW</span><span class="p">)</span>
 <a id="__codelineno-0-101" name="__codelineno-0-101" href="#__codelineno-0-101"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">report_phase</span>
 </code></pre></div>
 <h3 id="2-the-env-svrouter_module_envsv">2. The env — <code>sv/router_module_env.sv</code><a class="headerlink" href="#2-the-env-svrouter_module_envsv" title="Permanent link">&para;</a></h3>
@@ -2499,8 +2579,8 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kd">class</span><span class="w"> </span><span class="nc">router_module_env</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="nc">uvm_env</span><span class="p">;</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="n">router_reference</span><span class="w">  </span><span class="n">reference</span><span class="p">;</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="n">router_scoreboard</span><span class="w"> </span><span class="n">scoreboard</span><span class="p">;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="n">router_reference</span><span class="w">  </span><span class="n">m_reference</span><span class="p">;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="n">router_scoreboard</span><span class="w"> </span><span class="n">m_scoreboard</span><span class="p">;</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="no">`uvm_component_utils</span><span class="p">(</span><span class="n">router_module_env</span><span class="p">)</span>
 <a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
@@ -2522,14 +2602,14 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">router_module_env</span><span class="o">::</span><span class="n">build_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">  </span><span class="k">super</span><span class="p">.</span><span class="n">build_phase</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span><span class="n">reference</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">router_reference</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"reference"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="n">scoreboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_scoreboard</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"scoreboard"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span><span class="n">m_reference</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">router_reference</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"reference"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="n">m_scoreboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_scoreboard</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"scoreboard"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">build_phase</span>
 <a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="c1">//------------------------------------------------------------------------------</span>
 <a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="k">function</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">router_module_env</span><span class="o">::</span><span class="n">connect_phase</span><span class="p">(</span><span class="n">uvm_phase</span><span class="w"> </span><span class="n">phase</span><span class="p">);</span>
 <a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">  </span><span class="c1">// Only packets the router will route reach the scoreboard</span>
-<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">  </span><span class="n">reference</span><span class="p">.</span><span class="n">yapp_valid_out</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">scoreboard</span><span class="p">.</span><span class="n">yapp_in</span><span class="p">);</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">  </span><span class="n">m_reference</span><span class="p">.</span><span class="n">m_yapp_valid_out</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_scoreboard</span><span class="p">.</span><span class="n">m_yapp_in</span><span class="p">);</span>
 <a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="k">endfunction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">connect_phase</span>
 </code></pre></div>
 <h3 id="3-the-package-svrouter_module_pkgsv">3. The package — <code>sv/router_module_pkg.sv</code><a class="headerlink" href="#3-the-package-svrouter_module_pkgsv" title="Permanent link">&para;</a></h3>
@@ -2556,13 +2636,13 @@ from bus traffic · layered TLM connections · UVC package</p>
 <a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="k">endpackage</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">router_module_pkg</span>
 </code></pre></div>
 <h3 id="4-router_tb-connect-through-the-layer">4. <code>router_tb</code>: connect through the layer<a class="headerlink" href="#4-router_tb-connect-through-the-layer" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">router_module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_module_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"router_module"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">m_router_module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">router_module_env</span><span class="o">::</span><span class="n">type_id</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">"router_module"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">...</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">yapp</span><span class="p">.</span><span class="n">agent</span><span class="p">.</span><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">router_module</span><span class="p">.</span><span class="n">reference</span><span class="p">.</span><span class="n">yapp_in</span><span class="p">);</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">hbus</span><span class="p">.</span><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">router_module</span><span class="p">.</span><span class="n">reference</span><span class="p">.</span><span class="n">hbus_in</span><span class="p">);</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">chan0</span><span class="p">.</span><span class="n">rx_agent</span><span class="p">.</span><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">router_module</span><span class="p">.</span><span class="n">scoreboard</span><span class="p">.</span><span class="n">chan0_in</span><span class="p">);</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">chan1</span><span class="p">.</span><span class="n">rx_agent</span><span class="p">.</span><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">router_module</span><span class="p">.</span><span class="n">scoreboard</span><span class="p">.</span><span class="n">chan1_in</span><span class="p">);</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">chan2</span><span class="p">.</span><span class="n">rx_agent</span><span class="p">.</span><span class="n">monitor</span><span class="p">.</span><span class="n">item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">router_module</span><span class="p">.</span><span class="n">scoreboard</span><span class="p">.</span><span class="n">chan2_in</span><span class="p">);</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">m_yapp</span><span class="p">.</span><span class="n">m_agent</span><span class="p">.</span><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_router_module</span><span class="p">.</span><span class="n">m_reference</span><span class="p">.</span><span class="n">m_yapp_in</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">m_hbus</span><span class="p">.</span><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_router_module</span><span class="p">.</span><span class="n">m_reference</span><span class="p">.</span><span class="n">m_hbus_in</span><span class="p">);</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">m_chan0</span><span class="p">.</span><span class="n">m_rx_agent</span><span class="p">.</span><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_router_module</span><span class="p">.</span><span class="n">m_scoreboard</span><span class="p">.</span><span class="n">m_chan0_in</span><span class="p">);</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">m_chan1</span><span class="p">.</span><span class="n">m_rx_agent</span><span class="p">.</span><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_router_module</span><span class="p">.</span><span class="n">m_scoreboard</span><span class="p">.</span><span class="n">m_chan1_in</span><span class="p">);</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">m_chan2</span><span class="p">.</span><span class="n">m_rx_agent</span><span class="p">.</span><span class="n">m_monitor</span><span class="p">.</span><span class="n">m_item_collected_port</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">m_router_module</span><span class="p">.</span><span class="n">m_scoreboard</span><span class="p">.</span><span class="n">m_chan2_in</span><span class="p">);</span>
 </code></pre></div>
 <p><code>tb_top.sv</code> imports <code>router_module_pkg</code> instead of including the scoreboard;
 <code>run.f</code> compiles <code>../sv/router_module_pkg.sv</code> after the three UVC packages it

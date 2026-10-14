@@ -15,32 +15,32 @@
        {
         "name": "zero",
         "line": 20,
-        "hits": 107,
+        "hits": 148,
         "runs": 10,
         "tests": [
+         "random_test",
          "random_config_test",
-         "random_parity_test",
-         "random_test"
+         "random_parity_test"
         ]
        },
        {
         "name": "one",
         "line": 21,
-        "hits": 4175,
-        "runs": 13,
+        "hits": 4167,
+        "runs": 12,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
-         "random_test"
+         "random_test",
+         "random_backpressure_test",
+         "random_config_test"
         ]
        },
        {
         "name": "mid",
         "line": 22,
-        "hits": 1211,
-        "runs": 40,
+        "hits": 1125,
+        "runs": 39,
         "tests": [
          "random_backpressure_test",
          "random_parity_test",
@@ -53,26 +53,26 @@
        {
         "name": "max62",
         "line": 23,
-        "hits": 154,
-        "runs": 11,
+        "hits": 209,
+        "runs": 16,
         "tests": [
-         "random_test",
          "random_config_test",
          "random_parity_test",
+         "random_test",
          "random_backpressure_test"
         ]
        },
        {
         "name": "max63",
         "line": 24,
-        "hits": 1432,
-        "runs": 47,
+        "hits": 1422,
+        "runs": 45,
         "tests": [
          "counter_wrap_test",
          "back_to_back_test",
          "random_parity_test",
-         "random_config_test",
          "parity_error_test",
+         "random_config_test",
          "reg_function_check_test",
          "reg_function_test",
          "backpressure_test",
@@ -94,8 +94,8 @@
        {
         "name": "below",
         "line": 27,
-        "hits": 1966,
-        "runs": 72,
+        "hits": 1983,
+        "runs": 71,
         "tests": [
          "counter_wrap_test",
          "random_parity_test",
@@ -116,26 +116,26 @@
        {
         "name": "equal",
         "line": 28,
-        "hits": 151,
-        "runs": 32,
+        "hits": 152,
+        "runs": 33,
         "tests": [
+         "random_parity_test",
          "random_config_test",
          "router_filter_test",
          "random_test",
-         "random_parity_test",
          "random_backpressure_test"
         ]
        },
        {
         "name": "plus_one",
         "line": 29,
-        "hits": 4238,
-        "runs": 32,
+        "hits": 4253,
+        "runs": 33,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
-         "router_filter_test",
          "random_test",
+         "router_filter_test",
          "random_parity_test",
          "random_backpressure_test"
         ]
@@ -143,12 +143,12 @@
        {
         "name": "above",
         "line": 30,
-        "hits": 724,
+        "hits": 683,
         "runs": 40,
         "tests": [
          "random_backpressure_test",
-         "random_config_test",
          "random_test",
+         "random_config_test",
          "random_parity_test",
          "router_filter_test",
          "pkt_mem_test"
@@ -166,8 +166,8 @@
        {
         "name": "forwarded",
         "line": 34,
-        "hits": 2021,
-        "runs": 72,
+        "hits": 2061,
+        "runs": 71,
         "tests": [
          "counter_wrap_test",
          "random_parity_test",
@@ -188,8 +188,8 @@
        {
         "name": "addr3",
         "line": 35,
-        "hits": 1195,
-        "runs": 31,
+        "hits": 1171,
+        "runs": 33,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
@@ -202,13 +202,13 @@
        {
         "name": "oversized",
         "line": 36,
-        "hits": 3863,
+        "hits": 3839,
         "runs": 44,
         "tests": [
          "hbus_sweep_test",
          "random_backpressure_test",
-         "random_config_test",
          "random_test",
+         "random_config_test",
          "random_parity_test",
          "router_filter_test",
          "pkt_mem_test"
@@ -226,14 +226,14 @@
        {
         "name": "good",
         "line": 39,
-        "hits": 2674,
+        "hits": 2660,
         "runs": 68,
         "tests": [
          "counter_wrap_test",
-         "random_config_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
+         "random_config_test",
          "router_filter_test",
          "back_to_back_test",
          "reg_function_test",
@@ -247,7 +247,7 @@
        {
         "name": "bad",
         "line": 40,
-        "hits": 4405,
+        "hits": 4411,
         "runs": 44,
         "tests": [
          "hbus_sweep_test",
@@ -273,15 +273,15 @@
        {
         "name": "none",
         "line": 43,
-        "hits": 416,
-        "runs": 43,
+        "hits": 348,
+        "runs": 44,
         "tests": [
          "back_to_back_test",
-         "random_config_test",
-         "random_test",
          "router_filter_test",
          "random_parity_test",
+         "random_config_test",
          "backpressure_test",
+         "random_test",
          "parity_error_test",
          "random_backpressure_test",
          "reg_function_check_test",
@@ -293,7 +293,7 @@
        {
         "name": "mixed",
         "line": 44,
-        "hits": 5057,
+        "hits": 5135,
         "runs": 38,
         "tests": [
          "hbus_sweep_test",
@@ -307,15 +307,15 @@
        {
         "name": "all",
         "line": 45,
-        "hits": 1606,
-        "runs": 39,
+        "hits": 1588,
+        "runs": 41,
         "tests": [
          "counter_wrap_test",
          "random_config_test",
          "random_backpressure_test",
          "random_parity_test",
-         "random_test",
          "router_filter_test",
+         "random_test",
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test"
@@ -333,23 +333,24 @@
        {
         "name": "addr3_x_bad",
         "line": 47,
-        "hits": 1053,
-        "runs": 16,
+        "hits": 1052,
+        "runs": 15,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_config_test",
-         "random_backpressure_test"
+         "random_test"
         ]
        },
        {
         "name": "addr3_x_good",
         "line": 47,
-        "hits": 142,
-        "runs": 26,
+        "hits": 119,
+        "runs": 28,
         "tests": [
-         "random_config_test",
          "random_parity_test",
+         "random_config_test",
          "router_filter_test",
          "random_test",
          "random_backpressure_test"
@@ -358,14 +359,14 @@
        {
         "name": "forwarded_x_bad",
         "line": 47,
-        "hits": 189,
-        "runs": 34,
+        "hits": 201,
+        "runs": 35,
         "tests": [
          "random_parity_test",
          "parity_error_test",
-         "random_config_test",
          "random_test",
          "random_backpressure_test",
+         "random_config_test",
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test"
@@ -374,13 +375,13 @@
        {
         "name": "forwarded_x_good",
         "line": 47,
-        "hits": 1832,
-        "runs": 68,
+        "hits": 1860,
+        "runs": 67,
         "tests": [
          "counter_wrap_test",
-         "random_test",
          "random_parity_test",
          "random_config_test",
+         "random_test",
          "random_backpressure_test",
          "back_to_back_test",
          "router_filter_test",
@@ -395,8 +396,8 @@
        {
         "name": "oversized_x_bad",
         "line": 47,
-        "hits": 3163,
-        "runs": 31,
+        "hits": 3158,
+        "runs": 30,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
@@ -408,12 +409,12 @@
        {
         "name": "oversized_x_good",
         "line": 47,
-        "hits": 700,
+        "hits": 681,
         "runs": 40,
         "tests": [
          "random_backpressure_test",
-         "random_config_test",
          "random_test",
+         "random_config_test",
          "random_parity_test",
          "router_filter_test",
          "pkt_mem_test"
@@ -440,14 +441,14 @@
        {
         "name": "ctrl",
         "line": 21,
-        "hits": 1135,
+        "hits": 1128,
         "runs": 64,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "hbus_protocol_test",
          "pkt_mem_test",
@@ -460,15 +461,15 @@
        {
         "name": "en",
         "line": 22,
-        "hits": 1164,
+        "hits": 1159,
         "runs": 72,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
          "random_test",
-         "random_parity_test",
          "reg_function_check_test",
          "reg_function_test",
          "parity_error_test",
@@ -482,17 +483,17 @@
        {
         "name": "parity_cnt",
         "line": 23,
-        "hits": 710,
+        "hits": 711,
         "runs": 76,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
-         "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
+         "random_config_test",
          "random_test",
          "hbus_protocol_test",
          "parity_error_test",
-         "random_parity_test",
          "reg_introspection_test",
          "counter_wrap_test",
          "reg_function_check_test",
@@ -503,14 +504,14 @@
         ]
        },
        {
-        "name": "oversized_cnt",
+        "name": "m_oversized_cnt",
         "line": 24,
-        "hits": 702,
+        "hits": 703,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "reg_bit_walk_test",
          "random_config_test",
+         "reg_bit_walk_test",
          "random_parity_test",
          "random_backpressure_test",
          "random_test",
@@ -526,15 +527,15 @@
        {
         "name": "addr3_cnt",
         "line": 25,
-        "hits": 710,
+        "hits": 720,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_backpressure_test",
          "random_config_test",
-         "random_parity_test",
+         "reg_bit_walk_test",
          "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
          "reg_function_check_test",
          "reg_function_test",
          "reg_introspection_test",
@@ -547,15 +548,15 @@
        {
         "name": "addr0_cnt",
         "line": 26,
-        "hits": 728,
+        "hits": 726,
         "runs": 72,
         "tests": [
          "hbus_sweep_test",
-         "reg_bit_walk_test",
          "random_config_test",
+         "reg_bit_walk_test",
          "counter_wrap_test",
-         "random_test",
          "random_backpressure_test",
+         "random_test",
          "random_parity_test",
          "reg_access_test",
          "reg_function_check_test",
@@ -569,13 +570,13 @@
        {
         "name": "addr1_cnt",
         "line": 27,
-        "hits": 707,
+        "hits": 708,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
-         "random_backpressure_test",
          "random_config_test",
+         "random_backpressure_test",
          "random_parity_test",
          "random_test",
          "reg_function_check_test",
@@ -597,8 +598,8 @@
          "random_config_test",
          "reg_bit_walk_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
          "reg_function_check_test",
          "reg_function_test",
          "reg_introspection_test",
@@ -609,9 +610,9 @@
         ]
        },
        {
-        "name": "mem_size",
+        "name": "m_mem_size",
         "line": 29,
-        "hits": 758,
+        "hits": 752,
         "runs": 56,
         "tests": [
          "hbus_sweep_test",
@@ -629,35 +630,34 @@
        {
         "name": "reg_hole[0]",
         "line": 31,
-        "hits": 580,
-        "runs": 15,
+        "hits": 581,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test"
         ]
        },
        {
         "name": "reg_hole[1]",
         "line": 31,
-        "hits": 580,
-        "runs": 15,
+        "hits": 575,
+        "runs": 11,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
-         "random_config_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_config_test"
         ]
        },
        {
         "name": "reg_hole[2]",
         "line": 31,
-        "hits": 578,
-        "runs": 13,
+        "hits": 579,
+        "runs": 14,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -670,8 +670,8 @@
        {
         "name": "reg_hole[3]",
         "line": 31,
-        "hits": 579,
-        "runs": 14,
+        "hits": 581,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -683,8 +683,8 @@
        {
         "name": "reg_hole[4]",
         "line": 31,
-        "hits": 583,
-        "runs": 18,
+        "hits": 582,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -697,25 +697,26 @@
        {
         "name": "reg_hole[5]",
         "line": 31,
-        "hits": 576,
-        "runs": 15,
+        "hits": 574,
+        "runs": 14,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
          "random_config_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "reg_hole[6]",
         "line": 31,
-        "hits": 586,
-        "runs": 20,
+        "hits": 589,
+        "runs": 22,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
          "hbus_protocol_test",
+         "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
          "random_test"
         ]
@@ -723,21 +724,21 @@
        {
         "name": "pkt_mem_first",
         "line": 33,
-        "hits": 58,
+        "hits": 57,
         "runs": 40,
         "tests": [
          "pkt_mem_test",
-         "random_config_test",
-         "random_test",
+         "random_parity_test",
          "hbus_sweep_test",
          "random_backpressure_test",
-         "random_parity_test"
+         "random_config_test",
+         "random_test"
         ]
        },
        {
         "name": "pkt_mem_mid",
         "line": 34,
-        "hits": 1946,
+        "hits": 1840,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
@@ -751,36 +752,38 @@
        {
         "name": "pkt_mem_last",
         "line": 35,
-        "hits": 17,
-        "runs": 13,
+        "hits": 16,
+        "runs": 12,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "gap_first",
         "line": 36,
-        "hits": 16,
-        "runs": 8,
+        "hits": 17,
+        "runs": 9,
         "tests": [
          "hbus_protocol_test",
-         "hbus_sweep_test"
+         "hbus_sweep_test",
+         "random_test"
         ]
        },
        {
         "name": "gap_mid",
         "line": 37,
-        "hits": 123,
-        "runs": 31,
+        "hits": 112,
+        "runs": 33,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_test"
         ]
        },
        {
@@ -796,36 +799,41 @@
        {
         "name": "yapp_mem_first",
         "line": 39,
-        "hits": 54,
-        "runs": 9,
+        "hits": 64,
+        "runs": 13,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
+         "random_test",
+         "random_parity_test",
          "random_config_test"
         ]
        },
        {
         "name": "yapp_mem_mid",
         "line": 40,
-        "hits": 14220,
+        "hits": 14174,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "yapp_mem_last",
         "line": 41,
-        "hits": 48,
-        "runs": 8,
+        "hits": 54,
+        "runs": 11,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
         ]
        }
       ],
@@ -840,7 +848,7 @@
        {
         "name": "read",
         "line": 44,
-        "hits": 18792,
+        "hits": 18661,
         "runs": 88,
         "tests": [
          "hbus_sweep_test",
@@ -866,16 +874,16 @@
        {
         "name": "write",
         "line": 45,
-        "hits": 9089,
+        "hits": 9064,
         "runs": 84,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "reg_bit_walk_test",
+         "random_parity_test",
          "random_backpressure_test",
          "random_test",
-         "random_parity_test",
          "hbus_protocol_test",
          "reg_introspection_test",
          "router_filter_test",
@@ -900,14 +908,14 @@
        {
         "name": "addr0_cnt_x_read",
         "line": 47,
-        "hits": 696,
+        "hits": 694,
         "runs": 72,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
          "counter_wrap_test",
-         "random_test",
          "random_backpressure_test",
+         "random_test",
          "random_parity_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
@@ -934,12 +942,12 @@
        {
         "name": "addr1_cnt_x_read",
         "line": 47,
-        "hits": 679,
+        "hits": 680,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_backpressure_test",
          "random_config_test",
+         "random_backpressure_test",
          "random_parity_test",
          "random_test",
          "reg_bit_walk_test",
@@ -972,8 +980,8 @@
          "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -998,14 +1006,14 @@
        {
         "name": "addr3_cnt_x_read",
         "line": 47,
-        "hits": 682,
+        "hits": 692,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_backpressure_test",
          "random_config_test",
-         "random_parity_test",
          "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -1030,15 +1038,15 @@
        {
         "name": "ctrl_x_read",
         "line": 47,
-        "hits": 760,
+        "hits": 758,
         "runs": 56,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
+         "random_config_test",
          "hbus_protocol_test",
          "reg_access_test",
          "reg_introspection_test",
@@ -1048,14 +1056,14 @@
        {
         "name": "ctrl_x_write",
         "line": 47,
-        "hits": 375,
+        "hits": 370,
         "runs": 60,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "hbus_protocol_test",
          "pkt_mem_test",
@@ -1073,9 +1081,9 @@
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
+         "random_parity_test",
          "random_test",
          "random_backpressure_test",
-         "random_parity_test",
          "reg_function_check_test",
          "reg_function_test",
          "reg_introspection_test",
@@ -1085,14 +1093,14 @@
        {
         "name": "en_x_write",
         "line": 47,
-        "hits": 403,
+        "hits": 398,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "parity_error_test",
          "reg_function_check_test",
@@ -1106,11 +1114,12 @@
        {
         "name": "gap_first_x_read",
         "line": 47,
-        "hits": 8,
-        "runs": 8,
+        "hits": 9,
+        "runs": 9,
         "tests": [
          "hbus_protocol_test",
-         "hbus_sweep_test"
+         "hbus_sweep_test",
+         "random_test"
         ]
        },
        {
@@ -1145,14 +1154,14 @@
        {
         "name": "gap_mid_x_read",
         "line": 47,
-        "hits": 99,
-        "runs": 31,
+        "hits": 88,
+        "runs": 33,
         "tests": [
-         "random_config_test",
          "hbus_sweep_test",
+         "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_test"
         ]
        },
        {
@@ -1165,9 +1174,9 @@
         ]
        },
        {
-        "name": "mem_size_x_read",
+        "name": "m_mem_size_x_read",
         "line": 47,
-        "hits": 730,
+        "hits": 724,
         "runs": 56,
         "tests": [
          "hbus_sweep_test",
@@ -1183,7 +1192,7 @@
         ]
        },
        {
-        "name": "mem_size_x_write",
+        "name": "m_mem_size_x_write",
         "line": 47,
         "hits": 28,
         "runs": 12,
@@ -1194,9 +1203,9 @@
         ]
        },
        {
-        "name": "oversized_cnt_x_read",
+        "name": "m_oversized_cnt_x_read",
         "line": 47,
-        "hits": 674,
+        "hits": 675,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
@@ -1215,7 +1224,7 @@
         ]
        },
        {
-        "name": "oversized_cnt_x_write",
+        "name": "m_oversized_cnt_x_write",
         "line": 47,
         "hits": 28,
         "runs": 12,
@@ -1228,15 +1237,15 @@
        {
         "name": "parity_cnt_x_read",
         "line": 47,
-        "hits": 678,
+        "hits": 679,
         "runs": 76,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
+         "random_config_test",
          "random_test",
          "parity_error_test",
-         "random_parity_test",
          "reg_bit_walk_test",
          "counter_wrap_test",
          "hbus_protocol_test",
@@ -1263,14 +1272,14 @@
        {
         "name": "pkt_mem_first_x_read",
         "line": 47,
-        "hits": 50,
+        "hits": 49,
         "runs": 40,
         "tests": [
          "pkt_mem_test",
+         "random_parity_test",
+         "random_backpressure_test",
          "random_config_test",
          "random_test",
-         "random_backpressure_test",
-         "random_parity_test",
          "hbus_sweep_test"
         ]
        },
@@ -1287,13 +1296,14 @@
        {
         "name": "pkt_mem_last_x_read",
         "line": 47,
-        "hits": 13,
-        "runs": 13,
+        "hits": 12,
+        "runs": 12,
         "tests": [
-         "random_config_test",
          "hbus_sweep_test",
+         "random_config_test",
          "random_backpressure_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
@@ -1308,14 +1318,14 @@
        {
         "name": "pkt_mem_mid_x_read",
         "line": 47,
-        "hits": 1698,
+        "hits": 1592,
         "runs": 40,
         "tests": [
          "random_backpressure_test",
          "random_config_test",
          "random_test",
-         "random_parity_test",
          "hbus_sweep_test",
+         "random_parity_test",
          "pkt_mem_test"
         ]
        },
@@ -1331,14 +1341,14 @@
        {
         "name": "reg_hole[0]_x_read",
         "line": 47,
-        "hits": 560,
-        "runs": 15,
+        "hits": 561,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
          "hbus_protocol_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test"
         ]
        },
@@ -1355,14 +1365,13 @@
        {
         "name": "reg_hole[1]_x_read",
         "line": 47,
-        "hits": 560,
-        "runs": 15,
+        "hits": 555,
+        "runs": 11,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
-         "random_config_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_config_test"
         ]
        },
        {
@@ -1378,8 +1387,8 @@
        {
         "name": "reg_hole[2]_x_read",
         "line": 47,
-        "hits": 558,
-        "runs": 13,
+        "hits": 559,
+        "runs": 14,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -1402,8 +1411,8 @@
        {
         "name": "reg_hole[3]_x_read",
         "line": 47,
-        "hits": 559,
-        "runs": 14,
+        "hits": 561,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -1425,8 +1434,8 @@
        {
         "name": "reg_hole[4]_x_read",
         "line": 47,
-        "hits": 563,
-        "runs": 18,
+        "hits": 562,
+        "runs": 16,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
@@ -1449,14 +1458,14 @@
        {
         "name": "reg_hole[5]_x_read",
         "line": 47,
-        "hits": 556,
-        "runs": 15,
+        "hits": 554,
+        "runs": 14,
         "tests": [
          "hbus_sweep_test",
          "hbus_protocol_test",
          "random_config_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
@@ -1472,11 +1481,12 @@
        {
         "name": "reg_hole[6]_x_read",
         "line": 47,
-        "hits": 566,
-        "runs": 20,
+        "hits": 569,
+        "runs": 22,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
          "hbus_protocol_test",
          "random_test"
@@ -1495,71 +1505,81 @@
        {
         "name": "yapp_mem_first_x_read",
         "line": 47,
-        "hits": 25,
-        "runs": 9,
+        "hits": 30,
+        "runs": 13,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
+         "random_test",
+         "random_parity_test",
          "random_config_test"
         ]
        },
        {
         "name": "yapp_mem_first_x_write",
         "line": 47,
-        "hits": 29,
-        "runs": 9,
+        "hits": 34,
+        "runs": 13,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
+         "random_test",
+         "random_parity_test",
          "random_config_test"
         ]
        },
        {
         "name": "yapp_mem_last_x_read",
         "line": 47,
-        "hits": 24,
-        "runs": 8,
+        "hits": 27,
+        "runs": 11,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "yapp_mem_last_x_write",
         "line": 47,
-        "hits": 24,
-        "runs": 8,
+        "hits": 27,
+        "runs": 11,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "yapp_mem_mid_x_read",
         "line": 47,
-        "hits": 6602,
+        "hits": 6579,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "yapp_mem_mid_x_write",
         "line": 47,
-        "hits": 7618,
+        "hits": 7595,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        }
       ],
@@ -1581,16 +1601,16 @@
       "line": 18,
       "bins": [
        {
-        "name": "ctrl_reg",
+        "name": "m_ctrl_reg",
         "line": 18,
-        "hits": 3000,
+        "hits": 2960,
         "runs": 60,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "hbus_protocol_test",
          "pkt_mem_test",
@@ -1600,16 +1620,16 @@
         ]
        },
        {
-        "name": "en_reg",
+        "name": "m_en_reg",
         "line": 19,
-        "hits": 3224,
+        "hits": 3184,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "parity_error_test",
          "reg_function_check_test",
@@ -1632,14 +1652,14 @@
        {
         "name": "b[0]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1656,14 +1676,14 @@
        {
         "name": "b[1]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1680,14 +1700,14 @@
        {
         "name": "b[2]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1704,14 +1724,14 @@
        {
         "name": "b[3]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1728,14 +1748,14 @@
        {
         "name": "b[4]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1752,14 +1772,14 @@
        {
         "name": "b[5]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1776,14 +1796,14 @@
        {
         "name": "b[6]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1800,14 +1820,14 @@
        {
         "name": "b[7]",
         "line": 22,
-        "hits": 778,
+        "hits": 768,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_protocol_test",
@@ -1833,15 +1853,15 @@
        {
         "name": "zero",
         "line": 25,
-        "hits": 2981,
+        "hits": 2906,
         "runs": 76,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
          "router_filter_test",
          "parity_error_test",
          "reg_introspection_test",
@@ -1856,14 +1876,14 @@
        {
         "name": "one",
         "line": 26,
-        "hits": 3243,
+        "hits": 3238,
         "runs": 80,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "router_disable_test",
@@ -1887,15 +1907,15 @@
       "line": 28,
       "bins": [
        {
-        "name": "ctrl_reg_x_b[0]_x_one",
+        "name": "m_ctrl_reg_x_b[0]_x_one",
         "line": 28,
-        "hits": 202,
-        "runs": 59,
+        "hits": 191,
+        "runs": 58,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
-         "random_config_test",
          "random_backpressure_test",
+         "random_config_test",
          "random_parity_test",
          "random_test",
          "pkt_mem_test",
@@ -1906,118 +1926,49 @@
         ]
        },
        {
-        "name": "ctrl_reg_x_b[0]_x_zero",
-        "line": 28,
-        "hits": 173,
-        "runs": 46,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_test",
-         "random_parity_test",
-         "random_backpressure_test",
-         "hbus_protocol_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[1]_x_one",
-        "line": 28,
-        "hits": 196,
-        "runs": 49,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_parity_test",
-         "random_backpressure_test",
-         "random_test",
-         "hbus_protocol_test",
-         "router_filter_test",
-         "pkt_mem_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[1]_x_zero",
+        "name": "m_ctrl_reg_x_b[0]_x_zero",
         "line": 28,
         "hits": 179,
-        "runs": 49,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_test",
-         "random_parity_test",
-         "pkt_mem_test",
-         "reg_access_test",
-         "reg_introspection_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[2]_x_one",
-        "line": 28,
-        "hits": 198,
-        "runs": 57,
+        "runs": 45,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
          "random_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "pkt_mem_test",
-         "hbus_protocol_test",
-         "reg_access_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[2]_x_zero",
-        "line": 28,
-        "hits": 177,
-        "runs": 47,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
          "random_parity_test",
          "random_backpressure_test",
-         "random_test",
          "hbus_protocol_test",
          "router_filter_test"
         ]
        },
        {
-        "name": "ctrl_reg_x_b[3]_x_one",
+        "name": "m_ctrl_reg_x_b[1]_x_one",
         "line": 28,
-        "hits": 188,
-        "runs": 51,
+        "hits": 202,
+        "runs": 50,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
          "random_parity_test",
-         "random_test",
          "random_backpressure_test",
+         "random_test",
          "hbus_protocol_test",
          "router_filter_test",
          "pkt_mem_test"
         ]
        },
        {
-        "name": "ctrl_reg_x_b[3]_x_zero",
+        "name": "m_ctrl_reg_x_b[1]_x_zero",
         "line": 28,
-        "hits": 187,
+        "hits": 168,
         "runs": 52,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
          "random_test",
          "pkt_mem_test",
          "reg_access_test",
@@ -2025,127 +1976,9 @@
         ]
        },
        {
-        "name": "ctrl_reg_x_b[4]_x_one",
+        "name": "m_ctrl_reg_x_b[2]_x_one",
         "line": 28,
-        "hits": 190,
-        "runs": 51,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_parity_test",
-         "random_test",
-         "random_backpressure_test",
-         "hbus_protocol_test",
-         "pkt_mem_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[4]_x_zero",
-        "line": 28,
-        "hits": 185,
-        "runs": 56,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_test",
-         "random_parity_test",
-         "hbus_protocol_test",
-         "pkt_mem_test",
-         "reg_access_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[5]_x_one",
-        "line": 28,
-        "hits": 195,
-        "runs": 59,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_test",
-         "random_parity_test",
-         "hbus_protocol_test",
-         "pkt_mem_test",
-         "reg_access_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[5]_x_zero",
-        "line": 28,
-        "hits": 180,
-        "runs": 48,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "pkt_mem_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[6]_x_one",
-        "line": 28,
-        "hits": 161,
-        "runs": 38,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[6]_x_zero",
-        "line": 28,
-        "hits": 214,
-        "runs": 57,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "hbus_protocol_test",
-         "pkt_mem_test",
-         "router_filter_test",
-         "reg_access_test",
-         "reg_introspection_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[7]_x_one",
-        "line": 28,
-        "hits": 162,
-        "runs": 37,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
-        ]
-       },
-       {
-        "name": "ctrl_reg_x_b[7]_x_zero",
-        "line": 28,
-        "hits": 213,
+        "hits": 204,
         "runs": 58,
         "tests": [
          "hbus_sweep_test",
@@ -2154,6 +1987,160 @@
          "random_parity_test",
          "random_backpressure_test",
          "random_test",
+         "pkt_mem_test",
+         "hbus_protocol_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[2]_x_zero",
+        "line": 28,
+        "hits": 166,
+        "runs": 45,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[3]_x_one",
+        "line": 28,
+        "hits": 201,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "router_filter_test",
+         "pkt_mem_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[3]_x_zero",
+        "line": 28,
+        "hits": 169,
+        "runs": 50,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[4]_x_one",
+        "line": 28,
+        "hits": 189,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[4]_x_zero",
+        "line": 28,
+        "hits": 181,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[5]_x_one",
+        "line": 28,
+        "hits": 201,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "reg_access_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[5]_x_zero",
+        "line": 28,
+        "hits": 169,
+        "runs": 48,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "pkt_mem_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[6]_x_one",
+        "line": 28,
+        "hits": 152,
+        "runs": 38,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_config_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[6]_x_zero",
+        "line": 28,
+        "hits": 218,
+        "runs": 59,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
          "hbus_protocol_test",
          "pkt_mem_test",
          "router_filter_test",
@@ -2162,14 +2149,47 @@
         ]
        },
        {
-        "name": "en_reg_x_b[0]_x_one",
+        "name": "m_ctrl_reg_x_b[7]_x_one",
         "line": 28,
-        "hits": 297,
+        "hits": 158,
+        "runs": 36,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test"
+        ]
+       },
+       {
+        "name": "m_ctrl_reg_x_b[7]_x_zero",
+        "line": 28,
+        "hits": 212,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_test",
+         "random_parity_test",
+         "hbus_protocol_test",
+         "pkt_mem_test",
+         "router_filter_test",
+         "reg_access_test",
+         "reg_introspection_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[0]_x_one",
+        "line": 28,
+        "hits": 296,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
          "reg_bit_walk_test",
+         "random_config_test",
          "random_backpressure_test",
          "random_parity_test",
          "random_test",
@@ -2183,31 +2203,31 @@
         ]
        },
        {
-        "name": "en_reg_x_b[0]_x_zero",
+        "name": "m_en_reg_x_b[0]_x_zero",
         "line": 28,
-        "hits": 106,
-        "runs": 26,
+        "hits": 102,
+        "runs": 27,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
          "random_test",
-         "router_disable_test",
-         "random_parity_test"
+         "random_parity_test",
+         "router_disable_test"
         ]
        },
        {
-        "name": "en_reg_x_b[1]_x_one",
+        "name": "m_en_reg_x_b[1]_x_one",
         "line": 28,
-        "hits": 216,
-        "runs": 61,
+        "hits": 214,
+        "runs": 63,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
          "reg_bit_walk_test",
+         "random_config_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
          "router_disable_test",
          "counter_wrap_test",
          "parity_error_test",
@@ -2217,17 +2237,131 @@
         ]
        },
        {
-        "name": "en_reg_x_b[1]_x_zero",
+        "name": "m_en_reg_x_b[1]_x_zero",
         "line": 28,
-        "hits": 187,
+        "hits": 184,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[2]_x_one",
+        "line": 28,
+        "hits": 198,
+        "runs": 62,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[2]_x_zero",
+        "line": 28,
+        "hits": 200,
+        "runs": 51,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_parity_test",
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[3]_x_one",
+        "line": 28,
+        "hits": 202,
+        "runs": 59,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_test",
+         "random_backpressure_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[3]_x_zero",
+        "line": 28,
+        "hits": 196,
+        "runs": 57,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test",
+         "random_config_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[4]_x_one",
+        "line": 28,
+        "hits": 207,
+        "runs": 60,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[4]_x_zero",
+        "line": 28,
+        "hits": 191,
         "runs": 54,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
          "random_parity_test",
-         "random_test",
          "random_backpressure_test",
+         "random_test",
          "parity_error_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2236,16 +2370,16 @@
         ]
        },
        {
-        "name": "en_reg_x_b[2]_x_one",
+        "name": "m_en_reg_x_b[5]_x_one",
         "line": 28,
         "hits": 207,
-        "runs": 61,
+        "runs": 63,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_parity_test",
          "random_backpressure_test",
+         "random_parity_test",
          "random_test",
          "router_disable_test",
          "counter_wrap_test",
@@ -2256,17 +2390,17 @@
         ]
        },
        {
-        "name": "en_reg_x_b[2]_x_zero",
+        "name": "m_en_reg_x_b[5]_x_zero",
         "line": 28,
-        "hits": 196,
+        "hits": 191,
         "runs": 50,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
          "parity_error_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2274,45 +2408,7 @@
         ]
        },
        {
-        "name": "en_reg_x_b[3]_x_one",
-        "line": 28,
-        "hits": 196,
-        "runs": 58,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_parity_test",
-         "random_backpressure_test",
-         "random_test",
-         "router_disable_test",
-         "counter_wrap_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[3]_x_zero",
-        "line": 28,
-        "hits": 207,
-        "runs": 58,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_backpressure_test",
-         "random_config_test",
-         "random_test",
-         "random_parity_test",
-         "parity_error_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[4]_x_one",
+        "name": "m_en_reg_x_b[6]_x_one",
         "line": 28,
         "hits": 211,
         "runs": 60,
@@ -2320,84 +2416,8 @@
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_backpressure_test",
-         "random_test",
          "random_parity_test",
-         "router_disable_test",
-         "counter_wrap_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[4]_x_zero",
-        "line": 28,
-        "hits": 192,
-        "runs": 54,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
          "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "parity_error_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[5]_x_one",
-        "line": 28,
-        "hits": 211,
-        "runs": 64,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "router_disable_test",
-         "counter_wrap_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[5]_x_zero",
-        "line": 28,
-        "hits": 192,
-        "runs": 51,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "parity_error_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[6]_x_one",
-        "line": 28,
-        "hits": 206,
-        "runs": 58,
-        "tests": [
-         "hbus_sweep_test",
-         "random_config_test",
-         "reg_bit_walk_test",
-         "random_backpressure_test",
-         "random_parity_test",
          "random_test",
          "router_disable_test",
          "counter_wrap_test",
@@ -2407,55 +2427,55 @@
         ]
        },
        {
-        "name": "en_reg_x_b[6]_x_zero",
+        "name": "m_en_reg_x_b[6]_x_zero",
         "line": 28,
-        "hits": 197,
-        "runs": 58,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_test",
-         "random_config_test",
-         "random_parity_test",
-         "random_backpressure_test",
-         "parity_error_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "reg_introspection_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[7]_x_one",
-        "line": 28,
-        "hits": 207,
-        "runs": 58,
-        "tests": [
-         "hbus_sweep_test",
-         "reg_bit_walk_test",
-         "random_config_test",
-         "random_backpressure_test",
-         "random_parity_test",
-         "random_test",
-         "router_disable_test",
-         "counter_wrap_test",
-         "reg_function_check_test",
-         "reg_function_test",
-         "router_filter_test"
-        ]
-       },
-       {
-        "name": "en_reg_x_b[7]_x_zero",
-        "line": 28,
-        "hits": 196,
+        "hits": 187,
         "runs": 55,
         "tests": [
          "hbus_sweep_test",
          "reg_bit_walk_test",
          "random_config_test",
-         "random_test",
          "random_backpressure_test",
          "random_parity_test",
+         "random_test",
+         "parity_error_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "reg_introspection_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[7]_x_one",
+        "line": 28,
+        "hits": 205,
+        "runs": 60,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
+         "router_disable_test",
+         "counter_wrap_test",
+         "reg_function_check_test",
+         "reg_function_test",
+         "router_filter_test"
+        ]
+       },
+       {
+        "name": "m_en_reg_x_b[7]_x_zero",
+        "line": 28,
+        "hits": 193,
+        "runs": 56,
+        "tests": [
+         "hbus_sweep_test",
+         "reg_bit_walk_test",
+         "random_config_test",
+         "random_parity_test",
+         "random_backpressure_test",
+         "random_test",
          "parity_error_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2484,15 +2504,15 @@
        {
         "name": "parity_err",
         "line": 18,
-        "hits": 678,
+        "hits": 679,
         "runs": 76,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
+         "random_parity_test",
          "random_backpressure_test",
+         "random_config_test",
          "random_test",
          "parity_error_test",
-         "random_parity_test",
          "reg_bit_walk_test",
          "counter_wrap_test",
          "hbus_protocol_test",
@@ -2507,7 +2527,7 @@
        {
         "name": "oversized",
         "line": 19,
-        "hits": 674,
+        "hits": 675,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
@@ -2528,14 +2548,14 @@
        {
         "name": "addr0",
         "line": 20,
-        "hits": 696,
+        "hits": 694,
         "runs": 72,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
          "counter_wrap_test",
-         "random_test",
          "random_backpressure_test",
+         "random_test",
          "random_parity_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
@@ -2550,12 +2570,12 @@
        {
         "name": "addr1",
         "line": 21,
-        "hits": 679,
+        "hits": 680,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_backpressure_test",
          "random_config_test",
+         "random_backpressure_test",
          "random_parity_test",
          "random_test",
          "reg_bit_walk_test",
@@ -2577,8 +2597,8 @@
          "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
          "random_parity_test",
+         "random_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2592,14 +2612,14 @@
        {
         "name": "addr3",
         "line": 23,
-        "hits": 682,
+        "hits": 692,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_backpressure_test",
          "random_config_test",
-         "random_parity_test",
          "random_test",
+         "random_backpressure_test",
+         "random_parity_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2622,12 +2642,11 @@
        {
         "name": "zero",
         "line": 26,
-        "hits": 3568,
-        "runs": 63,
+        "hits": 3575,
+        "runs": 68,
         "tests": [
          "hbus_sweep_test",
          "router_disable_test",
-         "random_test",
          "reg_function_check_test",
          "reg_function_test",
          "counter_wrap_test",
@@ -2635,6 +2654,7 @@
          "reg_bit_walk_test",
          "uvm_reset_test",
          "random_config_test",
+         "random_test",
          "random_parity_test",
          "hbus_protocol_test",
          "router_filter_test"
@@ -2643,12 +2663,12 @@
        {
         "name": "mid",
         "line": 27,
-        "hits": 355,
+        "hits": 359,
         "runs": 68,
         "tests": [
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "random_test",
          "router_filter_test",
          "hbus_sweep_test",
@@ -2696,11 +2716,11 @@
         "name": "addr0_x_mid",
         "line": 30,
         "hits": 75,
-        "runs": 63,
+        "runs": 62,
         "tests": [
          "random_config_test",
-         "random_parity_test",
          "random_backpressure_test",
+         "random_parity_test",
          "random_test",
          "router_filter_test",
          "counter_wrap_test",
@@ -2715,8 +2735,8 @@
        {
         "name": "addr0_x_zero",
         "line": 30,
-        "hits": 581,
-        "runs": 35,
+        "hits": 579,
+        "runs": 34,
         "tests": [
          "hbus_sweep_test",
          "counter_wrap_test",
@@ -2725,9 +2745,9 @@
          "reg_function_test",
          "router_disable_test",
          "uvm_reset_test",
+         "random_backpressure_test",
          "random_config_test",
          "random_test",
-         "random_backpressure_test",
          "random_parity_test"
         ]
        },
@@ -2744,14 +2764,14 @@
        {
         "name": "addr1_x_mid",
         "line": 30,
-        "hits": 65,
-        "runs": 54,
+        "hits": 67,
+        "runs": 55,
         "tests": [
-         "random_backpressure_test",
          "random_config_test",
+         "random_backpressure_test",
          "random_parity_test",
-         "random_test",
          "router_filter_test",
+         "random_test",
          "hbus_sweep_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2762,8 +2782,8 @@
        {
         "name": "addr1_x_zero",
         "line": 30,
-        "hits": 586,
-        "runs": 33,
+        "hits": 585,
+        "runs": 31,
         "tests": [
          "hbus_sweep_test",
          "counter_wrap_test",
@@ -2773,7 +2793,7 @@
          "router_disable_test",
          "uvm_reset_test",
          "random_backpressure_test",
-         "random_parity_test",
+         "random_config_test",
          "random_test"
         ]
        },
@@ -2791,13 +2811,13 @@
         "name": "addr2_x_mid",
         "line": 30,
         "hits": 69,
-        "runs": 53,
+        "runs": 55,
         "tests": [
-         "random_config_test",
          "random_backpressure_test",
+         "random_config_test",
          "random_parity_test",
-         "router_filter_test",
          "random_test",
+         "router_filter_test",
          "hbus_sweep_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -2809,18 +2829,19 @@
         "name": "addr2_x_zero",
         "line": 30,
         "hits": 597,
-        "runs": 37,
+        "runs": 36,
         "tests": [
          "hbus_sweep_test",
+         "random_config_test",
          "counter_wrap_test",
-         "random_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test",
          "uvm_reset_test",
-         "random_config_test",
-         "random_backpressure_test"
+         "random_backpressure_test",
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
@@ -2836,34 +2857,34 @@
        {
         "name": "addr3_x_mid",
         "line": 30,
-        "hits": 38,
-        "runs": 30,
+        "hits": 42,
+        "runs": 29,
         "tests": [
          "random_config_test",
          "random_parity_test",
          "router_filter_test",
          "hbus_sweep_test",
+         "random_test",
          "reg_introspection_test",
-         "random_backpressure_test",
-         "random_test"
+         "random_backpressure_test"
         ]
        },
        {
         "name": "addr3_x_zero",
         "line": 30,
-        "hits": 632,
-        "runs": 47,
+        "hits": 638,
+        "runs": 50,
         "tests": [
          "hbus_sweep_test",
          "random_backpressure_test",
+         "random_test",
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test",
-         "random_test",
+         "random_config_test",
          "counter_wrap_test",
          "reg_bit_walk_test",
          "uvm_reset_test",
-         "random_config_test",
          "random_parity_test"
         ]
        },
@@ -2880,14 +2901,14 @@
        {
         "name": "oversized_x_mid",
         "line": 30,
-        "hits": 55,
+        "hits": 54,
         "runs": 40,
         "tests": [
          "random_config_test",
          "random_backpressure_test",
+         "router_filter_test",
          "random_parity_test",
          "random_test",
-         "router_filter_test",
          "hbus_sweep_test",
          "reg_introspection_test"
         ]
@@ -2895,20 +2916,20 @@
        {
         "name": "oversized_x_zero",
         "line": 30,
-        "hits": 583,
-        "runs": 36,
+        "hits": 585,
+        "runs": 38,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
          "counter_wrap_test",
-         "random_test",
          "reg_bit_walk_test",
          "reg_function_check_test",
          "reg_function_test",
          "router_disable_test",
          "uvm_reset_test",
-         "random_backpressure_test",
-         "random_config_test"
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test"
         ]
        },
        {
@@ -2924,12 +2945,12 @@
        {
         "name": "parity_err_x_mid",
         "line": 30,
-        "hits": 53,
-        "runs": 42,
+        "hits": 52,
+        "runs": 43,
         "tests": [
-         "random_config_test",
-         "parity_error_test",
          "random_parity_test",
+         "parity_error_test",
+         "random_config_test",
          "random_test",
          "random_backpressure_test",
          "hbus_sweep_test",
@@ -2941,20 +2962,20 @@
        {
         "name": "parity_err_x_zero",
         "line": 30,
-        "hits": 589,
-        "runs": 42,
+        "hits": 591,
+        "runs": 41,
         "tests": [
          "hbus_sweep_test",
          "random_backpressure_test",
-         "random_test",
          "counter_wrap_test",
          "hbus_protocol_test",
+         "random_parity_test",
+         "random_test",
          "reg_bit_walk_test",
          "router_disable_test",
          "router_filter_test",
          "uvm_reset_test",
          "random_config_test",
-         "random_parity_test",
          "reg_function_check_test",
          "reg_function_test"
         ]
@@ -2980,29 +3001,29 @@
        {
         "name": "read",
         "line": 17,
-        "hits": 6651,
+        "hits": 6636,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "write",
         "line": 18,
-        "hits": 7671,
+        "hits": 7656,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        }
       ],
@@ -3022,7 +3043,7 @@
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
-         "random_config_test"
+         "random_parity_test"
         ]
        },
        {
@@ -3039,11 +3060,13 @@
        {
         "name": "x55",
         "line": 23,
-        "hits": 2062,
-        "runs": 8,
+        "hits": 2066,
+        "runs": 10,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_test"
         ]
        },
        {
@@ -3060,15 +3083,15 @@
        {
         "name": "other",
         "line": 25,
-        "hits": 6068,
+        "hits": 6034,
         "runs": 40,
         "tests": [
          "uvm_mem_walk_test",
          "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        }
       ],
@@ -3094,25 +3117,27 @@
        {
         "name": "read_x_other",
         "line": 27,
-        "hits": 2530,
+        "hits": 2513,
         "runs": 40,
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "read_x_x55",
         "line": 27,
-        "hits": 1029,
-        "runs": 8,
+        "hits": 1031,
+        "runs": 10,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_test"
         ]
        },
        {
@@ -3134,7 +3159,7 @@
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
-         "random_config_test"
+         "random_parity_test"
         ]
        },
        {
@@ -3151,25 +3176,27 @@
        {
         "name": "write_x_other",
         "line": 27,
-        "hits": 3538,
+        "hits": 3521,
         "runs": 40,
         "tests": [
          "uvm_mem_walk_test",
          "hbus_sweep_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_test",
-         "random_parity_test"
+         "random_parity_test",
+         "random_test"
         ]
        },
        {
         "name": "write_x_x55",
         "line": 27,
-        "hits": 1033,
-        "runs": 8,
+        "hits": 1035,
+        "runs": 10,
         "tests": [
          "hbus_sweep_test",
-         "uvm_mem_walk_test"
+         "uvm_mem_walk_test",
+         "random_config_test",
+         "random_test"
         ]
        },
        {
@@ -3191,7 +3218,7 @@
         "tests": [
          "hbus_sweep_test",
          "uvm_mem_walk_test",
-         "random_config_test"
+         "random_parity_test"
         ]
        }
       ],
@@ -3215,26 +3242,26 @@
        {
         "name": "back_to_back",
         "line": 20,
-        "hits": 767,
+        "hits": 774,
         "runs": 36,
         "tests": [
          "random_parity_test",
          "random_backpressure_test",
-         "random_config_test",
          "random_test",
+         "random_config_test",
          "back_to_back_test"
         ]
        },
        {
         "name": "one",
         "line": 21,
-        "hits": 603,
-        "runs": 57,
+        "hits": 606,
+        "runs": 56,
         "tests": [
          "hbus_sweep_test",
          "random_test",
-         "random_config_test",
          "counter_wrap_test",
+         "random_config_test",
          "random_parity_test",
          "random_backpressure_test",
          "back_to_back_test",
@@ -3248,14 +3275,14 @@
        {
         "name": "two",
         "line": 22,
-        "hits": 292,
+        "hits": 299,
         "runs": 46,
         "tests": [
          "hbus_sweep_test",
          "random_config_test",
+         "random_test",
          "counter_wrap_test",
          "random_parity_test",
-         "random_test",
          "back_to_back_test",
          "random_backpressure_test",
          "router_filter_test",
@@ -3268,13 +3295,13 @@
        {
         "name": "longer",
         "line": 23,
-        "hits": 5606,
+        "hits": 5549,
         "runs": 72,
         "tests": [
          "hbus_sweep_test",
          "counter_wrap_test",
-         "random_test",
          "random_config_test",
+         "random_test",
          "random_parity_test",
          "router_filter_test",
          "random_backpressure_test",
@@ -3308,7 +3335,7 @@
        {
         "name": "MIN",
         "line": 26,
-        "hits": 1316,
+        "hits": 1305,
         "runs": 40,
         "tests": [
          "counter_wrap_test",
@@ -3326,14 +3353,14 @@
        {
         "name": "SMALL",
         "line": 27,
-        "hits": 4506,
-        "runs": 56,
+        "hits": 4518,
+        "runs": 57,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
          "back_to_back_test",
-         "random_test",
          "router_filter_test",
+         "random_test",
          "random_config_test",
          "random_backpressure_test",
          "pkt_mem_test",
@@ -3346,13 +3373,13 @@
        {
         "name": "MEDIUM",
         "line": 28,
-        "hits": 568,
+        "hits": 571,
         "runs": 60,
         "tests": [
          "random_test",
          "random_config_test",
-         "random_backpressure_test",
          "random_parity_test",
+         "random_backpressure_test",
          "router_filter_test",
          "parity_error_test",
          "reg_function_check_test",
@@ -3365,7 +3392,7 @@
        {
         "name": "LARGE",
         "line": 29,
-        "hits": 597,
+        "hits": 565,
         "runs": 52,
         "tests": [
          "random_backpressure_test",
@@ -3382,7 +3409,7 @@
        {
         "name": "MAX",
         "line": 30,
-        "hits": 353,
+        "hits": 341,
         "runs": 35,
         "tests": [
          "random_config_test",
@@ -3404,14 +3431,14 @@
        {
         "name": "legal[0]",
         "line": 33,
-        "hits": 2563,
+        "hits": 2547,
         "runs": 67,
         "tests": [
          "counter_wrap_test",
          "hbus_sweep_test",
+         "random_parity_test",
          "random_config_test",
          "random_test",
-         "random_parity_test",
          "random_backpressure_test",
          "router_filter_test",
          "back_to_back_test",
@@ -3425,14 +3452,14 @@
        {
         "name": "legal[1]",
         "line": 33,
-        "hits": 1549,
+        "hits": 1581,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_test",
          "random_parity_test",
-         "random_backpressure_test",
          "random_config_test",
+         "random_test",
+         "random_backpressure_test",
          "router_filter_test",
          "back_to_back_test",
          "parity_error_test",
@@ -3446,14 +3473,14 @@
        {
         "name": "legal[2]",
         "line": 33,
-        "hits": 2005,
+        "hits": 1976,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_test",
-         "random_config_test",
          "random_parity_test",
+         "random_test",
          "random_backpressure_test",
+         "random_config_test",
          "back_to_back_test",
          "router_filter_test",
          "parity_error_test",
@@ -3467,12 +3494,12 @@
        {
         "name": "illegal_addr",
         "line": 34,
-        "hits": 1223,
+        "hits": 1196,
         "runs": 33,
         "tests": [
          "hbus_sweep_test",
-         "random_config_test",
          "random_parity_test",
+         "random_config_test",
          "router_filter_test",
          "random_test",
          "random_backpressure_test"
@@ -3490,14 +3517,14 @@
        {
         "name": "good",
         "line": 38,
-        "hits": 2899,
+        "hits": 2849,
         "runs": 68,
         "tests": [
          "counter_wrap_test",
          "random_test",
+         "random_parity_test",
          "random_config_test",
          "random_backpressure_test",
-         "random_parity_test",
          "router_filter_test",
          "back_to_back_test",
          "reg_function_test",
@@ -3511,14 +3538,14 @@
        {
         "name": "bad",
         "line": 39,
-        "hits": 4441,
+        "hits": 4451,
         "runs": 45,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
-         "parity_error_test",
          "random_test",
+         "parity_error_test",
          "random_backpressure_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -3537,14 +3564,14 @@
        {
         "name": "legal[0]",
         "line": 45,
-        "hits": 2563,
+        "hits": 2547,
         "runs": 67,
         "tests": [
          "counter_wrap_test",
          "hbus_sweep_test",
+         "random_parity_test",
          "random_config_test",
          "random_test",
-         "random_parity_test",
          "random_backpressure_test",
          "router_filter_test",
          "back_to_back_test",
@@ -3558,14 +3585,14 @@
        {
         "name": "legal[1]",
         "line": 45,
-        "hits": 1549,
+        "hits": 1581,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_test",
          "random_parity_test",
-         "random_backpressure_test",
          "random_config_test",
+         "random_test",
+         "random_backpressure_test",
          "router_filter_test",
          "back_to_back_test",
          "parity_error_test",
@@ -3579,14 +3606,14 @@
        {
         "name": "legal[2]",
         "line": 45,
-        "hits": 2005,
+        "hits": 1976,
         "runs": 68,
         "tests": [
          "hbus_sweep_test",
-         "random_test",
-         "random_config_test",
          "random_parity_test",
+         "random_test",
          "random_backpressure_test",
+         "random_config_test",
          "back_to_back_test",
          "router_filter_test",
          "parity_error_test",
@@ -3609,14 +3636,14 @@
        {
         "name": "bad",
         "line": 46,
-        "hits": 4441,
+        "hits": 4451,
         "runs": 45,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
          "random_config_test",
-         "parity_error_test",
          "random_test",
+         "parity_error_test",
          "random_backpressure_test",
          "reg_function_check_test",
          "reg_function_test",
@@ -3635,12 +3662,12 @@
        {
         "name": "LARGE_x_legal[0]_x_bad",
         "line": 47,
-        "hits": 24,
+        "hits": 22,
         "runs": 15,
         "tests": [
          "parity_error_test",
          "random_parity_test",
-         "random_config_test",
+         "random_test",
          "random_backpressure_test",
          "reg_function_test"
         ]
@@ -3648,36 +3675,36 @@
        {
         "name": "LARGE_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 23,
-        "runs": 18,
+        "hits": 17,
+        "runs": 13,
         "tests": [
          "parity_error_test",
-         "random_parity_test",
          "random_backpressure_test",
-         "random_config_test",
          "random_test",
          "reg_function_check_test",
+         "random_config_test",
+         "random_parity_test",
          "reg_function_test"
         ]
        },
        {
         "name": "LARGE_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 41,
-        "runs": 24,
+        "hits": 38,
+        "runs": 23,
         "tests": [
          "random_parity_test",
-         "random_test",
          "parity_error_test",
          "random_backpressure_test",
-         "random_config_test"
+         "random_config_test",
+         "random_test"
         ]
        },
        {
         "name": "MAX_x_legal[0]_x_bad",
         "line": 47,
-        "hits": 5,
-        "runs": 5,
+        "hits": 12,
+        "runs": 8,
         "tests": [
          "random_config_test",
          "random_parity_test",
@@ -3687,20 +3714,20 @@
        {
         "name": "MAX_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 12,
-        "runs": 9,
+        "hits": 14,
+        "runs": 10,
         "tests": [
-         "random_config_test",
          "random_parity_test",
-         "random_backpressure_test",
-         "random_test"
+         "random_config_test",
+         "random_test",
+         "random_backpressure_test"
         ]
        },
        {
         "name": "MAX_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 16,
-        "runs": 12,
+        "hits": 25,
+        "runs": 17,
         "tests": [
          "random_config_test",
          "random_parity_test",
@@ -3712,25 +3739,25 @@
         "name": "MEDIUM_x_legal[0]_x_bad",
         "line": 47,
         "hits": 21,
-        "runs": 14,
+        "runs": 15,
         "tests": [
-         "random_test",
-         "parity_error_test",
          "random_config_test",
          "random_parity_test",
+         "parity_error_test",
          "reg_function_test",
          "random_backpressure_test",
+         "random_test",
          "reg_function_check_test"
         ]
        },
        {
         "name": "MEDIUM_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 23,
-        "runs": 16,
+        "hits": 29,
+        "runs": 17,
         "tests": [
-         "parity_error_test",
          "random_parity_test",
+         "parity_error_test",
          "random_config_test",
          "random_test",
          "reg_function_check_test"
@@ -3739,12 +3766,12 @@
        {
         "name": "MEDIUM_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 45,
+        "hits": 43,
         "runs": 28,
         "tests": [
-         "random_parity_test",
          "parity_error_test",
          "random_test",
+         "random_parity_test",
          "random_config_test",
          "random_backpressure_test",
          "reg_function_check_test",
@@ -3755,8 +3782,8 @@
        {
         "name": "MIN_x_legal[0]_x_bad",
         "line": 47,
-        "hits": 11,
-        "runs": 7,
+        "hits": 12,
+        "runs": 9,
         "tests": [
          "random_parity_test",
          "random_config_test",
@@ -3766,10 +3793,11 @@
        {
         "name": "MIN_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 14,
-        "runs": 9,
+        "hits": 23,
+        "runs": 10,
         "tests": [
          "random_parity_test",
+         "random_config_test",
          "random_test",
          "parity_error_test"
         ]
@@ -3777,8 +3805,8 @@
        {
         "name": "MIN_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 35,
-        "runs": 15,
+        "hits": 29,
+        "runs": 10,
         "tests": [
          "random_parity_test",
          "random_config_test",
@@ -3788,37 +3816,36 @@
        {
         "name": "SMALL_x_legal[0]_x_bad",
         "line": 47,
-        "hits": 1033,
-        "runs": 12,
+        "hits": 1038,
+        "runs": 14,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
-         "random_test",
-         "parity_error_test"
+         "parity_error_test",
+         "random_config_test",
+         "random_test"
         ]
        },
        {
         "name": "SMALL_x_legal[1]_x_bad",
         "line": 47,
-        "hits": 1033,
-        "runs": 11,
+        "hits": 1034,
+        "runs": 10,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
-         "random_config_test",
          "random_test"
         ]
        },
        {
         "name": "SMALL_x_legal[2]_x_bad",
         "line": 47,
-        "hits": 1046,
-        "runs": 17,
+        "hits": 1037,
+        "runs": 15,
         "tests": [
          "hbus_sweep_test",
          "random_parity_test",
          "random_backpressure_test",
-         "random_config_test",
          "parity_error_test",
          "random_test"
         ]
@@ -3896,19 +3923,19 @@
    {
     "test": "random_config_test",
     "runs": 8,
-    "bins_hit": 179,
+    "bins_hit": 182,
     "only_this": []
    },
    {
     "test": "random_parity_test",
     "runs": 8,
-    "bins_hit": 173,
+    "bins_hit": 184,
     "only_this": []
    },
    {
     "test": "random_test",
     "runs": 8,
-    "bins_hit": 169,
+    "bins_hit": 182,
     "only_this": []
    },
    {

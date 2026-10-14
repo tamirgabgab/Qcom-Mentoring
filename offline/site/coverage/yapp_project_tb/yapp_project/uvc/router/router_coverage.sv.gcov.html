@@ -73,49 +73,49 @@
 <span id="L11"><span class="lineNum">      11</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L12"><span class="lineNum">      12</span>                 :             : class router_coverage extends uvm_subscriber #(router_decision);</span>
 <span id="L13"><span class="lineNum">      13</span>                 :             : </span>
-<span id="L14"><span class="lineNum">      14</span>                 :             :   int num_sampled;</span>
+<span id="L14"><span class="lineNum">      14</span>                 :             :   int m_num_sampled;</span>
 <span id="L15"><span class="lineNum">      15</span>                 :             : </span>
-<span id="L16"><span class="lineNum">      16</span>                 :             :   covergroup router_cfg_cg with function sample(bit [5:0] max, int len_vs_max, router_reason_e reason, bit bad,</span>
-<span id="L17"><span class="lineNum">      17</span>                 :             :                                                 bit [6:0] cnt_en);</span>
+<span id="L16"><span class="lineNum">      16</span>                 :             :   covergroup router_cfg_cg with function sample(bit[5:0] max, int len_vs_max, router_reason_e reason, bit bad,</span>
+<span id="L17"><span class="lineNum">      17</span>                 :             :                                                 bit[6:0] cnt_en);</span>
 <span id="L18"><span class="lineNum">      18</span>                 :             :     option.per_instance = 1;</span>
 <span id="L19"><span class="lineNum">      19</span>                 :             :     max_cp : coverpoint max {</span>
-<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC tlaBgGNC">         107 :       bins zero  = {0};</span></span>
-<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">        4175 :       bins one   = {1};</span></span>
-<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">        1211 :       bins mid   = {[2:61]};</span></span>
-<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         154 :       bins max62 = {62};</span></span>
-<span id="L24"><span class="lineNum">      24</span>                 :<span class="tlaGNC">        1432 :       bins max63 = {63};</span></span>
+<span id="L20"><span class="lineNum">      20</span>                 :<span class="tlaGNC tlaBgGNC">         148 :       bins zero  = {0};</span></span>
+<span id="L21"><span class="lineNum">      21</span>                 :<span class="tlaGNC">        4167 :       bins one   = {1};</span></span>
+<span id="L22"><span class="lineNum">      22</span>                 :<span class="tlaGNC">        1125 :       bins mid   = {[2:61]};</span></span>
+<span id="L23"><span class="lineNum">      23</span>                 :<span class="tlaGNC">         209 :       bins max62 = {62};</span></span>
+<span id="L24"><span class="lineNum">      24</span>                 :<span class="tlaGNC">        1422 :       bins max63 = {63};</span></span>
 <span id="L25"><span class="lineNum">      25</span>                 :             :     }</span>
 <span id="L26"><span class="lineNum">      26</span>                 :             :     len_cp : coverpoint len_vs_max {</span>
-<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">        1966 :       bins below    = {0};</span></span>
-<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         151 :       bins equal    = {1};</span></span>
-<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">        4238 :       bins plus_one = {2};</span></span>
-<span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         724 :       bins above    = {3};</span></span>
+<span id="L27"><span class="lineNum">      27</span>                 :<span class="tlaGNC">        1983 :       bins below    = {0};</span></span>
+<span id="L28"><span class="lineNum">      28</span>                 :<span class="tlaGNC">         152 :       bins equal    = {1};</span></span>
+<span id="L29"><span class="lineNum">      29</span>                 :<span class="tlaGNC">        4253 :       bins plus_one = {2};</span></span>
+<span id="L30"><span class="lineNum">      30</span>                 :<span class="tlaGNC">         683 :       bins above    = {3};</span></span>
 <span id="L31"><span class="lineNum">      31</span>                 :             :     }</span>
 <span id="L32"><span class="lineNum">      32</span>                 :             :     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)</span>
 <span id="L33"><span class="lineNum">      33</span>                 :             :     reason_cp : coverpoint reason {</span>
-<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        2021 :       bins forwarded = {DECIDE_FORWARDED};</span></span>
-<span id="L35"><span class="lineNum">      35</span>                 :<span class="tlaGNC">        1195 :       bins addr3     = {DECIDE_ADDR3};</span></span>
-<span id="L36"><span class="lineNum">      36</span>                 :<span class="tlaGNC">        3863 :       bins oversized = {DECIDE_OVERSIZED};</span></span>
+<span id="L34"><span class="lineNum">      34</span>                 :<span class="tlaGNC">        2061 :       bins forwarded = {ROUTER_REASON_FORWARDED};</span></span>
+<span id="L35"><span class="lineNum">      35</span>                 :<span class="tlaGNC">        1171 :       bins addr3     = {ROUTER_REASON_ADDR3};</span></span>
+<span id="L36"><span class="lineNum">      36</span>                 :<span class="tlaGNC">        3839 :       bins oversized = {ROUTER_REASON_OVERSIZED};</span></span>
 <span id="L37"><span class="lineNum">      37</span>                 :             :     }</span>
 <span id="L38"><span class="lineNum">      38</span>                 :             :     parity_cp : coverpoint bad {</span>
-<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">        2674 :       bins good = {0};</span></span>
-<span id="L40"><span class="lineNum">      40</span>                 :<span class="tlaGNC">        4405 :       bins bad  = {1};</span></span>
+<span id="L39"><span class="lineNum">      39</span>                 :<span class="tlaGNC">        2660 :       bins good = {0};</span></span>
+<span id="L40"><span class="lineNum">      40</span>                 :<span class="tlaGNC">        4411 :       bins bad  = {1};</span></span>
 <span id="L41"><span class="lineNum">      41</span>                 :             :     }</span>
 <span id="L42"><span class="lineNum">      42</span>                 :             :     cnt_en_cp : coverpoint cnt_en {</span>
-<span id="L43"><span class="lineNum">      43</span>                 :<span class="tlaGNC">         416 :       bins none  = {7'h00};</span></span>
-<span id="L44"><span class="lineNum">      44</span>                 :<span class="tlaGNC">        5057 :       bins mixed = {[7'h01:7'h7e]};</span></span>
-<span id="L45"><span class="lineNum">      45</span>                 :<span class="tlaGNC">        1606 :       bins all   = {7'h7f};</span></span>
+<span id="L43"><span class="lineNum">      43</span>                 :<span class="tlaGNC">         348 :       bins none  = {7'h00};</span></span>
+<span id="L44"><span class="lineNum">      44</span>                 :<span class="tlaGNC">        5135 :       bins mixed = {[7'h01:7'h7e]};</span></span>
+<span id="L45"><span class="lineNum">      45</span>                 :<span class="tlaGNC">        1588 :       bins all   = {7'h7f};</span></span>
 <span id="L46"><span class="lineNum">      46</span>                 :             :     }</span>
-<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 1053 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 142 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 189 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 1832 times"> + </span> :<span class="tlaGNC">        3163 :     reason_x_parity : cross reason_cp, parity_cp;</span></span>
-<span class="lineNum">        </span>          <span class="tlaGBC" title="Branch 4 was taken 3163 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 700 times"> + </span>]
+<span id="L47"><span class="lineNum">      47</span>   [<span class="tlaGBC" title="Branch 0 was taken 1052 times"> + </span><span class="tlaGBC" title="Branch 1 was taken 119 times"> + </span><span class="tlaGBC" title="Branch 2 was taken 201 times"> + </span><span class="tlaGBC" title="Branch 3 was taken 1860 times"> + </span> :<span class="tlaGNC">        3158 :     reason_x_parity : cross reason_cp, parity_cp;</span></span>
+<span class="lineNum">        </span>          <span class="tlaGBC" title="Branch 4 was taken 3158 times"> + </span><span class="tlaGBC" title="Branch 5 was taken 681 times"> + </span>]
 <span id="L48"><span class="lineNum">      48</span>                 :             :   endgroup : router_cfg_cg</span>
 <span id="L49"><span class="lineNum">      49</span>                 :             : </span>
 <span id="L50"><span class="lineNum">      50</span>                 :             :   // The same bins, counted by hand for the breakdown in the report (Verilator</span>
 <span id="L51"><span class="lineNum">      51</span>                 :             :   // does not support get_inst_coverage() on a single coverpoint)</span>
-<span id="L52"><span class="lineNum">      52</span>                 :             :   int hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63</span>
-<span id="L53"><span class="lineNum">      53</span>                 :             :   int hits_len[4];                          // length below / equal / max+1 / above max</span>
-<span id="L54"><span class="lineNum">      54</span>                 :             :   int hits_reason_parity[3][2];             // forwarded, address 3, oversized x good, bad</span>
-<span id="L55"><span class="lineNum">      55</span>                 :             :   int hits_cnt_en[3];                       // counter enables none / mixed / all</span>
+<span id="L52"><span class="lineNum">      52</span>                 :             :   int m_hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63</span>
+<span id="L53"><span class="lineNum">      53</span>                 :             :   int m_hits_len[4];                          // length below / equal / max+1 / above max</span>
+<span id="L54"><span class="lineNum">      54</span>                 :             :   int m_hits_reason_parity[4][2];             // [reason][bad]: index 0 (UNDEFINED) stays empty</span>
+<span id="L55"><span class="lineNum">      55</span>                 :             :   int m_hits_cnt_en[3];                       // counter enables none / mixed / all</span>
 <span id="L56"><span class="lineNum">      56</span>                 :             : </span>
 <span id="L57"><span class="lineNum">      57</span>                 :             :   `uvm_component_utils(router_coverage)</span>
 <span id="L58"><span class="lineNum">      58</span>                 :             : </span>
@@ -141,27 +141,27 @@
 <span id="L78"><span class="lineNum">      78</span>                 :             : function void router_coverage::write(router_decision t);</span>
 <span id="L79"><span class="lineNum">      79</span>                 :             :   int len_vs_max;</span>
 <span id="L80"><span class="lineNum">      80</span>                 :             :   bit bad;</span>
-<span id="L81"><span class="lineNum">      81</span>                 :             :   bad = (t.pkt.parity_type == BAD_PARITY);</span>
-<span id="L82"><span class="lineNum">      82</span>                 :             :   if (t.pkt.length &lt; t.maxpktsize) begin</span>
+<span id="L81"><span class="lineNum">      81</span>                 :             :   bad = (t.m_pkt.m_parity_type == PARITY_TYPE_BAD);</span>
+<span id="L82"><span class="lineNum">      82</span>                 :             :   if (t.m_pkt.m_length &lt; t.m_maxpktsize) begin</span>
 <span id="L83"><span class="lineNum">      83</span>                 :             :     len_vs_max = 0;</span>
-<span id="L84"><span class="lineNum">      84</span>                 :             :   end else if (t.pkt.length == t.maxpktsize) begin</span>
+<span id="L84"><span class="lineNum">      84</span>                 :             :   end else if (t.m_pkt.m_length == t.m_maxpktsize) begin</span>
 <span id="L85"><span class="lineNum">      85</span>                 :             :     len_vs_max = 1;</span>
-<span id="L86"><span class="lineNum">      86</span>                 :             :   end else if (t.pkt.length == t.maxpktsize + 1) begin</span>
+<span id="L86"><span class="lineNum">      86</span>                 :             :   end else if (t.m_pkt.m_length == t.m_maxpktsize + 1) begin</span>
 <span id="L87"><span class="lineNum">      87</span>                 :             :     len_vs_max = 2;</span>
 <span id="L88"><span class="lineNum">      88</span>                 :             :   end else begin</span>
 <span id="L89"><span class="lineNum">      89</span>                 :             :     len_vs_max = 3;</span>
 <span id="L90"><span class="lineNum">      90</span>                 :             :   end</span>
-<span id="L91"><span class="lineNum">      91</span>                 :             :   num_sampled++;</span>
-<span id="L92"><span class="lineNum">      92</span>                 :             :   router_cfg_cg.sample(t.maxpktsize, len_vs_max, t.reason, bad, t.en_reg[7:1]);</span>
-<span id="L93"><span class="lineNum">      93</span>                 :             :   hits_max[(t.maxpktsize == 0) ? 0 : (t.maxpktsize == 1) ? 1 : (t.maxpktsize == 62) ? 3 : (t.maxpktsize == 63) ? 4 : 2]++;</span>
-<span id="L94"><span class="lineNum">      94</span>                 :             :   hits_len[len_vs_max]++;</span>
-<span id="L95"><span class="lineNum">      95</span>                 :             :   hits_reason_parity[t.reason][bad]++;</span>
-<span id="L96"><span class="lineNum">      96</span>                 :             :   hits_cnt_en[(t.en_reg[7:1] == 7'h00) ? 0 : (t.en_reg[7:1] == 7'h7f) ? 2 : 1]++;</span>
+<span id="L91"><span class="lineNum">      91</span>                 :             :   m_num_sampled++;</span>
+<span id="L92"><span class="lineNum">      92</span>                 :             :   router_cfg_cg.sample(t.m_maxpktsize, len_vs_max, t.m_reason, bad, t.m_en_reg[7:1]);</span>
+<span id="L93"><span class="lineNum">      93</span>                 :             :   m_hits_max[(t.m_maxpktsize == 0) ? 0 : (t.m_maxpktsize == 1) ? 1 : (t.m_maxpktsize == 62) ? 3 : (t.m_maxpktsize == 63) ? 4 : 2]++;</span>
+<span id="L94"><span class="lineNum">      94</span>                 :             :   m_hits_len[len_vs_max]++;</span>
+<span id="L95"><span class="lineNum">      95</span>                 :             :   m_hits_reason_parity[t.m_reason][bad]++;</span>
+<span id="L96"><span class="lineNum">      96</span>                 :             :   m_hits_cnt_en[(t.m_en_reg[7:1] == 7'h00) ? 0 : (t.m_en_reg[7:1] == 7'h7f) ? 2 : 1]++;</span>
 <span id="L97"><span class="lineNum">      97</span>                 :             : endfunction : write</span>
 <span id="L98"><span class="lineNum">      98</span>                 :             : </span>
 <span id="L99"><span class="lineNum">      99</span>                 :             : //------------------------------------------------------------------------------</span>
 <span id="L100"><span class="lineNum">     100</span>                 :             : function void router_coverage::report_phase(uvm_phase phase);</span>
-<span id="L101"><span class="lineNum">     101</span>                 :             :   if (num_sampled == 0) begin</span>
+<span id="L101"><span class="lineNum">     101</span>                 :             :   if (m_num_sampled == 0) begin</span>
 <span id="L102"><span class="lineNum">     102</span>                 :             :     return;</span>
 <span id="L103"><span class="lineNum">     103</span>                 :             :   end</span>
 <span id="L104"><span class="lineNum">     104</span>                 :             :   `uvm_info(get_type_name(), $sformatf({&quot;Coverage of the router configuration: %0.1f%%\n&quot;,</span>
@@ -172,12 +172,12 @@
 <span id="L109"><span class="lineNum">     109</span>                 :             :     &quot;  dropped oversized good / bad             : %0d / %0d\n&quot;,</span>
 <span id="L110"><span class="lineNum">     110</span>                 :             :     &quot;  counter enables none / mixed / all       : %0d / %0d / %0d&quot;},</span>
 <span id="L111"><span class="lineNum">     111</span>                 :             :     router_cfg_cg.get_inst_coverage(),</span>
-<span id="L112"><span class="lineNum">     112</span>                 :             :     hits_max[0], hits_max[1], hits_max[2], hits_max[3], hits_max[4],</span>
-<span id="L113"><span class="lineNum">     113</span>                 :             :     hits_len[0], hits_len[1], hits_len[2], hits_len[3],</span>
-<span id="L114"><span class="lineNum">     114</span>                 :             :     hits_reason_parity[DECIDE_FORWARDED][0], hits_reason_parity[DECIDE_FORWARDED][1],</span>
-<span id="L115"><span class="lineNum">     115</span>                 :             :     hits_reason_parity[DECIDE_ADDR3][0], hits_reason_parity[DECIDE_ADDR3][1],</span>
-<span id="L116"><span class="lineNum">     116</span>                 :             :     hits_reason_parity[DECIDE_OVERSIZED][0], hits_reason_parity[DECIDE_OVERSIZED][1],</span>
-<span id="L117"><span class="lineNum">     117</span>                 :             :     hits_cnt_en[0], hits_cnt_en[1], hits_cnt_en[2]), UVM_LOW)</span>
+<span id="L112"><span class="lineNum">     112</span>                 :             :     m_hits_max[0], m_hits_max[1], m_hits_max[2], m_hits_max[3], m_hits_max[4],</span>
+<span id="L113"><span class="lineNum">     113</span>                 :             :     m_hits_len[0], m_hits_len[1], m_hits_len[2], m_hits_len[3],</span>
+<span id="L114"><span class="lineNum">     114</span>                 :             :     m_hits_reason_parity[ROUTER_REASON_FORWARDED][0], m_hits_reason_parity[ROUTER_REASON_FORWARDED][1],</span>
+<span id="L115"><span class="lineNum">     115</span>                 :             :     m_hits_reason_parity[ROUTER_REASON_ADDR3][0], m_hits_reason_parity[ROUTER_REASON_ADDR3][1],</span>
+<span id="L116"><span class="lineNum">     116</span>                 :             :     m_hits_reason_parity[ROUTER_REASON_OVERSIZED][0], m_hits_reason_parity[ROUTER_REASON_OVERSIZED][1],</span>
+<span id="L117"><span class="lineNum">     117</span>                 :             :     m_hits_cnt_en[0], m_hits_cnt_en[1], m_hits_cnt_en[2]), UVM_LOW)</span>
 <span id="L118"><span class="lineNum">     118</span>                 :             : endfunction : report_phase</span>
         </pre>
               </td>

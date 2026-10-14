@@ -1,6 +1,6 @@
 # random_backpressure_test seed 8
 
-**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 37us · wall 13.1 s · log [`random_backpressure_test_s8.log`](random_backpressure_test_s8.log)
+**Result:** PASSED (0 UVM_ERROR, 0 UVM_WARNING, 0 UVM_FATAL) · bench `yapp_project_tb` · sim time 37us · wall 17.4 s · log [`random_backpressure_test_s8.log`](random_backpressure_test_s8.log)
 
 Waves: `random_backpressure_test_s8.fst` (GTKWave, Surfer or the VS Code wave viewer).
 [Open the waves in Surfer](https://app.surfer-project.org/?load_url=https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Fregression%2Fyapp_project_tb%2Frandom_backpressure_test_s8%2Frandom_backpressure_test_s8.fst&startup_commands=run_command_file_from_url%20https%3A%2F%2Fraw.githubusercontent.com%2Ftamirgabgab%2FQcom-Mentoring%2Fmain%2Fyapp_project%2Ftb%2Fyapp_router.sucl) (web app, the signals already in groups: `yapp_project/tb/yapp_router.sucl`).
@@ -19,7 +19,7 @@ Waves: `random_backpressure_test_s8.fst` (GTKWave, Surfer or the VS Code wave vi
 
 | time (ns) | stage |
 |---|---|
-| 0 | receivers: ch0 RX_FAST, ch1 RX_NORMAL, ch2 RX_STALLY |
+| 0 | receivers: ch0 CHANNEL_RX_PROFILE_FAST, ch1 CHANNEL_RX_PROFILE_NORMAL, ch2 CHANNEL_RX_PROFILE_STALLY |
 | 0 | random scenario: 75 packets in 2 bursts |
 | 410 | burst 1/2: ctrl=0x05 (maxpktsize 5) en=0xff (router on, counter enables 1111111), 38 packet(s) |
 | 18080 | burst 1/2 sent: addr0..3 9/8/20/1, bad parity 1, gap 0 29, length 10..63 |
@@ -65,7 +65,7 @@ Waves: `random_backpressure_test_s8.fst` (GTKWave, Surfer or the VS Code wave vi
 | time (ns) | who | event |
 |---|---|---|
 | 0 | yapp monitor | YAPP monitor running |
-| 0 | **test** | STAGE: receivers: ch0 RX_FAST, ch1 RX_NORMAL, ch2 RX_STALLY |
+| 0 | **test** | STAGE: receivers: ch0 CHANNEL_RX_PROFILE_FAST, ch1 CHANNEL_RX_PROFILE_NORMAL, ch2 CHANNEL_RX_PROFILE_STALLY |
 | 0 | **test** | STAGE: random scenario: 75 packets in 2 bursts |
 | 0 | clk/rst driver | Starting clock (period 10) and holding reset for 5 cycles |
 | 0 | **DUT** | RESET asserted |

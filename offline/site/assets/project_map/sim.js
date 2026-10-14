@@ -457,7 +457,7 @@
       st.msg = { cls: rep.dropped ? "bad" : "ok", text: model.log[model.log.length - 1].text + (rep.notes.length ? "\n" + rep.notes.join("\n") : "") };
       render();
     } });
-    pk.append(el("div", { class: "ys-row" }, [field("addr", pAddr), field("length", pLen), el("label", { class: "ys-f" }, [el("span", { text: "parity" }), el("span", {}, [pBad, " BAD_PARITY"])]), sendBtn]));
+    pk.append(el("div", { class: "ys-row" }, [field("addr", pAddr), field("length", pLen), el("label", { class: "ys-f" }, [el("span", { text: "parity" }), el("span", {}, [pBad, " PARITY_TYPE_BAD"])]), sendBtn]));
     pk.append(el("div", { class: "ys-note", text: "Random payload; the header, the payload and the parity byte are stored in yapp_pkt_mem, the counters move according to en_reg, mem_size_reg takes the length. Oversized (> maxpktsize) and address-3 packets are counted and dropped." }));
     host.append(pk);
 
@@ -480,7 +480,7 @@
     let bytes = [];
     const card = el("div", { class: "ys-card" });
     if (st.mode === "build") {
-      card.append(el("h4", { text: "Fields  (yapp_packet: addr, length, payload[], parity, parity_type)" }));
+      card.append(el("h4", { text: "Fields  (yapp_packet: m_addr, m_length, m_payload[], m_parity, m_parity_type)" }));
       const aSel = el("select", { onchange: () => { st.addr = +aSel.value; render(); } });
       [0, 1, 2, 3].forEach(a => aSel.append(el("option", { value: a, text: a === 3 ? "3 (illegal)" : String(a), selected: a === st.addr })));
       const lenIn = el("input", { type: "number", class: "w4", min: 0, max: 63, value: st.length, onchange: () => {
@@ -500,7 +500,7 @@
         el("button", { type: "button", class: "small", text: "Counting payload", onclick: () => { st.payload = Array.from({ length: st.length || 1 }, (_, i) => i & 0xff); render(); } }),
         el("button", { type: "button", class: "small", text: "Clear", onclick: () => { st.payload = []; render(); } })]));
       card.append(field("payload bytes (hex)", payIn));
-      card.append(el("div", { class: "ys-row", style: "margin-top:8px" }, [el("label", { class: "ys-f" }, [el("span", { text: "parity_type" }), el("span", {}, [corrupt, " BAD_PARITY: flip "])]), bitSel,
+      card.append(el("div", { class: "ys-row", style: "margin-top:8px" }, [el("label", { class: "ys-f" }, [el("span", { text: "m_parity_type" }), el("span", {}, [corrupt, " PARITY_TYPE_BAD: flip "])]), bitSel,
         el("span", { class: "ys-note", text: "set_parity(): GOOD = XOR of header + payload; BAD = GOOD with one bit flipped" })]));
       host.append(card);
     } else {

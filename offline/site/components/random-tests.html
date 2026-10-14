@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1290,6 +1320,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1310,30 +1407,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1396,7 +1476,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1418,14 +1498,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1928,10 +2008,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1949,8 +2029,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2407,20 +2487,20 @@ sets one sequence object per channel as that channel's <code>default_sequence</c
 </thead>
 <tbody>
 <tr>
-<td><code>RX_FAST</code></td>
+<td><code>CHANNEL_RX_PROFILE_FAST</code></td>
 <td>0</td>
 </tr>
 <tr>
-<td><code>RX_NORMAL</code></td>
+<td><code>CHANNEL_RX_PROFILE_NORMAL</code></td>
 <td>0..10</td>
 </tr>
 <tr>
-<td><code>RX_SLOW</code></td>
+<td><code>CHANNEL_RX_PROFILE_SLOW</code></td>
 <td>20..40</td>
 </tr>
 <tr>
-<td><code>RX_STALLY</code></td>
-<td>usually 0..10, <code>stall_pct</code> (15 %) of the packets 50..150: the channel stops taking packets for a while</td>
+<td><code>CHANNEL_RX_PROFILE_STALLY</code></td>
+<td>usually 0..10, <code>m_stall_pct</code> (15 %) of the packets 50..150: the channel stops taking packets for a while</td>
 </tr>
 </tbody>
 </table>
@@ -2448,7 +2528,7 @@ above, <code>min_packets</code>, <code>max_bursts</code>, <code>extreme_pct</cod
 <tr>
 <td>Reference model</td>
 <td>its model of <code>ctrl_reg</code>, <code>en_reg</code>, the six counters (each with its own enable bit, wrapping at 255), <code>mem_size_reg</code>, <code>yapp_pkt_mem</code> (the header and the payload of the last packet received while enabled, dropped ones too; a shorter packet leaves the old tail) and <code>yapp_mem</code>; <strong>every HBUS read</strong> is compared with it</td>
-<td><code>router_reference</code>, <code>check_reads = 1</code></td>
+<td><code>router_reference</code>, <code>m_check_reads = 1</code></td>
 </tr>
 <tr>
 <td>Error-pulse checker</td>

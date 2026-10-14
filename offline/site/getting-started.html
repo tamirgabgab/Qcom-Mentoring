@@ -678,6 +678,8 @@
       
         
       
+        
+      
     
     
     
@@ -850,6 +852,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1337,6 +1367,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="coverage-results.html" class="md-nav__link">
         
@@ -1357,30 +1454,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1443,7 +1523,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1465,14 +1545,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1975,10 +2055,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1996,8 +2076,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2476,20 +2556,32 @@ as it grows (<code>labs/lab09_*/sv</code>), whose finished form is <code>yapp_pr
 <code>router_test_lib.sv</code>, <code>router_mcseqs_lib.sv</code>, <code>yapp_router_reg_pkg.sv</code>) are kept as the files
 the packages include, but each of them only <code>include</code>s the class files of its sub-directory
 (<code>seqs/</code>, <code>tests/</code>, <code>mcseqs/</code>, <code>reg/</code>). <code>short_yapp_packet</code> has its own file next to
-<code>yapp_packet.sv</code>. Inside a file the class body is a table of contents: fields, the <code>utils</code>
-macro, constraints and <code>extern</code> prototypes. The method bodies follow <code>endclass</code> under a
-<code>// &lt;class&gt; -- method implementations</code> banner, as <code>function yapp_packet::set_parity();</code> or
+<code>yapp_packet.sv</code>. Inside a file the class body is a table of contents: the properties, the
+<code>utils</code> macro, the <code>extern constraint</code> lines and the <code>extern</code> method prototypes. After
+<code>endclass</code> come the constraint bodies under a <code>// &lt;class&gt; -- constraints</code> banner
+(<code>constraint yapp_packet::c_length { ... }</code>), then the method bodies under
+<code>// &lt;class&gt; -- method implementations</code>, as <code>function yapp_packet::set_parity();</code> or
 <code>task yapp_012_seq::body();</code>, each body preceded by a <code>//-----</code> delimiter line. Read the
-prototypes to learn what a class does, scroll down to see how. Two more conventions hold
+prototypes to learn what a class does, scroll down to see how.</p>
+<p>The names follow fixed rules. Every class property starts with <code>m_</code> (<code>m_addr</code>, <code>m_length</code>,
+<code>m_monitor</code>, <code>m_vif</code>); arguments and locals never do, so inside a method <code>length</code> is the
+argument and <code>m_length</code> the field. The UVM runtime names stay plain: <code>create("monitor", this)</code>,
+<code>new("item_collected_port", this)</code>, the <code>uvm_config_db</code> keys, so the hierarchy in the logs reads
+<code>uvm_test_top.tb.yapp.agent.monitor</code>. Packed widths are written without a space (<code>bit[7:0]</code>).
+The typedefs and enums of a package live in its <code>&lt;pkg&gt;_defines.sv</code> (<code>yapp_defines.sv</code>,
+<code>hbus_defines.sv</code>, …), included first by the package file; an enum type ends with <code>_e</code>, its
+values are upper case with the type name as prefix and the first one is always
+<code>&lt;NAME&gt;_UNDEFINED</code>, a value no constraint or assignment ever produces
+(<code>PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, PARITY_TYPE_BAD</code>). Three more conventions hold
 everywhere: a function declares its locals at its top (never in a bare <code>begin … end</code> in the middle
-of the body), and the body of an <code>if</code> / <code>else</code> / <code>for</code> / <code>foreach</code> / <code>while</code> / <code>repeat</code> is always
-wrapped in <code>begin … end</code>, even a single statement. Random values that are not fields of a
+of the body), the body of an <code>if</code> / <code>else</code> / <code>for</code> / <code>foreach</code> / <code>while</code> / <code>repeat</code> is always
+wrapped in <code>begin … end</code>, even a single statement, and random values that are not fields of a
 randomized object come from the common library <code>rnd::</code> (<a href="components/random.html">Random values</a>),
-not from <code>$urandom</code>. <code>make style-check</code> (<code>scripts/sv_style.py</code>)
-enforces all of this in CI, and <code>make style</code> reformats a file you wrote.</p>
+not from <code>$urandom</code>. <code>make style-check</code> (<code>scripts/sv_style.py</code>) enforces all of this in CI,
+reporting each violation as <code>file:line</code>, and <code>make style</code> reformats a file you wrote.</p>
 <p>The classes also do without the shortcut macros of the course material: no <code>uvm_do*</code>
 (a sequence writes <code>create</code> → <code>start_item</code> → <code>randomize</code> → <code>finish_item</code> itself, and starts a
-sub-sequence with <code>seq.start(sequencer, this)</code>), and no <code>uvm_field_*</code> automation (<code>do_print</code>,
+sub-sequence with <code>seq.start(m_sequencer, this)</code>), and no <code>uvm_field_*</code> automation (<code>do_print</code>,
 <code>do_copy</code>, <code>do_compare</code>, <code>do_pack</code>, <code>do_unpack</code> and <code>do_record</code> are written by hand, and a
 component reads its configuration with <code>uvm_config_int::get</code> in <code>build_phase</code>). What the
 macros would hide is on the page, where you can read it.</p>

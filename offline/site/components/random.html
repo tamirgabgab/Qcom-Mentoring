@@ -504,6 +504,8 @@
       
         
       
+        
+      
     
     
     
@@ -676,6 +678,34 @@
     
   
     TLM connections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uvm/coverage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functional coverage
   
 
     
@@ -1256,6 +1286,73 @@
   
   
   
+    
+    
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../regression/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Results
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../coverage-results.html" class="md-nav__link">
         
@@ -1276,30 +1373,13 @@
     </li>
   
 
-    
+              
+            
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regression/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Regression results
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1362,7 +1442,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1384,14 +1464,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1894,10 +1974,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -1915,8 +1995,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2219,7 +2299,7 @@
 <h1 id="random-values-rnd">Random values — <code>rnd::</code><a class="headerlink" href="#random-values-rnd" title="Permanent link">&para;</a></h1>
 <p>Two kinds of randomness live in a UVM testbench:</p>
 <ul>
-<li><strong>Fields of an object</strong> — a packet's <code>addr</code>, a sequence's <code>count</code>. They are
+<li><strong>Fields of an object</strong> — a packet's <code>m_addr</code>, a sequence's <code>count</code>. They are
   <code>rand</code> members with constraints, drawn by <code>req.randomize() with { ... }</code>. That
   stays as it is: the constraints belong to the class, and a factory override
   can change them.</li>
@@ -2231,9 +2311,9 @@
 package and by <code>tb_top</code>, so a component, a sequence or a test just calls it:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">bad_bit</span><span class="p">;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">bad_bit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_index</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".bad_parity_bit"</span><span class="p">});</span><span class="w">   </span><span class="c1">// 0..7</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">];</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">m_parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">m_parity</span><span class="p">[</span><span class="n">bad_bit</span><span class="p">];</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_bytes</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".payload"</span><span class="p">});</span><span class="w">     </span><span class="c1">// bit [7:0] []</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">m_payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_bytes</span><span class="p">(</span><span class="n">m_length</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">get_full_name</span><span class="p">(),</span><span class="w"> </span><span class="s">".payload"</span><span class="p">});</span><span class="w">     </span><span class="c1">// bit [7:0] []</span>
 </code></pre></div>
 <h2 id="the-functions">The functions<a class="headerlink" href="#the-functions" title="Permanent link">&para;</a></h2>
 <table>
@@ -2282,8 +2362,8 @@ package and by <code>tb_top</code>, so a component, a sequence or a test just ca
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">bit</span><span class="w"> </span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">hdr</span><span class="p">[$];</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">bit</span><span class="p">[</span><span class="mi">7</span><span class="o">:</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">hdr</span><span class="p">[$];</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd_array</span><span class="w"> </span><span class="p">#(</span><span class="mi">8</span><span class="p">)</span><span class="o">::</span><span class="n">get_bytes</span><span class="p">(</span><span class="s">"key_test.key"</span><span class="p">);</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">hdr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rnd</span><span class="o">::</span><span class="n">get_byte_queue</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s">"key_test.header"</span><span class="p">);</span>
 </code></pre></div>
@@ -2312,7 +2392,7 @@ be the place to optimise.</p>
 <li><strong>Drawing twice for one decision.</strong>
   <code>parity[rnd::get_index(8)] = ~parity[rnd::get_index(8)];</code> picks two different
   bits, exactly like the old <code>$urandom_range</code> bug. Draw once into a variable.</li>
-<li><strong>Replacing an object's <code>randomize()</code>.</strong> A packet's <code>length</code> must keep its
+<li><strong>Replacing an object's <code>randomize()</code>.</strong> A packet's <code>m_length</code> must keep its
   constraint (<code>c_length</code>) and stay overridable (<code>short_yapp_packet</code>); it is not a
   loose value.</li>
 <li><strong><code>min &gt; max</code>.</strong> <code>rnd::get_int(hi, lo)</code> is a fatal error, not an empty range.</li>
