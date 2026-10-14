@@ -31,7 +31,9 @@ endclass : yapp_gap_seq
 // yapp_gap_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_gap_seq::c_count { m_count inside {[8:40]}; }
+constraint yapp_gap_seq::c_count {
+  m_count inside {[8:40]};
+}
 
 //------------------------------------------------------------------------------
 // yapp_gap_seq -- method implementations

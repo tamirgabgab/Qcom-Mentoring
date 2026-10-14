@@ -24,7 +24,9 @@ endclass : short_yapp_packet
 // short_yapp_packet -- constraints
 //------------------------------------------------------------------------------
 
-constraint short_yapp_packet::c_short_length { m_length < 15; }
+constraint short_yapp_packet::c_short_length {
+  m_length < 15;
+}
 
 //------------------------------------------------------------------------------
 // short_yapp_packet -- method implementations

@@ -44,7 +44,9 @@ endclass : channel_packet
 // channel_packet -- constraints
 //------------------------------------------------------------------------------
 
-constraint channel_packet::c_delay { m_delay inside {[0:10]}; }
+constraint channel_packet::c_delay {
+  m_delay inside {[0:10]};
+}
 
 //------------------------------------------------------------------------------
 // channel_packet -- method implementations

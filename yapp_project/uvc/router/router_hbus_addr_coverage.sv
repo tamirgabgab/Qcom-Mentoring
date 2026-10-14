@@ -21,12 +21,12 @@ class router_hbus_addr_coverage extends uvm_subscriber #(hbus_transaction);
       bins ctrl           = {16'h1000};
       bins en             = {16'h1001};
       bins parity_cnt     = {16'h1004};
-      bins m_oversized_cnt  = {16'h1005};
+      bins oversized_cnt  = {16'h1005};
       bins addr3_cnt      = {16'h1006};
       bins addr0_cnt      = {16'h1009};
       bins addr1_cnt      = {16'h100a};
       bins addr2_cnt      = {16'h100b};
-      bins m_mem_size       = {16'h100d};
+      bins mem_size       = {16'h100d};
       // the unmapped addresses between them: read 0, writes ignored
       bins reg_hole[]     = {16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};
       // yapp_pkt_mem (read-only), the unmapped range, yapp_mem (read-write)

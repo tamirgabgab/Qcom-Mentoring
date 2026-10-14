@@ -54,12 +54,12 @@ class yapp_packet extends uvm_sequence_item;
   // Correct parity: XOR of header and every payload byte
   extern function bit[7:0] calc_parity();
 
-  // Write the parity byte according to the parity_type knob.
+  // Write the parity byte according to the m_parity_type knob.
   // A bad parity flips one random bit of the correct value.
   extern function void set_parity();
 
   // Called automatically after every successful randomize(): sizes the
-  // payload to `length` if the solver did not, then sets the parity
+  // payload to `m_length` if the solver did not, then sets the parity
   extern function void post_randomize();
 
 endclass : yapp_packet
@@ -68,11 +68,30 @@ endclass : yapp_packet
 // yapp_packet -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_packet::c_addr_legal     { m_addr != 2'd3; }
-constraint yapp_packet::c_length         { m_length inside {[1:63]}; m_payload.size() == m_length; }
-constraint yapp_packet::c_parity_defined { m_parity_type != PARITY_TYPE_UNDEFINED; }
-constraint yapp_packet::c_parity_dist    { m_parity_type dist { PARITY_TYPE_GOOD := 5, PARITY_TYPE_BAD := 1 }; }
-constraint yapp_packet::c_delay          { m_packet_delay inside {[1:20]}; }
+constraint yapp_packet::c_addr_legal {
+  m_addr != 2'd3;
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_packet::c_length {
+  m_length inside {[1:63]};
+  m_payload.size() == m_length;
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_packet::c_parity_defined {
+  m_parity_type != PARITY_TYPE_UNDEFINED;
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_packet::c_parity_dist {
+  m_parity_type dist { PARITY_TYPE_GOOD := 5, PARITY_TYPE_BAD := 1 };
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_packet::c_delay {
+  m_packet_delay inside {[1:20]};
+}
 
 //------------------------------------------------------------------------------
 // yapp_packet -- method implementations

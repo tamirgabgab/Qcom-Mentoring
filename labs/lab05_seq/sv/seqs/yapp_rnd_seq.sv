@@ -21,7 +21,9 @@ endclass : yapp_rnd_seq
 // yapp_rnd_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_rnd_seq::c_count { m_count inside {[1:10]}; }
+constraint yapp_rnd_seq::c_count {
+  m_count inside {[1:10]};
+}
 
 //------------------------------------------------------------------------------
 // yapp_rnd_seq -- method implementations

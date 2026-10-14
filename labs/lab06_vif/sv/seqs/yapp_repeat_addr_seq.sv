@@ -22,7 +22,9 @@ endclass : yapp_repeat_addr_seq
 // yapp_repeat_addr_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_repeat_addr_seq::c_seq_addr { m_seq_addr != 2'd3; }
+constraint yapp_repeat_addr_seq::c_seq_addr {
+  m_seq_addr != 2'd3;
+}
 
 //------------------------------------------------------------------------------
 // yapp_repeat_addr_seq -- method implementations

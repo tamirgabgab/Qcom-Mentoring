@@ -63,7 +63,9 @@ endclass : yapp_random_burst_seq
 // yapp_random_burst_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_random_burst_seq::c_count { m_count inside {[1:100]}; }
+constraint yapp_random_burst_seq::c_count {
+  m_count inside {[1:100]};
+}
 
 //------------------------------------------------------------------------------
 // yapp_random_burst_seq -- method implementations

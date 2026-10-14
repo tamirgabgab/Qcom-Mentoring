@@ -28,8 +28,15 @@ endclass : clock_and_reset_transaction
 // clock_and_reset_transaction -- constraints
 //------------------------------------------------------------------------------
 
-constraint clock_and_reset_transaction::c_period { m_clock_period inside {[2:100]}; m_clock_period % 2 == 0; }
-constraint clock_and_reset_transaction::c_reset  { m_reset_cycles inside {[1:20]}; }
+constraint clock_and_reset_transaction::c_period {
+  m_clock_period inside {[2:100]};
+  m_clock_period % 2 == 0;
+}
+
+//------------------------------------------------------------------------------
+constraint clock_and_reset_transaction::c_reset {
+  m_reset_cycles inside {[1:20]};
+}
 
 //------------------------------------------------------------------------------
 // clock_and_reset_transaction -- method implementations

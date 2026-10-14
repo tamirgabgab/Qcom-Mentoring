@@ -30,7 +30,9 @@ endclass : hbus_transaction
 // hbus_transaction -- constraints
 //------------------------------------------------------------------------------
 
-constraint hbus_transaction::c_op_defined { m_hwr_rd != HBUS_OP_UNDEFINED; }
+constraint hbus_transaction::c_op_defined {
+  m_hwr_rd != HBUS_OP_UNDEFINED;
+}
 
 //------------------------------------------------------------------------------
 // hbus_transaction -- method implementations

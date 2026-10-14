@@ -33,7 +33,9 @@ endclass : yapp_boundary_seq
 // yapp_boundary_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_boundary_seq::c_max { m_maxpktsize inside {[2:62]}; }
+constraint yapp_boundary_seq::c_max {
+  m_maxpktsize inside {[2:62]};
+}
 
 //------------------------------------------------------------------------------
 // yapp_boundary_seq -- method implementations

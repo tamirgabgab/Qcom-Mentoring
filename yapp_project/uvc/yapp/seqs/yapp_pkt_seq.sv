@@ -32,9 +32,20 @@ endclass : yapp_pkt_seq
 // yapp_pkt_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_pkt_seq::c_len    { m_pkt_len inside {[1:63]}; }
-constraint yapp_pkt_seq::c_legal  { soft m_pkt_addr != 2'd3; }
-constraint yapp_pkt_seq::c_parity { m_pkt_parity != PARITY_TYPE_UNDEFINED; soft m_pkt_parity == PARITY_TYPE_GOOD; }
+constraint yapp_pkt_seq::c_len {
+  m_pkt_len inside {[1:63]};
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_pkt_seq::c_legal {
+  soft m_pkt_addr != 2'd3;
+}
+
+//------------------------------------------------------------------------------
+constraint yapp_pkt_seq::c_parity {
+  m_pkt_parity != PARITY_TYPE_UNDEFINED;
+  soft m_pkt_parity == PARITY_TYPE_GOOD;
+}
 
 //------------------------------------------------------------------------------
 // yapp_pkt_seq -- method implementations

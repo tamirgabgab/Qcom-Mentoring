@@ -15,8 +15,8 @@ class router_hbus_bits_coverage extends uvm_subscriber #(hbus_transaction);
   covergroup hbus_bits_cg with function sample(bit is_en, int bit_index, bit value);
     option.per_instance = 1;
     reg_cp : coverpoint is_en {
-      bins m_ctrl_reg = {0};
-      bins m_en_reg   = {1};
+      bins ctrl_reg = {0};
+      bins en_reg   = {1};
     }
     bit_cp : coverpoint bit_index {
       bins b[] = {[0:7]};

@@ -33,6 +33,8 @@ reported as `path:line: R<n> message` and exit 1:
    not in the class files; a typedef inside a class or a function is fine.
 10. Enum types end with `_e`; their values are UPPER_CASE, carry the type name as prefix and start
    with <NAME>_UNDEFINED: `typedef enum { PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, ... } parity_type_e;`
+11. A constraint body is laid out like a method body: the `//---` delimiter line right above it,
+   `constraint cls::c_x {` on its own line, one statement per line, `}` alone (no one-line bodies).
 """
 from __future__ import annotations
 
@@ -473,7 +475,7 @@ def delimit_bodies(text: str) -> str:
     return "\n".join(out)
 
 
-# --------------------------------------------------------------------------- rules 5-10
+# --------------------------------------------------------------------------- rules 5-11
 # These rules concern the classes and packages only: interfaces, modules and the RTL are skipped.
 CLASS_FILE_RX = re.compile(r"^\s*(?:virtual\s+)?class\s+\w+", re.M)
 PKG_FILE_RX = re.compile(r"^\s*package\s+\w+", re.M)
@@ -528,7 +530,7 @@ def decl_names(code: str):
 
 
 def check_rules(path: pathlib.Path, text: str) -> list[tuple[int, str, str]]:
-    """Rules 6-10 report (line, rule, message); nothing is rewritten."""
+    """Rules 6-11 report (line, rule, message); nothing is rewritten."""
     out: list[tuple[int, str, str]] = []
     lines = text.split("\n")
     code = [code_of(l) for l in lines]
@@ -635,6 +637,13 @@ def check_rules(path: pathlib.Path, text: str) -> list[tuple[int, str, str]]:
             if oc and oc.group(1) == cls:
                 if first_body is not None:
                     out.append((k + 1, "R8", f"{cls}: constraint {oc.group(2)} body after a method body (constraints first)"))
+                if not c.rstrip().endswith("{"):
+                    out.append((k + 1, "R11", f"{cls}: constraint {oc.group(2)} on one line (open with '{{', one statement per line)"))
+                j = k - 1
+                while j >= 0 and lines[j].strip() == "":
+                    j -= 1
+                if j < 0 or lines[j].strip() != DELIM:
+                    out.append((k + 1, "R11", f"{cls}: constraint {oc.group(2)} needs the {DELIM[:6]}... delimiter line above it"))
             fm = OUT_FN_RX.match(c)
             if fm and fm.group(1) == cls:
                 first_body = first_body if first_body is not None else k
