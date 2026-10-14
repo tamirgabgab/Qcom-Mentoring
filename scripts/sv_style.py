@@ -16,6 +16,23 @@ Rules (text based; `make lint` with slang is the safety net):
    Constraint and `with {...}` blocks are left alone (begin/end is not legal there).
 3. Out-of-class method bodies are separated by a blank line and a //----- delimiter.
 4. `extern // comment` glued prototypes are repaired to `extern virtual ...`.
+
+Rules 5-10 concern the classes and packages (interfaces, modules and the RTL are not touched;
+the Lab 11A register model keeps the register names). Rule 5 is fixed in place, the others are
+reported as `path:line: R<n> message` and exit 1:
+
+5. Packed widths without a space: `bit[7:0]`, `logic[15:0]`.
+6. Every class property starts with `m_` (rand fields, knobs, sub-component handles, ports, vif);
+   arguments and locals of a method never do. Static/const members and parameters are exempt.
+   The UVM runtime names stay plain: create("monitor"), new("item_collected_port"), config_db keys.
+7. Constraints are `extern constraint c_x;` in the class and `constraint cls::c_x { ... }` after
+   endclass (same pattern as the methods).
+8. Order: properties, utils macro, covergroups, extern constraints, extern methods; after
+   endclass the constraint bodies, then the method bodies.
+9. typedefs and enums live in the package's <pkg>_defines.sv (included first by the package),
+   not in the class files; a typedef inside a class or a function is fine.
+10. Enum types end with `_e`; their values are UPPER_CASE, carry the type name as prefix and start
+   with <NAME>_UNDEFINED: `typedef enum { PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, ... } parity_type_e;`
 """
 from __future__ import annotations
 
@@ -456,12 +473,202 @@ def delimit_bodies(text: str) -> str:
     return "\n".join(out)
 
 
+# --------------------------------------------------------------------------- rules 5-10
+# These rules concern the classes and packages only: interfaces, modules and the RTL are skipped.
+CLASS_FILE_RX = re.compile(r"^\s*(?:virtual\s+)?class\s+\w+", re.M)
+PKG_FILE_RX = re.compile(r"^\s*package\s+\w+", re.M)
+WIDTH_RX = re.compile(r"\b(bit|logic|byte|int|integer|reg)\s+\[")
+CLASS_RX = re.compile(r"^\s*(?:virtual\s+)?class\s+(\w+)")
+# a declaration: [qualifiers] type[#(...)][ranges] name[ranges][= init](, name...)?;
+DECL_RX = re.compile(
+    r"^\s*((?:(?:rand|randc|protected|local|static|const|virtual|automatic)\s+)*)"
+    r"([A-Za-z_][\w:$]*(?:\s*#\s*\([^;]*?\))?(?:\s*\[[^\]]*\])*)\s+"
+    r"([A-Za-z_]\w*(?:\s*\[[^\]]*\])*(?:\s*=\s*[^,;]+)?(?:\s*,\s*[A-Za-z_]\w*(?:\s*\[[^\]]*\])*(?:\s*=\s*[^,;]+)?)*)\s*;")
+NOT_DECL = {"return", "extern", "typedef", "parameter", "localparam", "import", "export", "function", "task",
+            "constraint", "covergroup", "endclass", "endfunction", "endtask", "endgroup", "begin", "end", "if",
+            "else", "for", "foreach", "while", "repeat", "case", "default", "super", "this", "assert", "wait",
+            "fork", "join", "join_any", "join_none", "disable", "void", "input", "output", "inout", "ref"}
+EXT_FN_RX = re.compile(r"^\s*extern\b.*\b(?:function|task)\b")
+EXT_CONS_RX = re.compile(r"^\s*extern\s+constraint\s+(\w+)")
+IN_CONS_RX = re.compile(r"^\s*constraint\s+(\w+)\s*\{")
+OUT_CONS_RX = re.compile(r"^\s*constraint\s+(\w+)::(\w+)")
+OUT_FN_RX = re.compile(r"^\s*(?:(?:virtual|static|protected|local)\s+)*(?:function|task)\b[^;]*\b(\w+)::(\w+)\s*\(")
+ENUM_RX = re.compile(r"typedef\s+enum\b[^{]*\{([^}]*)\}\s*(\w+)\s*;", re.S)
+TYPEDEF_RX = re.compile(r"^\s*typedef\b")
+SAMPLE_RX = re.compile(r"with\s+function\s+sample\s*\(([^)]*)\)")
+REG_MODEL_RX = re.compile(r"/reg/|lab11a_rm_gen/|yapp_router_reg_pkg\.sv$")   # Lab 11A register model (generator layout)
+
+
+def is_class_file(text: str) -> bool:
+    return bool(CLASS_FILE_RX.search(text))
+
+
+def fix_width_spacing(text: str) -> str:
+    """Rule 5: `bit [7:0]` -> `bit[7:0]` in the class files (comments included, so they match the code)."""
+    if not is_class_file(text):
+        return text
+    return WIDTH_RX.sub(r"\1[", text)
+
+
+def decl_names(code: str):
+    """Names declared by a declaration line (code part), or [] when the line is not one."""
+    m = DECL_RX.match(code)
+    if not m:
+        return [], ""
+    quals, typ = m.group(1), m.group(2)
+    head = typ.split()[0].split("#")[0].split("[")[0]
+    if head in NOT_DECL or "(" in typ.split("#")[0] or "." in head or "::" in head and head.endswith("::"):
+        return [], quals
+    names = []
+    for part in re.split(r",(?![^(]*\))", m.group(3)):
+        nm = part.strip().split("=")[0].split("[")[0].strip()
+        if nm:
+            names.append(nm)
+    return names, quals
+
+
+def check_rules(path: pathlib.Path, text: str) -> list[tuple[int, str, str]]:
+    """Rules 6-10 report (line, rule, message); nothing is rewritten."""
+    out: list[tuple[int, str, str]] = []
+    lines = text.split("\n")
+    code = [code_of(l) for l in lines]
+    klass = is_class_file(text)
+    pkg = bool(PKG_FILE_RX.search(text))
+    if not (klass or pkg or path.name.endswith("_defines.sv")):
+        return out
+    if REG_MODEL_RX.search(path.as_posix()):
+        return out      # the register model mirrors the register map: its classes keep the register names
+    # ---- rule 9/10: typedefs live in <pkg>_defines.sv; enums are NAME_UNDEFINED, NAME_X, ...
+    depth_cls = depth_fn = depth_cg = 0
+    for i, c in enumerate(code):
+        if CLASS_RX.match(c):
+            depth_cls += 1
+        elif re.match(r"^endclass\b", c):
+            depth_cls -= 1
+        elif re.match(r"^(?:extern\s+)?(?:(?:virtual|static|protected|local|pure)\s+)*(?:function|task)\b", c) and not c.startswith("extern") \
+                and not re.match(r"^(?:(?:virtual|static|protected|local|pure)\s+)*(?:function|task)\b.*;\s*$", c) and "sample" not in c:
+            depth_fn += 1
+        elif re.match(r"^end(?:function|task)\b", c):
+            depth_fn -= 1
+        elif re.match(r"^covergroup\b", c):
+            depth_cg += 1
+        elif re.match(r"^endgroup\b", c):
+            depth_cg -= 1
+        if TYPEDEF_RX.match(c) and depth_cls == 0 and depth_fn == 0 and depth_cg == 0 \
+                and not path.name.endswith("_defines.sv"):
+            out.append((i + 1, "R9", "typedef outside a <pkg>_defines.sv file (move it there)"))
+    for m in ENUM_RX.finditer(text):
+        ln = text.count("\n", 0, m.start()) + 1
+        name = m.group(2)
+        if not name.endswith("_e"):
+            out.append((ln, "R10", f"enum type '{name}' must end with _e"))
+            continue
+        prefix = name[:-2].upper() + "_"
+        vals = [re.sub(r"//[^\n]*", "", v).strip().split("=")[0].strip() for v in m.group(1).split(",")]
+        vals = [v for v in vals if v]
+        if not vals or vals[0] != prefix + "UNDEFINED":
+            out.append((ln, "R10", f"enum '{name}': first value must be {prefix}UNDEFINED"))
+        for v in vals:
+            if not re.fullmatch(r"[A-Z0-9_]+", v):
+                out.append((ln, "R10", f"enum '{name}': value '{v}' must be upper case letters, digits and _"))
+            elif not v.startswith(prefix):
+                out.append((ln, "R10", f"enum '{name}': value '{v}' must start with {prefix}"))
+    if not klass:
+        return out
+    # ---- rules 6, 7, 8 per class
+    i = 0
+    while i < len(code):
+        m = CLASS_RX.match(code[i])
+        if not m:
+            i += 1
+            continue
+        cls = m.group(1)
+        e = next((k for k in range(i, len(code)) if re.match(r"^endclass\b", code[k])), len(code) - 1)
+        parameterized = "#" in code[i]      # rnd_array #(N): its methods stay inline (out-of-class bodies need #(N))
+        first_fn = None
+        depth_fn = depth_cg = 0
+        for k in range(i + 1, e):
+            c = code[k]
+            if not c:
+                continue
+            if re.match(r"^covergroup\b", c):
+                depth_cg += 1
+                continue
+            if re.match(r"^endgroup\b", c):
+                depth_cg -= 1
+                continue
+            if depth_cg:
+                continue
+            if re.match(r"^(?:(?:virtual|static|protected|local)\s+)*(?:function|task)\b", c):
+                depth_fn += 1
+                if not parameterized:
+                    out.append((k + 1, "R3", f"{cls}: method body inside the class (declare it extern)"))
+                continue
+            if re.match(r"^end(?:function|task)\b", c):
+                depth_fn -= 1
+                continue
+            if depth_fn:
+                continue
+            if IN_CONS_RX.match(c):
+                out.append((k + 1, "R7", f"{cls}: constraint body inside the class (extern constraint {IN_CONS_RX.match(c).group(1)}; "
+                                          f"and constraint {cls}::{IN_CONS_RX.match(c).group(1)} after endclass)"))
+                continue
+            if EXT_FN_RX.match(c):
+                first_fn = first_fn if first_fn is not None else k
+                continue
+            if EXT_CONS_RX.match(c):
+                if first_fn is not None:
+                    out.append((k + 1, "R8", f"{cls}: extern constraint after the extern methods (constraints first)"))
+                continue
+            names, quals = decl_names(c)
+            if "static" in quals or "const" in quals:
+                continue
+            for nm in names:
+                if not nm.startswith("m_"):
+                    out.append((k + 1, "R6", f"{cls}: property '{nm}' must start with m_"))
+        # after endclass: constraint bodies before the method bodies, no m_ on arguments and locals
+        first_body = None
+        k = e + 1
+        while k < len(code) and not CLASS_RX.match(code[k]):
+            c = code[k]
+            oc = OUT_CONS_RX.match(c)
+            if oc and oc.group(1) == cls:
+                if first_body is not None:
+                    out.append((k + 1, "R8", f"{cls}: constraint {oc.group(2)} body after a method body (constraints first)"))
+            fm = OUT_FN_RX.match(c)
+            if fm and fm.group(1) == cls:
+                first_body = first_body if first_body is not None else k
+                args = re.findall(r"\bm_\w+", c.split("(", 1)[1] if "(" in c else "")
+                for a in args:
+                    out.append((k + 1, "R6", f"{cls}::{fm.group(2)}: argument '{a}' must not start with m_ (m_ is for properties)"))
+                # locals at the top of the body
+                j = k + 1
+                while j < len(code) and not re.match(r"^end(?:function|task)\b", code[j]):
+                    if code[j] == "":
+                        j += 1
+                        continue
+                    names, quals = decl_names(code[j])
+                    if not names:
+                        break
+                    for nm in names:
+                        if nm.startswith("m_"):
+                            out.append((j + 1, "R6", f"{cls}::{fm.group(2)}: local '{nm}' must not start with m_ (m_ is for properties)"))
+                    j += 1
+            k += 1
+        i = e + 1
+    for m in SAMPLE_RX.finditer(text):
+        for a in re.findall(r"\bm_\w+", m.group(1)):
+            out.append((text.count("\n", 0, m.start()) + 1, "R6", f"sample() argument '{a}' must not start with m_"))
+    return out
+
+
 # --------------------------------------------------------------------------- driver
 def restyle(text: str) -> str:
     new = fix_extern(text)
     new = hoist_config(new)
     new = wrap_bodies(new)
     new = delimit_bodies(new)
+    new = fix_width_spacing(new)
     new = re.sub(r"\n{3,}", "\n\n", new)
     return new.rstrip("\n") + "\n"
 
@@ -486,9 +693,12 @@ def main() -> int:
     args = ap.parse_args()
 
     changed = []
+    violations: list[tuple[pathlib.Path, int, str, str]] = []
     for f in iter_files(args.files):
         text = f.read_text(encoding="utf-8")
         new = restyle(text)
+        for ln, rule, msg in check_rules(f, new):
+            violations.append((f, ln, rule, msg))
         if new == text:
             continue
         changed.append(f)
@@ -498,14 +708,19 @@ def main() -> int:
             import difflib
             sys.stdout.writelines(difflib.unified_diff(
                 text.splitlines(True), new.splitlines(True), str(f), str(f) + " (styled)"))
-    rel = [str(p.relative_to(ROOT)) if p.is_absolute() and ROOT in p.parents else str(p) for p in changed]
+    def rel(p: pathlib.Path) -> str:
+        return str(p.relative_to(ROOT)) if p.is_absolute() and ROOT in p.parents else str(p)
+    for f, ln, rule, msg in violations:
+        print(f"{rel(f)}:{ln}: {rule} {msg}")
     if args.fix:
-        print(f"sv_style: {len(changed)} file(s) rewritten")
+        print(f"sv_style: {len(changed)} file(s) rewritten" + (f", {len(violations)} violation(s) to fix by hand" if violations else ""))
         return 0
     if changed:
         print("sv_style: files not in style (run: python3 scripts/sv_style.py --fix):")
-        for r in rel:
-            print("  " + r)
+        for p in changed:
+            print("  " + rel(p))
+    if changed or violations:
+        print(f"sv_style: {len(violations)} violation(s)" if violations else "")
         return 1
     print("sv_style: OK")
     return 0
