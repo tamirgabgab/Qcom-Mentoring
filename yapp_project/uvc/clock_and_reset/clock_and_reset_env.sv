@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 class clock_and_reset_env extends uvm_env;
 
-  clock_and_reset_agent agent;
+  clock_and_reset_agent m_agent;
 
   `uvm_component_utils(clock_and_reset_env)
 
@@ -23,5 +23,5 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void clock_and_reset_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  agent = clock_and_reset_agent::type_id::create("agent", this);
+  m_agent = clock_and_reset_agent::type_id::create("agent", this);
 endfunction : build_phase

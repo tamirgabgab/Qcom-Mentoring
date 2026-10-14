@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 class router_coverage extends uvm_subscriber #(router_decision);
 
-  int num_sampled;
+  int m_num_sampled;
 
   covergroup router_cfg_cg with function sample(bit[5:0] max, int len_vs_max, router_reason_e reason, bit bad,
                                                 bit[6:0] cnt_en);
@@ -49,10 +49,10 @@ class router_coverage extends uvm_subscriber #(router_decision);
 
   // The same bins, counted by hand for the breakdown in the report (Verilator
   // does not support get_inst_coverage() on a single coverpoint)
-  int hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63
-  int hits_len[4];                          // length below / equal / max+1 / above max
-  int hits_reason_parity[4][2];             // [reason][bad]: index 0 (UNDEFINED) stays empty
-  int hits_cnt_en[3];                       // counter enables none / mixed / all
+  int m_hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63
+  int m_hits_len[4];                          // length below / equal / max+1 / above max
+  int m_hits_reason_parity[4][2];             // [reason][bad]: index 0 (UNDEFINED) stays empty
+  int m_hits_cnt_en[3];                       // counter enables none / mixed / all
 
   `uvm_component_utils(router_coverage)
 
@@ -78,27 +78,27 @@ endfunction : new
 function void router_coverage::write(router_decision t);
   int len_vs_max;
   bit bad;
-  bad = (t.pkt.parity_type == PARITY_TYPE_BAD);
-  if (t.pkt.length < t.maxpktsize) begin
+  bad = (t.m_pkt.m_parity_type == PARITY_TYPE_BAD);
+  if (t.m_pkt.m_length < t.m_maxpktsize) begin
     len_vs_max = 0;
-  end else if (t.pkt.length == t.maxpktsize) begin
+  end else if (t.m_pkt.m_length == t.m_maxpktsize) begin
     len_vs_max = 1;
-  end else if (t.pkt.length == t.maxpktsize + 1) begin
+  end else if (t.m_pkt.m_length == t.m_maxpktsize + 1) begin
     len_vs_max = 2;
   end else begin
     len_vs_max = 3;
   end
-  num_sampled++;
-  router_cfg_cg.sample(t.maxpktsize, len_vs_max, t.reason, bad, t.en_reg[7:1]);
-  hits_max[(t.maxpktsize == 0) ? 0 : (t.maxpktsize == 1) ? 1 : (t.maxpktsize == 62) ? 3 : (t.maxpktsize == 63) ? 4 : 2]++;
-  hits_len[len_vs_max]++;
-  hits_reason_parity[t.reason][bad]++;
-  hits_cnt_en[(t.en_reg[7:1] == 7'h00) ? 0 : (t.en_reg[7:1] == 7'h7f) ? 2 : 1]++;
+  m_num_sampled++;
+  router_cfg_cg.sample(t.m_maxpktsize, len_vs_max, t.m_reason, bad, t.m_en_reg[7:1]);
+  m_hits_max[(t.m_maxpktsize == 0) ? 0 : (t.m_maxpktsize == 1) ? 1 : (t.m_maxpktsize == 62) ? 3 : (t.m_maxpktsize == 63) ? 4 : 2]++;
+  m_hits_len[len_vs_max]++;
+  m_hits_reason_parity[t.m_reason][bad]++;
+  m_hits_cnt_en[(t.m_en_reg[7:1] == 7'h00) ? 0 : (t.m_en_reg[7:1] == 7'h7f) ? 2 : 1]++;
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void router_coverage::report_phase(uvm_phase phase);
-  if (num_sampled == 0) begin
+  if (m_num_sampled == 0) begin
     return;
   end
   `uvm_info(get_type_name(), $sformatf({"Coverage of the router configuration: %0.1f%%\n",
@@ -109,10 +109,10 @@ function void router_coverage::report_phase(uvm_phase phase);
     "  dropped oversized good / bad             : %0d / %0d\n",
     "  counter enables none / mixed / all       : %0d / %0d / %0d"},
     router_cfg_cg.get_inst_coverage(),
-    hits_max[0], hits_max[1], hits_max[2], hits_max[3], hits_max[4],
-    hits_len[0], hits_len[1], hits_len[2], hits_len[3],
-    hits_reason_parity[ROUTER_REASON_FORWARDED][0], hits_reason_parity[ROUTER_REASON_FORWARDED][1],
-    hits_reason_parity[ROUTER_REASON_ADDR3][0], hits_reason_parity[ROUTER_REASON_ADDR3][1],
-    hits_reason_parity[ROUTER_REASON_OVERSIZED][0], hits_reason_parity[ROUTER_REASON_OVERSIZED][1],
-    hits_cnt_en[0], hits_cnt_en[1], hits_cnt_en[2]), UVM_LOW)
+    m_hits_max[0], m_hits_max[1], m_hits_max[2], m_hits_max[3], m_hits_max[4],
+    m_hits_len[0], m_hits_len[1], m_hits_len[2], m_hits_len[3],
+    m_hits_reason_parity[ROUTER_REASON_FORWARDED][0], m_hits_reason_parity[ROUTER_REASON_FORWARDED][1],
+    m_hits_reason_parity[ROUTER_REASON_ADDR3][0], m_hits_reason_parity[ROUTER_REASON_ADDR3][1],
+    m_hits_reason_parity[ROUTER_REASON_OVERSIZED][0], m_hits_reason_parity[ROUTER_REASON_OVERSIZED][1],
+    m_hits_cnt_en[0], m_hits_cnt_en[1], m_hits_cnt_en[2]), UVM_LOW)
 endfunction : report_phase

@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------
 class hbus_sweep_test extends base_test;
 
-  router_hbus_sweep_mcseq sweep;
+  router_hbus_sweep_mcseq m_sweep;
 
   `uvm_component_utils(hbus_sweep_test)
 
@@ -54,29 +54,29 @@ endfunction : configure_sequences
 //------------------------------------------------------------------------------
 function void hbus_sweep_test::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-  tb.hbus.masters[0].sequencer.set_report_verbosity_level(UVM_NONE);
-  tb.hbus.masters[0].driver.set_report_verbosity_level(UVM_NONE);
-  tb.yapp.agent.sequencer.set_report_verbosity_level(UVM_NONE);
-  tb.yapp.agent.driver.set_report_verbosity_level(UVM_NONE);
+  m_tb.m_hbus.m_masters[0].m_sequencer.set_report_verbosity_level(UVM_NONE);
+  m_tb.m_hbus.m_masters[0].m_driver.set_report_verbosity_level(UVM_NONE);
+  m_tb.m_yapp.m_agent.m_sequencer.set_report_verbosity_level(UVM_NONE);
+  m_tb.m_yapp.m_agent.m_driver.set_report_verbosity_level(UVM_NONE);
 endfunction : end_of_elaboration_phase
 
 //------------------------------------------------------------------------------
 task hbus_sweep_test::run_phase(uvm_phase phase);
   super.run_phase(phase);
   phase.raise_objection(this);
-  sweep = router_hbus_sweep_mcseq::type_id::create("sweep");
-  sweep.start(tb.mcseqr);
+  m_sweep = router_hbus_sweep_mcseq::type_id::create("sweep");
+  m_sweep.start(m_tb.m_mcseqr);
   repeat (50) begin
-    @(posedge tb.yapp.agent.monitor.vif.clock);   // the first packet leaves its channel
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);   // the first packet leaves its channel
   end
   stage("9. the four HBUS coverage collectors are at 100 % and every read matched the model");
-  check_full("HBUS address map", tb.router_module.hbus_addr_cov.hbus_addr_cg.get_inst_coverage());
-  check_full("ctrl_reg / en_reg bits", tb.router_module.hbus_bits_cov.hbus_bits_cg.get_inst_coverage());
-  check_full("yapp_mem data patterns", tb.router_module.hbus_data_cov.hbus_data_cg.get_inst_coverage());
-  check_full("counter values", tb.router_module.hbus_counter_cov.hbus_counter_cg.get_inst_coverage());
+  check_full("HBUS address map", m_tb.m_router_module.m_hbus_addr_cov.hbus_addr_cg.get_inst_coverage());
+  check_full("ctrl_reg / en_reg bits", m_tb.m_router_module.m_hbus_bits_cov.hbus_bits_cg.get_inst_coverage());
+  check_full("yapp_mem data patterns", m_tb.m_router_module.m_hbus_data_cov.hbus_data_cg.get_inst_coverage());
+  check_full("counter values", m_tb.m_router_module.m_hbus_counter_cov.hbus_counter_cg.get_inst_coverage());
   stage($sformatf("done: %0d HBUS reads checked against the model, %0d mismatches, %0d memory bytes never written",
-                  tb.router_module.reference.reads_checked, tb.router_module.reference.read_mismatches,
-                  tb.router_module.reference.reads_unknown));
+                  m_tb.m_router_module.m_reference.m_reads_checked, m_tb.m_router_module.m_reference.m_read_mismatches,
+                  m_tb.m_router_module.m_reference.m_reads_unknown));
   phase.drop_objection(this);
 endtask : run_phase
 

@@ -30,14 +30,14 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void random_backpressure_test::configure_scenario(router_random_mcseq s);
-  s.extreme_pct    = 10;
-  s.router_off_pct = 0;
-  s.addr3_pct      = 2;
-  s.bad_pct        = 10;
-  s.long_pct       = 60;
-  s.boundary_pct   = 10;
-  s.gap0_pct       = 70;
-  s.gap_short_pct  = 25;
+  s.m_extreme_pct    = 10;
+  s.m_router_off_pct = 0;
+  s.m_addr3_pct      = 2;
+  s.m_bad_pct        = 10;
+  s.m_long_pct       = 60;
+  s.m_boundary_pct   = 10;
+  s.m_gap0_pct       = 70;
+  s.m_gap_short_pct  = 25;
 endfunction : configure_scenario
 
 //------------------------------------------------------------------------------

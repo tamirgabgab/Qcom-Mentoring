@@ -8,12 +8,12 @@
 //------------------------------------------------------------------------------
 class router_tb extends uvm_env;
 
-  yapp_env            yapp;
-  channel_env         chan0;
-  channel_env         chan1;
-  channel_env         chan2;
-  hbus_env            hbus;
-  clock_and_reset_env clk_rst;
+  yapp_env            m_yapp;
+  channel_env         m_chan0;
+  channel_env         m_chan1;
+  channel_env         m_chan2;
+  hbus_env            m_hbus;
+  clock_and_reset_env m_clk_rst;
 
   `uvm_component_utils(router_tb)
 
@@ -42,10 +42,10 @@ function void router_tb::build_phase(uvm_phase phase);
   uvm_config_int::set(this, "hbus",  "num_masters", 1);
   uvm_config_int::set(this, "hbus",  "num_slaves",  0);
 
-  yapp    = yapp_env::type_id::create("yapp", this);
-  chan0   = channel_env::type_id::create("chan0", this);
-  chan1   = channel_env::type_id::create("chan1", this);
-  chan2   = channel_env::type_id::create("chan2", this);
-  hbus    = hbus_env::type_id::create("hbus", this);
-  clk_rst = clock_and_reset_env::type_id::create("clk_rst", this);
+  m_yapp    = yapp_env::type_id::create("yapp", this);
+  m_chan0   = channel_env::type_id::create("chan0", this);
+  m_chan1   = channel_env::type_id::create("chan1", this);
+  m_chan2   = channel_env::type_id::create("chan2", this);
+  m_hbus    = hbus_env::type_id::create("hbus", this);
+  m_clk_rst = clock_and_reset_env::type_id::create("clk_rst", this);
 endfunction : build_phase

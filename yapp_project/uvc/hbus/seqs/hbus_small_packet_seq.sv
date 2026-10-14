@@ -26,14 +26,14 @@ task hbus_small_packet_seq::body();
   `uvm_info(get_type_name(), "Executing hbus_small_packet_seq (maxpktsize=20, router_en=1)", UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == CTRL_REG_ADDR; req.hdata == 8'd20; req.hwr_rd == HBUS_OP_WRITE; }) begin
+  if (!req.randomize() with { req.m_haddr == CTRL_REG_ADDR; req.m_hdata == 8'd20; req.m_hwr_rd == HBUS_OP_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);
 
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == EN_REG_ADDR;   req.hdata == 8'h01; req.hwr_rd == HBUS_OP_WRITE; }) begin
+  if (!req.randomize() with { req.m_haddr == EN_REG_ADDR;   req.m_hdata == 8'h01; req.m_hwr_rd == HBUS_OP_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

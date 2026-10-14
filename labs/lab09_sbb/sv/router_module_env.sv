@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 class router_module_env extends uvm_env;
 
-  router_reference  reference;
-  router_scoreboard scoreboard;
+  router_reference  m_reference;
+  router_scoreboard m_scoreboard;
 
   `uvm_component_utils(router_module_env)
 
@@ -33,12 +33,12 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void router_module_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  reference  = router_reference::type_id::create("reference", this);
-  scoreboard = router_scoreboard::type_id::create("scoreboard", this);
+  m_reference  = router_reference::type_id::create("reference", this);
+  m_scoreboard = router_scoreboard::type_id::create("scoreboard", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_module_env::connect_phase(uvm_phase phase);
   // Only packets the router will route reach the scoreboard
-  reference.yapp_valid_out.connect(scoreboard.yapp_in);
+  m_reference.m_yapp_valid_out.connect(m_scoreboard.m_yapp_in);
 endfunction : connect_phase

@@ -28,12 +28,12 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void random_config_test::configure_scenario(router_random_mcseq s);
-  s.min_bursts     = 4;
-  s.max_bursts     = 8;
-  s.extreme_pct    = 70;
-  s.router_off_pct = 20;
-  s.reads_min      = 5;
-  s.reads_max      = 12;
-  s.addr3_pct      = 15;
-  s.boundary_pct   = 70;
+  s.m_min_bursts     = 4;
+  s.m_max_bursts     = 8;
+  s.m_extreme_pct    = 70;
+  s.m_router_off_pct = 20;
+  s.m_reads_min      = 5;
+  s.m_reads_max      = 12;
+  s.m_addr3_pct      = 15;
+  s.m_boundary_pct   = 70;
 endfunction : configure_scenario

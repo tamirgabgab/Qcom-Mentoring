@@ -5,10 +5,10 @@
 class yapp_tx_driver extends uvm_driver #(yapp_packet);
 
   // Virtual interface, set by tb_top through yapp_vif_config
-  virtual interface yapp_if vif;
+  virtual interface yapp_if m_vif;
 
   // Statistics
-  int num_sent;
+  int m_num_sent;
 
   `uvm_component_utils(yapp_tx_driver)
 
@@ -41,7 +41,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void yapp_tx_driver::connect_phase(uvm_phase phase);
-  if (!yapp_vif_config::get(this, "", "vif", vif)) begin
+  if (!yapp_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -54,8 +54,8 @@ endtask : run_phase
 
 //------------------------------------------------------------------------------
 task yapp_tx_driver::reset_signals();
-  vif.yapp_reset();
-  wait (vif.reset === 1'b0);
+  m_vif.yapp_reset();
+  wait (m_vif.reset === 1'b0);
 endtask : reset_signals
 
 //------------------------------------------------------------------------------
@@ -72,22 +72,22 @@ task yapp_tx_driver::send_to_dut(yapp_packet pkt);
   void'(begin_tr(pkt, "Driver_YAPP_Packet"));   // transaction recording
   // One line per packet (UVM_MEDIUM); the full table only at UVM_HIGH
   `uvm_info(get_type_name(),
-            $sformatf("TX pkt #%0d: addr=%0d len=%0d parity=%s delay=%0d", num_sent + 1, pkt.addr, pkt.length,
-                      pkt.parity_text(), pkt.packet_delay), UVM_MEDIUM)
+            $sformatf("TX pkt #%0d: addr=%0d len=%0d parity=%s delay=%0d", m_num_sent + 1, pkt.m_addr, pkt.m_length,
+                      pkt.parity_text(), pkt.m_packet_delay), UVM_MEDIUM)
   `uvm_info(get_type_name(), $sformatf("Packet is \n%s", pkt.sprint()), UVM_HIGH)
-  vif.send_to_dut(pkt.addr, pkt.length, pkt.payload, pkt.parity, pkt.packet_delay);
-  num_sent++;
-  `uvm_info(get_type_name(), $sformatf("TX pkt #%0d accepted by the DUT", num_sent), UVM_MEDIUM)
+  m_vif.send_to_dut(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, pkt.m_packet_delay);
+  m_num_sent++;
+  `uvm_info(get_type_name(), $sformatf("TX pkt #%0d accepted by the DUT", m_num_sent), UVM_MEDIUM)
   end_tr(pkt);
 endtask : send_to_dut
 
 //------------------------------------------------------------------------------
 function void yapp_tx_driver::report_phase(uvm_phase phase);
-  `uvm_info(get_type_name(), $sformatf("YAPP driver report: %0d packets sent", num_sent), UVM_LOW)
+  `uvm_info(get_type_name(), $sformatf("YAPP driver report: %0d packets sent", m_num_sent), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_driver::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("num_sent", num_sent, $bits(num_sent), UVM_DEC);
+  printer.print_field("num_sent", m_num_sent, $bits(m_num_sent), UVM_DEC);
 endfunction : do_print

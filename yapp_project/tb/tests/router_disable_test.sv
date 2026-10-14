@@ -41,10 +41,10 @@ task router_disable_test::access_checks();
 
   // 1. router disabled, every counter enabled
   stage("1. en_reg=0xfe (router_en=0, counters on): 3 packets into a deaf router");
-  regs.en_reg.write(status, 8'hfe);
+  m_regs.en_reg.write(status, 8'hfe);
   chan_before    = channel_packets();
-  dropped_before = tb.router_module.reference.dropped_disabled;
-  seq.start(yapp_seqr);                     // 3 packets into a deaf router
+  dropped_before = m_tb.m_router_module.m_reference.m_dropped_disabled;
+  m_seq.start(m_yapp_seqr);                     // 3 packets into a deaf router
   wait_channels(chan_before + 3);           // give a wrong router time to deliver them
   if (channel_packets() != chan_before) begin
     `uvm_error("ROUTER_DIS", $sformatf("%0d packet(s) reached a channel while router_en = 0",
@@ -52,38 +52,38 @@ task router_disable_test::access_checks();
   end else begin
     `uvm_info("ROUTER_DIS", "router_en = 0: no packet reached a channel", UVM_NONE)
   end
-  if (tb.router_module.reference.dropped_disabled != dropped_before + 3) begin
+  if (m_tb.m_router_module.m_reference.m_dropped_disabled != dropped_before + 3) begin
     `uvm_error("ROUTER_DIS", "the reference model did not report 3 packets dropped (router disabled)")
   end
-  check_counter(regs.addr0_cnt_reg, 0);     // a disabled router counts nothing ...
-  check_counter(regs.addr1_cnt_reg, 0);
-  check_counter(regs.addr2_cnt_reg, 0);
-  check_counter(regs.addr3_cnt_reg, 0);
-  check_counter(regs.parity_err_cnt_reg, 0);
-  check_counter(regs.oversized_pkt_cnt_reg, 0);
-  check_counter(regs.mem_size_reg, 0);      // ... and stores nothing
+  check_counter(m_regs.addr0_cnt_reg, 0);     // a disabled router counts nothing ...
+  check_counter(m_regs.addr1_cnt_reg, 0);
+  check_counter(m_regs.addr2_cnt_reg, 0);
+  check_counter(m_regs.addr3_cnt_reg, 0);
+  check_counter(m_regs.parity_err_cnt_reg, 0);
+  check_counter(m_regs.oversized_pkt_cnt_reg, 0);
+  check_counter(m_regs.mem_size_reg, 0);      // ... and stores nothing
 
   // 2. router enabled again: traffic and counters resume
   stage("2. en_reg=0xff (router_en=1): 3 packets, traffic and counters resume");
-  regs.en_reg.write(status, 8'hff);
+  m_regs.en_reg.write(status, 8'hff);
   chan_before = channel_packets();
-  seq.start(yapp_seqr);
+  m_seq.start(m_yapp_seqr);
   wait_channels(chan_before + 3);
   if (channel_packets() != chan_before + 3) begin
     `uvm_error("ROUTER_DIS", $sformatf("expected 3 packets on the channels after re-enabling, got %0d",
                                        channel_packets() - chan_before))
   end
-  check_counter(regs.addr0_cnt_reg, 1);
-  check_counter(regs.addr1_cnt_reg, 1);
-  check_counter(regs.addr2_cnt_reg, 1);
-  check_counter(regs.addr3_cnt_reg, 0);
+  check_counter(m_regs.addr0_cnt_reg, 1);
+  check_counter(m_regs.addr1_cnt_reg, 1);
+  check_counter(m_regs.addr2_cnt_reg, 1);
+  check_counter(m_regs.addr3_cnt_reg, 0);
 endtask : access_checks
 
 //------------------------------------------------------------------------------
 function int router_disable_test::channel_packets();
-  return tb.chan0.rx_agent.monitor.num_pkt_col
-       + tb.chan1.rx_agent.monitor.num_pkt_col
-       + tb.chan2.rx_agent.monitor.num_pkt_col;
+  return m_tb.m_chan0.m_rx_agent.m_monitor.m_num_pkt_col
+       + m_tb.m_chan1.m_rx_agent.m_monitor.m_num_pkt_col
+       + m_tb.m_chan2.m_rx_agent.m_monitor.m_num_pkt_col;
 endfunction : channel_packets
 
 //------------------------------------------------------------------------------
@@ -93,6 +93,6 @@ task router_disable_test::wait_channels(int expected);
     if (channel_packets() >= expected) begin
       return;
     end
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
 endtask : wait_channels

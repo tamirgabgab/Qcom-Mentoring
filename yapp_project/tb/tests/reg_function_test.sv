@@ -11,8 +11,8 @@
 //------------------------------------------------------------------------------
 class reg_function_test extends reg_access_test;
 
-  yapp_tx_sequencer yapp_seqr;
-  yapp_012_seq      seq;
+  yapp_tx_sequencer m_yapp_seqr;
+  yapp_012_seq      m_seq;
 
   `uvm_component_utils(reg_function_test)
 
@@ -38,13 +38,13 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void reg_function_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  seq = yapp_012_seq::type_id::create("seq");
+  m_seq = yapp_012_seq::type_id::create("seq");
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void reg_function_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  yapp_seqr = tb.yapp.agent.sequencer;      // hierarchical path, no config
+  m_yapp_seqr = m_tb.m_yapp.m_agent.m_sequencer;      // hierarchical path, no config
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------
@@ -55,33 +55,33 @@ task reg_function_test::access_checks();
 
   // 1. router enabled, every counter disabled
   stage("1. en_reg=0x01 (router on, counters off): 3 packets, the address counters stay 0");
-  regs.en_reg.write(status, 8'h01);
-  regs.en_reg.read(status, val);
+  m_regs.en_reg.write(status, 8'h01);
+  m_regs.en_reg.read(status, val);
   `uvm_info("REG_FUNC", $sformatf("en_reg reads 0x%02h", val), UVM_NONE)
   if (val != 8'h01) begin
     `uvm_error("REG_FUNC", $sformatf("en_reg reads 0x%02h, expected 0x01", val))
   end
 
-  seq.start(yapp_seqr);                     // 3 packets, counters off
-  check_counter(regs.addr0_cnt_reg, 0);
-  check_counter(regs.addr1_cnt_reg, 0);
-  check_counter(regs.addr2_cnt_reg, 0);
-  check_counter(regs.addr3_cnt_reg, 0);
+  m_seq.start(m_yapp_seqr);                     // 3 packets, counters off
+  check_counter(m_regs.addr0_cnt_reg, 0);
+  check_counter(m_regs.addr1_cnt_reg, 0);
+  check_counter(m_regs.addr2_cnt_reg, 0);
+  check_counter(m_regs.addr3_cnt_reg, 0);
 
   // 2. every counter enabled
   stage("2. en_reg=0xff (every counter on): 6 packets, 2 per address, counters follow the traffic");
-  bad_before = tb.yapp.agent.monitor.num_bad_parity;
-  regs.en_reg.write(status, 8'hff);
-  seq.start(yapp_seqr);
-  seq.start(yapp_seqr);                     // 6 packets, 2 per address
-  bad_after = tb.yapp.agent.monitor.num_bad_parity;
+  bad_before = m_tb.m_yapp.m_agent.m_monitor.m_num_bad_parity;
+  m_regs.en_reg.write(status, 8'hff);
+  m_seq.start(m_yapp_seqr);
+  m_seq.start(m_yapp_seqr);                     // 6 packets, 2 per address
+  bad_after = m_tb.m_yapp.m_agent.m_monitor.m_num_bad_parity;
 
-  check_counter(regs.addr0_cnt_reg, 2);
-  check_counter(regs.addr1_cnt_reg, 2);
-  check_counter(regs.addr2_cnt_reg, 2);
-  check_counter(regs.addr3_cnt_reg, 0);
-  check_counter(regs.parity_err_cnt_reg, bad_after - bad_before);
-  check_counter(regs.oversized_pkt_cnt_reg, 0);   // maxpktsize is 63 (reset)
+  check_counter(m_regs.addr0_cnt_reg, 2);
+  check_counter(m_regs.addr1_cnt_reg, 2);
+  check_counter(m_regs.addr2_cnt_reg, 2);
+  check_counter(m_regs.addr3_cnt_reg, 0);
+  check_counter(m_regs.parity_err_cnt_reg, bad_after - bad_before);
+  check_counter(m_regs.oversized_pkt_cnt_reg, 0);   // maxpktsize is 63 (reset)
 endtask : access_checks
 
 //------------------------------------------------------------------------------

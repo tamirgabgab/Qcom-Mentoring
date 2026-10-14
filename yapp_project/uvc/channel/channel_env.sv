@@ -7,8 +7,8 @@
 //------------------------------------------------------------------------------
 class channel_env extends uvm_env;
 
-  channel_rx_agent rx_agent;
-  int channel_id;
+  channel_rx_agent m_rx_agent;
+  int m_channel_id;
 
   `uvm_component_utils(channel_env)
 
@@ -35,14 +35,14 @@ function void channel_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
   if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
-    channel_id = cfg_channel_id;
+    m_channel_id = cfg_channel_id;
   end
-  uvm_config_int::set(this, "rx_agent", "channel_id", channel_id);
-  rx_agent = channel_rx_agent::type_id::create("rx_agent", this);
+  uvm_config_int::set(this, "rx_agent", "channel_id", m_channel_id);
+  m_rx_agent = channel_rx_agent::type_id::create("rx_agent", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void channel_env::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);
+  printer.print_field("channel_id", m_channel_id, $bits(m_channel_id), UVM_DEC);
 endfunction : do_print

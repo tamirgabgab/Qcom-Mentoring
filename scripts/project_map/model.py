@@ -677,7 +677,7 @@ class ModelBuilder:
             role = "object"
         if p["type_name"] == "covergroup":
             role = "covergroup"
-        return {"name": p["name"], "type": p["type"].replace("$", ""), "rand": p["rand"], "randc": p["randc"],
+        return {"name": p.get("decl", p["name"]), "type": p["type"].replace("$", ""), "rand": p["rand"], "randc": p["randc"],
                 "role": role, "line": p["line"], "dims": p["dims"]}
 
     # --------------------------------------------------------------- finishing
@@ -853,10 +853,39 @@ class ModelBuilder:
         }
 
 
+# ---------------------------------------------------------------- runtime names
+def runtime_names(raw):
+    """Class properties are declared with an m_ prefix (code style), but the UVM hierarchy, the
+    logs and the node ids of the map use the runtime names: the create("monitor") / new("port")
+    strings, which are the property names without the prefix. Strip the prefix from every
+    property name and from the paths the extractor copied out of the code (connect() arguments,
+    set_sequencer(), handle assignments), keeping the declared name in `decl` for the UML view.
+    Identifiers that are not properties of our classes (UVM's m_sequencer) are left alone."""
+    names = {p["name"] for c in raw["classes"].values() for p in c["properties"] if p["name"].startswith("m_")}
+    if not names:
+        return raw
+    rx = re.compile(r"\bm_\w+")
+    def strip(s):
+        return rx.sub(lambda m: m.group(0)[2:] if m.group(0) in names else m.group(0), s) if isinstance(s, str) else s
+    for c in raw["classes"].values():
+        for p in c["properties"]:
+            p.setdefault("decl", p["name"])
+            p["name"] = strip(p["name"])
+        for key in ("connects", "set_sequencer", "handle_assign", "config_sets", "notable_calls"):
+            for rec in c.get(key) or []:
+                if isinstance(rec, dict):
+                    for k, v in rec.items():
+                        rec[k] = strip(v)
+        if c.get("hdl_root"):
+            c["hdl_root"]["block"] = strip(c["hdl_root"]["block"])
+    return raw
+
+
 def build_model(ann=None, raws=None):
     ann = ann or load_annotations()
     if raws is None:
         raws = [extract.extract(os.path.join(ROOT, s)) for s in ann["sources"]]
+    raws = [runtime_names(r) for r in raws]
     return ModelBuilder(raws, ann).build()
 
 

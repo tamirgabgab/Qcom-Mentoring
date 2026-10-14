@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 class base_test extends uvm_test;
 
-  router_tb tb;
+  router_tb m_tb;
 
   `uvm_component_utils(base_test)
 
@@ -41,7 +41,7 @@ function void base_test::build_phase(uvm_phase phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
   uvm_config_int::set(this, "*", "recording_detail", 1);   // transaction recording
   configure_sequences();                                   // before the tb is built!
-  tb = router_tb::type_id::create("tb", this);
+  m_tb = router_tb::type_id::create("tb", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------

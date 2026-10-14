@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 class base_test extends uvm_test;
 
-  router_tb tb;
+  router_tb m_tb;
 
   `uvm_component_utils(base_test)
 
@@ -49,7 +49,7 @@ function void base_test::build_phase(uvm_phase phase);
   // every packet the reference model forwarded must have come out by the end
   uvm_config_db #(bit)::set(this, "tb.router_module.scoreboard", "check_empty", 1'b1);
   configure_sequences();
-  tb = router_tb::type_id::create("tb", this);
+  m_tb = router_tb::type_id::create("tb", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ class hbus_protocol_test extends reg_access_test;
   localparam bit[15:0] UNMAPPED[8] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008,
                                         16'h100c, 16'h100e, 16'h100f, 16'h1050};
 
-  hbus_master_sequencer hbus_seqr;
+  hbus_master_sequencer m_hbus_seqr;
 
   `uvm_component_utils(hbus_protocol_test)
 
@@ -41,45 +41,45 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void hbus_protocol_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  hbus_seqr = tb.hbus.masters[0].sequencer;
+  m_hbus_seqr = m_tb.m_hbus.m_masters[0].m_sequencer;
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------
 task hbus_protocol_test::access_checks();
-  virtual interface hbus_if vif;
-  bit[7:0] data;
+  virtual interface hbus_if m_vif;
+  bit[7:0] m_data;
   int       writes_before;
   int       reads_before;
-  vif = tb.hbus.monitor.vif;
+  m_vif = m_tb.m_hbus.m_monitor.m_vif;
 
   // 1. write, read back, and the monitor saw both cycles
   stage("1. raw HBUS write 0x2a to ctrl_reg, read it back, the monitor counts one of each");
-  writes_before = tb.hbus.monitor.num_writes;
-  reads_before  = tb.hbus.monitor.num_reads;
+  writes_before = m_tb.m_hbus.m_monitor.m_num_writes;
+  reads_before  = m_tb.m_hbus.m_monitor.m_num_reads;
   bus_write(16'h1000, 8'h2a);
-  bus_read(16'h1000, data);
-  if (data != 8'h2a) begin
-    `uvm_error("HBUS_PROTO", $sformatf("ctrl_reg reads 0x%02h after writing 0x2a", data))
+  bus_read(16'h1000, m_data);
+  if (m_data != 8'h2a) begin
+    `uvm_error("HBUS_PROTO", $sformatf("ctrl_reg reads 0x%02h after writing 0x2a", m_data))
   end
   repeat (2) begin
-    @(posedge vif.clock);  // the monitor finishes the read one edge later
+    @(posedge m_vif.clock);  // the monitor finishes the read one edge later
   end
-  if (tb.hbus.monitor.num_writes != writes_before + 1 || tb.hbus.monitor.num_reads != reads_before + 1) begin
+  if (m_tb.m_hbus.m_monitor.m_num_writes != writes_before + 1 || m_tb.m_hbus.m_monitor.m_num_reads != reads_before + 1) begin
     `uvm_error("HBUS_PROTO", $sformatf("monitor counted %0d write(s) and %0d read(s), expected 1 and 1",
-                                       tb.hbus.monitor.num_writes - writes_before,
-                                       tb.hbus.monitor.num_reads - reads_before))
+                                       m_tb.m_hbus.m_monitor.m_num_writes - writes_before,
+                                       m_tb.m_hbus.m_monitor.m_num_reads - reads_before))
   end
 
   // 2. hen is low again: the DUT must have let go of the data bus
   stage("2. after the read the DUT releases hdata (tri-state)");
-  @(posedge vif.clock);
+  @(posedge m_vif.clock);
 `ifdef VERILATOR
   // two-state simulator: a wire has no 'z, so check that neither driver is enabled
-  if (vif.hdata_oe || hw_top.dut.u_regs.hdata_oe) begin
+  if (m_vif.hdata_oe || hw_top.dut.u_regs.hdata_oe) begin
 `else
-  if (vif.hdata_w !== 8'bz) begin
+  if (m_vif.hdata_w !== 8'bz) begin
 `endif
-    `uvm_error("HBUS_PROTO", $sformatf("hdata is 0x%02h after the read; expected tri-state (z)", vif.hdata_w))
+    `uvm_error("HBUS_PROTO", $sformatf("hdata is 0x%02h after the read; expected tri-state (z)", m_vif.hdata_w))
   end else begin
     `uvm_info("HBUS_PROTO", "hdata tri-stated after the read", UVM_NONE)
   end
@@ -88,9 +88,9 @@ task hbus_protocol_test::access_checks();
   stage($sformatf("3. %0d unmapped addresses: a write is ignored, a read returns 0x00", $size(UNMAPPED)));
   foreach (UNMAPPED[i]) begin
     bus_write(UNMAPPED[i], 8'ha5);
-    bus_read(UNMAPPED[i], data);
-    if (data != 8'h00) begin
-      `uvm_error("HBUS_PROTO", $sformatf("unmapped address 0x%04h reads 0x%02h, expected 0x00", UNMAPPED[i], data))
+    bus_read(UNMAPPED[i], m_data);
+    if (m_data != 8'h00) begin
+      `uvm_error("HBUS_PROTO", $sformatf("unmapped address 0x%04h reads 0x%02h, expected 0x00", UNMAPPED[i], m_data))
     end
   end
   `uvm_info("HBUS_PROTO", $sformatf("%0d unmapped addresses read 0x00", $size(UNMAPPED)), UVM_NONE)
@@ -98,9 +98,9 @@ task hbus_protocol_test::access_checks();
   // 4. a read-only register ignores a write
   stage("4. a raw write to the read-only parity_err_cnt_reg is ignored");
   bus_write(16'h1004, 8'h77);
-  bus_read(16'h1004, data);
-  if (data != 8'h00) begin
-    `uvm_error("HBUS_PROTO", $sformatf("parity_err_cnt_reg reads 0x%02h after a write; a RO register must ignore it", data))
+  bus_read(16'h1004, m_data);
+  if (m_data != 8'h00) begin
+    `uvm_error("HBUS_PROTO", $sformatf("parity_err_cnt_reg reads 0x%02h after a write; a RO register must ignore it", m_data))
   end
 
   bus_write(16'h1000, 8'h3f);               // ctrl_reg back to its reset value
@@ -110,19 +110,19 @@ endtask : access_checks
 task hbus_protocol_test::bus_write(bit[15:0] wr_addr, bit[7:0] wr_data);
   hbus_write_seq wr;
   wr = hbus_write_seq::type_id::create("wr");
-  if (!wr.randomize() with { addr == wr_addr; data == wr_data; }) begin
+  if (!wr.randomize() with { m_addr == wr_addr; m_data == wr_data; }) begin
     `uvm_error("HBUS_PROTO", "wr.randomize() failed")
   end
-  wr.start(hbus_seqr);
+  wr.start(m_hbus_seqr);
 endtask : bus_write
 
 //------------------------------------------------------------------------------
 task hbus_protocol_test::bus_read(bit[15:0] rd_addr, output bit[7:0] rd_data);
   hbus_read_seq rd;
   rd = hbus_read_seq::type_id::create("rd");
-  if (!rd.randomize() with { addr == rd_addr; }) begin
+  if (!rd.randomize() with { m_addr == rd_addr; }) begin
     `uvm_error("HBUS_PROTO", "rd.randomize() failed")
   end
-  rd.start(hbus_seqr);
-  rd_data = rd.data;
+  rd.start(m_hbus_seqr);
+  rd_data = rd.m_data;
 endtask : bus_read

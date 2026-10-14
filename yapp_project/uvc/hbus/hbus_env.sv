@@ -7,12 +7,12 @@
 //------------------------------------------------------------------------------
 class hbus_env extends uvm_env;
 
-  int num_masters = 1;
-  int num_slaves  = 1;
+  int m_num_masters = 1;
+  int m_num_slaves  = 1;
 
-  hbus_master_agent masters[];
-  hbus_slave_agent  slaves[];
-  hbus_monitor      monitor;
+  hbus_master_agent m_masters[];
+  hbus_slave_agent  m_slaves[];
+  hbus_monitor      m_monitor;
 
   `uvm_component_utils(hbus_env)
 
@@ -40,25 +40,25 @@ function void hbus_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
   if (uvm_config_int::get(this, "", "num_masters", cfg_num_masters)) begin
-    num_masters = cfg_num_masters;
+    m_num_masters = cfg_num_masters;
   end
   if (uvm_config_int::get(this, "", "num_slaves", cfg_num_slaves)) begin
-    num_slaves = cfg_num_slaves;
+    m_num_slaves = cfg_num_slaves;
   end
-  monitor = hbus_monitor::type_id::create("monitor", this);
-  masters = new[num_masters];
-  foreach (masters[i]) begin
-    masters[i] = hbus_master_agent::type_id::create($sformatf("masters[%0d]", i), this);
+  m_monitor = hbus_monitor::type_id::create("monitor", this);
+  m_masters = new[m_num_masters];
+  foreach (m_masters[i]) begin
+    m_masters[i] = hbus_master_agent::type_id::create($sformatf("masters[%0d]", i), this);
   end
-  slaves = new[num_slaves];
-  foreach (slaves[i]) begin
-    slaves[i] = hbus_slave_agent::type_id::create($sformatf("slaves[%0d]", i), this);
+  m_slaves = new[m_num_slaves];
+  foreach (m_slaves[i]) begin
+    m_slaves[i] = hbus_slave_agent::type_id::create($sformatf("slaves[%0d]", i), this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void hbus_env::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("num_masters", num_masters, $bits(num_masters), UVM_DEC);
-  printer.print_field("num_slaves", num_slaves, $bits(num_slaves), UVM_DEC);
+  printer.print_field("num_masters", m_num_masters, $bits(m_num_masters), UVM_DEC);
+  printer.print_field("num_slaves", m_num_slaves, $bits(m_num_slaves), UVM_DEC);
 endfunction : do_print

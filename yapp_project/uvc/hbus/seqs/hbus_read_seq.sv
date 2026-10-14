@@ -6,8 +6,8 @@
 // hbus_read_seq: read `addr`; the value is left in `data`
 class hbus_read_seq extends hbus_base_seq;
 
-  rand bit[15:0] addr;
-  bit[7:0]       data;
+  rand bit[15:0] m_addr;
+  bit[7:0]       m_data;
 
   `uvm_object_utils(hbus_read_seq)
 
@@ -26,13 +26,13 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 task hbus_read_seq::body();
-  `uvm_info(get_type_name(), $sformatf("Executing hbus_read_seq addr=0x%04h", addr), UVM_LOW)
+  `uvm_info(get_type_name(), $sformatf("Executing hbus_read_seq addr=0x%04h", m_addr), UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == addr; req.hwr_rd == HBUS_OP_READ; }) begin
+  if (!req.randomize() with { req.m_haddr == m_addr; req.m_hwr_rd == HBUS_OP_READ; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);
-  data = req.hdata;
-  `uvm_info(get_type_name(), $sformatf("Read addr=0x%04h data=0x%02h", addr, data), UVM_LOW)
+  m_data = req.m_hdata;
+  `uvm_info(get_type_name(), $sformatf("Read addr=0x%04h data=0x%02h", m_addr, m_data), UVM_LOW)
 endtask : body

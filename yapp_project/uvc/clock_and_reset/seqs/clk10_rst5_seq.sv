@@ -27,7 +27,7 @@ task clk10_rst5_seq::body();
   `uvm_info(get_type_name(), "Executing clk10_rst5_seq", UVM_LOW)
   req = clock_and_reset_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.clock_period == 10; req.reset_cycles == 5; }) begin
+  if (!req.randomize() with { req.m_clock_period == 10; req.m_reset_cycles == 5; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

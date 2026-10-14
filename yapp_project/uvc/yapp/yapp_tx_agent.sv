@@ -8,11 +8,11 @@
 //------------------------------------------------------------------------------
 class yapp_tx_agent extends uvm_agent;
 
-  yapp_tx_monitor   monitor;
-  yapp_pkt_coverage pkt_cov;
-  yapp_gap_coverage gap_cov;
-  yapp_tx_driver    driver;
-  yapp_tx_sequencer sequencer;
+  yapp_tx_monitor   m_monitor;
+  yapp_pkt_coverage m_pkt_cov;
+  yapp_gap_coverage m_gap_cov;
+  yapp_tx_driver    m_driver;
+  yapp_tx_sequencer m_sequencer;
 
   // is_active is inherited from uvm_agent (default UVM_ACTIVE); build_phase
   // picks up an override set with uvm_config_int::set(..., "is_active", ...)
@@ -44,21 +44,21 @@ function void yapp_tx_agent::build_phase(uvm_phase phase);
   if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) begin
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
-  monitor = yapp_tx_monitor::type_id::create("monitor", this);
-  pkt_cov = yapp_pkt_coverage::type_id::create("pkt_cov", this);
-  gap_cov = yapp_gap_coverage::type_id::create("gap_cov", this);
+  m_monitor = yapp_tx_monitor::type_id::create("monitor", this);
+  m_pkt_cov = yapp_pkt_coverage::type_id::create("pkt_cov", this);
+  m_gap_cov = yapp_gap_coverage::type_id::create("gap_cov", this);
   if (is_active == UVM_ACTIVE) begin
-    driver    = yapp_tx_driver::type_id::create("driver", this);
-    sequencer = yapp_tx_sequencer::type_id::create("sequencer", this);
+    m_driver    = yapp_tx_driver::type_id::create("driver", this);
+    m_sequencer = yapp_tx_sequencer::type_id::create("sequencer", this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_agent::connect_phase(uvm_phase phase);
-  monitor.item_collected_port.connect(pkt_cov.analysis_export);
-  monitor.item_collected_port.connect(gap_cov.analysis_export);
+  m_monitor.m_item_collected_port.connect(m_pkt_cov.analysis_export);
+  m_monitor.m_item_collected_port.connect(m_gap_cov.analysis_export);
   if (is_active == UVM_ACTIVE) begin
-    driver.seq_item_port.connect(sequencer.seq_item_export);
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
   end
 endfunction : connect_phase
 

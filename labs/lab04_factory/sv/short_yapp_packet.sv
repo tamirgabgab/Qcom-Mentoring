@@ -23,8 +23,8 @@ endclass : short_yapp_packet
 // short_yapp_packet -- constraints
 //------------------------------------------------------------------------------
 
-constraint short_yapp_packet::c_short_length { length < 15; }
-constraint short_yapp_packet::c_no_addr2     { addr != 2'd2; }
+constraint short_yapp_packet::c_short_length { m_length < 15; }
+constraint short_yapp_packet::c_no_addr2     { m_addr != 2'd2; }
 
 //------------------------------------------------------------------------------
 // short_yapp_packet -- method implementations

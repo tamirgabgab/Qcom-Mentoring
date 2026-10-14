@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 class back_to_back_test extends reg_function_test;
 
-  yapp_gap_seq gap_seq;
+  yapp_gap_seq m_gap_seq;
 
   `uvm_component_utils(back_to_back_test)
 
@@ -34,38 +34,38 @@ endfunction : new
 task back_to_back_test::access_checks();
   int gaps_before[4];
   int measured;
-  gap_seq = yapp_gap_seq::type_id::create("gap_seq");
-  if (!gap_seq.randomize() with { count == 24; }) begin
+  m_gap_seq = yapp_gap_seq::type_id::create("gap_seq");
+  if (!m_gap_seq.randomize() with { m_count == 24; }) begin
     `uvm_error("GAP", "gap_seq.randomize() failed")
   end
-  gaps_before = tb.yapp.agent.monitor.num_gap;
+  gaps_before = m_tb.m_yapp.m_agent.m_monitor.m_num_gap;
   stage("1. yapp_gap_seq: 24 packets with gaps of 0, 1, 2 and more cycles between them");
-  gap_seq.start(yapp_seqr);
+  m_gap_seq.start(m_yapp_seqr);
 
   // let the channels deliver the last packets
   repeat (400) begin
-    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= 24) begin
+    if (m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched >= 24) begin
       break;
     end
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
 
   stage("2. the gap classes the monitor measured match the plan of the sequence, gap coverage 100%");
   foreach (gaps_before[i]) begin
     // the monitor skips the first packet after reset, the sequence its first packet
-    measured = tb.yapp.agent.monitor.num_gap[i] - gaps_before[i];
-    if (measured != gap_seq.planned_gap[i]) begin
+    measured = m_tb.m_yapp.m_agent.m_monitor.m_num_gap[i] - gaps_before[i];
+    if (measured != m_gap_seq.m_planned_gap[i]) begin
       `uvm_error("GAP", $sformatf("gap class %0d: the monitor measured %0d packets, the sequence asked for %0d",
-                                  i, measured, gap_seq.planned_gap[i]))
+                                  i, measured, m_gap_seq.m_planned_gap[i]))
     end else begin
       `uvm_info("GAP", $sformatf("gap class %0d: %0d packets, as planned", i, measured), UVM_NONE)
     end
   end
-  if (tb.yapp.agent.gap_cov.yapp_gap_cg.get_inst_coverage() < 100.0) begin
-    `uvm_error("GAP", $sformatf("gap coverage %.1f%%, expected 100%%", tb.yapp.agent.gap_cov.yapp_gap_cg.get_inst_coverage()))
+  if (m_tb.m_yapp.m_agent.m_gap_cov.yapp_gap_cg.get_inst_coverage() < 100.0) begin
+    `uvm_error("GAP", $sformatf("gap coverage %.1f%%, expected 100%%", m_tb.m_yapp.m_agent.m_gap_cov.yapp_gap_cg.get_inst_coverage()))
   end
-  if (tb.router_module.scoreboard.packets_matched != 24 || tb.router_module.scoreboard.packets_unexpected != 0) begin
+  if (m_tb.m_router_module.m_scoreboard.m_packets_matched != 24 || m_tb.m_router_module.m_scoreboard.m_packets_unexpected != 0) begin
     `uvm_error("GAP", $sformatf("scoreboard: %0d matched (expected 24), %0d unexpected",
-                                tb.router_module.scoreboard.packets_matched, tb.router_module.scoreboard.packets_unexpected))
+                                m_tb.m_router_module.m_scoreboard.m_packets_matched, m_tb.m_router_module.m_scoreboard.m_packets_unexpected))
   end
 endtask : access_checks

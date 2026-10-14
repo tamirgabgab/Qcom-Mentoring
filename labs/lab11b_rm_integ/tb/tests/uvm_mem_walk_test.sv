@@ -38,7 +38,7 @@ task uvm_mem_walk_test::run_phase(uvm_phase phase);
   super.run_phase(phase);
   phase.raise_objection(this);
   walk_seq = uvm_mem_walk_seq::type_id::create("walk_seq");
-  walk_seq.model = tb.yapp_rm;
+  walk_seq.model = m_tb.m_yapp_rm;
   walk_seq.start(null);
   phase.drop_objection(this);
 endtask : run_phase

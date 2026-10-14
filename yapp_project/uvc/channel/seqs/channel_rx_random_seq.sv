@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------
 class channel_rx_random_seq extends channel_rx_base_seq;
 
-  channel_rx_profile_e profile   = CHANNEL_RX_PROFILE_NORMAL;
-  int                  stall_pct = 15;     // CHANNEL_RX_PROFILE_STALLY: packets that wait 50..150 cycles
+  channel_rx_profile_e m_profile   = CHANNEL_RX_PROFILE_NORMAL;
+  int                  m_stall_pct = 15;     // CHANNEL_RX_PROFILE_STALLY: packets that wait 50..150 cycles
 
   `uvm_object_utils(channel_rx_random_seq)
 
@@ -41,14 +41,14 @@ endfunction : new
 //------------------------------------------------------------------------------
 task channel_rx_random_seq::body();
   int d;
-  `uvm_info(get_type_name(), $sformatf("Executing channel_rx_random_seq (forever, profile %s)", profile.name()),
+  `uvm_info(get_type_name(), $sformatf("Executing channel_rx_random_seq (forever, profile %s)", m_profile.name()),
             UVM_LOW)
   forever begin
     d   = pick_delay();
     req = channel_packet::type_id::create("req");
     req.c_delay.constraint_mode(0);         // the profile chooses the delay
     start_item(req);
-    if (!req.randomize() with { req.delay == d; }) begin
+    if (!req.randomize() with { req.m_delay == d; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end
     finish_item(req);
@@ -57,7 +57,7 @@ endtask : body
 
 //------------------------------------------------------------------------------
 function int channel_rx_random_seq::pick_delay();
-  case (profile)
+  case (m_profile)
     CHANNEL_RX_PROFILE_FAST: begin
       return 0;
     end
@@ -65,7 +65,7 @@ function int channel_rx_random_seq::pick_delay();
       return rnd::get_int(20, 40, "channel_rx_random_seq.slow");
     end
     CHANNEL_RX_PROFILE_STALLY: begin
-      if (rnd::get_int(0, 99, "channel_rx_random_seq.stall") < stall_pct) begin
+      if (rnd::get_int(0, 99, "channel_rx_random_seq.stall") < m_stall_pct) begin
         return rnd::get_int(50, 150, "channel_rx_random_seq.stall_delay");
       end
       return rnd::get_int(0, 10, "channel_rx_random_seq.delay");

@@ -39,7 +39,7 @@ task reg_bit_walk_test::access_checks();
   uvm_reg      all_q[$];
   uvm_reg      rw_q[$];
   uvm_reg      ro_q[$];
-  tb.yapp_rm.get_registers(all_q);
+  m_tb.m_yapp_rm.get_registers(all_q);
   rw_q = all_q.find(r) with (r.get_rights() == "RW");
   ro_q = all_q.find(r) with (r.get_rights() == "RO");
 
@@ -65,8 +65,8 @@ task reg_bit_walk_test::access_checks();
 
   // leave the router as reset left it
   stage("ctrl_reg and en_reg back to their reset values");
-  regs.ctrl_reg.write(status, 8'h3f);
-  regs.en_reg.write(status, 8'h01);
+  m_regs.ctrl_reg.write(status, 8'h3f);
+  m_regs.en_reg.write(status, 8'h01);
 endtask : access_checks
 
 //------------------------------------------------------------------------------

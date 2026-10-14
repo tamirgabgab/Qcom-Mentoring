@@ -6,7 +6,7 @@
 // yapp_rnd_seq (optional): a random number (1..10) of random packets
 class yapp_rnd_seq extends yapp_base_seq;
 
-  rand int count;
+  rand int m_count;
 
   `uvm_object_utils(yapp_rnd_seq)
 
@@ -21,7 +21,7 @@ endclass : yapp_rnd_seq
 // yapp_rnd_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_rnd_seq::c_count { count inside {[1:10]}; }
+constraint yapp_rnd_seq::c_count { m_count inside {[1:10]}; }
 
 //------------------------------------------------------------------------------
 // yapp_rnd_seq -- method implementations
@@ -34,8 +34,8 @@ endfunction : new
 //------------------------------------------------------------------------------
 task yapp_rnd_seq::body();
   `uvm_info(get_type_name(),
-            $sformatf("Executing yapp_rnd_seq sequence (%0d packets)", count), UVM_LOW)
-  repeat (count) begin
+            $sformatf("Executing yapp_rnd_seq sequence (%0d packets)", m_count), UVM_LOW)
+  repeat (m_count) begin
     req = yapp_packet::type_id::create("req");
     start_item(req);
     if (!req.randomize()) begin

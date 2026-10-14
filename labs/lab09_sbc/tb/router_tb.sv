@@ -4,14 +4,14 @@
 //------------------------------------------------------------------------------
 class router_tb extends uvm_env;
 
-  yapp_env            yapp;
-  channel_env         chan0;
-  channel_env         chan1;
-  channel_env         chan2;
-  hbus_env            hbus;
-  clock_and_reset_env clk_rst;
-  router_mcsequencer  mcseqr;
-  router_module_env   router_module;
+  yapp_env            m_yapp;
+  channel_env         m_chan0;
+  channel_env         m_chan1;
+  channel_env         m_chan2;
+  hbus_env            m_hbus;
+  clock_and_reset_env m_clk_rst;
+  router_mcsequencer  m_mcseqr;
+  router_module_env   m_router_module;
 
   `uvm_component_utils(router_tb)
 
@@ -41,25 +41,25 @@ function void router_tb::build_phase(uvm_phase phase);
   uvm_config_int::set(this, "hbus",  "num_masters", 1);
   uvm_config_int::set(this, "hbus",  "num_slaves",  0);
 
-  yapp          = yapp_env::type_id::create("yapp", this);
-  chan0         = channel_env::type_id::create("chan0", this);
-  chan1         = channel_env::type_id::create("chan1", this);
-  chan2         = channel_env::type_id::create("chan2", this);
-  hbus          = hbus_env::type_id::create("hbus", this);
-  clk_rst       = clock_and_reset_env::type_id::create("clk_rst", this);
-  mcseqr        = router_mcsequencer::type_id::create("mcseqr", this);
-  router_module = router_module_env::type_id::create("router_module", this);
+  m_yapp          = yapp_env::type_id::create("yapp", this);
+  m_chan0         = channel_env::type_id::create("chan0", this);
+  m_chan1         = channel_env::type_id::create("chan1", this);
+  m_chan2         = channel_env::type_id::create("chan2", this);
+  m_hbus          = hbus_env::type_id::create("hbus", this);
+  m_clk_rst       = clock_and_reset_env::type_id::create("clk_rst", this);
+  m_mcseqr        = router_mcsequencer::type_id::create("mcseqr", this);
+  m_router_module = router_module_env::type_id::create("router_module", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_tb::connect_phase(uvm_phase phase);
-  mcseqr.hbus_seqr = hbus.masters[0].sequencer;
-  mcseqr.yapp_seqr = yapp.agent.sequencer;
+  m_mcseqr.m_hbus_seqr = m_hbus.m_masters[0].m_sequencer;
+  m_mcseqr.m_yapp_seqr = m_yapp.m_agent.m_sequencer;
 
   // TLM: monitor ports -> module UVC exports (its internals are private)
-  yapp.agent.monitor.item_collected_port.connect(router_module.yapp_export);
-  hbus.monitor.item_collected_port.connect(router_module.hbus_export);
-  chan0.rx_agent.monitor.item_collected_port.connect(router_module.chan0_export);
-  chan1.rx_agent.monitor.item_collected_port.connect(router_module.chan1_export);
-  chan2.rx_agent.monitor.item_collected_port.connect(router_module.chan2_export);
+  m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_yapp_export);
+  m_hbus.m_monitor.m_item_collected_port.connect(m_router_module.m_hbus_export);
+  m_chan0.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan0_export);
+  m_chan1.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan1_export);
+  m_chan2.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan2_export);
 endfunction : connect_phase

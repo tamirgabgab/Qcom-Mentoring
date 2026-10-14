@@ -28,7 +28,7 @@
 //------------------------------------------------------------------------------
 class router_hbus_sweep_mcseq extends router_mcseq_base;
 
-  int pkts_sent;
+  int m_pkts_sent;
 
   `uvm_object_utils(router_hbus_sweep_mcseq)
 
@@ -60,17 +60,17 @@ endfunction : new
 //------------------------------------------------------------------------------
 task router_hbus_sweep_mcseq::body();
   bit[7:0]  patterns[4] = '{8'h00, 8'hff, 8'h55, 8'haa};
-  bit[15:0] addr;
+  bit[15:0] m_addr;
   bit[7:0]  en_masks[4] = '{8'h17, 8'h21, 8'h41, 8'h81};
-  yapp_pkt_seq pkt;
+  yapp_pkt_seq m_pkt;
 
   stage("1. one 20-byte packet to address 0, so yapp_pkt_mem holds known bytes");
-  pkt = yapp_pkt_seq::type_id::create("pkt");
-  if (!pkt.randomize() with { pkt_addr == 0; pkt_len == 20; pkt_parity == PARITY_TYPE_GOOD; }) begin
+  m_pkt = yapp_pkt_seq::type_id::create("pkt");
+  if (!m_pkt.randomize() with { m_pkt_addr == 0; m_pkt_len == 20; m_pkt_parity == PARITY_TYPE_GOOD; }) begin
     `uvm_error(get_type_name(), "yapp_pkt_seq.randomize() failed")
   end
-  pkt.start(p_sequencer.yapp_seqr, this);
-  pkts_sent++;
+  m_pkt.start(p_sequencer.m_yapp_seqr, this);
+  m_pkts_sent++;
 
   stage("2. every address 0x1000..0x100f, registers and holes: write 0x00, 0xff, 0x55, 0xaa, read the window back");
   for (int a = 16'h1000; a <= 16'h100f; a++) begin
@@ -104,8 +104,8 @@ task router_hbus_sweep_mcseq::body();
   write_read(16'h10ff, 8'hff);
   read_window();
   for (int i = 0; i < 6; i++) begin
-    addr = 16'h1051 + 16'(rnd::get_int(0, 16'h00ad, "router_hbus_sweep_mcseq.gap_addr"));
-    write_read(addr, rnd::get_byte("router_hbus_sweep_mcseq.gap_data"));
+    m_addr = 16'h1051 + 16'(rnd::get_int(0, 16'h00ad, "router_hbus_sweep_mcseq.gap_addr"));
+    write_read(m_addr, rnd::get_byte("router_hbus_sweep_mcseq.gap_data"));
     read_window();
   end
 
@@ -138,7 +138,7 @@ task router_hbus_sweep_mcseq::body();
   for (int a = 16'h1000; a <= 16'h100d; a++) begin
     hbus_read(16'(a), patterns[0]);
   end
-  stage($sformatf("sweep done: %0d packets, %0d HBUS reads", pkts_sent, num_reads));
+  stage($sformatf("sweep done: %0d packets, %0d HBUS reads", m_pkts_sent, m_num_reads));
 endtask : body
 
 //------------------------------------------------------------------------------
@@ -153,11 +153,11 @@ task router_hbus_sweep_mcseq::send(bit[1:0] addr, int n);
   yapp_pkt_seq pkt;
   for (int i = 0; i < n; i++) begin
     pkt = yapp_pkt_seq::type_id::create("pkt");
-    if (!pkt.randomize() with { pkt_addr == addr; pkt_len == 2; pkt_parity == PARITY_TYPE_BAD; }) begin
+    if (!pkt.randomize() with { m_pkt_addr == addr; m_pkt_len == 2; m_pkt_parity == PARITY_TYPE_BAD; }) begin
       `uvm_error(get_type_name(), "yapp_pkt_seq.randomize() failed")
     end
-    pkt.start(p_sequencer.yapp_seqr, this);
-    pkts_sent++;
+    pkt.start(p_sequencer.m_yapp_seqr, this);
+    m_pkts_sent++;
   end
 endtask : send
 

@@ -7,7 +7,7 @@
 class yapp_repeat_addr_seq extends yapp_base_seq;
 
   // A random SEQUENCE property, randomized when the sequence is randomized
-  rand bit[1:0] seq_addr;
+  rand bit[1:0] m_seq_addr;
 
   `uvm_object_utils(yapp_repeat_addr_seq)
 
@@ -22,7 +22,7 @@ endclass : yapp_repeat_addr_seq
 // yapp_repeat_addr_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_repeat_addr_seq::c_seq_addr { seq_addr != 2'd3; }
+constraint yapp_repeat_addr_seq::c_seq_addr { m_seq_addr != 2'd3; }
 
 //------------------------------------------------------------------------------
 // yapp_repeat_addr_seq -- method implementations
@@ -35,17 +35,17 @@ endfunction : new
 //------------------------------------------------------------------------------
 task yapp_repeat_addr_seq::body();
   `uvm_info(get_type_name(),
-            $sformatf("Executing yapp_repeat_addr_seq sequence (addr %0d)", seq_addr), UVM_LOW)
+            $sformatf("Executing yapp_repeat_addr_seq sequence (addr %0d)", m_seq_addr), UVM_LOW)
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == seq_addr; }) begin
+  if (!req.randomize() with { req.m_addr == m_seq_addr; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);
 
   req = yapp_packet::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.addr == seq_addr; }) begin
+  if (!req.randomize() with { req.m_addr == m_seq_addr; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

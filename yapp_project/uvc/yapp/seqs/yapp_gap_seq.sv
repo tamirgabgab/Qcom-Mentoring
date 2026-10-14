@@ -13,10 +13,10 @@
 //------------------------------------------------------------------------------
 class yapp_gap_seq extends yapp_base_seq;
 
-  rand int unsigned count;
+  rand int unsigned m_count;
 
   // Bookkeeping for the test: gaps asked for after the first packet, per class 0, 1, 2, 3+
-  int planned_gap[4];
+  int m_planned_gap[4];
 
   `uvm_object_utils(yapp_gap_seq)
 
@@ -31,7 +31,7 @@ endclass : yapp_gap_seq
 // yapp_gap_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_gap_seq::c_count { count inside {[8:40]}; }
+constraint yapp_gap_seq::c_count { m_count inside {[8:40]}; }
 
 //------------------------------------------------------------------------------
 // yapp_gap_seq -- method implementations
@@ -44,24 +44,24 @@ endfunction : new
 //------------------------------------------------------------------------------
 task yapp_gap_seq::body();
   int gap;
-  `uvm_info(get_type_name(), $sformatf("Executing yapp_gap_seq (%0d packets)", count), UVM_LOW)
-  foreach (planned_gap[i]) begin
-    planned_gap[i] = 0;
+  `uvm_info(get_type_name(), $sformatf("Executing yapp_gap_seq (%0d packets)", m_count), UVM_LOW)
+  foreach (m_planned_gap[i]) begin
+    m_planned_gap[i] = 0;
   end
-  for (int i = 0; i < count; i++) begin
+  for (int i = 0; i < m_count; i++) begin
     gap = (i == 0) ? 3 : i % 4;
     req = yapp_packet::type_id::create("req");
     req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
     req.c_delay.constraint_mode(0);         // the sequence chooses the gap (0 included)
     start_item(req);
-    if (!req.randomize() with { req.length       inside {[1:8]};
-                                req.parity_type  == PARITY_TYPE_GOOD;
-                                req.packet_delay == gap; }) begin
+    if (!req.randomize() with { req.m_length       inside {[1:8]};
+                                req.m_parity_type  == PARITY_TYPE_GOOD;
+                                req.m_packet_delay == gap; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end
     finish_item(req);
     if (i > 0) begin
-      planned_gap[gap]++;
+      m_planned_gap[gap]++;
     end
   end
 endtask : body

@@ -11,7 +11,7 @@ class router_simple_mcseq_test extends base_test;
 
   // 1: every packet is a short_yapp_packet (factory override in build_phase);
   // scoreboard_drop_test clears it to send packets longer than maxpktsize
-  bit short_packets = 1;
+  bit m_short_packets = 1;
 
   `uvm_component_utils(router_simple_mcseq_test)
 
@@ -32,7 +32,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_simple_mcseq_test::build_phase(uvm_phase phase);
-  if (short_packets) begin
+  if (m_short_packets) begin
     set_type_override_by_type(yapp_packet::get_type(), short_yapp_packet::get_type());
   end
   super.build_phase(phase);

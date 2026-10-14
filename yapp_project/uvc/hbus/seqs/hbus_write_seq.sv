@@ -6,8 +6,8 @@
 // hbus_write_seq: write `data` to `addr` (both randomizable or set by the user)
 class hbus_write_seq extends hbus_base_seq;
 
-  rand bit[15:0] addr;
-  rand bit[7:0]  data;
+  rand bit[15:0] m_addr;
+  rand bit[7:0]  m_data;
 
   `uvm_object_utils(hbus_write_seq)
 
@@ -27,10 +27,10 @@ endfunction : new
 //------------------------------------------------------------------------------
 task hbus_write_seq::body();
   `uvm_info(get_type_name(), $sformatf("Executing hbus_write_seq addr=0x%04h data=0x%02h",
-                                       addr, data), UVM_LOW)
+                                       m_addr, m_data), UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_OP_WRITE; }) begin
+  if (!req.randomize() with { req.m_haddr == m_addr; req.m_hdata == m_data; req.m_hwr_rd == HBUS_OP_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

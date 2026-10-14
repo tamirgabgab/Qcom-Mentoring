@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 class clock_and_reset_driver extends uvm_driver #(clock_and_reset_transaction);
 
-  virtual interface clock_and_reset_if vif;
+  virtual interface clock_and_reset_if m_vif;
 
   `uvm_component_utils(clock_and_reset_driver)
 
@@ -24,7 +24,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void clock_and_reset_driver::connect_phase(uvm_phase phase);
-  if (!clock_and_reset_vif_config::get(this, "", "vif", vif)) begin
+  if (!clock_and_reset_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -35,8 +35,8 @@ task clock_and_reset_driver::run_phase(uvm_phase phase);
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),
               $sformatf("Starting clock (period %0d) and holding reset for %0d cycles",
-                        req.clock_period, req.reset_cycles), UVM_MEDIUM)
-    vif.start_clock_and_reset(req.clock_period, req.reset_cycles);
+                        req.m_clock_period, req.m_reset_cycles), UVM_MEDIUM)
+    m_vif.start_clock_and_reset(req.m_clock_period, req.m_reset_cycles);
     seq_item_port.item_done();
   end
 endtask : run_phase

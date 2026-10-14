@@ -36,39 +36,39 @@
 class router_reference extends uvm_component;
 
   // Inputs
-  uvm_analysis_imp_yapp #(yapp_packet,      router_reference) yapp_in;
-  uvm_analysis_imp_hbus #(hbus_transaction, router_reference) hbus_in;
+  uvm_analysis_imp_yapp #(yapp_packet,      router_reference) m_yapp_in;
+  uvm_analysis_imp_hbus #(hbus_transaction, router_reference) m_hbus_in;
   // Output: packets the router is expected to deliver
-  uvm_analysis_port #(yapp_packet) yapp_valid_out;
+  uvm_analysis_port #(yapp_packet) m_yapp_valid_out;
   // Output: every packet received while enabled, with the decision and the
   // configuration it met (router_coverage subscribes)
-  uvm_analysis_port #(router_decision) decision_out;
+  uvm_analysis_port #(router_decision) m_decision_out;
 
   // Register mirror (reset values of the DUT)
-  bit[7:0] ctrl_reg = 8'h3f;
-  bit[7:0] en_reg   = 8'h01;
-  bit[5:0] maxpktsize = 6'h3f;             // = ctrl_reg[5:0]
-  bit       router_en  = 1'b1;              // = en_reg[0]
-  bit[7:0] parity_err_cnt;
-  bit[7:0] oversized_cnt;
-  bit[7:0] addr_cnt[4];                    // addr0..addr3 counters
-  bit[7:0] mem_size;
-  bit[7:0] pkt_mem[64];
-  bit       pkt_mem_known[64];              // written since time 0
-  bit[7:0] scratch_mem[256];               // yapp_mem
-  bit       scratch_known[256];
+  bit[7:0] m_ctrl_reg = 8'h3f;
+  bit[7:0] m_en_reg   = 8'h01;
+  bit[5:0] m_maxpktsize = 6'h3f;             // = ctrl_reg[5:0]
+  bit       m_router_en  = 1'b1;              // = en_reg[0]
+  bit[7:0] m_parity_err_cnt;
+  bit[7:0] m_oversized_cnt;
+  bit[7:0] m_addr_cnt[4];                    // addr0..addr3 counters
+  bit[7:0] m_mem_size;
+  bit[7:0] m_pkt_mem[64];
+  bit       m_pkt_mem_known[64];              // written since time 0
+  bit[7:0] m_scratch_mem[256];               // yapp_mem
+  bit       m_scratch_known[256];
 
   // Knob (uvm_config_db #(bit) "check_reads"): compare every HBUS read with the model
-  bit check_reads;
+  bit m_check_reads;
 
   // Statistics
-  int packets_forwarded;
-  int dropped_disabled;
-  int dropped_size;
-  int dropped_addr;
-  int reads_checked;
-  int reads_unknown;                        // memory bytes never written: not checked
-  int read_mismatches;
+  int m_packets_forwarded;
+  int m_dropped_disabled;
+  int m_dropped_size;
+  int m_dropped_addr;
+  int m_reads_checked;
+  int m_reads_unknown;                        // memory bytes never written: not checked
+  int m_read_mismatches;
 
   `uvm_component_utils(router_reference)
 
@@ -94,56 +94,56 @@ endclass : router_reference
 
 function router_reference::new(string name, uvm_component parent);
   super.new(name, parent);
-  yapp_in        = new("yapp_in", this);
-  hbus_in        = new("hbus_in", this);
-  yapp_valid_out = new("yapp_valid_out", this);
-  decision_out   = new("decision_out", this);
+  m_yapp_in        = new("yapp_in", this);
+  m_hbus_in        = new("hbus_in", this);
+  m_yapp_valid_out = new("yapp_valid_out", this);
+  m_decision_out   = new("decision_out", this);
 endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_reference::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  void'(uvm_config_db #(bit)::get(this, "", "check_reads", check_reads));
+  void'(uvm_config_db #(bit)::get(this, "", "check_reads", m_check_reads));
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_reference::write_hbus(hbus_transaction tr);
   bit[7:0] exp;
   bit       known;
-  if (tr.hwr_rd == HBUS_OP_READ) begin
-    if (!check_reads) begin
+  if (tr.m_hwr_rd == HBUS_OP_READ) begin
+    if (!m_check_reads) begin
       return;
     end
-    exp = expected_read(tr.haddr, known);
+    exp = expected_read(tr.m_haddr, known);
     if (!known) begin
-      reads_unknown++;
+      m_reads_unknown++;
     end else begin
-      reads_checked++;
-      if (tr.hdata !== exp) begin
-        read_mismatches++;
+      m_reads_checked++;
+      if (tr.m_hdata !== exp) begin
+        m_read_mismatches++;
         `uvm_error("REF_READ", $sformatf("HBUS read 0x%04h returned 0x%02h, the model expects 0x%02h",
-                                         tr.haddr, tr.hdata, exp))
+                                         tr.m_haddr, tr.m_hdata, exp))
       end else begin
-        `uvm_info(get_type_name(), $sformatf("HBUS read 0x%04h = 0x%02h as expected", tr.haddr, tr.hdata), UVM_HIGH)
+        `uvm_info(get_type_name(), $sformatf("HBUS read 0x%04h = 0x%02h as expected", tr.m_haddr, tr.m_hdata), UVM_HIGH)
       end
     end
     return;
   end
-  if (tr.haddr >= 16'h1100 && tr.haddr <= 16'h11ff) begin
-    scratch_mem[tr.haddr[7:0]]   = tr.hdata;
-    scratch_known[tr.haddr[7:0]] = 1'b1;
+  if (tr.m_haddr >= 16'h1100 && tr.m_haddr <= 16'h11ff) begin
+    m_scratch_mem[tr.m_haddr[7:0]]   = tr.m_hdata;
+    m_scratch_known[tr.m_haddr[7:0]] = 1'b1;
     return;
   end
-  case (tr.haddr)
+  case (tr.m_haddr)
     16'h1000: begin
-      ctrl_reg   = tr.hdata;
-      maxpktsize = tr.hdata[5:0];
-      `uvm_info(get_type_name(), $sformatf("maxpktsize is now %0d", maxpktsize), UVM_LOW)
+      m_ctrl_reg   = tr.m_hdata;
+      m_maxpktsize = tr.m_hdata[5:0];
+      `uvm_info(get_type_name(), $sformatf("maxpktsize is now %0d", m_maxpktsize), UVM_LOW)
     end
     16'h1001: begin
-      en_reg    = tr.hdata;
-      router_en = tr.hdata[0];
-      `uvm_info(get_type_name(), $sformatf("router_en is now %0d (en_reg 0x%02h)", router_en, en_reg), UVM_LOW)
+      m_en_reg    = tr.m_hdata;
+      m_router_en = tr.m_hdata[0];
+      `uvm_info(get_type_name(), $sformatf("router_en is now %0d (en_reg 0x%02h)", m_router_en, m_en_reg), UVM_LOW)
     end
     default: ;   // read-only or unmapped: the write is ignored
   endcase
@@ -154,79 +154,79 @@ function void router_reference::write_yapp(yapp_packet pkt);
   bit             bad;
   router_reason_e reason;
   router_decision decision;
-  bad = (pkt.parity_type == PARITY_TYPE_BAD);
-  if (!router_en) begin
-    dropped_disabled++;
+  bad = (pkt.m_parity_type == PARITY_TYPE_BAD);
+  if (!m_router_en) begin
+    m_dropped_disabled++;
     `uvm_info(get_type_name(),
-              $sformatf("Packet dropped: router disabled (addr=%0d len=%0d)", pkt.addr, pkt.length), UVM_LOW)
+              $sformatf("Packet dropped: router disabled (addr=%0d len=%0d)", pkt.m_addr, pkt.m_length), UVM_LOW)
     return;                                 // deaf: no count, no memory, no pulse
   end
-  if (pkt.addr == 2'd3) begin
+  if (pkt.m_addr == 2'd3) begin
     reason = ROUTER_REASON_ADDR3;
-    dropped_addr++;
-    `uvm_info(get_type_name(), $sformatf("Packet dropped: illegal address 3 (len=%0d)", pkt.length), UVM_LOW)
-  end else if (pkt.length > maxpktsize) begin
+    m_dropped_addr++;
+    `uvm_info(get_type_name(), $sformatf("Packet dropped: illegal address 3 (len=%0d)", pkt.m_length), UVM_LOW)
+  end else if (pkt.m_length > m_maxpktsize) begin
     reason = ROUTER_REASON_OVERSIZED;
-    dropped_size++;
+    m_dropped_size++;
     `uvm_info(get_type_name(),
-              $sformatf("Packet dropped: length %0d > maxpktsize %0d (addr=%0d)", pkt.length, maxpktsize, pkt.addr),
+              $sformatf("Packet dropped: length %0d > maxpktsize %0d (addr=%0d)", pkt.m_length, m_maxpktsize, pkt.m_addr),
               UVM_LOW)
   end else begin
     reason = ROUTER_REASON_FORWARDED;
-    packets_forwarded++;
+    m_packets_forwarded++;
     `uvm_info(get_type_name(),
-              $sformatf("Packet forwarded: addr=%0d len=%0d -> channel %0d", pkt.addr, pkt.length, pkt.addr),
+              $sformatf("Packet forwarded: addr=%0d len=%0d -> channel %0d", pkt.m_addr, pkt.m_length, pkt.m_addr),
               UVM_MEDIUM)
-    yapp_valid_out.write(pkt);
+    m_yapp_valid_out.write(pkt);
   end
 
   // Statistics of a packet received while enabled (forwarded or dropped)
-  if (bad && en_reg[1]) begin
-    parity_err_cnt++;
+  if (bad && m_en_reg[1]) begin
+    m_parity_err_cnt++;
   end
-  if (pkt.length > maxpktsize && en_reg[2]) begin
-    oversized_cnt++;
+  if (pkt.m_length > m_maxpktsize && m_en_reg[2]) begin
+    m_oversized_cnt++;
   end
-  if (en_reg[4 + pkt.addr]) begin
-    addr_cnt[pkt.addr]++;
+  if (m_en_reg[4 + pkt.m_addr]) begin
+    m_addr_cnt[pkt.m_addr]++;
   end
-  mem_size = {2'b00, pkt.length};
-  pkt_mem[0]       = {pkt.length, pkt.addr};
-  pkt_mem_known[0] = 1'b1;
-  for (int i = 0; i < pkt.length; i++) begin
-    pkt_mem[i + 1]       = pkt.payload[i];
-    pkt_mem_known[i + 1] = 1'b1;
+  m_mem_size = {2'b00, pkt.m_length};
+  m_pkt_mem[0]       = {pkt.m_length, pkt.m_addr};
+  m_pkt_mem_known[0] = 1'b1;
+  for (int i = 0; i < pkt.m_length; i++) begin
+    m_pkt_mem[i + 1]       = pkt.m_payload[i];
+    m_pkt_mem_known[i + 1] = 1'b1;
   end
 
   decision            = router_decision::type_id::create("decision");
-  decision.pkt        = pkt;
-  decision.maxpktsize = maxpktsize;
-  decision.en_reg     = en_reg;
-  decision.reason     = reason;
-  decision_out.write(decision);
+  decision.m_pkt        = pkt;
+  decision.m_maxpktsize = m_maxpktsize;
+  decision.m_en_reg     = m_en_reg;
+  decision.m_reason     = reason;
+  m_decision_out.write(decision);
 endfunction : write_yapp
 
 //------------------------------------------------------------------------------
 function bit[7:0] router_reference::expected_read(bit[15:0] addr, output bit known);
   known = 1'b1;
   if (addr >= 16'h1100 && addr <= 16'h11ff) begin
-    known = scratch_known[addr[7:0]];
-    return scratch_mem[addr[7:0]];
+    known = m_scratch_known[addr[7:0]];
+    return m_scratch_mem[addr[7:0]];
   end
   if (addr >= 16'h1010 && addr <= 16'h104f) begin
-    known = pkt_mem_known[addr - 16'h1010];
-    return pkt_mem[addr - 16'h1010];
+    known = m_pkt_mem_known[addr - 16'h1010];
+    return m_pkt_mem[addr - 16'h1010];
   end
   case (addr)
-    16'h1000: return ctrl_reg;
-    16'h1001: return en_reg;
-    16'h1004: return parity_err_cnt;
-    16'h1005: return oversized_cnt;
-    16'h1006: return addr_cnt[3];
-    16'h1009: return addr_cnt[0];
-    16'h100a: return addr_cnt[1];
-    16'h100b: return addr_cnt[2];
-    16'h100d: return mem_size;
+    16'h1000: return m_ctrl_reg;
+    16'h1001: return m_en_reg;
+    16'h1004: return m_parity_err_cnt;
+    16'h1005: return m_oversized_cnt;
+    16'h1006: return m_addr_cnt[3];
+    16'h1009: return m_addr_cnt[0];
+    16'h100a: return m_addr_cnt[1];
+    16'h100b: return m_addr_cnt[2];
+    16'h100d: return m_mem_size;
     default:  return 8'h00;                 // not mapped
   endcase
 endfunction : expected_read
@@ -239,10 +239,10 @@ function void router_reference::report_phase(uvm_phase phase);
     "  dropped (oversized)       : %0d\n",
     "  dropped (address 3)       : %0d\n",
     "  counters parity/oversized/addr0..3 : %0d / %0d / %0d %0d %0d %0d"},
-    packets_forwarded, dropped_disabled, dropped_size, dropped_addr,
-    parity_err_cnt, oversized_cnt, addr_cnt[0], addr_cnt[1], addr_cnt[2], addr_cnt[3]), UVM_LOW)
-  if (check_reads) begin
+    m_packets_forwarded, m_dropped_disabled, m_dropped_size, m_dropped_addr,
+    m_parity_err_cnt, m_oversized_cnt, m_addr_cnt[0], m_addr_cnt[1], m_addr_cnt[2], m_addr_cnt[3]), UVM_LOW)
+  if (m_check_reads) begin
     `uvm_info(get_type_name(), $sformatf("HBUS reads checked against the model: %0d (%0d mismatches, %0d of memory bytes never written)",
-                                         reads_checked, read_mismatches, reads_unknown), UVM_LOW)
+                                         m_reads_checked, m_read_mismatches, m_reads_unknown), UVM_LOW)
   end
 endfunction : report_phase

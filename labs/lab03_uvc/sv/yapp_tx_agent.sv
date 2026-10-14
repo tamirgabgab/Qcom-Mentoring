@@ -6,9 +6,9 @@
 //------------------------------------------------------------------------------
 class yapp_tx_agent extends uvm_agent;
 
-  yapp_tx_monitor   monitor;
-  yapp_tx_driver    driver;
-  yapp_tx_sequencer sequencer;
+  yapp_tx_monitor   m_monitor;
+  yapp_tx_driver    m_driver;
+  yapp_tx_sequencer m_sequencer;
 
   // is_active is inherited from uvm_agent (default UVM_ACTIVE); build_phase
   // picks up an override set with uvm_config_int::set(..., "is_active", ...)
@@ -43,17 +43,17 @@ function void yapp_tx_agent::build_phase(uvm_phase phase);
   if (uvm_config_int::get(this, "", "is_active", cfg_is_active)) begin
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
-  monitor = new("monitor", this);
+  m_monitor = new("monitor", this);
   if (is_active == UVM_ACTIVE) begin
-    driver    = new("driver", this);
-    sequencer = new("sequencer", this);
+    m_driver    = new("driver", this);
+    m_sequencer = new("sequencer", this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_agent::connect_phase(uvm_phase phase);
   if (is_active == UVM_ACTIVE) begin
-    driver.seq_item_port.connect(sequencer.seq_item_export);
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
   end
 endfunction : connect_phase
 

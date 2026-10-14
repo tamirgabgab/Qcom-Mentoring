@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 class base_test extends uvm_test;
 
-  router_tb tb;
+  router_tb m_tb;
 
   `uvm_component_utils(base_test)
 
@@ -39,7 +39,7 @@ function void base_test::build_phase(uvm_phase phase);
   // The path is the sequencer's hierarchical name from the topology print.
   uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                           "default_sequence", yapp_5_packets::get_type());
-  tb = new("tb", this);
+  m_tb = new("tb", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------

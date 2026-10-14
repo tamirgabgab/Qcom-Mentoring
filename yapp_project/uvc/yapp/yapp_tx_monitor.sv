@@ -10,22 +10,22 @@
 class yapp_tx_monitor extends uvm_monitor;
 
   // Virtual interface, set by tb_top through yapp_vif_config
-  virtual interface yapp_if vif;
+  virtual interface yapp_if m_vif;
 
   // Analysis port: the scoreboard / reference model subscribe here
-  uvm_analysis_port #(yapp_packet) item_collected_port;
+  uvm_analysis_port #(yapp_packet) m_item_collected_port;
 
   // Statistics
-  int num_pkt_col;
-  int num_bad_parity;   // packets seen with a wrong parity byte (Lab 11C uses it)
+  int m_num_pkt_col;
+  int m_num_bad_parity;   // packets seen with a wrong parity byte (Lab 11C uses it)
 
   // Gap before each packet: idle cycles since the previous packet's parity
   // byte (test plan ROUTE-04), also written into the collected packet's
   // packet_delay (-1 for the first packet after reset). num_gap[0..2] count
   // gaps of 0, 1 and 2 cycles, num_gap[3] the longer ones; the first packet
   // after reset is not counted.
-  int last_gap = -1;
-  int num_gap[4];
+  int m_last_gap = -1;
+  int m_num_gap[4];
 
   `uvm_component_utils(yapp_tx_monitor)
 
@@ -48,12 +48,12 @@ endclass : yapp_tx_monitor
 
 function yapp_tx_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
-  item_collected_port = new("item_collected_port", this);
+  m_item_collected_port = new("item_collected_port", this);
 endfunction : new
 
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::connect_phase(uvm_phase phase);
-  if (!yapp_vif_config::get(this, "", "vif", vif)) begin
+  if (!yapp_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -70,32 +70,32 @@ task yapp_tx_monitor::collect_packets();
   int idle_cycles;
   bit first = 1'b1;
   // Nothing to observe while reset is active
-  @(posedge vif.clock);
-  wait (vif.reset === 1'b0);
+  @(posedge m_vif.clock);
+  wait (m_vif.reset === 1'b0);
   forever begin
     // A NEW object per packet: subscribers keep the handle (analysis FIFOs
     // do not clone), so re-using one object would corrupt earlier packets.
     pkt = yapp_packet::type_id::create("pkt", this);
-    vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles);
+    m_vif.collect_packets(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, idle_cycles);
     if (first) begin
-      pkt.packet_delay = -1;                // no previous packet: no gap
+      pkt.m_packet_delay = -1;                // no previous packet: no gap
     end else begin
-      pkt.packet_delay = idle_cycles;
-      last_gap = idle_cycles;
-      num_gap[(idle_cycles > 3) ? 3 : idle_cycles]++;
+      pkt.m_packet_delay = idle_cycles;
+      m_last_gap = idle_cycles;
+      m_num_gap[(idle_cycles > 3) ? 3 : idle_cycles]++;
     end
     first = 1'b0;
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
-    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
-    num_pkt_col++;
-    if (pkt.parity_type == PARITY_TYPE_BAD) begin
-      num_bad_parity++;
+    pkt.m_parity_type = (pkt.m_parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
+    m_num_pkt_col++;
+    if (pkt.m_parity_type == PARITY_TYPE_BAD) begin
+      m_num_bad_parity++;
     end
     `uvm_info(get_type_name(),
-              $sformatf("RX pkt #%0d on the input: addr=%0d len=%0d parity=%s gap=%0d", num_pkt_col, pkt.addr,
-                        pkt.length, pkt.parity_text(), idle_cycles), UVM_MEDIUM)
+              $sformatf("RX pkt #%0d on the input: addr=%0d len=%0d parity=%s gap=%0d", m_num_pkt_col, pkt.m_addr,
+                        pkt.m_length, pkt.parity_text(), idle_cycles), UVM_MEDIUM)
     `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_HIGH)
-    item_collected_port.write(pkt);
+    m_item_collected_port.write(pkt);
     end_tr(pkt);
   end
 endtask : collect_packets
@@ -104,14 +104,14 @@ endtask : collect_packets
 function void yapp_tx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
             $sformatf("YAPP monitor report: %0d packets collected, %0d with bad parity",
-                      num_pkt_col, num_bad_parity), UVM_LOW)
+                      m_num_pkt_col, m_num_bad_parity), UVM_LOW)
   `uvm_info(get_type_name(),
             $sformatf("YAPP gaps: %0d back to back, %0d of 1 cycle, %0d of 2, %0d longer",
-                      num_gap[0], num_gap[1], num_gap[2], num_gap[3]), UVM_LOW)
+                      m_num_gap[0], m_num_gap[1], m_num_gap[2], m_num_gap[3]), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("num_pkt_col", num_pkt_col, $bits(num_pkt_col), UVM_DEC);
+  printer.print_field("num_pkt_col", m_num_pkt_col, $bits(m_num_pkt_col), UVM_DEC);
 endfunction : do_print

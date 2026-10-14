@@ -7,10 +7,10 @@
 //------------------------------------------------------------------------------
 class router_decision extends uvm_object;
 
-  yapp_packet     pkt;                      // the packet, as the monitor collected it
-  bit[5:0]       maxpktsize;               // ctrl_reg[5:0] when it was received
-  bit[7:0]       en_reg;                   // en_reg when it was received
-  router_reason_e reason;
+  yapp_packet     m_pkt;                      // the packet, as the monitor collected it
+  bit[5:0]       m_maxpktsize;               // ctrl_reg[5:0] when it was received
+  bit[7:0]       m_en_reg;                   // en_reg when it was received
+  router_reason_e m_reason;
 
   `uvm_object_utils(router_decision)
 

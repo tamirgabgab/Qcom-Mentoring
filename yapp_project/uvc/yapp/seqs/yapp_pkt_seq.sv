@@ -13,9 +13,9 @@
 //------------------------------------------------------------------------------
 class yapp_pkt_seq extends yapp_base_seq;
 
-  rand bit[1:0]     pkt_addr;
-  rand bit[5:0]     pkt_len;
-  rand parity_type_e pkt_parity;
+  rand bit[1:0]     m_pkt_addr;
+  rand bit[5:0]     m_pkt_len;
+  rand parity_type_e m_pkt_parity;
 
   `uvm_object_utils(yapp_pkt_seq)
 
@@ -32,9 +32,9 @@ endclass : yapp_pkt_seq
 // yapp_pkt_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_pkt_seq::c_len    { pkt_len inside {[1:63]}; }
-constraint yapp_pkt_seq::c_legal  { soft pkt_addr != 2'd3; }
-constraint yapp_pkt_seq::c_parity { pkt_parity != PARITY_TYPE_UNDEFINED; soft pkt_parity == PARITY_TYPE_GOOD; }
+constraint yapp_pkt_seq::c_len    { m_pkt_len inside {[1:63]}; }
+constraint yapp_pkt_seq::c_legal  { soft m_pkt_addr != 2'd3; }
+constraint yapp_pkt_seq::c_parity { m_pkt_parity != PARITY_TYPE_UNDEFINED; soft m_pkt_parity == PARITY_TYPE_GOOD; }
 
 //------------------------------------------------------------------------------
 // yapp_pkt_seq -- method implementations
@@ -47,14 +47,14 @@ endfunction : new
 //------------------------------------------------------------------------------
 task yapp_pkt_seq::body();
   `uvm_info(get_type_name(), $sformatf("Executing yapp_pkt_seq (addr %0d, length %0d, %s)",
-                                       pkt_addr, pkt_len, pkt_parity.name()), UVM_LOW)
+                                       m_pkt_addr, m_pkt_len, m_pkt_parity.name()), UVM_LOW)
   req = yapp_packet::type_id::create("req");
   req.c_addr_legal.constraint_mode(0);      // the test may ask for address 3
   req.c_parity_dist.constraint_mode(0);     // the sequence chooses the parity
   start_item(req);
-  if (!req.randomize() with { req.addr        == pkt_addr;
-                              req.length      == pkt_len;
-                              req.parity_type == pkt_parity; }) begin
+  if (!req.randomize() with { req.m_addr        == m_pkt_addr;
+                              req.m_length      == m_pkt_len;
+                              req.m_parity_type == m_pkt_parity; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

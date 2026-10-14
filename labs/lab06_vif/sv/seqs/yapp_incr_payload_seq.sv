@@ -28,8 +28,8 @@ task yapp_incr_payload_seq::body();
   if (!req.randomize()) begin
     `uvm_error(get_type_name(), "Randomization failed")
   end
-  foreach (req.payload[i]) begin
-    req.payload[i] = i;
+  foreach (req.m_payload[i]) begin
+    req.m_payload[i] = i;
   end
   req.set_parity();                        // payload changed -> recompute parity
   start_item(req);   // hand it to the driver

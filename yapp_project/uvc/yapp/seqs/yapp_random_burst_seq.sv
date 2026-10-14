@@ -23,24 +23,24 @@
 //------------------------------------------------------------------------------
 class yapp_random_burst_seq extends yapp_base_seq;
 
-  rand int unsigned count;
+  rand int unsigned m_count;
 
   // Knobs (percent unless said otherwise)
-  bit[5:0] maxpktsize   = 6'd63;           // the value in force, for the boundary lengths
-  int       addr3_pct    = 5;               // packets to the illegal address 3
-  int       bad_pct      = 15;              // packets with bad parity
-  int       short_pct    = 0;
-  int       long_pct     = 0;
-  int       boundary_pct = 40;
-  int       gap0_pct     = 25;
-  int       gap_short_pct = 35;
+  bit[5:0] m_maxpktsize   = 6'd63;           // the value in force, for the boundary lengths
+  int       m_addr3_pct    = 5;               // packets to the illegal address 3
+  int       m_bad_pct      = 15;              // packets with bad parity
+  int       m_short_pct    = 0;
+  int       m_long_pct     = 0;
+  int       m_boundary_pct = 40;
+  int       m_gap0_pct     = 25;
+  int       m_gap_short_pct = 35;
 
   // What was sent, for the [TEST] stage lines
-  int sent_per_addr[4];
-  int sent_bad;
-  int sent_gap0;
-  int sent_len_min;
-  int sent_len_max;
+  int m_sent_per_addr[4];
+  int m_sent_bad;
+  int m_sent_gap0;
+  int m_sent_len_min;
+  int m_sent_len_max;
 
   `uvm_object_utils(yapp_random_burst_seq)
 
@@ -63,7 +63,7 @@ endclass : yapp_random_burst_seq
 // yapp_random_burst_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_random_burst_seq::c_count { count inside {[1:100]}; }
+constraint yapp_random_burst_seq::c_count { m_count inside {[1:100]}; }
 
 //------------------------------------------------------------------------------
 // yapp_random_burst_seq -- method implementations
@@ -80,50 +80,50 @@ task yapp_random_burst_seq::body();
   parity_type_e par;
   int           gap;
   `uvm_info(get_type_name(), $sformatf("Executing yapp_random_burst_seq (%0d packets, maxpktsize %0d)",
-                                       count, maxpktsize), UVM_LOW)
-  foreach (sent_per_addr[i]) begin
-    sent_per_addr[i] = 0;
+                                       m_count, m_maxpktsize), UVM_LOW)
+  foreach (m_sent_per_addr[i]) begin
+    m_sent_per_addr[i] = 0;
   end
-  sent_bad     = 0;
-  sent_gap0    = 0;
-  sent_len_min = 64;
-  sent_len_max = 0;
-  for (int i = 0; i < count; i++) begin
+  m_sent_bad     = 0;
+  m_sent_gap0    = 0;
+  m_sent_len_min = 64;
+  m_sent_len_max = 0;
+  for (int i = 0; i < m_count; i++) begin
     a   = pick_addr();
     len = pick_length();
-    par = (rnd::get_int(0, 99, "yapp_random_burst_seq.parity") < bad_pct) ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD;
+    par = (rnd::get_int(0, 99, "yapp_random_burst_seq.parity") < m_bad_pct) ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD;
     gap = pick_gap();
     req = yapp_packet::type_id::create("req");
     req.c_addr_legal.constraint_mode(0);    // the sequence chooses the address (3 included)
     req.c_parity_dist.constraint_mode(0);   // ... the parity
     req.c_delay.constraint_mode(0);         // ... and the gap (0 included)
     start_item(req);
-    if (!req.randomize() with { req.addr         == a;
-                                req.length       == len;
-                                req.parity_type  == par;
-                                req.packet_delay == gap; }) begin
+    if (!req.randomize() with { req.m_addr         == a;
+                                req.m_length       == len;
+                                req.m_parity_type  == par;
+                                req.m_packet_delay == gap; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end
     finish_item(req);
-    sent_per_addr[a]++;
+    m_sent_per_addr[a]++;
     if (par == PARITY_TYPE_BAD) begin
-      sent_bad++;
+      m_sent_bad++;
     end
     if (gap == 0) begin
-      sent_gap0++;
+      m_sent_gap0++;
     end
-    if (len < sent_len_min) begin
-      sent_len_min = len;
+    if (len < m_sent_len_min) begin
+      m_sent_len_min = len;
     end
-    if (len > sent_len_max) begin
-      sent_len_max = len;
+    if (len > m_sent_len_max) begin
+      m_sent_len_max = len;
     end
   end
 endtask : body
 
 //------------------------------------------------------------------------------
 function bit[1:0] yapp_random_burst_seq::pick_addr();
-  if (rnd::get_int(0, 99, "yapp_random_burst_seq.addr3") < addr3_pct) begin
+  if (rnd::get_int(0, 99, "yapp_random_burst_seq.addr3") < m_addr3_pct) begin
     return 2'd3;
   end
   return 2'(rnd::get_int(0, 2, "yapp_random_burst_seq.addr"));
@@ -134,16 +134,16 @@ function bit[5:0] yapp_random_burst_seq::pick_length();
   int r;
   int len;
   r = rnd::get_int(0, 99, "yapp_random_burst_seq.length_class");
-  if (r < short_pct) begin
+  if (r < m_short_pct) begin
     len = rnd::get_int(1, 3, "yapp_random_burst_seq.short_length");
-  end else if (r < short_pct + long_pct) begin
+  end else if (r < m_short_pct + m_long_pct) begin
     len = rnd::get_int(40, 63, "yapp_random_burst_seq.long_length");
-  end else if (r < short_pct + long_pct + boundary_pct) begin
+  end else if (r < m_short_pct + m_long_pct + m_boundary_pct) begin
     case (rnd::get_int(0, 4, "yapp_random_burst_seq.boundary"))
       0:       len = 1;
-      1:       len = int'(maxpktsize) - 1;
-      2:       len = int'(maxpktsize);
-      3:       len = int'(maxpktsize) + 1;
+      1:       len = int'(m_maxpktsize) - 1;
+      2:       len = int'(m_maxpktsize);
+      3:       len = int'(m_maxpktsize) + 1;
       default: len = 63;
     endcase
   end else begin
@@ -162,10 +162,10 @@ endfunction : pick_length
 function int yapp_random_burst_seq::pick_gap();
   int r;
   r = rnd::get_int(0, 99, "yapp_random_burst_seq.gap_class");
-  if (r < gap0_pct) begin
+  if (r < m_gap0_pct) begin
     return 0;
   end
-  if (r < gap0_pct + gap_short_pct) begin
+  if (r < m_gap0_pct + m_gap_short_pct) begin
     return rnd::get_int(1, 3, "yapp_random_burst_seq.short_gap");
   end
   return rnd::get_int(4, 20, "yapp_random_burst_seq.gap");
@@ -174,6 +174,6 @@ endfunction : pick_gap
 //------------------------------------------------------------------------------
 function string yapp_random_burst_seq::summary();
   return $sformatf("addr0..3 %0d/%0d/%0d/%0d, bad parity %0d, gap 0 %0d, length %0d..%0d",
-                   sent_per_addr[0], sent_per_addr[1], sent_per_addr[2], sent_per_addr[3],
-                   sent_bad, sent_gap0, sent_len_min, sent_len_max);
+                   m_sent_per_addr[0], m_sent_per_addr[1], m_sent_per_addr[2], m_sent_per_addr[3],
+                   m_sent_bad, m_sent_gap0, m_sent_len_min, m_sent_len_max);
 endfunction : summary

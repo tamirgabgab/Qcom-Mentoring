@@ -14,7 +14,7 @@
 class reg_access_test extends base_test;
 
   // Convenience handle to the register block (path from the topology report)
-  yapp_regs_c regs;
+  yapp_regs_c m_regs;
 
   `uvm_component_utils(reg_access_test)
 
@@ -50,7 +50,7 @@ endfunction : configure_sequences
 
 //------------------------------------------------------------------------------
 function void reg_access_test::connect_phase(uvm_phase phase);
-  regs = tb.yapp_rm.router_yapp_regs;
+  m_regs = m_tb.m_yapp_rm.router_yapp_regs;
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------
@@ -63,8 +63,8 @@ endtask : run_phase
 
 //------------------------------------------------------------------------------
 task reg_access_test::access_checks();
-  check_rw_register(regs.ctrl_reg,      8'h25, 8'h1a);
-  check_ro_register(regs.addr0_cnt_reg, 8'h5a, 8'h33);
+  check_rw_register(m_regs.ctrl_reg,      8'h25, 8'h1a);
+  check_ro_register(m_regs.addr0_cnt_reg, 8'h5a, 8'h33);
 endtask : access_checks
 
 //------------------------------------------------------------------------------

@@ -8,8 +8,8 @@
 //------------------------------------------------------------------------------
 class router_mcsequencer extends uvm_sequencer;
 
-  hbus_master_sequencer hbus_seqr;   // assigned by router_tb in connect_phase
-  yapp_tx_sequencer     yapp_seqr;
+  hbus_master_sequencer m_hbus_seqr;   // assigned by router_tb in connect_phase
+  yapp_tx_sequencer     m_yapp_seqr;
 
   `uvm_component_utils(router_mcsequencer)
 

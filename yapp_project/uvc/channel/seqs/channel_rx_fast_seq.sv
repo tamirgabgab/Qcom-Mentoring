@@ -27,7 +27,7 @@ task channel_rx_fast_seq::body();
   forever begin
     req = channel_packet::type_id::create("req");
     start_item(req);
-    if (!req.randomize() with { req.delay == 0; }) begin
+    if (!req.randomize() with { req.m_delay == 0; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end
     finish_item(req);

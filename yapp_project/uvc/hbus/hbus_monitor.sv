@@ -7,12 +7,12 @@
 //------------------------------------------------------------------------------
 class hbus_monitor extends uvm_monitor;
 
-  virtual interface hbus_if vif;
+  virtual interface hbus_if m_vif;
 
-  uvm_analysis_port #(hbus_transaction) item_collected_port;
+  uvm_analysis_port #(hbus_transaction) m_item_collected_port;
 
-  int num_writes;
-  int num_reads;
+  int m_num_writes;
+  int m_num_reads;
 
   `uvm_component_utils(hbus_monitor)
 
@@ -34,12 +34,12 @@ endclass : hbus_monitor
 
 function hbus_monitor::new(string name, uvm_component parent);
   super.new(name, parent);
-  item_collected_port = new("item_collected_port", this);
+  m_item_collected_port = new("item_collected_port", this);
 endfunction : new
 
 //------------------------------------------------------------------------------
 function void hbus_monitor::connect_phase(uvm_phase phase);
-  if (!hbus_vif_config::get(this, "", "vif", vif)) begin
+  if (!hbus_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -48,31 +48,31 @@ endfunction : connect_phase
 task hbus_monitor::run_phase(uvm_phase phase);
   hbus_transaction tr;
   bit is_write;
-  @(posedge vif.clock);
-  wait (vif.reset === 1'b0);
+  @(posedge m_vif.clock);
+  wait (m_vif.reset === 1'b0);
   forever begin
     tr = hbus_transaction::type_id::create("tr", this);   // new object each time
-    vif.collect_transaction(tr.haddr, tr.hdata, is_write);
-    tr.hwr_rd = is_write ? HBUS_OP_WRITE : HBUS_OP_READ;
+    m_vif.collect_transaction(tr.m_haddr, tr.m_hdata, is_write);
+    tr.m_hwr_rd = is_write ? HBUS_OP_WRITE : HBUS_OP_READ;
     if (is_write) begin
-      num_writes++;
+      m_num_writes++;
     end else begin
-      num_reads++;
+      m_num_reads++;
     end
     `uvm_info(get_type_name(), {"Collected ", tr.convert2string()}, UVM_MEDIUM)
-    item_collected_port.write(tr);
+    m_item_collected_port.write(tr);
   end
 endtask : run_phase
 
 //------------------------------------------------------------------------------
 function void hbus_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
-            $sformatf("HBUS report: %0d writes, %0d reads", num_writes, num_reads), UVM_LOW)
+            $sformatf("HBUS report: %0d writes, %0d reads", m_num_writes, m_num_reads), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------
 function void hbus_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("num_writes", num_writes, $bits(num_writes), UVM_DEC);
-  printer.print_field("num_reads", num_reads, $bits(num_reads), UVM_DEC);
+  printer.print_field("num_writes", m_num_writes, $bits(m_num_writes), UVM_DEC);
+  printer.print_field("num_reads", m_num_reads, $bits(m_num_reads), UVM_DEC);
 endfunction : do_print

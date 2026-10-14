@@ -10,13 +10,13 @@
 //------------------------------------------------------------------------------
 class router_hbus_bits_coverage extends uvm_subscriber #(hbus_transaction);
 
-  int num_writes;
+  int m_num_writes;
 
   covergroup hbus_bits_cg with function sample(bit is_en, int bit_index, bit value);
     option.per_instance = 1;
     reg_cp : coverpoint is_en {
-      bins ctrl_reg = {0};
-      bins en_reg   = {1};
+      bins m_ctrl_reg = {0};
+      bins m_en_reg   = {1};
     }
     bit_cp : coverpoint bit_index {
       bins b[] = {[0:7]};
@@ -50,17 +50,17 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_hbus_bits_coverage::write(hbus_transaction t);
-  if (t.hwr_rd != HBUS_OP_WRITE || !(t.haddr inside {16'h1000, 16'h1001})) begin
+  if (t.m_hwr_rd != HBUS_OP_WRITE || !(t.m_haddr inside {16'h1000, 16'h1001})) begin
     return;
   end
-  num_writes++;
+  m_num_writes++;
   for (int i = 0; i < 8; i++) begin
-    hbus_bits_cg.sample(t.haddr == 16'h1001, i, t.hdata[i]);
+    hbus_bits_cg.sample(t.m_haddr == 16'h1001, i, t.m_hdata[i]);
   end
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void router_hbus_bits_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("HBUS register bits coverage: %0d writes to ctrl_reg/en_reg, coverage %.1f%%",
-                                       num_writes, hbus_bits_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_writes, hbus_bits_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 class channel_rx_driver extends uvm_driver #(channel_packet);
 
-  virtual interface channel_if vif;
-  int channel_id;
+  virtual interface channel_if m_vif;
+  int m_channel_id;
 
   `uvm_component_utils(channel_rx_driver)
 
@@ -28,7 +28,7 @@ function void channel_rx_driver::build_phase(uvm_phase phase);
   super.build_phase(phase);
   // overrides set with uvm_config_int::set(...)
   if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
-    channel_id = cfg_channel_id;
+    m_channel_id = cfg_channel_id;
   end
 endfunction : build_phase
 
@@ -39,7 +39,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void channel_rx_driver::connect_phase(uvm_phase phase);
-  if (!channel_vif_config::get(this, "", "vif", vif)) begin
+  if (!channel_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -47,16 +47,16 @@ endfunction : connect_phase
 //------------------------------------------------------------------------------
 task channel_rx_driver::run_phase(uvm_phase phase);
   // Keep the channel suspended until reset is released
-  vif.channel_reset();
-  wait (vif.reset === 1'b0);
+  m_vif.channel_reset();
+  wait (m_vif.reset === 1'b0);
   forever begin
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(),
-              $sformatf("ch%0d: ready, will answer the next header after %0d cycle(s)", channel_id, req.delay),
+              $sformatf("ch%0d: ready, will answer the next header after %0d cycle(s)", m_channel_id, req.m_delay),
               UVM_HIGH)
-    vif.receive_packet(req.delay);
+    m_vif.receive_packet(req.m_delay);
     `uvm_info(get_type_name(),
-              $sformatf("ch%0d: packet consumed (response delay %0d)", channel_id, req.delay), UVM_MEDIUM)
+              $sformatf("ch%0d: packet consumed (response delay %0d)", m_channel_id, req.m_delay), UVM_MEDIUM)
     seq_item_port.item_done();
   end
 endtask : run_phase
@@ -64,5 +64,5 @@ endtask : run_phase
 //------------------------------------------------------------------------------
 function void channel_rx_driver::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);
+  printer.print_field("channel_id", m_channel_id, $bits(m_channel_id), UVM_DEC);
 endfunction : do_print

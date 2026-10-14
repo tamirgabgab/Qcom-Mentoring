@@ -22,9 +22,9 @@
 //------------------------------------------------------------------------------
 class random_test extends base_test;
 
-  router_random_mcseq   scenario;
-  error_pulse_checker   err_chk;
-  channel_rx_random_seq rx_seq[3];
+  router_random_mcseq   m_scenario;
+  error_pulse_checker   m_err_chk;
+  channel_rx_random_seq m_rx_seq[3];
 
   `uvm_component_utils(random_test)
 
@@ -57,7 +57,7 @@ endfunction : new
 function void random_test::build_phase(uvm_phase phase);
   uvm_config_db #(bit)::set(this, "tb.router_module.reference", "check_reads", 1'b1);
   super.build_phase(phase);
-  err_chk = error_pulse_checker::type_id::create("err_chk", this);
+  m_err_chk = error_pulse_checker::type_id::create("err_chk", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
@@ -67,37 +67,37 @@ function void random_test::configure_sequences();
   uvm_config_wrapper::set(this, "tb.clk_rst.agent.sequencer.run_phase",
                           "default_sequence", clk10_rst5_seq::get_type());
   for (int ch = 0; ch < 3; ch++) begin
-    rx_seq[ch] = channel_rx_random_seq::type_id::create($sformatf("rx_seq%0d", ch));
-    rx_seq[ch].profile = pick_profile(ch);
+    m_rx_seq[ch] = channel_rx_random_seq::type_id::create($sformatf("rx_seq%0d", ch));
+    m_rx_seq[ch].m_profile = pick_profile(ch);
     uvm_config_db #(uvm_sequence_base)::set(this, $sformatf("tb.chan%0d.rx_agent.sequencer.run_phase", ch),
-                                            "default_sequence", rx_seq[ch]);
+                                            "default_sequence", m_rx_seq[ch]);
   end
 endfunction : configure_sequences
 
 //------------------------------------------------------------------------------
 function void random_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  tb.yapp.agent.monitor.item_collected_port.connect(err_chk.analysis_export);
-  err_chk.reference = tb.router_module.reference;
+  m_tb.m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_err_chk.analysis_export);
+  m_err_chk.m_reference = m_tb.m_router_module.m_reference;
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------
 task random_test::run_phase(uvm_phase phase);
   super.run_phase(phase);
   phase.raise_objection(this);
-  stage($sformatf("receivers: ch0 %s, ch1 %s, ch2 %s", rx_seq[0].profile.name(), rx_seq[1].profile.name(),
-                  rx_seq[2].profile.name()));
-  scenario = router_random_mcseq::type_id::create("scenario");
-  configure_scenario(scenario);
-  scenario.start(tb.mcseqr);
+  stage($sformatf("receivers: ch0 %s, ch1 %s, ch2 %s", m_rx_seq[0].m_profile.name(), m_rx_seq[1].m_profile.name(),
+                  m_rx_seq[2].m_profile.name()));
+  m_scenario = router_random_mcseq::type_id::create("scenario");
+  configure_scenario(m_scenario);
+  m_scenario.start(m_tb.m_mcseqr);
   wait_drained();
   stage($sformatf({"done: %0d packets (%0d forwarded, %0d dropped), %0d storm burst(s), ",
                    "%0d scoreboard matches, %0d HBUS reads checked, %0d error pulses for %0d bad packets"},
-                  scenario.total_packets, tb.router_module.reference.packets_forwarded,
-                  tb.router_module.reference.dropped_disabled + tb.router_module.reference.dropped_size
-                  + tb.router_module.reference.dropped_addr,
-                  scenario.num_storms, tb.router_module.scoreboard.packets_matched,
-                  tb.router_module.reference.reads_checked, err_chk.num_pulses, err_chk.num_bad));
+                  m_scenario.m_total_packets, m_tb.m_router_module.m_reference.m_packets_forwarded,
+                  m_tb.m_router_module.m_reference.m_dropped_disabled + m_tb.m_router_module.m_reference.m_dropped_size
+                  + m_tb.m_router_module.m_reference.m_dropped_addr,
+                  m_scenario.m_num_storms, m_tb.m_router_module.m_scoreboard.m_packets_matched,
+                  m_tb.m_router_module.m_reference.m_reads_checked, m_err_chk.m_num_pulses, m_err_chk.m_num_bad));
   phase.drop_objection(this);
 endtask : run_phase
 
@@ -115,14 +115,14 @@ endfunction : pick_profile
 task random_test::wait_drained();
   int judged;
   // a stalling receiver can hold a packet for up to 150 cycles; give every packet room
-  repeat (200 * (scenario.total_packets + 10)) begin
-    judged = tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched;
-    if (judged >= tb.router_module.reference.packets_forwarded) begin
+  repeat (200 * (m_scenario.m_total_packets + 10)) begin
+    judged = m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched;
+    if (judged >= m_tb.m_router_module.m_reference.m_packets_forwarded) begin
       break;
     end
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
   repeat (12) begin
-    @(posedge tb.yapp.agent.monitor.vif.clock);   // the last error pulse
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);   // the last error pulse
   end
 endtask : wait_drained

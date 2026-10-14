@@ -16,20 +16,20 @@
 class router_scoreboard extends uvm_scoreboard;
 
   // TLM connection points
-  uvm_analysis_imp_yapp  #(yapp_packet,    router_scoreboard) yapp_in;
-  uvm_analysis_imp_chan0 #(channel_packet, router_scoreboard) chan0_in;
-  uvm_analysis_imp_chan1 #(channel_packet, router_scoreboard) chan1_in;
-  uvm_analysis_imp_chan2 #(channel_packet, router_scoreboard) chan2_in;
+  uvm_analysis_imp_yapp  #(yapp_packet,    router_scoreboard) m_yapp_in;
+  uvm_analysis_imp_chan0 #(channel_packet, router_scoreboard) m_chan0_in;
+  uvm_analysis_imp_chan1 #(channel_packet, router_scoreboard) m_chan1_in;
+  uvm_analysis_imp_chan2 #(channel_packet, router_scoreboard) m_chan2_in;
 
   // Expected packets, one queue per output channel
-  yapp_packet pkt_q[3][$];
+  yapp_packet m_pkt_q[3][$];
 
   // Statistics
-  int packets_in;         // received from the YAPP monitor
-  int packets_matched;    // compared OK
-  int packets_mismatched; // compare failed
-  int packets_unexpected; // channel packet with an empty queue
-  int packets_dropped_addr3;
+  int m_packets_in;         // received from the YAPP monitor
+  int m_packets_matched;    // compared OK
+  int m_packets_mismatched; // compare failed
+  int m_packets_unexpected; // channel packet with an empty queue
+  int m_packets_dropped_addr3;
 
   `uvm_component_utils(router_scoreboard)
 
@@ -56,7 +56,7 @@ class router_scoreboard extends uvm_scoreboard;
   // at the end of the test is an error. The project tests set it; the lab tests
   // keep the course's 200 ns drain time, in which the last packet may still be
   // on its way out, so they leave it off.
-  bit check_empty;
+  bit m_check_empty;
 
   extern function void build_phase(uvm_phase phase);
 
@@ -79,27 +79,27 @@ endclass : router_scoreboard
 
 function router_scoreboard::new(string name, uvm_component parent);
   super.new(name, parent);
-  yapp_in  = new("yapp_in",  this);
-  chan0_in = new("chan0_in", this);
-  chan1_in = new("chan1_in", this);
-  chan2_in = new("chan2_in", this);
+  m_yapp_in  = new("yapp_in",  this);
+  m_chan0_in = new("chan0_in", this);
+  m_chan1_in = new("chan1_in", this);
+  m_chan2_in = new("chan2_in", this);
 endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_scoreboard::write_yapp(yapp_packet packet);
   yapp_packet pkt;
   $cast(pkt, packet.clone());
-  packets_in++;
-  if (pkt.addr == 2'd3) begin
+  m_packets_in++;
+  if (pkt.m_addr == 2'd3) begin
     // Lab 9A assumes legal traffic only; keep the count honest anyway
-    packets_dropped_addr3++;
+    m_packets_dropped_addr3++;
     `uvm_warning(get_type_name(), "Packet to illegal address 3 is not expected on any channel")
     return;
   end
-  pkt_q[pkt.addr].push_back(pkt);
+  m_pkt_q[pkt.m_addr].push_back(pkt);
   `uvm_info(get_type_name(),
-            $sformatf("Expecting packet on channel %0d: addr=%0d len=%0d (%0d waiting)", pkt.addr, pkt.addr,
-                      pkt.length, pkt_q[pkt.addr].size()), UVM_HIGH)
+            $sformatf("Expecting packet on channel %0d: addr=%0d len=%0d (%0d waiting)", pkt.m_addr, pkt.m_addr,
+                      pkt.m_length, m_pkt_q[pkt.m_addr].size()), UVM_HIGH)
 endfunction : write_yapp
 
 //------------------------------------------------------------------------------
@@ -120,20 +120,20 @@ endfunction : write_chan2
 //------------------------------------------------------------------------------
 function void router_scoreboard::check_channel(int ch, channel_packet cp);
   yapp_packet expected;
-  if (pkt_q[ch].size() == 0) begin
-    packets_unexpected++;
+  if (m_pkt_q[ch].size() == 0) begin
+    m_packets_unexpected++;
     `uvm_error(get_type_name(),
                $sformatf("Channel %0d packet received but nothing was expected:\n%s", ch, cp.sprint()))
     return;
   end
-  expected = pkt_q[ch].pop_front();
+  expected = m_pkt_q[ch].pop_front();
   if (comp_equal(expected, cp)) begin
-    packets_matched++;
+    m_packets_matched++;
     `uvm_info(get_type_name(),
-              $sformatf("ch%0d pkt matched: addr=%0d len=%0d (%0d matched so far)", ch, cp.addr, cp.length,
-                        packets_matched), UVM_MEDIUM)
+              $sformatf("ch%0d pkt matched: addr=%0d len=%0d (%0d matched so far)", ch, cp.m_addr, cp.m_length,
+                        m_packets_matched), UVM_MEDIUM)
   end else begin
-    packets_mismatched++;
+    m_packets_mismatched++;
     `uvm_error(get_type_name(),
                $sformatf("Channel %0d packet MISMATCH\nexpected:\n%s\nreceived:\n%s",
                          ch, expected.sprint(), cp.sprint()))
@@ -143,18 +143,18 @@ endfunction : check_channel
 //------------------------------------------------------------------------------
 function void router_scoreboard::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  void'(uvm_config_db #(bit)::get(this, "", "check_empty", check_empty));
+  void'(uvm_config_db #(bit)::get(this, "", "check_empty", m_check_empty));
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_scoreboard::check_phase(uvm_phase phase);
-  if (!check_empty) begin
+  if (!m_check_empty) begin
     return;
   end
   for (int ch = 0; ch < 3; ch++) begin
-    if (pkt_q[ch].size() > 0) begin
+    if (m_pkt_q[ch].size() > 0) begin
       `uvm_error(get_type_name(), $sformatf("%0d packet(s) expected on channel %0d never came out (first: addr=%0d len=%0d)",
-                                            pkt_q[ch].size(), ch, pkt_q[ch][0].addr, pkt_q[ch][0].length))
+                                            m_pkt_q[ch].size(), ch, m_pkt_q[ch][0].m_addr, m_pkt_q[ch][0].m_length))
     end
   end
 endfunction : check_phase
@@ -168,6 +168,6 @@ function void router_scoreboard::report_phase(uvm_phase phase);
     "  packets unexpected: %0d\n",
     "  packets to addr 3 : %0d\n",
     "  left in queue 0/1/2: %0d / %0d / %0d"},
-    packets_in, packets_matched, packets_mismatched, packets_unexpected, packets_dropped_addr3,
-    pkt_q[0].size(), pkt_q[1].size(), pkt_q[2].size()), UVM_LOW)
+    m_packets_in, m_packets_matched, m_packets_mismatched, m_packets_unexpected, m_packets_dropped_addr3,
+    m_pkt_q[0].size(), m_pkt_q[1].size(), m_pkt_q[2].size()), UVM_LOW)
 endfunction : report_phase

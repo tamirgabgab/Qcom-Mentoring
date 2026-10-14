@@ -13,8 +13,8 @@
 //------------------------------------------------------------------------------
 class parity_error_test extends reg_function_test;
 
-  yapp_pkt_seq        pkt_seq;
-  error_pulse_checker err_chk;
+  yapp_pkt_seq        m_pkt_seq;
+  error_pulse_checker m_err_chk;
 
   `uvm_component_utils(parity_error_test)
 
@@ -39,66 +39,66 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void parity_error_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  err_chk = error_pulse_checker::type_id::create("err_chk", this);
+  m_err_chk = error_pulse_checker::type_id::create("err_chk", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void parity_error_test::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  tb.yapp.agent.monitor.item_collected_port.connect(err_chk.analysis_export);
-  err_chk.reference = tb.router_module.reference;   // router_en mirror
+  m_tb.m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_err_chk.analysis_export);
+  m_err_chk.m_reference = m_tb.m_router_module.m_reference;   // router_en mirror
 endfunction : connect_phase
 
 //------------------------------------------------------------------------------
 task parity_error_test::access_checks();
   uvm_status_e status;
   int matched_before;
-  matched_before = tb.router_module.scoreboard.packets_matched;
+  matched_before = m_tb.m_router_module.m_scoreboard.m_packets_matched;
 
   // 1. counter enabled
   stage("1. en_reg=0x03 (parity counter on): 8 bad-parity packets, 8 pulses, counter 8, all delivered");
-  regs.en_reg.write(status, 8'h03);
+  m_regs.en_reg.write(status, 8'h03);
   send_bad(8);
-  check_counter(regs.parity_err_cnt_reg, 8);
-  if (err_chk.num_pulses != 8) begin
-    `uvm_error("PARITY", $sformatf("%0d error pulses for 8 bad packets", err_chk.num_pulses))
+  check_counter(m_regs.parity_err_cnt_reg, 8);
+  if (m_err_chk.m_num_pulses != 8) begin
+    `uvm_error("PARITY", $sformatf("%0d error pulses for 8 bad packets", m_err_chk.m_num_pulses))
   end
-  if (tb.router_module.scoreboard.packets_matched != matched_before + 8) begin
+  if (m_tb.m_router_module.m_scoreboard.m_packets_matched != matched_before + 8) begin
     `uvm_error("PARITY", "a packet with bad parity was not delivered unchanged")
   end
 
   // 2. counter disabled: the pulse still comes, the count does not move
   stage("2. en_reg=0x01 (counter off): 4 more bad packets, pulses still come, counter stays 8");
-  regs.en_reg.write(status, 8'h01);
+  m_regs.en_reg.write(status, 8'h01);
   send_bad(4);
-  check_counter(regs.parity_err_cnt_reg, 8);
-  if (err_chk.num_pulses != 12) begin
-    `uvm_error("PARITY", $sformatf("%0d error pulses for 12 bad packets", err_chk.num_pulses))
+  check_counter(m_regs.parity_err_cnt_reg, 8);
+  if (m_err_chk.m_num_pulses != 12) begin
+    `uvm_error("PARITY", $sformatf("%0d error pulses for 12 bad packets", m_err_chk.m_num_pulses))
   end
-  if (err_chk.num_late != 0) begin
-    `uvm_error("PARITY", $sformatf("%0d pulse(s) outside the 1..10 cycle window", err_chk.num_late))
+  if (m_err_chk.m_num_late != 0) begin
+    `uvm_error("PARITY", $sformatf("%0d pulse(s) outside the 1..10 cycle window", m_err_chk.m_num_late))
   end
 endtask : access_checks
 
 //------------------------------------------------------------------------------
 task parity_error_test::send_bad(int n);
   int judged_before;
-  judged_before = tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched;
-  pkt_seq = yapp_pkt_seq::type_id::create("pkt_seq");
+  judged_before = m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched;
+  m_pkt_seq = yapp_pkt_seq::type_id::create("pkt_seq");
   repeat (n) begin
-    if (!pkt_seq.randomize() with { pkt_parity == PARITY_TYPE_BAD; }) begin
+    if (!m_pkt_seq.randomize() with { m_pkt_parity == PARITY_TYPE_BAD; }) begin
       `uvm_error("PARITY", "pkt_seq.randomize() failed")
     end
-    pkt_seq.start(yapp_seqr);
+    m_pkt_seq.start(m_yapp_seqr);
   end
   // let the channels deliver the packets (and the last pulse come) before checking
   repeat (400) begin
-    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched >= judged_before + n) begin
+    if (m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched >= judged_before + n) begin
       break;
     end
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
   repeat (12) begin
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
 endtask : send_bad

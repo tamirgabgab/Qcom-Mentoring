@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 class yapp_pkt_coverage extends uvm_subscriber #(yapp_packet);
 
-  int num_sampled;
+  int m_num_sampled;
 
   //--------------------------------------------------------------------------
   // Functional coverage (Lab 10)
@@ -75,12 +75,12 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void yapp_pkt_coverage::write(yapp_packet t);
-  num_sampled++;
-  yapp_pkt_cg.sample(t.length, t.addr, t.parity_type);
+  m_num_sampled++;
+  yapp_pkt_cg.sample(t.m_length, t.m_addr, t.m_parity_type);
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void yapp_pkt_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("YAPP packet coverage: %0d packets sampled, coverage %.1f%%",
-                                       num_sampled, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_sampled, yapp_pkt_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

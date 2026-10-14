@@ -6,13 +6,13 @@
 // yapp_exhaustive_seq: runs every sequence above once
 class yapp_exhaustive_seq extends yapp_base_seq;
 
-  yapp_1_seq            seq_1;
-  yapp_012_seq          seq_012;
-  yapp_111_seq          seq_111;
-  yapp_repeat_addr_seq  seq_repeat_addr;
-  yapp_incr_payload_seq seq_incr_payload;
-  yapp_rnd_seq          seq_rnd;
-  six_yapp_seq          seq_six;
+  yapp_1_seq            m_seq_1;
+  yapp_012_seq          m_seq_012;
+  yapp_111_seq          m_seq_111;
+  yapp_repeat_addr_seq  m_seq_repeat_addr;
+  yapp_incr_payload_seq m_seq_incr_payload;
+  yapp_rnd_seq          m_seq_rnd;
+  six_yapp_seq          m_seq_six;
 
   `uvm_object_utils(yapp_exhaustive_seq)
 
@@ -32,45 +32,45 @@ endfunction : new
 //------------------------------------------------------------------------------
 task yapp_exhaustive_seq::body();
   `uvm_info(get_type_name(), "Executing yapp_exhaustive_seq sequence", UVM_LOW)
-  seq_1 = yapp_1_seq::type_id::create("seq_1");
-  if (!seq_1.randomize()) begin
+  m_seq_1 = yapp_1_seq::type_id::create("seq_1");
+  if (!m_seq_1.randomize()) begin
     `uvm_error(get_type_name(), "seq_1.randomize() failed")
   end
-  seq_1.start(m_sequencer, this);
+  m_seq_1.start(m_sequencer, this);
 
-  seq_012 = yapp_012_seq::type_id::create("seq_012");
-  if (!seq_012.randomize()) begin
+  m_seq_012 = yapp_012_seq::type_id::create("seq_012");
+  if (!m_seq_012.randomize()) begin
     `uvm_error(get_type_name(), "seq_012.randomize() failed")
   end
-  seq_012.start(m_sequencer, this);
+  m_seq_012.start(m_sequencer, this);
 
-  seq_111 = yapp_111_seq::type_id::create("seq_111");
-  if (!seq_111.randomize()) begin
+  m_seq_111 = yapp_111_seq::type_id::create("seq_111");
+  if (!m_seq_111.randomize()) begin
     `uvm_error(get_type_name(), "seq_111.randomize() failed")
   end
-  seq_111.start(m_sequencer, this);
+  m_seq_111.start(m_sequencer, this);
 
-  seq_repeat_addr = yapp_repeat_addr_seq::type_id::create("seq_repeat_addr");
-  if (!seq_repeat_addr.randomize()) begin
+  m_seq_repeat_addr = yapp_repeat_addr_seq::type_id::create("seq_repeat_addr");
+  if (!m_seq_repeat_addr.randomize()) begin
     `uvm_error(get_type_name(), "seq_repeat_addr.randomize() failed")
   end
-  seq_repeat_addr.start(m_sequencer, this);
+  m_seq_repeat_addr.start(m_sequencer, this);
 
-  seq_incr_payload = yapp_incr_payload_seq::type_id::create("seq_incr_payload");
-  if (!seq_incr_payload.randomize()) begin
+  m_seq_incr_payload = yapp_incr_payload_seq::type_id::create("seq_incr_payload");
+  if (!m_seq_incr_payload.randomize()) begin
     `uvm_error(get_type_name(), "seq_incr_payload.randomize() failed")
   end
-  seq_incr_payload.start(m_sequencer, this);
+  m_seq_incr_payload.start(m_sequencer, this);
 
-  seq_rnd = yapp_rnd_seq::type_id::create("seq_rnd");
-  if (!seq_rnd.randomize()) begin
+  m_seq_rnd = yapp_rnd_seq::type_id::create("seq_rnd");
+  if (!m_seq_rnd.randomize()) begin
     `uvm_error(get_type_name(), "seq_rnd.randomize() failed")
   end
-  seq_rnd.start(m_sequencer, this);
+  m_seq_rnd.start(m_sequencer, this);
 
-  seq_six = six_yapp_seq::type_id::create("seq_six");
-  if (!seq_six.randomize()) begin
+  m_seq_six = six_yapp_seq::type_id::create("seq_six");
+  if (!m_seq_six.randomize()) begin
     `uvm_error(get_type_name(), "seq_six.randomize() failed")
   end
-  seq_six.start(m_sequencer, this);
+  m_seq_six.start(m_sequencer, this);
 endtask : body

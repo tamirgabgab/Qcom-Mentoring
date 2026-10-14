@@ -12,7 +12,7 @@
 //------------------------------------------------------------------------------
 class router_hbus_addr_coverage extends uvm_subscriber #(hbus_transaction);
 
-  int num_sampled;
+  int m_num_sampled;
 
   covergroup hbus_addr_cg with function sample(bit[15:0] addr, bit write);
     option.per_instance = 1;
@@ -21,12 +21,12 @@ class router_hbus_addr_coverage extends uvm_subscriber #(hbus_transaction);
       bins ctrl           = {16'h1000};
       bins en             = {16'h1001};
       bins parity_cnt     = {16'h1004};
-      bins oversized_cnt  = {16'h1005};
+      bins m_oversized_cnt  = {16'h1005};
       bins addr3_cnt      = {16'h1006};
       bins addr0_cnt      = {16'h1009};
       bins addr1_cnt      = {16'h100a};
       bins addr2_cnt      = {16'h100b};
-      bins mem_size       = {16'h100d};
+      bins m_mem_size       = {16'h100d};
       // the unmapped addresses between them: read 0, writes ignored
       bins reg_hole[]     = {16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};
       // yapp_pkt_mem (read-only), the unmapped range, yapp_mem (read-write)
@@ -69,12 +69,12 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_hbus_addr_coverage::write(hbus_transaction t);
-  num_sampled++;
-  hbus_addr_cg.sample(t.haddr, t.hwr_rd == HBUS_OP_WRITE);
+  m_num_sampled++;
+  hbus_addr_cg.sample(t.m_haddr, t.m_hwr_rd == HBUS_OP_WRITE);
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void router_hbus_addr_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("HBUS address coverage: %0d accesses sampled, coverage %.1f%%",
-                                       num_sampled, hbus_addr_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_sampled, hbus_addr_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

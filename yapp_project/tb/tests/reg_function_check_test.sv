@@ -31,7 +31,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 task reg_function_check_test::run_phase(uvm_phase phase);
-  tb.yapp_rm.default_map.set_check_on_read(1);
+  m_tb.m_yapp_rm.default_map.set_check_on_read(1);
   stage("check_on_read: every front-door read is compared with the value the model predicts");
   super.run_phase(phase);
 endtask : run_phase

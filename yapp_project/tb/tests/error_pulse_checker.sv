@@ -18,12 +18,12 @@
 //------------------------------------------------------------------------------
 class error_pulse_checker extends uvm_subscriber #(yapp_packet);
 
-  router_reference reference;               // router_en mirror (set by the test)
-  int  num_bad;                             // bad-parity packets that owe a pulse
-  int  num_pulses;                          // error pulses seen (cycles with error high)
-  int  num_late;                            // pulses outside 1..10 cycles, or never seen
-  int  max_owed;                            // most pulses owed at the same time
-  time owed[$];                             // when each owed bad packet was accepted
+  router_reference m_reference;               // router_en mirror (set by the test)
+  int  m_num_bad;                             // bad-parity packets that owe a pulse
+  int  m_num_pulses;                          // error pulses seen (cycles with error high)
+  int  m_num_late;                            // pulses outside 1..10 cycles, or never seen
+  int  m_max_owed;                            // most pulses owed at the same time
+  time m_owed[$];                             // when each owed bad packet was accepted
 
   `uvm_component_utils(error_pulse_checker)
 
@@ -45,16 +45,16 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void error_pulse_checker::write(yapp_packet t);
-  if (t.parity_type != PARITY_TYPE_BAD) begin
+  if (t.m_parity_type != PARITY_TYPE_BAD) begin
     return;
   end
-  if (reference != null && !reference.router_en) begin
+  if (m_reference != null && !m_reference.m_router_en) begin
     return;
   end
-  num_bad++;
-  owed.push_back($time);
-  if (owed.size() > max_owed) begin
-    max_owed = owed.size();
+  m_num_bad++;
+  m_owed.push_back($time);
+  if (m_owed.size() > m_max_owed) begin
+    m_max_owed = m_owed.size();
   end
 endfunction : write
 
@@ -67,41 +67,41 @@ task error_pulse_checker::run_phase(uvm_phase phase);
   forever begin
     @(negedge hw_top.clock);
     // an owed pulse that is already too old will never be paid in time
-    while (owed.size() > 0 && ($time - owed[0]) / hw_top.clock_period > 10) begin
-      num_late++;
-      `uvm_error("ERR_PULSE", $sformatf("no error pulse within 10 cycles of the bad packet accepted at %0t", owed[0]))
-      void'(owed.pop_front());
+    while (m_owed.size() > 0 && ($time - m_owed[0]) / hw_top.clock_period > 10) begin
+      m_num_late++;
+      `uvm_error("ERR_PULSE", $sformatf("no error pulse within 10 cycles of the bad packet accepted at %0t", m_owed[0]))
+      void'(m_owed.pop_front());
     end
     if (hw_top.error !== 1'b1) begin
       continue;
     end
-    num_pulses++;
+    m_num_pulses++;
     rose = $time - hw_top.clock_period / 2;
-    if (owed.size() == 0) begin
+    if (m_owed.size() == 0) begin
       `uvm_error("ERR_PULSE", "error pulsed with no bad-parity packet owing a pulse")
       continue;
     end
-    cycles = (rose - owed.pop_front()) / hw_top.clock_period;
+    cycles = (rose - m_owed.pop_front()) / hw_top.clock_period;
     if (cycles < 1 || cycles > 10) begin
-      num_late++;
+      m_num_late++;
       `uvm_error("ERR_PULSE", $sformatf("error pulsed %0d cycles after the bad packet, expected 1..10", cycles))
     end else begin
       `uvm_info("ERR_PULSE", $sformatf("error pulse %0d cycles after the bad packet (%0d still owed)",
-                                       cycles, owed.size()), UVM_MEDIUM)
+                                       cycles, m_owed.size()), UVM_MEDIUM)
     end
   end
 endtask : run_phase
 
 //------------------------------------------------------------------------------
 function void error_pulse_checker::check_phase(uvm_phase phase);
-  if (owed.size() > 0) begin
-    num_late += owed.size();
-    `uvm_error("ERR_PULSE", $sformatf("%0d bad-parity packet(s) never got their error pulse", owed.size()))
+  if (m_owed.size() > 0) begin
+    m_num_late += m_owed.size();
+    `uvm_error("ERR_PULSE", $sformatf("%0d bad-parity packet(s) never got their error pulse", m_owed.size()))
   end
 endfunction : check_phase
 
 //------------------------------------------------------------------------------
 function void error_pulse_checker::report_phase(uvm_phase phase);
   `uvm_info("ERR_PULSE", $sformatf({"error pulse report: %0d bad packets, %0d pulses, %0d outside 1..10 cycles, ",
-                                    "at most %0d owed at once"}, num_bad, num_pulses, num_late, max_owed), UVM_LOW)
+                                    "at most %0d owed at once"}, m_num_bad, m_num_pulses, m_num_late, m_max_owed), UVM_LOW)
 endfunction : report_phase

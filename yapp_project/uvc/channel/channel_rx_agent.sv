@@ -3,10 +3,10 @@
 //------------------------------------------------------------------------------
 class channel_rx_agent extends uvm_agent;
 
-  channel_rx_monitor   monitor;
-  channel_rx_driver    driver;
-  channel_rx_sequencer sequencer;
-  int channel_id;
+  channel_rx_monitor   m_monitor;
+  channel_rx_driver    m_driver;
+  channel_rx_sequencer m_sequencer;
+  int m_channel_id;
 
   `uvm_component_utils(channel_rx_agent)
 
@@ -38,21 +38,21 @@ function void channel_rx_agent::build_phase(uvm_phase phase);
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
   if (uvm_config_int::get(this, "", "channel_id", cfg_channel_id)) begin
-    channel_id = cfg_channel_id;
+    m_channel_id = cfg_channel_id;
   end
   // Pass the channel id down to the children
-  uvm_config_int::set(this, "*", "channel_id", channel_id);
-  monitor = channel_rx_monitor::type_id::create("monitor", this);
+  uvm_config_int::set(this, "*", "channel_id", m_channel_id);
+  m_monitor = channel_rx_monitor::type_id::create("monitor", this);
   if (is_active == UVM_ACTIVE) begin
-    driver    = channel_rx_driver::type_id::create("driver", this);
-    sequencer = channel_rx_sequencer::type_id::create("sequencer", this);
+    m_driver    = channel_rx_driver::type_id::create("driver", this);
+    m_sequencer = channel_rx_sequencer::type_id::create("sequencer", this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void channel_rx_agent::connect_phase(uvm_phase phase);
   if (is_active == UVM_ACTIVE) begin
-    driver.seq_item_port.connect(sequencer.seq_item_export);
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
   end
 endfunction : connect_phase
 
@@ -60,5 +60,5 @@ endfunction : connect_phase
 function void channel_rx_agent::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());
-  printer.print_field("channel_id", channel_id, $bits(channel_id), UVM_DEC);
+  printer.print_field("channel_id", m_channel_id, $bits(m_channel_id), UVM_DEC);
 endfunction : do_print

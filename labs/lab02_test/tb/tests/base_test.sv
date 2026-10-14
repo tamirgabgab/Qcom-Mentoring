@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 class base_test extends uvm_test;
 
-  router_tb tb;
+  router_tb m_tb;
 
   `uvm_component_utils(base_test)
 
@@ -31,7 +31,7 @@ endfunction : new
 function void base_test::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the test", UVM_HIGH)
-  tb = new("tb", this);          // the test OWNS the testbench
+  m_tb = new("tb", this);          // the test OWNS the testbench
 endfunction : build_phase
 
 //------------------------------------------------------------------------------

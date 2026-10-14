@@ -34,7 +34,7 @@ task channel_rx_slow_seq::body();
     req = channel_packet::type_id::create("req");
     req.c_delay.constraint_mode(0);         // the packet's own 0..10 limit is too fast here
     start_item(req);
-    if (!req.randomize() with { req.delay inside {[20:40]}; }) begin
+    if (!req.randomize() with { req.m_delay inside {[20:40]}; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end
     finish_item(req);

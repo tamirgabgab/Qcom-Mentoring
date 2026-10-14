@@ -7,10 +7,10 @@
 class yapp_tx_monitor extends uvm_monitor;
 
   // Virtual interface, set by tb_top through yapp_vif_config
-  virtual interface yapp_if vif;
+  virtual interface yapp_if m_vif;
 
   // Statistics
-  int num_pkt_col;
+  int m_num_pkt_col;
 
   `uvm_component_utils(yapp_tx_monitor)
 
@@ -38,7 +38,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::connect_phase(uvm_phase phase);
   // get() returns 1 on success: always check it, a missing vif is fatal later
-  if (!yapp_vif_config::get(this, "", "vif", vif)) begin
+  if (!yapp_vif_config::get(this, "", "vif", m_vif)) begin
     `uvm_error("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
   end
 endfunction : connect_phase
@@ -53,14 +53,14 @@ endtask : run_phase
 task yapp_tx_monitor::collect_packets();
   yapp_packet pkt;
   // Nothing to observe while reset is active
-  @(posedge vif.clock);
-  wait (vif.reset === 1'b0);
+  @(posedge m_vif.clock);
+  wait (m_vif.reset === 1'b0);
   forever begin
     pkt = yapp_packet::type_id::create("pkt", this);
-    vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity);
+    m_vif.collect_packets(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity);
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
-    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
-    num_pkt_col++;
+    pkt.m_parity_type = (pkt.m_parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
+    m_num_pkt_col++;
     `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_LOW)
     end_tr(pkt);
   end
@@ -69,11 +69,11 @@ endtask : collect_packets
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(),
-            $sformatf("YAPP monitor report: %0d packets collected", num_pkt_col), UVM_LOW)
+            $sformatf("YAPP monitor report: %0d packets collected", m_num_pkt_col), UVM_LOW)
 endfunction : report_phase
 
 //------------------------------------------------------------------------------
 function void yapp_tx_monitor::do_print(uvm_printer printer);
   super.do_print(printer);
-  printer.print_field("num_pkt_col", num_pkt_col, $bits(num_pkt_col), UVM_DEC);
+  printer.print_field("num_pkt_col", m_num_pkt_col, $bits(m_num_pkt_col), UVM_DEC);
 endfunction : do_print

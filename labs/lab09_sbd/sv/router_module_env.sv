@@ -11,15 +11,15 @@
 //------------------------------------------------------------------------------
 class router_module_env extends uvm_env;
 
-  router_reference  reference;
-  router_scoreboard scoreboard;
+  router_reference  m_reference;
+  router_scoreboard m_scoreboard;
 
   // Top-level connection points
-  uvm_analysis_export #(yapp_packet)      yapp_export;
-  uvm_analysis_export #(hbus_transaction) hbus_export;
-  uvm_analysis_export #(channel_packet)   chan0_export;
-  uvm_analysis_export #(channel_packet)   chan1_export;
-  uvm_analysis_export #(channel_packet)   chan2_export;
+  uvm_analysis_export #(yapp_packet)      m_yapp_export;
+  uvm_analysis_export #(hbus_transaction) m_hbus_export;
+  uvm_analysis_export #(channel_packet)   m_chan0_export;
+  uvm_analysis_export #(channel_packet)   m_chan1_export;
+  uvm_analysis_export #(channel_packet)   m_chan2_export;
 
   `uvm_component_utils(router_module_env)
 
@@ -36,28 +36,28 @@ endclass : router_module_env
 
 function router_module_env::new(string name, uvm_component parent);
   super.new(name, parent);
-  yapp_export  = new("yapp_export",  this);
-  hbus_export  = new("hbus_export",  this);
-  chan0_export = new("chan0_export", this);
-  chan1_export = new("chan1_export", this);
-  chan2_export = new("chan2_export", this);
+  m_yapp_export  = new("yapp_export",  this);
+  m_hbus_export  = new("hbus_export",  this);
+  m_chan0_export = new("chan0_export", this);
+  m_chan1_export = new("chan1_export", this);
+  m_chan2_export = new("chan2_export", this);
 endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_module_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  reference  = router_reference::type_id::create("reference", this);
-  scoreboard = router_scoreboard::type_id::create("scoreboard", this);
+  m_reference  = router_reference::type_id::create("reference", this);
+  m_scoreboard = router_scoreboard::type_id::create("scoreboard", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void router_module_env::connect_phase(uvm_phase phase);
   // exports -> internal imps
-  yapp_export.connect(reference.yapp_in);
-  hbus_export.connect(reference.hbus_in);
-  chan0_export.connect(scoreboard.chan0_in);
-  chan1_export.connect(scoreboard.chan1_in);
-  chan2_export.connect(scoreboard.chan2_in);
+  m_yapp_export.connect(m_reference.m_yapp_in);
+  m_hbus_export.connect(m_reference.m_hbus_in);
+  m_chan0_export.connect(m_scoreboard.m_chan0_in);
+  m_chan1_export.connect(m_scoreboard.m_chan1_in);
+  m_chan2_export.connect(m_scoreboard.m_chan2_in);
   // internal link stays as in Lab 9B
-  reference.yapp_valid_out.connect(scoreboard.yapp_in);
+  m_reference.m_yapp_valid_out.connect(m_scoreboard.m_yapp_in);
 endfunction : connect_phase

@@ -35,9 +35,9 @@ task yapp_88_packets_seq::body();
       req.c_addr_legal.constraint_mode(0);
       req.c_parity_dist.constraint_mode(0);   // the inline dist below replaces it
       start_item(req);
-      if (!req.randomize() with { req.addr == a;
-                                  req.length == l;
-                                  req.parity_type dist { PARITY_TYPE_GOOD := 4, PARITY_TYPE_BAD := 1 }; }) begin
+      if (!req.randomize() with { req.m_addr == a;
+                                  req.m_length == l;
+                                  req.m_parity_type dist { PARITY_TYPE_GOOD := 4, PARITY_TYPE_BAD := 1 }; }) begin
         `uvm_error(get_type_name(), "req.randomize() failed")
       end
       finish_item(req);

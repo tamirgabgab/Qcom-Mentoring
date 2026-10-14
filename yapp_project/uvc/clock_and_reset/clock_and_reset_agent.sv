@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 class clock_and_reset_agent extends uvm_agent;
 
-  clock_and_reset_driver    driver;
-  clock_and_reset_sequencer sequencer;
+  clock_and_reset_driver    m_driver;
+  clock_and_reset_sequencer m_sequencer;
 
   `uvm_component_utils(clock_and_reset_agent)
 
@@ -35,15 +35,15 @@ function void clock_and_reset_agent::build_phase(uvm_phase phase);
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
   if (is_active == UVM_ACTIVE) begin
-    driver    = clock_and_reset_driver::type_id::create("driver", this);
-    sequencer = clock_and_reset_sequencer::type_id::create("sequencer", this);
+    m_driver    = clock_and_reset_driver::type_id::create("driver", this);
+    m_sequencer = clock_and_reset_sequencer::type_id::create("sequencer", this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void clock_and_reset_agent::connect_phase(uvm_phase phase);
   if (is_active == UVM_ACTIVE) begin
-    driver.seq_item_port.connect(sequencer.seq_item_export);
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
   end
 endfunction : connect_phase
 

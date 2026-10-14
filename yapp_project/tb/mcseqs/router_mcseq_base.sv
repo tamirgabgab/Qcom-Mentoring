@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 class router_mcseq_base extends uvm_sequence;
 
-  int num_reads;                            // HBUS reads done through hbus_read()
+  int m_num_reads;                            // HBUS reads done through hbus_read()
 
   `uvm_object_utils(router_mcseq_base)
   `uvm_declare_p_sequencer(router_mcsequencer)
@@ -56,22 +56,22 @@ endtask : post_body
 task router_mcseq_base::hbus_write(bit[15:0] addr, bit[7:0] data);
   hbus_write_seq wr;
   wr = hbus_write_seq::type_id::create("wr");
-  if (!wr.randomize() with { addr == local::addr; data == local::data; }) begin
+  if (!wr.randomize() with { m_addr == local::addr; m_data == local::data; }) begin
     `uvm_error(get_type_name(), "hbus_write_seq.randomize() failed")
   end
-  wr.start(p_sequencer.hbus_seqr, this);
+  wr.start(p_sequencer.m_hbus_seqr, this);
 endtask : hbus_write
 
 //------------------------------------------------------------------------------
 task router_mcseq_base::hbus_read(bit[15:0] addr, output bit[7:0] data);
   hbus_read_seq rd;
   rd = hbus_read_seq::type_id::create("rd");
-  if (!rd.randomize() with { addr == local::addr; }) begin
+  if (!rd.randomize() with { m_addr == local::addr; }) begin
     `uvm_error(get_type_name(), "hbus_read_seq.randomize() failed")
   end
-  rd.start(p_sequencer.hbus_seqr, this);
-  data = rd.data;
-  num_reads++;
+  rd.start(p_sequencer.m_hbus_seqr, this);
+  data = rd.m_data;
+  m_num_reads++;
 endtask : hbus_read
 
 //------------------------------------------------------------------------------

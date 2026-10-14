@@ -9,26 +9,26 @@
   // Plain SystemVerilog comparison, one `uvm_error per difference
   function bit comp_equal(input yapp_packet yp, input channel_packet cp);
     bit ok = 1;
-    if (yp.addr != cp.addr) begin
-      `uvm_error("PKT_COMPARE", $sformatf("Address mismatch: YAPP %0d, Channel %0d", yp.addr, cp.addr))
+    if (yp.m_addr != cp.m_addr) begin
+      `uvm_error("PKT_COMPARE", $sformatf("Address mismatch: YAPP %0d, Channel %0d", yp.m_addr, cp.m_addr))
       ok = 0;
     end
-    if (yp.length != cp.length) begin
-      `uvm_error("PKT_COMPARE", $sformatf("Length mismatch: YAPP %0d, Channel %0d", yp.length, cp.length))
+    if (yp.m_length != cp.m_length) begin
+      `uvm_error("PKT_COMPARE", $sformatf("Length mismatch: YAPP %0d, Channel %0d", yp.m_length, cp.m_length))
       ok = 0;
     end
-    foreach (yp.payload[i]) begin
-      if (i >= cp.payload.size()) begin
+    foreach (yp.m_payload[i]) begin
+      if (i >= cp.m_payload.size()) begin
         break;
       end
-      if (yp.payload[i] != cp.payload[i]) begin
+      if (yp.m_payload[i] != cp.m_payload[i]) begin
         `uvm_error("PKT_COMPARE", $sformatf("Payload[%0d] mismatch: YAPP 0x%02h, Channel 0x%02h",
-                                            i, yp.payload[i], cp.payload[i]))
+                                            i, yp.m_payload[i], cp.m_payload[i]))
         ok = 0;
       end
     end
-    if (yp.parity != cp.parity) begin
-      `uvm_error("PKT_COMPARE", $sformatf("Parity mismatch: YAPP 0x%02h, Channel 0x%02h", yp.parity, cp.parity))
+    if (yp.m_parity != cp.m_parity) begin
+      `uvm_error("PKT_COMPARE", $sformatf("Parity mismatch: YAPP 0x%02h, Channel 0x%02h", yp.m_parity, cp.m_parity))
       ok = 0;
     end
     return ok;
@@ -38,12 +38,12 @@
   function bit comp_equal_uvm(input yapp_packet yp, input channel_packet cp);
     uvm_comparer comparer = new();
     bit ok = 1;
-    ok &= comparer.compare_field_int("addr",   yp.addr,   cp.addr,   2);
-    ok &= comparer.compare_field_int("length", yp.length, cp.length, 6);
-    ok &= comparer.compare_field_int("parity", yp.parity, cp.parity, 8);
-    if (yp.payload.size() == cp.payload.size()) begin
-      foreach (yp.payload[i]) begin
-        ok &= comparer.compare_field_int($sformatf("payload[%0d]", i), yp.payload[i], cp.payload[i], 8);
+    ok &= comparer.compare_field_int("addr",   yp.m_addr,   cp.m_addr,   2);
+    ok &= comparer.compare_field_int("length", yp.m_length, cp.m_length, 6);
+    ok &= comparer.compare_field_int("parity", yp.m_parity, cp.m_parity, 8);
+    if (yp.m_payload.size() == cp.m_payload.size()) begin
+      foreach (yp.m_payload[i]) begin
+        ok &= comparer.compare_field_int($sformatf("payload[%0d]", i), yp.m_payload[i], cp.m_payload[i], 8);
       end
     end else begin
       ok = 0;

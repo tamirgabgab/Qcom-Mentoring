@@ -17,19 +17,27 @@ module test_install;
 
     `uvm_component_utils(install_test)
 
-    function new(string name, uvm_component parent);
-      super.new(name, parent);
-    endfunction : new
-
-    task run_phase(uvm_phase phase);
-      phase.raise_objection(this);
-      `uvm_info("INSTALL", $sformatf("UVM library version: %s", uvm_revision_string()), UVM_NONE)
-      #10;
-      `uvm_info("INSTALL", "UVM TEST INSTALL PASSED!", UVM_NONE)
-      phase.drop_objection(this);
-    endtask : run_phase
+    extern function new(string name, uvm_component parent);
+    extern task run_phase(uvm_phase phase);
 
   endclass : install_test
+
+  //----------------------------------------------------------------------------
+  // install_test -- method implementations
+  //----------------------------------------------------------------------------
+
+  function install_test::new(string name, uvm_component parent);
+    super.new(name, parent);
+  endfunction : new
+
+  //----------------------------------------------------------------------------
+  task install_test::run_phase(uvm_phase phase);
+    phase.raise_objection(this);
+    `uvm_info("INSTALL", $sformatf("UVM library version: %s", uvm_revision_string()), UVM_NONE)
+    #10;
+    `uvm_info("INSTALL", "UVM TEST INSTALL PASSED!", UVM_NONE)
+    phase.drop_objection(this);
+  endtask : run_phase
 
   initial run_test("install_test");
 

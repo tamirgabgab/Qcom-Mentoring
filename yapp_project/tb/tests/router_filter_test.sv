@@ -16,7 +16,7 @@
 //------------------------------------------------------------------------------
 class router_filter_test extends reg_function_test;
 
-  yapp_boundary_seq bnd_seq;
+  yapp_boundary_seq m_bnd_seq;
 
   `uvm_component_utils(router_filter_test)
 
@@ -41,63 +41,63 @@ task router_filter_test::access_checks();
   uvm_status_e status;
   int matched_before;
 
-  bnd_seq = yapp_boundary_seq::type_id::create("bnd_seq");
-  if (!bnd_seq.randomize() with { maxpktsize == 6'd10; }) begin
+  m_bnd_seq = yapp_boundary_seq::type_id::create("bnd_seq");
+  if (!m_bnd_seq.randomize() with { m_maxpktsize == 6'd10; }) begin
     `uvm_error("FILTER", "bnd_seq.randomize() failed")
   end
   stage("ctrl_reg=10: maxpktsize is 10 for the boundary sequence");
-  regs.ctrl_reg.write(status, 8'd10);       // maxpktsize = 10
+  m_regs.ctrl_reg.write(status, 8'd10);       // maxpktsize = 10
 
   // 1. every counter enabled
   stage("1. en_reg=0xff: lengths 9/10/11/63 to every address, drops counted");
-  regs.en_reg.write(status, 8'hff);
-  matched_before = tb.router_module.scoreboard.packets_matched;
+  m_regs.en_reg.write(status, 8'hff);
+  matched_before = m_tb.m_router_module.m_scoreboard.m_packets_matched;
   run_boundary();
-  if (tb.router_module.scoreboard.packets_matched != matched_before + bnd_seq.sent_forwarded) begin
+  if (m_tb.m_router_module.m_scoreboard.m_packets_matched != matched_before + m_bnd_seq.m_sent_forwarded) begin
     `uvm_error("FILTER", $sformatf("scoreboard matched %0d packets, expected %0d",
-                                   tb.router_module.scoreboard.packets_matched - matched_before, bnd_seq.sent_forwarded))
+                                   m_tb.m_router_module.m_scoreboard.m_packets_matched - matched_before, m_bnd_seq.m_sent_forwarded))
   end
-  if (tb.router_module.scoreboard.packets_unexpected != 0) begin
+  if (m_tb.m_router_module.m_scoreboard.m_packets_unexpected != 0) begin
     `uvm_error("FILTER", "a dropped packet reached a channel")
   end
-  check_counter(regs.oversized_pkt_cnt_reg, bnd_seq.sent_oversized);
-  check_counter(regs.addr3_cnt_reg, bnd_seq.sent_per_addr[3]);
-  check_counter(regs.addr0_cnt_reg, bnd_seq.sent_per_addr[0]);
-  check_counter(regs.addr1_cnt_reg, bnd_seq.sent_per_addr[1]);
-  check_counter(regs.addr2_cnt_reg, bnd_seq.sent_per_addr[2]);
-  check_counter(regs.parity_err_cnt_reg, 0);
+  check_counter(m_regs.oversized_pkt_cnt_reg, m_bnd_seq.m_sent_oversized);
+  check_counter(m_regs.addr3_cnt_reg, m_bnd_seq.m_sent_per_addr[3]);
+  check_counter(m_regs.addr0_cnt_reg, m_bnd_seq.m_sent_per_addr[0]);
+  check_counter(m_regs.addr1_cnt_reg, m_bnd_seq.m_sent_per_addr[1]);
+  check_counter(m_regs.addr2_cnt_reg, m_bnd_seq.m_sent_per_addr[2]);
+  check_counter(m_regs.parity_err_cnt_reg, 0);
 
   // 2. counters disabled: same traffic, same drops, frozen counters
   stage("2. en_reg=0x01: the same traffic, the same drops, the counters do not move");
-  regs.en_reg.write(status, 8'h01);
-  matched_before = tb.router_module.scoreboard.packets_matched;
+  m_regs.en_reg.write(status, 8'h01);
+  matched_before = m_tb.m_router_module.m_scoreboard.m_packets_matched;
   run_boundary();
-  if (tb.router_module.scoreboard.packets_matched != matched_before + bnd_seq.sent_forwarded) begin
+  if (m_tb.m_router_module.m_scoreboard.m_packets_matched != matched_before + m_bnd_seq.m_sent_forwarded) begin
     `uvm_error("FILTER", "the drop rules changed when the counters were disabled")
   end
-  check_counter(regs.oversized_pkt_cnt_reg, bnd_seq.sent_oversized);
-  check_counter(regs.addr3_cnt_reg, bnd_seq.sent_per_addr[3]);
-  check_counter(regs.addr0_cnt_reg, bnd_seq.sent_per_addr[0]);
-  check_counter(regs.addr1_cnt_reg, bnd_seq.sent_per_addr[1]);
-  check_counter(regs.addr2_cnt_reg, bnd_seq.sent_per_addr[2]);
+  check_counter(m_regs.oversized_pkt_cnt_reg, m_bnd_seq.m_sent_oversized);
+  check_counter(m_regs.addr3_cnt_reg, m_bnd_seq.m_sent_per_addr[3]);
+  check_counter(m_regs.addr0_cnt_reg, m_bnd_seq.m_sent_per_addr[0]);
+  check_counter(m_regs.addr1_cnt_reg, m_bnd_seq.m_sent_per_addr[1]);
+  check_counter(m_regs.addr2_cnt_reg, m_bnd_seq.m_sent_per_addr[2]);
 
   stage("ctrl_reg back to 0x3f");
-  regs.ctrl_reg.write(status, 8'h3f);       // back to the reset value
+  m_regs.ctrl_reg.write(status, 8'h3f);       // back to the reset value
 endtask : access_checks
 
 //------------------------------------------------------------------------------
 task router_filter_test::run_boundary();
   int judged_before;
-  judged_before = tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched;
-  bnd_seq.start(yapp_seqr);
+  judged_before = m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched;
+  m_bnd_seq.start(m_yapp_seqr);
   repeat (600) begin
-    if (tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched
-        >= judged_before + bnd_seq.sent_forwarded) begin
+    if (m_tb.m_router_module.m_scoreboard.m_packets_matched + m_tb.m_router_module.m_scoreboard.m_packets_mismatched
+        >= judged_before + m_bnd_seq.m_sent_forwarded) begin
       break;
     end
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
   repeat (4) begin
-    @(posedge tb.yapp.agent.monitor.vif.clock);
+    @(posedge m_tb.m_yapp.m_agent.m_monitor.m_vif.clock);
   end
 endtask : run_boundary

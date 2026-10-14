@@ -6,7 +6,7 @@
 // six_yapp_seq (optional): yapp_rnd_seq constrained to exactly six packets
 class six_yapp_seq extends yapp_base_seq;
 
-  yapp_rnd_seq rnd_seq;
+  yapp_rnd_seq m_rnd_seq;
 
   `uvm_object_utils(six_yapp_seq)
 
@@ -26,9 +26,9 @@ endfunction : new
 //------------------------------------------------------------------------------
 task six_yapp_seq::body();
   `uvm_info(get_type_name(), "Executing six_yapp_seq sequence", UVM_LOW)
-  rnd_seq = yapp_rnd_seq::type_id::create("rnd_seq");
-  if (!rnd_seq.randomize() with { rnd_seq.count == 6; }) begin
+  m_rnd_seq = yapp_rnd_seq::type_id::create("rnd_seq");
+  if (!m_rnd_seq.randomize() with { m_rnd_seq.m_count == 6; }) begin
     `uvm_error(get_type_name(), "rnd_seq.randomize() failed")
   end
-  rnd_seq.start(m_sequencer, this);
+  m_rnd_seq.start(m_sequencer, this);
 endtask : body

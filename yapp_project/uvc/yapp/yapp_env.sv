@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 class yapp_env extends uvm_env;
 
-  yapp_tx_agent agent;
+  yapp_tx_agent m_agent;
 
   `uvm_component_utils(yapp_env)
 
@@ -23,5 +23,5 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void yapp_env::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  agent = yapp_tx_agent::type_id::create("agent", this);
+  m_agent = yapp_tx_agent::type_id::create("agent", this);
 endfunction : build_phase

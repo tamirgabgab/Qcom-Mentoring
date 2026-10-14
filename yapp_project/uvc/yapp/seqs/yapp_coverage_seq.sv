@@ -36,9 +36,9 @@ task yapp_coverage_seq::body();
         req.c_addr_legal.constraint_mode(0);
         req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
         start_item(req);
-        if (!req.randomize() with { req.addr == a;
-                                    req.length == lengths[i];
-                                    req.parity_type == (bad ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD); }) begin
+        if (!req.randomize() with { req.m_addr == a;
+                                    req.m_length == lengths[i];
+                                    req.m_parity_type == (bad ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD); }) begin
           `uvm_error(get_type_name(), "req.randomize() failed")
         end
         finish_item(req);

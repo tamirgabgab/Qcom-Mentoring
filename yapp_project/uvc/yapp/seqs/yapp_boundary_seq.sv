@@ -12,13 +12,13 @@
 //------------------------------------------------------------------------------
 class yapp_boundary_seq extends yapp_base_seq;
 
-  rand bit[5:0] maxpktsize;                // the value programmed into ctrl_reg
+  rand bit[5:0] m_maxpktsize;                // the value programmed into ctrl_reg
 
   // Bookkeeping for the test
-  int sent_total;
-  int sent_oversized;                       // length > maxpktsize
-  int sent_per_addr[4];                     // per address, dropped or not
-  int sent_forwarded;                       // legal address and not oversized
+  int m_sent_total;
+  int m_sent_oversized;                       // length > maxpktsize
+  int m_sent_per_addr[4];                     // per address, dropped or not
+  int m_sent_forwarded;                       // legal address and not oversized
 
   `uvm_object_utils(yapp_boundary_seq)
 
@@ -33,7 +33,7 @@ endclass : yapp_boundary_seq
 // yapp_boundary_seq -- constraints
 //------------------------------------------------------------------------------
 
-constraint yapp_boundary_seq::c_max { maxpktsize inside {[2:62]}; }
+constraint yapp_boundary_seq::c_max { m_maxpktsize inside {[2:62]}; }
 
 //------------------------------------------------------------------------------
 // yapp_boundary_seq -- method implementations
@@ -47,19 +47,19 @@ endfunction : new
 task yapp_boundary_seq::body();
   int lens[$];
   int cand[4];
-  cand = '{maxpktsize - 1, maxpktsize, maxpktsize + 1, 63};
+  cand = '{m_maxpktsize - 1, m_maxpktsize, m_maxpktsize + 1, 63};
   foreach (cand[i]) begin
     if (cand[i] >= 1 && cand[i] <= 63 && !(cand[i] inside {lens})) begin
       lens.push_back(cand[i]);
     end
   end
   `uvm_info(get_type_name(), $sformatf("Executing yapp_boundary_seq (maxpktsize %0d, lengths %p)",
-                                       maxpktsize, lens), UVM_LOW)
-  sent_total = 0;
-  sent_oversized = 0;
-  sent_forwarded = 0;
-  foreach (sent_per_addr[i]) begin
-    sent_per_addr[i] = 0;
+                                       m_maxpktsize, lens), UVM_LOW)
+  m_sent_total = 0;
+  m_sent_oversized = 0;
+  m_sent_forwarded = 0;
+  foreach (m_sent_per_addr[i]) begin
+    m_sent_per_addr[i] = 0;
   end
   for (int a = 0; a < 4; a++) begin
     foreach (lens[i]) begin
@@ -67,19 +67,19 @@ task yapp_boundary_seq::body();
       req.c_addr_legal.constraint_mode(0);
       req.c_parity_dist.constraint_mode(0);   // the sequence chooses the parity
       start_item(req);
-      if (!req.randomize() with { req.addr        == a;
-                                  req.length      == lens[i];
-                                  req.parity_type == PARITY_TYPE_GOOD; }) begin
+      if (!req.randomize() with { req.m_addr        == a;
+                                  req.m_length      == lens[i];
+                                  req.m_parity_type == PARITY_TYPE_GOOD; }) begin
         `uvm_error(get_type_name(), "req.randomize() failed")
       end
       finish_item(req);
-      sent_total++;
-      sent_per_addr[a]++;
-      if (lens[i] > maxpktsize) begin
-        sent_oversized++;
+      m_sent_total++;
+      m_sent_per_addr[a]++;
+      if (lens[i] > m_maxpktsize) begin
+        m_sent_oversized++;
       end
-      if (a != 3 && lens[i] <= maxpktsize) begin
-        sent_forwarded++;
+      if (a != 3 && lens[i] <= m_maxpktsize) begin
+        m_sent_forwarded++;
       end
     end
   end

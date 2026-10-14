@@ -4,8 +4,8 @@
 //------------------------------------------------------------------------------
 class hbus_master_agent extends uvm_agent;
 
-  hbus_master_driver    driver;
-  hbus_master_sequencer sequencer;
+  hbus_master_driver    m_driver;
+  hbus_master_sequencer m_sequencer;
 
   `uvm_component_utils(hbus_master_agent)
 
@@ -36,15 +36,15 @@ function void hbus_master_agent::build_phase(uvm_phase phase);
     is_active = uvm_active_passive_enum'(cfg_is_active);
   end
   if (is_active == UVM_ACTIVE) begin
-    driver    = hbus_master_driver::type_id::create("driver", this);
-    sequencer = hbus_master_sequencer::type_id::create("sequencer", this);
+    m_driver    = hbus_master_driver::type_id::create("driver", this);
+    m_sequencer = hbus_master_sequencer::type_id::create("sequencer", this);
   end
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
 function void hbus_master_agent::connect_phase(uvm_phase phase);
   if (is_active == UVM_ACTIVE) begin
-    driver.seq_item_port.connect(sequencer.seq_item_export);
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
   end
 endfunction : connect_phase
 

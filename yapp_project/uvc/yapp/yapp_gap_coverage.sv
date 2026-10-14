@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 class yapp_gap_coverage extends uvm_subscriber #(yapp_packet);
 
-  int num_sampled;
+  int m_num_sampled;
 
   // ROUTE-04: packets back to back (gap 0) and with short gaps
   covergroup yapp_gap_cg with function sample(int gap);
@@ -46,15 +46,15 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void yapp_gap_coverage::write(yapp_packet t);
-  if (t.packet_delay < 0) begin
+  if (t.m_packet_delay < 0) begin
     return;                                 // the first packet after reset has no gap
   end
-  num_sampled++;
-  yapp_gap_cg.sample(t.packet_delay);
+  m_num_sampled++;
+  yapp_gap_cg.sample(t.m_packet_delay);
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void yapp_gap_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("YAPP gap coverage: %0d gaps sampled, coverage %.1f%%",
-                                       num_sampled, yapp_gap_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_sampled, yapp_gap_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

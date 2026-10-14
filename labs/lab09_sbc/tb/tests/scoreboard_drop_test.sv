@@ -26,5 +26,5 @@ endclass : scoreboard_drop_test
 
 function scoreboard_drop_test::new(string name, uvm_component parent);
   super.new(name, parent);
-  short_packets = 0;   // no short-packet override: long packets reach the router
+  m_short_packets = 0;   // no short-packet override: long packets reach the router
 endfunction : new

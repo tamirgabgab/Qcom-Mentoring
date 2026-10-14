@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 class router_hbus_data_coverage extends uvm_subscriber #(hbus_transaction);
 
-  int num_sampled;
+  int m_num_sampled;
 
   covergroup hbus_data_cg with function sample(bit write, bit[7:0] data);
     option.per_instance = 1;
@@ -49,15 +49,15 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_hbus_data_coverage::write(hbus_transaction t);
-  if (t.haddr < 16'h1100 || t.haddr > 16'h11ff) begin
+  if (t.m_haddr < 16'h1100 || t.m_haddr > 16'h11ff) begin
     return;
   end
-  num_sampled++;
-  hbus_data_cg.sample(t.hwr_rd == HBUS_OP_WRITE, t.hdata);
+  m_num_sampled++;
+  hbus_data_cg.sample(t.m_hwr_rd == HBUS_OP_WRITE, t.m_hdata);
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void router_hbus_data_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("HBUS yapp_mem data coverage: %0d accesses sampled, coverage %.1f%%",
-                                       num_sampled, hbus_data_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_sampled, hbus_data_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

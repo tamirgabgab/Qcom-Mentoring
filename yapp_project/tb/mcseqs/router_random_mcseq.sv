@@ -27,29 +27,29 @@
 class router_random_mcseq extends router_mcseq_base;
 
   // Scenario knobs (set by the test before start)
-  int min_packets  = 10;
-  int max_packets  = 100;
-  int min_bursts   = 2;
-  int max_bursts   = 6;
-  int extreme_pct  = 40;                    // maxpktsize from {0, 1, 62, 63}
-  int router_off_pct = 15;                  // bursts with router_en = 0
-  int storm_pct    = 0;                     // bursts that are bad-parity storms
-  int reads_min    = 3;                     // random HBUS reads after each configuration
-  int reads_max    = 8;
+  int m_min_packets  = 10;
+  int m_max_packets  = 100;
+  int m_min_bursts   = 2;
+  int m_max_bursts   = 6;
+  int m_extreme_pct  = 40;                    // maxpktsize from {0, 1, 62, 63}
+  int m_router_off_pct = 15;                  // bursts with router_en = 0
+  int m_storm_pct    = 0;                     // bursts that are bad-parity storms
+  int m_reads_min    = 3;                     // random HBUS reads after each configuration
+  int m_reads_max    = 8;
 
   // Knobs handed to every (non-storm) burst, see yapp_random_burst_seq
-  int addr3_pct     = 5;
-  int bad_pct       = 15;
-  int short_pct     = 0;
-  int long_pct      = 0;
-  int boundary_pct  = 40;
-  int gap0_pct      = 25;
-  int gap_short_pct = 35;
+  int m_addr3_pct     = 5;
+  int m_bad_pct       = 15;
+  int m_short_pct     = 0;
+  int m_long_pct      = 0;
+  int m_boundary_pct  = 40;
+  int m_gap0_pct      = 25;
+  int m_gap_short_pct = 35;
 
   // What happened, for the test's checks and report
-  int total_packets;
-  int num_bursts;
-  int num_storms;
+  int m_total_packets;
+  int m_num_bursts;
+  int m_num_storms;
 
   `uvm_object_utils(router_random_mcseq)
 
@@ -83,57 +83,57 @@ task router_random_mcseq::body();
   string                cfg_text;
   yapp_random_burst_seq burst;
 
-  total_packets = rnd::get_int(min_packets, max_packets, "router_random_mcseq.packets");
-  num_bursts    = rnd::get_int(min_bursts, max_bursts, "router_random_mcseq.bursts");
-  if (num_bursts > total_packets) begin
-    num_bursts = total_packets;
+  m_total_packets = rnd::get_int(m_min_packets, m_max_packets, "router_random_mcseq.packets");
+  m_num_bursts    = rnd::get_int(m_min_bursts, m_max_bursts, "router_random_mcseq.bursts");
+  if (m_num_bursts > m_total_packets) begin
+    m_num_bursts = m_total_packets;
   end
   // every burst gets one packet, the rest are spread at random
-  counts = new[num_bursts];
+  counts = new[m_num_bursts];
   foreach (counts[i]) begin
     counts[i] = 1;
   end
-  for (int i = num_bursts; i < total_packets; i++) begin
-    counts[rnd::get_index(num_bursts, "router_random_mcseq.burst_of_packet")]++;
+  for (int i = m_num_bursts; i < m_total_packets; i++) begin
+    counts[rnd::get_index(m_num_bursts, "router_random_mcseq.burst_of_packet")]++;
   end
-  stage($sformatf("random scenario: %0d packets in %0d bursts", total_packets, num_bursts));
+  stage($sformatf("random scenario: %0d packets in %0d bursts", m_total_packets, m_num_bursts));
 
-  for (int b = 0; b < num_bursts; b++) begin
+  for (int b = 0; b < m_num_bursts; b++) begin
     configure_router(b, max, cfg_text);
-    random_reads(rnd::get_int(reads_min, reads_max, "router_random_mcseq.reads"));
-    storm = (rnd::get_int(0, 99, "router_random_mcseq.storm") < storm_pct);
+    random_reads(rnd::get_int(m_reads_min, m_reads_max, "router_random_mcseq.reads"));
+    storm = (rnd::get_int(0, 99, "router_random_mcseq.storm") < m_storm_pct);
     burst = yapp_random_burst_seq::type_id::create($sformatf("burst%0d", b));
-    if (!burst.randomize() with { count == counts[b]; }) begin
+    if (!burst.randomize() with { m_count == counts[b]; }) begin
       `uvm_error(get_type_name(), "burst.randomize() failed")
     end
-    burst.maxpktsize = max;
+    burst.m_maxpktsize = max;
     if (storm) begin
-      num_storms++;
-      burst.addr3_pct     = addr3_pct;
-      burst.bad_pct       = 50;
-      burst.short_pct     = 100;
-      burst.long_pct      = 0;
-      burst.boundary_pct  = 0;
-      burst.gap0_pct      = 90;
-      burst.gap_short_pct = 10;
+      m_num_storms++;
+      burst.m_addr3_pct     = m_addr3_pct;
+      burst.m_bad_pct       = 50;
+      burst.m_short_pct     = 100;
+      burst.m_long_pct      = 0;
+      burst.m_boundary_pct  = 0;
+      burst.m_gap0_pct      = 90;
+      burst.m_gap_short_pct = 10;
     end else begin
-      burst.addr3_pct     = addr3_pct;
-      burst.bad_pct       = bad_pct;
-      burst.short_pct     = short_pct;
-      burst.long_pct      = long_pct;
-      burst.boundary_pct  = boundary_pct;
-      burst.gap0_pct      = gap0_pct;
-      burst.gap_short_pct = gap_short_pct;
+      burst.m_addr3_pct     = m_addr3_pct;
+      burst.m_bad_pct       = m_bad_pct;
+      burst.m_short_pct     = m_short_pct;
+      burst.m_long_pct      = m_long_pct;
+      burst.m_boundary_pct  = m_boundary_pct;
+      burst.m_gap0_pct      = m_gap0_pct;
+      burst.m_gap_short_pct = m_gap_short_pct;
     end
     // (if/else, not ?: -- Verilator pads string literals of a ?: to the same width)
     if (storm) begin
       stage($sformatf("burst %0d/%0d: %s, %0d packet(s) -- storm: 1..3-byte packets back to back, half with bad parity",
-                      b + 1, num_bursts, cfg_text, counts[b]));
+                      b + 1, m_num_bursts, cfg_text, counts[b]));
     end else begin
-      stage($sformatf("burst %0d/%0d: %s, %0d packet(s)", b + 1, num_bursts, cfg_text, counts[b]));
+      stage($sformatf("burst %0d/%0d: %s, %0d packet(s)", b + 1, m_num_bursts, cfg_text, counts[b]));
     end
-    burst.start(p_sequencer.yapp_seqr, this);
-    stage($sformatf("burst %0d/%0d sent: %s", b + 1, num_bursts, burst.summary()));
+    burst.start(p_sequencer.m_yapp_seqr, this);
+    stage($sformatf("burst %0d/%0d sent: %s", b + 1, m_num_bursts, burst.summary()));
   end
 
   stage("final reads: every register and the stored packet, checked against the reference model");
@@ -146,7 +146,7 @@ task router_random_mcseq::configure_router(int burst, output bit[5:0] max, outpu
   bit[7:0] en;
   int       r;
   string    on_off;
-  if (rnd::get_int(0, 99, "router_random_mcseq.extreme") < extreme_pct) begin
+  if (rnd::get_int(0, 99, "router_random_mcseq.extreme") < m_extreme_pct) begin
     case (rnd::get_int(0, 3, "router_random_mcseq.extreme_max"))
       0:       max = 6'd0;
       1:       max = 6'd1;
@@ -165,7 +165,7 @@ task router_random_mcseq::configure_router(int burst, output bit[5:0] max, outpu
   end else begin
     en[7:1] = 7'(rnd::get_int(0, 127, "router_random_mcseq.cnt_en_mask"));
   end
-  en[0] = (rnd::get_int(0, 99, "router_random_mcseq.router_off") >= router_off_pct);
+  en[0] = (rnd::get_int(0, 99, "router_random_mcseq.router_off") >= m_router_off_pct);
   hbus_write(16'h1000, ctrl);
   hbus_write(16'h1001, en);
   if (en[0]) begin
@@ -181,13 +181,13 @@ endtask : configure_router
 task router_random_mcseq::random_reads(int n);
   bit[15:0] addr;
   bit[7:0]  data;
-  bit[15:0] regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b,
+  bit[15:0] m_regs[$] = '{16'h1000, 16'h1001, 16'h1004, 16'h1005, 16'h1006, 16'h1009, 16'h100a, 16'h100b,
                          16'h100d};
   bit[15:0] unmapped[$] = '{16'h1002, 16'h1003, 16'h1007, 16'h1008, 16'h100c, 16'h100e, 16'h100f};
   for (int i = 0; i < n; i++) begin
     case (rnd::get_int(0, 4, "router_random_mcseq.read_kind"))
       0, 1: begin
-        addr = regs[rnd::get_index(regs.size(), "router_random_mcseq.reg")];
+        addr = m_regs[rnd::get_index(m_regs.size(), "router_random_mcseq.reg")];
       end
       2: begin
         addr = 16'h1010 + 16'(rnd::get_int(0, 63, "router_random_mcseq.pkt_mem"));

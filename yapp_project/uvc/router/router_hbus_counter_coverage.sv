@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 class router_hbus_counter_coverage extends uvm_subscriber #(hbus_transaction);
 
-  int num_sampled;
+  int m_num_sampled;
 
   covergroup hbus_counter_cg with function sample(int counter, bit[7:0] value);
     option.per_instance = 1;
@@ -53,10 +53,10 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void router_hbus_counter_coverage::write(hbus_transaction t);
   int counter;
-  if (t.hwr_rd != HBUS_OP_READ) begin
+  if (t.m_hwr_rd != HBUS_OP_READ) begin
     return;
   end
-  case (t.haddr)
+  case (t.m_haddr)
     16'h1004: counter = 0;
     16'h1005: counter = 1;
     16'h1009: counter = 2;
@@ -65,12 +65,12 @@ function void router_hbus_counter_coverage::write(hbus_transaction t);
     16'h1006: counter = 5;
     default:  return;                       // not a counter
   endcase
-  num_sampled++;
-  hbus_counter_cg.sample(counter, t.hdata);
+  m_num_sampled++;
+  hbus_counter_cg.sample(counter, t.m_hdata);
 endfunction : write
 
 //------------------------------------------------------------------------------
 function void router_hbus_counter_coverage::report_phase(uvm_phase phase);
   `uvm_info(get_type_name(), $sformatf("HBUS counter value coverage: %0d counter reads sampled, coverage %.1f%%",
-                                       num_sampled, hbus_counter_cg.get_inst_coverage()), UVM_LOW)
+                                       m_num_sampled, hbus_counter_cg.get_inst_coverage()), UVM_LOW)
 endfunction : report_phase

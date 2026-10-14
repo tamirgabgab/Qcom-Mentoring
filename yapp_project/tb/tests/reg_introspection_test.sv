@@ -31,7 +31,7 @@ task reg_introspection_test::access_checks();
   uvm_reg ro_q[$];
 
   stage("list every register of the model by access rights, then check each one");
-  tb.yapp_rm.get_registers(all_q);          // every register in the model
+  m_tb.m_yapp_rm.get_registers(all_q);          // every register in the model
   rw_q = all_q.find(r) with (r.get_rights() == "RW");
   ro_q = all_q.find(r) with (r.get_rights() == "RO");
 

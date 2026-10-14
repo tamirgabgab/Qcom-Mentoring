@@ -31,7 +31,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 task reg_function_check_test::run_phase(uvm_phase phase);
-  tb.yapp_rm.default_map.set_check_on_read(1);
+  m_tb.m_yapp_rm.default_map.set_check_on_read(1);
   super.run_phase(phase);
 endtask : run_phase
 

@@ -32,12 +32,12 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void random_parity_test::configure_scenario(router_random_mcseq s);
-  s.min_bursts     = 3;
-  s.max_bursts     = 6;
-  s.storm_pct      = 50;
-  s.router_off_pct = 15;
-  s.addr3_pct      = 15;
-  s.bad_pct        = rnd::get_int(30, 60, "random_parity_test.bad_pct");
-  s.boundary_pct   = 50;
-  s.gap0_pct       = 40;
+  s.m_min_bursts     = 3;
+  s.m_max_bursts     = 6;
+  s.m_storm_pct      = 50;
+  s.m_router_off_pct = 15;
+  s.m_addr3_pct      = 15;
+  s.m_bad_pct        = rnd::get_int(30, 60, "random_parity_test.bad_pct");
+  s.m_boundary_pct   = 50;
+  s.m_gap0_pct       = 40;
 endfunction : configure_scenario

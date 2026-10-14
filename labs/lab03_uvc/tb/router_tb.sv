@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 class router_tb extends uvm_env;
 
-  yapp_env yapp;
+  yapp_env m_yapp;
 
   `uvm_component_utils(router_tb)
 
@@ -27,7 +27,7 @@ endfunction : new
 function void router_tb::build_phase(uvm_phase phase);
   super.build_phase(phase);
   `uvm_info(get_type_name(), "Executing the build phase of the testbench", UVM_HIGH)
-  yapp = new("yapp", this);
+  m_yapp = new("yapp", this);
 endfunction : build_phase
 
 //------------------------------------------------------------------------------
