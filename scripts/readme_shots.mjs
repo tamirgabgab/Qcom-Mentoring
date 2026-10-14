@@ -45,6 +45,11 @@ await shot("map_overview.png");
 await page.evaluate(() => { const m = window.projectMap; m.toggleCode(false); m.switchView("plan"); m.select("plan:PKT"); m.fit(); });
 await page.waitForTimeout(400);
 await shot("map_testplan.png");
+
+// the Coverage view with one collector open in the panel
+await page.evaluate(() => { const m = window.projectMap; m.switchView("cov"); m.select("tb.yapp.agent.pkt_cov"); m.fit(); });
+await page.waitForTimeout(400);
+await shot("map_coverage.png");
 await page.evaluate(() => { window.projectMap.toggleCode(true); });
 
 // zoom on hw_top: hide the side panels, fit the hardware frame to the canvas
@@ -94,4 +99,4 @@ await page.waitForTimeout(200);
 await page.locator(".yapp-sim").first().screenshot({ path: path.join(out, "sim_packet.png") });
 
 await browser.close();
-console.log("wrote 5 screenshots ->", path.relative(root, out));
+console.log("wrote 6 screenshots ->", path.relative(root, out));

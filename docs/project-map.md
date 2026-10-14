@@ -6,8 +6,8 @@ hide:
 # Project map
 
 One picture of the whole project that you can look into: **click** a box for its role, its file
-and its lab, **double-click** to open it. Five views: Hierarchy, TLM / data flow, Classes (UML),
-Environment, Test plan. The **Source** column on the right opens by itself with the complete
+and its lab, **double-click** to open it. Six views: Hierarchy, TLM / data flow, Classes (UML),
+Environment, Test plan, Coverage (keys ++1++ … ++6++). The **Source** column on the right opens by itself with the complete
 file of whatever is selected (one class per file) and folds to a thin strip when there is nothing
 to show. Press ++question++ inside the map for the shortcuts.
 
@@ -81,6 +81,15 @@ to show. Press ++question++ inside the map for the shortcuts.
   faint until a card is selected: then only its own are drawn. The same data generates the
   [test plan](test-plan.md) page, with a [coverage matrix](test-plan.md#coverage-matrix) of
   every item against every test.
+* **Coverage** — the functional coverage of the committed regression on one page. On the left,
+  who publishes what the collectors sample: the YAPP monitor, the reference model (its decision
+  per packet) and the HBUS monitor through the module env's export. On the right, one card per
+  **coverage collector**: a bar per covergroup (bins hit over every run) and a chip per
+  coverpoint (hit / bins, red when it has holes). Click a card for every bin with the tests
+  that hit it, click a chip to jump to that coverpoint in the panel; the panel of the view
+  itself gives the totals and links to the [coverage results](coverage-results.md), the
+  annotated source and the [regression results](regression/index.md). The concepts are on
+  [Functional coverage in UVM](uvm/coverage.md).
 
 **Arrows, moving boxes, column widths.** Arrows are orthogonal (horizontal and vertical runs,
 rounded corners) and routed in the browser from the boxes' positions. In the Hierarchy and TLM
@@ -125,9 +134,10 @@ and the waves (Surfer) on GitHub, plus a link to its page in the
 [regression results](regression/index.md); the test cards carry the same as badges. A **coverage
 collector** (yellow) lists the merged bins of the committed regression with the tests that hit
 each one, a red row for a hole, and links to the annotated source and the
-[coverage results](coverage-results.md). With nothing selected it
+[coverage results](coverage-results.md); the Coverage view shows the same collectors as cards.
+With nothing selected it
 lists the **items in this view**, grouped by parent (or by package in Classes, features and
-tests in the Test plan) and with a filter box. The **Source** column (toolbar button or ++c++)
+tests in the Test plan, publishers and collectors in Coverage) and with a filter box. The **Source** column (toolbar button or ++c++)
 is a third column with the whole file of the selected class, module or RTL block, the item's
 lines marked; it can be downloaded or opened on GitHub from there. It opens when a box with a
 file is selected and folds to a strip labelled "Source" otherwise; the × on it switches it off

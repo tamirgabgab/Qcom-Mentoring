@@ -116,6 +116,19 @@ def run_all(m, model_json, html):
         cov = [e for e in plan["edges"] if e["kind"] == "covers"]
         expect(len(inh) == len(tests) - 1, "plan scene: one inherits arrow per derived test")
         expect(len(cov) == len([e for e in E if e["kind"] == "covers"]) >= 50, f"plan scene: {len(cov)} covers arrows")
+    # the Coverage view: one card per coverage collector instance, a bar per covergroup, the
+    # publishers on the left with one connect arrow per collector
+    covs = next((s for s in m["scenes"] if s["id"] == "cov:main"), None)
+    cov_nodes = [n for n in N.values() if n.get("scope") == "tb" and n.get("kind") == "coverage" and n.get("coverage")]
+    expect(covs is not None and covs["view"] == "cov", "coverage scene exists")
+    if covs:
+        cards = [it for it in covs["items"] if it.get("style") == "cov_card"]
+        srcs = [it for it in covs["items"] if it.get("style") == "cov_source"]
+        expect(len(cards) == len(cov_nodes) >= 7, f"coverage scene: {len(cards)} cards for {len(cov_nodes)} collectors")
+        expect(all(it.get("groups") and all(g["total"] > 0 and g["points"] for g in it["groups"]) for it in cards),
+               "every coverage card has covergroups with bins and coverpoints")
+        expect(len(srcs) >= 3 and all(it["x"] + it["w"] <= min(c["x"] for c in cards) for it in srcs), "publishers left of the cards")
+        expect(len(covs["edges"]) == len(cards) and all(e["kind"] == "connect" for e in covs["edges"]), "one connect arrow per collector")
     # the plan itself: ids unique, statuses known, every test named exists, every test is named
     items = [it for g in m["plan"] for it in g["items"]]
     ids = [it["id"] for it in items]

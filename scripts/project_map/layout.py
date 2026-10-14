@@ -1392,6 +1392,112 @@ class PlanLayout(Layout):
                  "split": round(feats[-1].y + feats[-1].h + 15, 1) if feats else 0}]
 
 
+class CoverageLayout(Layout):
+    """The Coverage view. Left: the components that publish what the collectors sample (the YAPP
+    monitor, the reference model, the module env's HBUS export). Right: one card per coverage
+    collector instance with, per covergroup, a percentage bar (bins hit / bins, merged over the
+    committed regression) and one chip per coverpoint (hit / total; red when it has holes).
+    Edges: the analysis connections, publisher -> collector."""
+    CARD_W = 380
+    SRC_W = 230
+    COLS = 2
+    CHIPS_PER_ROW = 3
+
+    def scenes(self):
+        cols = [n for n in self.N.values() if n.get("scope") == "tb" and n.get("kind") == "coverage" and n.get("coverage")]
+        if not cols:
+            return []
+        order = {"yapp": 0, "router_module.coverage": 1, "hbus": 2}
+
+        def key(n):
+            nid = n["id"]
+            return (0 if ".yapp." in nid else 1 if nid.endswith(".coverage") else 2, nid)
+        cols.sort(key=key)
+        # the publisher of every collector: the connect edge into its analysis export
+        feeds = {}
+        for e in self.E:
+            if e["kind"] != "connect":
+                continue
+            tgt = next((c["id"] for c in cols if e["to"] == c["id"] or e["to"].startswith(c["id"] + ".")), None)
+            if tgt:
+                # follow the chain backwards through pass-through exports (hbus monitor -> env.hbus_export)
+                src, hops = e["from"], [e["from"].rsplit(".", 1)[-1]]
+                for _ in range(3):
+                    up = next((x for x in self.E if x["kind"] == "connect" and x["to"] == src), None)
+                    if not up:
+                        break
+                    src = up["from"]
+                    hops.insert(0, src.rsplit(".", 1)[-1])
+                owner = src.rsplit(".", 1)[0] if src not in self.N or self.N[src].get("port") else src
+                feeds[tgt] = (owner, " → ".join(hops), e, src)
+        # cards
+        cards = {}
+        for n in cols:
+            b = Box(n["id"], n, n["name"], "", "coverage", 0)
+            lines = wrap(n.get("summary") or "", 62)[:2]
+            groups = []
+            for g in n["coverage"]:
+                pts = [{"name": pt["name"], "covered": pt["covered"], "total": pt["total"], "cross": bool(pt.get("cross"))}
+                       for pt in g["points"]]
+                groups.append({"name": g["name"], "pct": g["pct"], "covered": g["covered"], "total": g["total"],
+                               "runs": g.get("runs"), "points": pts})
+            chips = sum(len(g["points"]) for g in groups)
+            rows = math.ceil(chips / self.CHIPS_PER_ROW) if chips else 0
+            b.w = self.CARD_W
+            b.h = 44 + 15 * len(lines) + sum(8 + 20 for _ in groups) + (8 + 24 * rows if rows else 0) + 12
+            b.sub = f"{n.get('type', '')}  ·  uvm_test_top.{n['id']}"
+            b.extra = {"style": "cov_card", "lines": lines, "groups": groups}
+            cards[n["id"]] = b
+        # publishers: one box per owner, placed beside the block of its cards
+        owners = []
+        for c in cols:
+            o = feeds.get(c["id"], (None,))[0]
+            if o and o not in owners:
+                owners.append(o)
+        srcs = {}
+        for o in owners:
+            n = self.N.get(o, {"id": o, "name": o.rsplit(".", 1)[-1], "kind": "object"})
+            ports = sorted({feeds[c["id"]][1] for c in cols if feeds.get(c["id"], (None,))[0] == o})
+            b = Box(o, n, o[3:] if o.startswith("tb.") else o, " | ".join(ports), n.get("kind", "object"), 0)
+            b.w, b.h = self.SRC_W, 48
+            b.extra = {"style": "cov_source"}
+            srcs[o] = b
+        x_cards = PAD + self.SRC_W + GAP_X + 20
+        y = PAD + 10
+        for o in owners + [None]:
+            mine = [cards[c["id"]] for c in cols if feeds.get(c["id"], (None,))[0] == o]
+            if not mine:
+                continue
+            y0 = y
+            for i, b in enumerate(mine):
+                col = i % self.COLS
+                if col == 0 and i:
+                    y += max(ob.h for ob in mine[i - self.COLS:i]) + GAP_Y
+                b.move(x_cards + col * (self.CARD_W + GAP_X) - b.x, y - b.y)
+            y_end = max(b.y + b.h for b in mine)
+            if o in srcs:
+                s = srcs[o]
+                s.move(PAD - s.x, (y0 + y_end) / 2 - s.h / 2 - s.y)
+            y = y_end + GAP_Y + 16
+        items = list(srcs.values()) + list(cards.values())
+        total_w = x_cards + self.CARD_W * self.COLS + GAP_X * (self.COLS - 1) + PAD
+        total_h = max(b.y + b.h for b in items) + PAD
+        edges = []
+        for c in cols:
+            if c["id"] not in feeds or feeds[c["id"]][0] not in srcs:
+                continue
+            o, port, e, src = feeds[c["id"]]
+            a, b = srcs[o], cards[c["id"]]
+            pts = self.route((a.x + a.w, a.y + a.h / 2), (b.x, b.y + 24), "right", "left")
+            mid = self.bezier_mid(pts)
+            edges.append({"id": e["id"], "kind": "connect", "from": src, "to": e["to"],
+                          "points": [[round(x, 1), round(y_, 1)] for x, y_ in pts], "label": port.split(" → ")[-1],
+                          "lx": round(mid[0], 1), "ly": round(mid[1], 1), "bidir": False, "dashed": False})
+        return [{"id": "cov:main", "view": "cov", "node": None, "title": "Coverage",
+                 "parent": None, "w": round(total_w, 1), "h": round(total_h, 1),
+                 "items": [b.to_dict() for b in items], "edges": edges, "stubs": []}]
+
+
 def wrap(text, width):
     """Greedy word wrap for the card texts."""
     words, lines, cur = text.split(), [], ""
@@ -1413,6 +1519,7 @@ def build_scenes(model, ann):
     scenes += UmlLayout(model, ann).scenes()
     scenes += EnvLayout(model, ann).scenes()
     scenes += PlanLayout(model, ann).scenes()
+    scenes += CoverageLayout(model, ann).scenes()
     # which hierarchy scene draws each node (for search / deep links)
     where = {}
     for s in scenes:
