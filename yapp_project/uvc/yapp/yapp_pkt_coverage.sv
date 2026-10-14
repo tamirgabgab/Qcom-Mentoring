@@ -35,19 +35,19 @@ class yapp_pkt_coverage extends uvm_subscriber #(yapp_packet);
     }
     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)
     parity_cp : coverpoint parity_type {
-      bins good = {GOOD_PARITY};
-      bins bad  = {BAD_PARITY};
+      bins good = {PARITY_TYPE_GOOD};
+      bins bad  = {PARITY_TYPE_BAD};
     }
-    // REQ3: only legal addresses and only BAD_PARITY are interesting
+    // REQ3: only legal addresses and only PARITY_TYPE_BAD are interesting
 `ifdef VERILATOR
     // (Verilator 5.052 drops ignore_bins with binsof/intersect, so the cross is
     // built from coverpoints that hold only the interesting bins: same 15 bins)
     legal_addr_cp : coverpoint addr { bins legal[] = {[0:2]}; }
-    bad_parity_cp : coverpoint parity_type { bins bad = {BAD_PARITY}; }
+    bad_parity_cp : coverpoint parity_type { bins bad = {PARITY_TYPE_BAD}; }
     len_x_addr_x_parity : cross length_cp, legal_addr_cp, bad_parity_cp;
 `else
     len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
-      ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
+      ignore_bins good_parity  = binsof(parity_cp) intersect {PARITY_TYPE_GOOD};
       ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);
     }
 `endif

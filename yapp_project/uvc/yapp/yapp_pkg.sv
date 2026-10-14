@@ -12,8 +12,7 @@ package yapp_pkg;
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
 
-  // Shorthand for the configuration database entry holding the virtual interface
-  typedef uvm_config_db #(virtual yapp_if) yapp_vif_config;
+  `include "yapp_defines.sv"   // typedefs and enums of the package
 
   `include "yapp_packet.sv"
   `include "short_yapp_packet.sv"

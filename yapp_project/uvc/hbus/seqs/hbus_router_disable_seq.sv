@@ -26,7 +26,7 @@ task hbus_router_disable_seq::body();
   `uvm_info(get_type_name(), "Executing hbus_router_disable_seq (router_en=0)", UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == EN_REG_ADDR; req.hdata == 8'h00; req.hwr_rd == HBUS_WRITE; }) begin
+  if (!req.randomize() with { req.haddr == EN_REG_ADDR; req.hdata == 8'h00; req.hwr_rd == HBUS_OP_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

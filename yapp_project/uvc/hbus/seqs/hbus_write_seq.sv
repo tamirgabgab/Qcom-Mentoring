@@ -30,7 +30,7 @@ task hbus_write_seq::body();
                                        addr, data), UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_WRITE; }) begin
+  if (!req.randomize() with { req.haddr == addr; req.hdata == data; req.hwr_rd == HBUS_OP_WRITE; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

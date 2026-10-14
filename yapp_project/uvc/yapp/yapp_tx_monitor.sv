@@ -86,9 +86,9 @@ task yapp_tx_monitor::collect_packets();
     end
     first = 1'b0;
     void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
-    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
+    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
     num_pkt_col++;
-    if (pkt.parity_type == BAD_PARITY) begin
+    if (pkt.parity_type == PARITY_TYPE_BAD) begin
       num_bad_parity++;
     end
     `uvm_info(get_type_name(),

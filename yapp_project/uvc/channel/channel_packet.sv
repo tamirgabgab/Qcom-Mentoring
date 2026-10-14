@@ -5,8 +5,6 @@
 // `delay` knob that the receiver uses as its response delay. The data fields
 // are filled in by the monitor; sequences only randomize `delay`.
 //------------------------------------------------------------------------------
-typedef enum { CHANNEL_GOOD_PARITY, CHANNEL_BAD_PARITY } channel_parity_type_e;
-
 class channel_packet extends uvm_sequence_item;
 
   // Packet contents (observed)
@@ -60,7 +58,7 @@ endfunction : calc_parity
 
 //------------------------------------------------------------------------------
 function string channel_packet::parity_text();
-  if (parity_type == CHANNEL_GOOD_PARITY) begin
+  if (parity_type == CHANNEL_PARITY_TYPE_GOOD) begin
     return "good";
   end
   return "bad";

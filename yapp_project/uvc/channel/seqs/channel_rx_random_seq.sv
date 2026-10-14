@@ -2,17 +2,13 @@
 // channel_rx_random_seq.sv -- sequence library of the Channel UVC
 //------------------------------------------------------------------------------
 
-// How a receiver answers: the delay between a header appearing on its channel
-// and the receiver starting to read the packet.
-typedef enum { RX_FAST, RX_NORMAL, RX_SLOW, RX_STALLY } channel_rx_profile_e;
-
 //------------------------------------------------------------------------------
 // channel_rx_random_seq: a receiver with a profile, so each channel of a test
 // can behave differently:
-//   RX_FAST    always ready (delay 0)
-//   RX_NORMAL  0..10 cycles, like channel_rx_resp_seq
-//   RX_SLOW    20..40 cycles, like channel_rx_slow_seq
-//   RX_STALLY  usually 0..10, but stall_pct of the packets wait 50..150
+//   CHANNEL_RX_PROFILE_FAST    always ready (delay 0)
+//   CHANNEL_RX_PROFILE_NORMAL  0..10 cycles, like channel_rx_resp_seq
+//   CHANNEL_RX_PROFILE_SLOW    20..40 cycles, like channel_rx_slow_seq
+//   CHANNEL_RX_PROFILE_STALLY  usually 0..10, but stall_pct of the packets wait 50..150
 //              cycles: the channel stops taking packets for a while, its FIFO
 //              fills and the router holds the input with in_suspend
 // The wait is always before a packet (on its header), never in the middle of
@@ -21,8 +17,8 @@ typedef enum { RX_FAST, RX_NORMAL, RX_SLOW, RX_STALLY } channel_rx_profile_e;
 //------------------------------------------------------------------------------
 class channel_rx_random_seq extends channel_rx_base_seq;
 
-  channel_rx_profile_e profile   = RX_NORMAL;
-  int                  stall_pct = 15;     // RX_STALLY: packets that wait 50..150 cycles
+  channel_rx_profile_e profile   = CHANNEL_RX_PROFILE_NORMAL;
+  int                  stall_pct = 15;     // CHANNEL_RX_PROFILE_STALLY: packets that wait 50..150 cycles
 
   `uvm_object_utils(channel_rx_random_seq)
 
@@ -62,13 +58,13 @@ endtask : body
 //------------------------------------------------------------------------------
 function int channel_rx_random_seq::pick_delay();
   case (profile)
-    RX_FAST: begin
+    CHANNEL_RX_PROFILE_FAST: begin
       return 0;
     end
-    RX_SLOW: begin
+    CHANNEL_RX_PROFILE_SLOW: begin
       return rnd::get_int(20, 40, "channel_rx_random_seq.slow");
     end
-    RX_STALLY: begin
+    CHANNEL_RX_PROFILE_STALLY: begin
       if (rnd::get_int(0, 99, "channel_rx_random_seq.stall") < stall_pct) begin
         return rnd::get_int(50, 150, "channel_rx_random_seq.stall_delay");
       end

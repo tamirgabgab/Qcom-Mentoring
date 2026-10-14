@@ -29,7 +29,7 @@ task hbus_read_seq::body();
   `uvm_info(get_type_name(), $sformatf("Executing hbus_read_seq addr=0x%04h", addr), UVM_LOW)
   req = hbus_transaction::type_id::create("req");
   start_item(req);
-  if (!req.randomize() with { req.haddr == addr; req.hwr_rd == HBUS_READ; }) begin
+  if (!req.randomize() with { req.haddr == addr; req.hwr_rd == HBUS_OP_READ; }) begin
     `uvm_error(get_type_name(), "req.randomize() failed")
   end
   finish_item(req);

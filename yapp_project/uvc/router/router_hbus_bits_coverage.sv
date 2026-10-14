@@ -50,7 +50,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_hbus_bits_coverage::write(hbus_transaction t);
-  if (t.hwr_rd != HBUS_WRITE || !(t.haddr inside {16'h1000, 16'h1001})) begin
+  if (t.hwr_rd != HBUS_OP_WRITE || !(t.haddr inside {16'h1000, 16'h1001})) begin
     return;
   end
   num_writes++;

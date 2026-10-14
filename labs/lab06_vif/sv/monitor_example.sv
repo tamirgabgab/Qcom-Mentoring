@@ -23,7 +23,7 @@
       pkt = yapp_packet::type_id::create("pkt", this);
       vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity);
       void'(begin_tr(pkt, "Monitor_YAPP_Packet"));
-      pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? GOOD_PARITY : BAD_PARITY;
+      pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? PARITY_TYPE_GOOD : PARITY_TYPE_BAD;
       `uvm_info(get_type_name(), $sformatf("Packet collected:\n%s", pkt.sprint()), UVM_LOW)
       end_tr(pkt);
     end

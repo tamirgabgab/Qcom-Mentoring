@@ -56,7 +56,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void router_reference::write_hbus(hbus_transaction tr);
-  if (tr.hwr_rd != HBUS_WRITE) begin
+  if (tr.hwr_rd != HBUS_OP_WRITE) begin
     return;
   end
   case (tr.haddr)

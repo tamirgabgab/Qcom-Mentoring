@@ -44,9 +44,9 @@ endfunction : configure_scenario
 // Slow or stalling on most channels; one in four stays fast or normal.
 function channel_rx_profile_e random_backpressure_test::pick_profile(int ch);
   case (rnd::get_int(0, 7, $sformatf("random_backpressure_test.profile%0d", ch)))
-    0:          return RX_FAST;
-    1:          return RX_NORMAL;
-    2, 3, 4:    return RX_SLOW;
-    default:    return RX_STALLY;
+    0:          return CHANNEL_RX_PROFILE_FAST;
+    1:          return CHANNEL_RX_PROFILE_NORMAL;
+    2, 3, 4:    return CHANNEL_RX_PROFILE_SLOW;
+    default:    return CHANNEL_RX_PROFILE_STALLY;
   endcase
 endfunction : pick_profile

@@ -19,7 +19,7 @@ class yapp_pkt_seq extends yapp_base_seq;
 
   constraint c_len    { pkt_len inside {[1:63]}; }
   constraint c_legal  { soft pkt_addr != 2'd3; }
-  constraint c_parity { soft pkt_parity == GOOD_PARITY; }
+  constraint c_parity { pkt_parity != PARITY_TYPE_UNDEFINED; soft pkt_parity == PARITY_TYPE_GOOD; }
 
   `uvm_object_utils(yapp_pkt_seq)
 

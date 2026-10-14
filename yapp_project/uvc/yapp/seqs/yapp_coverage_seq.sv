@@ -38,7 +38,7 @@ task yapp_coverage_seq::body();
         start_item(req);
         if (!req.randomize() with { req.addr == a;
                                     req.length == lengths[i];
-                                    req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); }) begin
+                                    req.parity_type == (bad ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD); }) begin
           `uvm_error(get_type_name(), "req.randomize() failed")
         end
         finish_item(req);

@@ -37,7 +37,7 @@ task yapp_88_packets_seq::body();
       start_item(req);
       if (!req.randomize() with { req.addr == a;
                                   req.length == l;
-                                  req.parity_type dist { GOOD_PARITY := 4, BAD_PARITY := 1 }; }) begin
+                                  req.parity_type dist { PARITY_TYPE_GOOD := 4, PARITY_TYPE_BAD := 1 }; }) begin
         `uvm_error(get_type_name(), "req.randomize() failed")
       end
       finish_item(req);

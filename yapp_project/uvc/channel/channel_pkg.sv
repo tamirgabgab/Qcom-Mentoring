@@ -10,7 +10,7 @@ package channel_pkg;
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
 
-  typedef uvm_config_db #(virtual channel_if) channel_vif_config;
+  `include "channel_defines.sv"   // typedefs and enums of the package
 
   `include "channel_packet.sv"
   `include "channel_rx_monitor.sv"

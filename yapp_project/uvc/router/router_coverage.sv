@@ -31,9 +31,9 @@ class router_coverage extends uvm_subscriber #(router_decision);
     }
     // one bin per enum value, written out (Verilator 5.052 bins an enum by range)
     reason_cp : coverpoint reason {
-      bins forwarded = {DECIDE_FORWARDED};
-      bins addr3     = {DECIDE_ADDR3};
-      bins oversized = {DECIDE_OVERSIZED};
+      bins forwarded = {ROUTER_REASON_FORWARDED};
+      bins addr3     = {ROUTER_REASON_ADDR3};
+      bins oversized = {ROUTER_REASON_OVERSIZED};
     }
     parity_cp : coverpoint bad {
       bins good = {0};
@@ -51,7 +51,7 @@ class router_coverage extends uvm_subscriber #(router_decision);
   // does not support get_inst_coverage() on a single coverpoint)
   int hits_max[5];                          // maxpktsize 0, 1, 2..61, 62, 63
   int hits_len[4];                          // length below / equal / max+1 / above max
-  int hits_reason_parity[3][2];             // forwarded, address 3, oversized x good, bad
+  int hits_reason_parity[4][2];             // [reason][bad]: index 0 (UNDEFINED) stays empty
   int hits_cnt_en[3];                       // counter enables none / mixed / all
 
   `uvm_component_utils(router_coverage)
@@ -78,7 +78,7 @@ endfunction : new
 function void router_coverage::write(router_decision t);
   int len_vs_max;
   bit bad;
-  bad = (t.pkt.parity_type == BAD_PARITY);
+  bad = (t.pkt.parity_type == PARITY_TYPE_BAD);
   if (t.pkt.length < t.maxpktsize) begin
     len_vs_max = 0;
   end else if (t.pkt.length == t.maxpktsize) begin
@@ -111,8 +111,8 @@ function void router_coverage::report_phase(uvm_phase phase);
     router_cfg_cg.get_inst_coverage(),
     hits_max[0], hits_max[1], hits_max[2], hits_max[3], hits_max[4],
     hits_len[0], hits_len[1], hits_len[2], hits_len[3],
-    hits_reason_parity[DECIDE_FORWARDED][0], hits_reason_parity[DECIDE_FORWARDED][1],
-    hits_reason_parity[DECIDE_ADDR3][0], hits_reason_parity[DECIDE_ADDR3][1],
-    hits_reason_parity[DECIDE_OVERSIZED][0], hits_reason_parity[DECIDE_OVERSIZED][1],
+    hits_reason_parity[ROUTER_REASON_FORWARDED][0], hits_reason_parity[ROUTER_REASON_FORWARDED][1],
+    hits_reason_parity[ROUTER_REASON_ADDR3][0], hits_reason_parity[ROUTER_REASON_ADDR3][1],
+    hits_reason_parity[ROUTER_REASON_OVERSIZED][0], hits_reason_parity[ROUTER_REASON_OVERSIZED][1],
     hits_cnt_en[0], hits_cnt_en[1], hits_cnt_en[2]), UVM_LOW)
 endfunction : report_phase

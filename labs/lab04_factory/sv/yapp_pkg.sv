@@ -10,6 +10,7 @@ package yapp_pkg;
   import rand_util_pkg::*;   // rnd:: random values (common/rand_util_pkg.sv)
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
+  `include "yapp_defines.sv"   // typedefs and enums of the package
   `include "yapp_packet.sv"
   `include "short_yapp_packet.sv"
   `include "yapp_tx_monitor.sv"

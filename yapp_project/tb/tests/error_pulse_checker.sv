@@ -45,7 +45,7 @@ endfunction : new
 
 //------------------------------------------------------------------------------
 function void error_pulse_checker::write(yapp_packet t);
-  if (t.parity_type != BAD_PARITY) begin
+  if (t.parity_type != PARITY_TYPE_BAD) begin
     return;
   end
   if (reference != null && !reference.router_en) begin

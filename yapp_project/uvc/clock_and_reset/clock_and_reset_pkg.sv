@@ -11,7 +11,7 @@ package clock_and_reset_pkg;
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
 
-  typedef uvm_config_db #(virtual clock_and_reset_if) clock_and_reset_vif_config;
+  `include "clock_and_reset_defines.sv"   // typedefs and enums of the package
 
   `include "clock_and_reset_transaction.sv"
   `include "clock_and_reset_sequencer.sv"

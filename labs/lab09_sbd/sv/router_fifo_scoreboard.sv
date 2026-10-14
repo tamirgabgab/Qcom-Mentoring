@@ -103,7 +103,7 @@ task router_fifo_scoreboard::mirror_registers();
   hbus_transaction tr;
   forever begin
     hbus_get.get(tr);
-    if (tr.hwr_rd == HBUS_WRITE) begin
+    if (tr.hwr_rd == HBUS_OP_WRITE) begin
       case (tr.haddr)
         16'h1000: maxpktsize = tr.hdata[5:0];
         16'h1001: router_en  = tr.hdata[0];

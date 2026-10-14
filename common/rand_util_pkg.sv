@@ -27,8 +27,7 @@ package rand_util_pkg;
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-  typedef bit [7:0] rnd_bytes_t[];       // dynamic array of bytes
-  typedef bit [7:0] rnd_byte_q_t[$];     // queue of bytes
+  `include "rand_util_defines.sv"   // rnd_bytes_t, rnd_byte_q_t
 
   // Static functions only: call them as rnd::get_int(...), no object needed
   virtual class rnd;

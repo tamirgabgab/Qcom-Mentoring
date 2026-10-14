@@ -53,7 +53,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void router_hbus_counter_coverage::write(hbus_transaction t);
   int counter;
-  if (t.hwr_rd != HBUS_READ) begin
+  if (t.hwr_rd != HBUS_OP_READ) begin
     return;
   end
   case (t.haddr)

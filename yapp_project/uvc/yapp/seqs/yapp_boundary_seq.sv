@@ -63,7 +63,7 @@ task yapp_boundary_seq::body();
       start_item(req);
       if (!req.randomize() with { req.addr        == a;
                                   req.length      == lens[i];
-                                  req.parity_type == GOOD_PARITY; }) begin
+                                  req.parity_type == PARITY_TYPE_GOOD; }) begin
         `uvm_error(get_type_name(), "req.randomize() failed")
       end
       finish_item(req);

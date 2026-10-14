@@ -86,7 +86,7 @@ task parity_error_test::send_bad(int n);
   judged_before = tb.router_module.scoreboard.packets_matched + tb.router_module.scoreboard.packets_mismatched;
   pkt_seq = yapp_pkt_seq::type_id::create("pkt_seq");
   repeat (n) begin
-    if (!pkt_seq.randomize() with { pkt_parity == BAD_PARITY; }) begin
+    if (!pkt_seq.randomize() with { pkt_parity == PARITY_TYPE_BAD; }) begin
       `uvm_error("PARITY", "pkt_seq.randomize() failed")
     end
     pkt_seq.start(yapp_seqr);

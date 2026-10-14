@@ -53,7 +53,7 @@ function void router_hbus_data_coverage::write(hbus_transaction t);
     return;
   end
   num_sampled++;
-  hbus_data_cg.sample(t.hwr_rd == HBUS_WRITE, t.hdata);
+  hbus_data_cg.sample(t.hwr_rd == HBUS_OP_WRITE, t.hdata);
 endfunction : write
 
 //------------------------------------------------------------------------------

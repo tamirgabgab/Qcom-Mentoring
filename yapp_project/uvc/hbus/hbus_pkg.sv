@@ -10,7 +10,7 @@ package hbus_pkg;
   `include "uvm_macros.svh"
   `include "uvm_version_compat.svh"
 
-  typedef uvm_config_db #(virtual hbus_if) hbus_vif_config;
+  `include "hbus_defines.sv"   // typedefs and enums of the package
 
   `include "hbus_transaction.sv"
   `include "hbus_monitor.sv"

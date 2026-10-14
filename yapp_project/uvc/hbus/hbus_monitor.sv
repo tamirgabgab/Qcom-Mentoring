@@ -53,7 +53,7 @@ task hbus_monitor::run_phase(uvm_phase phase);
   forever begin
     tr = hbus_transaction::type_id::create("tr", this);   // new object each time
     vif.collect_transaction(tr.haddr, tr.hdata, is_write);
-    tr.hwr_rd = is_write ? HBUS_WRITE : HBUS_READ;
+    tr.hwr_rd = is_write ? HBUS_OP_WRITE : HBUS_OP_READ;
     if (is_write) begin
       num_writes++;
     end else begin

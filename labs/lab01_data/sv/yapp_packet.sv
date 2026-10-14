@@ -14,12 +14,9 @@
 //   figure: docs/assets/packet_structure.svg (see README.md in this directory)
 //
 // Control knobs (not part of the packet on the wire):
-//   parity_type  -- GOOD_PARITY / BAD_PARITY, decides what set_parity() writes
+//   parity_type  -- PARITY_TYPE_GOOD / PARITY_TYPE_BAD, decides what set_parity() writes
 //   packet_delay -- idle clock cycles the driver inserts before the packet
 //------------------------------------------------------------------------------
-
-// Declared OUTSIDE the class so sequences and tests can use the literals
-typedef enum { GOOD_PARITY, BAD_PARITY } parity_type_e;
 
 class yapp_packet extends uvm_sequence_item;
 
@@ -48,7 +45,8 @@ class yapp_packet extends uvm_sequence_item;
   // Constraints (named so sequences can switch them off)
   constraint c_addr_legal  { addr != 2'd3; }
   constraint c_length      { length inside {[1:63]}; payload.size() == length; }
-  constraint c_parity_dist { parity_type dist { GOOD_PARITY := 5, BAD_PARITY := 1 }; }
+  constraint c_parity_defined { parity_type != PARITY_TYPE_UNDEFINED; }
+  constraint c_parity_dist { parity_type dist { PARITY_TYPE_GOOD := 5, PARITY_TYPE_BAD := 1 }; }
   constraint c_delay       { packet_delay inside {[1:20]}; }
 
   extern function new(string name = "yapp_packet");
@@ -86,7 +84,7 @@ endfunction : calc_parity
 function void yapp_packet::set_parity();
   int unsigned bad_bit;
   parity = calc_parity();
-  if (parity_type == BAD_PARITY) begin
+  if (parity_type == PARITY_TYPE_BAD) begin
     // draw the bit once and flip it: two draws would pick two different bits
     // and leave the parity correct about half of the time
     bad_bit = rnd::get_index(8, {get_full_name(), ".bad_parity_bit"});

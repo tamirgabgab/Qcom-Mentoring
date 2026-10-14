@@ -64,8 +64,8 @@ task channel_rx_monitor::run_phase(uvm_phase phase);
     // A NEW object for every packet: analysis FIFOs (Lab 9D) do not clone
     pkt = channel_packet::type_id::create("pkt", this);
     vif.collect_packet(pkt.addr, pkt.length, pkt.payload, pkt.parity);
-    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? CHANNEL_GOOD_PARITY
-                                                        : CHANNEL_BAD_PARITY;
+    pkt.parity_type = (pkt.parity == pkt.calc_parity()) ? CHANNEL_PARITY_TYPE_GOOD
+                                                        : CHANNEL_PARITY_TYPE_BAD;
     num_pkt_col++;
     `uvm_info(get_type_name(),
               $sformatf("ch%0d RX pkt #%0d: addr=%0d len=%0d parity=%s", channel_id, num_pkt_col, pkt.addr,

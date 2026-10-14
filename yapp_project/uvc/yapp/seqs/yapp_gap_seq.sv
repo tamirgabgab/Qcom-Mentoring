@@ -49,7 +49,7 @@ task yapp_gap_seq::body();
     req.c_delay.constraint_mode(0);         // the sequence chooses the gap (0 included)
     start_item(req);
     if (!req.randomize() with { req.length       inside {[1:8]};
-                                req.parity_type  == GOOD_PARITY;
+                                req.parity_type  == PARITY_TYPE_GOOD;
                                 req.packet_delay == gap; }) begin
       `uvm_error(get_type_name(), "req.randomize() failed")
     end

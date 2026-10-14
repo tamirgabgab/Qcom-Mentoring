@@ -70,7 +70,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 function void router_hbus_addr_coverage::write(hbus_transaction t);
   num_sampled++;
-  hbus_addr_cg.sample(t.haddr, t.hwr_rd == HBUS_WRITE);
+  hbus_addr_cg.sample(t.haddr, t.hwr_rd == HBUS_OP_WRITE);
 endfunction : write
 
 //------------------------------------------------------------------------------

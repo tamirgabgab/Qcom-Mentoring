@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
 // hbus_transaction.sv -- one HBUS read or write
 //------------------------------------------------------------------------------
-typedef enum bit { HBUS_READ = 1'b0, HBUS_WRITE = 1'b1 } hbus_read_write_enum;
-
 class hbus_transaction extends uvm_sequence_item;
 
   rand bit [15:0]            haddr;
   rand bit [7:0]             hdata;   // written data, or data returned by a read
-  rand hbus_read_write_enum  hwr_rd;
+  rand hbus_op_e  hwr_rd;
 
   `uvm_object_utils(hbus_transaction)
+
+  constraint c_op_defined { hwr_rd != HBUS_OP_UNDEFINED; }
 
   // Printing, copying, comparing, packing and recording are written by hand
   // (do_print / do_copy / do_compare / do_pack / do_unpack / do_record below):
@@ -37,7 +37,7 @@ endfunction : new
 //------------------------------------------------------------------------------
 function string hbus_transaction::convert2string();
   return $sformatf("%s addr=0x%04h data=0x%02h",
-                   (hwr_rd == HBUS_WRITE) ? "WRITE" : "READ ", haddr, hdata);
+                   (hwr_rd == HBUS_OP_WRITE) ? "WRITE" : "READ ", haddr, hdata);
 endfunction : convert2string
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ function void hbus_transaction::do_print(uvm_printer printer);
   super.do_print(printer);
   printer.print_field("haddr", haddr, $bits(haddr), UVM_HEX);
   printer.print_field("hdata", hdata, $bits(hdata), UVM_HEX);
-  printer.print_generic("hwr_rd", "hbus_read_write_enum", $bits(hwr_rd), hwr_rd.name());
+  printer.print_generic("hwr_rd", "hbus_op_e", $bits(hwr_rd), hwr_rd.name());
 endfunction : do_print
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ function void hbus_transaction::do_unpack(uvm_packer packer);
   super.do_unpack(packer);
   haddr = packer.unpack_field_int($bits(haddr));
   hdata = packer.unpack_field_int($bits(hdata));
-  hwr_rd = hbus_read_write_enum'(packer.unpack_field_int($bits(hwr_rd)));
+  hwr_rd = hbus_op_e'(packer.unpack_field_int($bits(hwr_rd)));
 endfunction : do_unpack
 
 //------------------------------------------------------------------------------

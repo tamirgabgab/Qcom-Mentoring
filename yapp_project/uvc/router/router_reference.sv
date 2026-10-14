@@ -110,7 +110,7 @@ endfunction : build_phase
 function void router_reference::write_hbus(hbus_transaction tr);
   bit [7:0] exp;
   bit       known;
-  if (tr.hwr_rd == HBUS_READ) begin
+  if (tr.hwr_rd == HBUS_OP_READ) begin
     if (!check_reads) begin
       return;
     end
@@ -154,7 +154,7 @@ function void router_reference::write_yapp(yapp_packet pkt);
   bit             bad;
   router_reason_e reason;
   router_decision decision;
-  bad = (pkt.parity_type == BAD_PARITY);
+  bad = (pkt.parity_type == PARITY_TYPE_BAD);
   if (!router_en) begin
     dropped_disabled++;
     `uvm_info(get_type_name(),
@@ -162,17 +162,17 @@ function void router_reference::write_yapp(yapp_packet pkt);
     return;                                 // deaf: no count, no memory, no pulse
   end
   if (pkt.addr == 2'd3) begin
-    reason = DECIDE_ADDR3;
+    reason = ROUTER_REASON_ADDR3;
     dropped_addr++;
     `uvm_info(get_type_name(), $sformatf("Packet dropped: illegal address 3 (len=%0d)", pkt.length), UVM_LOW)
   end else if (pkt.length > maxpktsize) begin
-    reason = DECIDE_OVERSIZED;
+    reason = ROUTER_REASON_OVERSIZED;
     dropped_size++;
     `uvm_info(get_type_name(),
               $sformatf("Packet dropped: length %0d > maxpktsize %0d (addr=%0d)", pkt.length, maxpktsize, pkt.addr),
               UVM_LOW)
   end else begin
-    reason = DECIDE_FORWARDED;
+    reason = ROUTER_REASON_FORWARDED;
     packets_forwarded++;
     `uvm_info(get_type_name(),
               $sformatf("Packet forwarded: addr=%0d len=%0d -> channel %0d", pkt.addr, pkt.length, pkt.addr),

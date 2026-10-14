@@ -48,7 +48,7 @@ endtask : run_phase
 //------------------------------------------------------------------------------
 task hbus_master_driver::drive_transaction(hbus_transaction tr);
   void'(begin_tr(tr, "Driver_HBUS_Transaction"));
-  if (tr.hwr_rd == HBUS_WRITE) begin
+  if (tr.hwr_rd == HBUS_OP_WRITE) begin
     vif.hbus_write(tr.haddr, tr.hdata);
   end else begin
     vif.hbus_read(tr.haddr, tr.hdata);

@@ -85,7 +85,7 @@ task yapp_random_burst_seq::body();
   for (int i = 0; i < count; i++) begin
     a   = pick_addr();
     len = pick_length();
-    par = (rnd::get_int(0, 99, "yapp_random_burst_seq.parity") < bad_pct) ? BAD_PARITY : GOOD_PARITY;
+    par = (rnd::get_int(0, 99, "yapp_random_burst_seq.parity") < bad_pct) ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD;
     gap = pick_gap();
     req = yapp_packet::type_id::create("req");
     req.c_addr_legal.constraint_mode(0);    // the sequence chooses the address (3 included)
@@ -100,7 +100,7 @@ task yapp_random_burst_seq::body();
     end
     finish_item(req);
     sent_per_addr[a]++;
-    if (par == BAD_PARITY) begin
+    if (par == PARITY_TYPE_BAD) begin
       sent_bad++;
     end
     if (gap == 0) begin

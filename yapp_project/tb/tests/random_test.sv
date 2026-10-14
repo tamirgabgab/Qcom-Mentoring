@@ -108,7 +108,7 @@ endfunction : configure_scenario
 
 //------------------------------------------------------------------------------
 function channel_rx_profile_e random_test::pick_profile(int ch);
-  return channel_rx_profile_e'(rnd::get_int(0, 3, $sformatf("random_test.profile%0d", ch)));
+  return channel_rx_profile_e'(rnd::get_int(1, 4, $sformatf("random_test.profile%0d", ch)));
 endfunction : pick_profile
 
 //------------------------------------------------------------------------------

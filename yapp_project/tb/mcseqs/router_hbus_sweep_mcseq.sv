@@ -66,7 +66,7 @@ task router_hbus_sweep_mcseq::body();
 
   stage("1. one 20-byte packet to address 0, so yapp_pkt_mem holds known bytes");
   pkt = yapp_pkt_seq::type_id::create("pkt");
-  if (!pkt.randomize() with { pkt_addr == 0; pkt_len == 20; pkt_parity == GOOD_PARITY; }) begin
+  if (!pkt.randomize() with { pkt_addr == 0; pkt_len == 20; pkt_parity == PARITY_TYPE_GOOD; }) begin
     `uvm_error(get_type_name(), "yapp_pkt_seq.randomize() failed")
   end
   pkt.start(p_sequencer.yapp_seqr, this);
@@ -153,7 +153,7 @@ task router_hbus_sweep_mcseq::send(bit [1:0] addr, int n);
   yapp_pkt_seq pkt;
   for (int i = 0; i < n; i++) begin
     pkt = yapp_pkt_seq::type_id::create("pkt");
-    if (!pkt.randomize() with { pkt_addr == addr; pkt_len == 2; pkt_parity == BAD_PARITY; }) begin
+    if (!pkt.randomize() with { pkt_addr == addr; pkt_len == 2; pkt_parity == PARITY_TYPE_BAD; }) begin
       `uvm_error(get_type_name(), "yapp_pkt_seq.randomize() failed")
     end
     pkt.start(p_sequencer.yapp_seqr, this);
