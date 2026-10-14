@@ -16,6 +16,6 @@ interface and the sequences under `seqs/`.
 | length + 1 | `[7:0]` | `parity` -- even bitwise parity: the XOR of the header and every payload byte |
 
 `yapp_packet.sv` holds exactly these fields, plus two knobs that never reach the wire:
-`parity_type` (GOOD_PARITY / BAD_PARITY -- what `set_parity()` writes) and `packet_delay`.
+`m_parity_type` (PARITY_TYPE_GOOD / PARITY_TYPE_BAD -- what `set_parity()` writes) and `m_packet_delay`.
 Build, decode and check packets interactively on the
 [packet page of the course site](https://tamirgabgab.github.io/Qcom-Mentoring/components/packet/#try-it-build-or-check-a-packet).

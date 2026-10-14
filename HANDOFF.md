@@ -30,6 +30,13 @@
 > באתר וכיווץ + קישורים ותגים במפה. הדוח המחויב 83 → **33 MB** (`runs.json`, בלי `all_logs.log`/`signals.csv`/`timeline.csv`,
 > timeline מקוצץ), עמוד אתר **Regression results** + דף לכל טסט (`docs/regression/`, מיוצר ב-`build.py`), סעיף Regression
 > ותגי seeds/bins על כרטיסי הטסטים במפה, טבלאות ה-Appendix מיוצרות, CI מעלה את הדוח כ-artifact, ~30 דפי אתר תוקנו.
+> **סשן 8 סבב 4 (2026-10-14, סגנון קוד + Coverage במפה):** שישה כללי סגנון חדשים של תמיר על **כל** הקוד (yapp_project,
+> 16 ה-labs, common): כל שדה של class מתחיל ב-`m_` (שמות הריצה `create("monitor")` ומפתחות config_db לא השתנו), `bit[7:0]`
+> בלי רווח, constraints כ-`extern` עם גוף `constraint cls::c {}` אחרי `endclass` ולפני המתודות, typedef/enum בקובץ
+> `<pkg>_defines.sv` לכל חבילה, enums `NAME_UNDEFINED, NAME_X…` (`parity_type_e → PARITY_TYPE_*`, `hbus_op_e`, `ROUTER_REASON_*`,
+> `CHANNEL_RX_PROFILE_*`, `CHANNEL_PARITY_TYPE_*`). `sv_style.py` אוכף הכול (כללים 5–10, דיווח `קובץ:שורה`). במפה: לשונית
+> שישית **Coverage** (כרטיס לכל collector, פס לכל covergroup, צ'יפ לכל coverpoint). באתר: `uvm/coverage.md` כללי + קבוצת Results.
+> פירוט: סעיף 2, פריט 18.
 
 ---
 
@@ -89,6 +96,24 @@
     uvm_bitstream_t)` ב-`build_phase` אחרי `super.build_phase` (כך `set_config_test` עדיין עובד).
   - נשארים: `uvm_component_utils / uvm_object_utils`, `uvm_info/warning/error/fatal`,
     `uvm_declare_p_sequencer`, `uvm_analysis_imp_decl`.
+  - **(סבב 4, 2026-10-14) שישה כללים נוספים, על classes וחבילות בלבד** (RTL, interfaces, מודולי tb ומודל הרגיסטרים
+    של Lab 11A לא נוגעים; `sv_style.py` כללים 5–10):
+    1. **כל שדה של class מתחיל ב-`m_`** (`m_addr`, `m_length`, `m_monitor`, `m_vif`, `m_item_collected_port`, מונים);
+       ארגומנטים ומשתנים מקומיים **לא** (בודק הפוך). static/const/parameter פטורים, וגם שדות של UVM עצמו
+       (`is_active`, `req/rsp`, `model` של `uvm_reg_hw_reset_seq`). **שמות הריצה נשארים פשוטים**:
+       `create("monitor", this)`, `new("item_collected_port", this)`, מפתחות `uvm_config_db` ("vif", "is_active"),
+       `print_generic("parity_type", …)` — לכן ההיררכיה בלוגים, ב-Surfer, ב-`sim_report.py` ובמזהי המפה לא זזה.
+    2. **רוחב בלי רווח**: `bit[7:0]`, `logic[15:0]` (גם בהערות של קבצי ה-classes).
+    3. **constraints כמו מתודות**: `extern constraint c_x;` במחלקה, `constraint cls::c_x { … }` אחרי `endclass`
+       תחת באנר `// <cls> -- constraints`, לפני `-- method implementations`.
+    4. **סדר במחלקה**: שדות → מאקרו utils → covergroups → `extern constraint` → `extern function/task`; אחרי
+       `endclass`: גופי constraints ואז גופי מתודות.
+    5. **typedef/enum רק ב-`<pkg>_defines.sv`** (`yapp_defines.sv`, `hbus_defines.sv`, `channel_defines.sv`,
+       `router_defines.sv`, `clock_and_reset_defines.sv`, `common/rand_util_defines.sv`, ועותקים ב-labs 1–6),
+       הערה לכל טיפוס, `include` ראשון בחבילה. typedef בתוך class/פונקציה מותר (`rnd_array::bytes_t`).
+    6. **enums**: שם הטיפוס מסתיים ב-`_e`, הערכים באותיות גדולות עם שם הטיפוס כקידומת, הראשון תמיד
+       `<NAME>_UNDEFINED` ואף פעם לא נוצר (constraint `c_*_defined`, השמות מפורשות). `hbus_op_e` הוא `enum bit[1:0]`
+       (2 ביטים, `$bits` סימטרי ב-pack/unpack).
 - **ה-DUT מפוצל למודול בכל קובץ לפי הארכיטקטורה** (`yapp_project/rtl/`), נטען עם
   `-F ../rtl/yapp_router.f`.
 - **Git**: לפתח על ענף ה-`claude/...` שהסשן קיבל (סשן 1–4: `claude/hopeful-meitner-r5epiu`; סשן 5:
@@ -645,6 +670,31 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
      `project-map.md` (4 לשוניות, Regression, collectors, 12 קבוצות), `annotations.yaml` (3 ניסוחים), `index-tables` (קבצים חדשים),
      `wave_clock_reset.svg` נמחק (לא בשימוש). **לא** אוחד האיות הבריטי/אמריקאי (מעורב; לא משנה לקוראות).
 
+18. **סגנון קוד + Coverage במפה + עמוד coverage (סשן 8 סבב 4, 2026-10-14).** תמיר ביקש שישה כללי סגנון (ראה
+   "העדפות שהוצהרו") ולשונית Coverage; אחרי שאלות מנחות בחר: הכול (yapp_project + labs + common), `m_` על כל שדה כולל
+   handles/ports/vif, שמות enums חדשים, `<uvc>_defines.sv`, אכיפה מלאה ב-`sv_style.py`, כרטיסי collectors + bins בפאנל,
+   עמוד כללי ב-UVM + קבוצת Results.
+   - **A1 (`b7b756e`)** 12 קבצי defines + שמות enums + `*_UNDEFINED` (constraints `c_parity_defined`/`c_op_defined`,
+     `random_test` מגריל 1..4, `router_coverage` טבלת `[4][2]`), `-incdir common` ל-run.f של labs 1–2.
+   - **A2+A3 (`4b8b85a`)** 24 קבצים עם constraints הומרו ל-extern (סקריפט חד-פעמי ב-scratchpad), 38 קבצים `bit[7:0]`.
+   - **A4+A5 (`0d19dae`)** `m_` ב-195 קבצים (171 שמות שדה מ-pyslang; הסקריפט דילג על מחרוזות, הערות, `rw.`/`vif.`/`hw_top.`,
+     מודל הרגיסטרים); תיקוני יד: `hbus_read_seq` (class וגם שדה), `reset_seq.model`, 28 ארגומנטים/מקומיים שהתנגשו
+     (`pkt`, `addr`, `data`, `reason`, sample() args) חזרו לשם פשוט. `model.py`: `runtime_names()` מוריד את ה-`m_` משמות
+     השדות ומהנתיבים שהחילוץ העתיק (connect/set_sequencer/handles) → **אותם 285 nodes / 332 edges** (רק `cls:hbus_op_e` במקום
+     `cls:hbus_read_write_enum`); `decl` שומר את השם האמיתי ל-UML. `test_install.sv` קיבל extern.
+   - **B (`425d25e`)** `sv_style.py` כללים 5–10 עם דיווח `path:line: R<n> …`; R3 מדווח גם מתודה בתוך class (מחלקה
+     פרמטרית `rnd_array #(N)` פטורה — גוף חיצוני היה דורש `#(N)`); מודל הרגיסטרים פטור (`REG_MODEL_RX`).
+   - **C (`acc82e8`)** `CoverageLayout` ב-`layout.py` (סצנה `cov:main`, publishers משמאל דרך שרשרת ה-connect — ה-HBUS monitor
+     דרך `hbus_export`), `drawCovCard()`, מקש `6`, פאנל התצוגה עם הסיכומים והקישורים, `cp-<cg>-<point>` ids בטבלת ה-bins
+     לקפיצה מצ'יפ, CSS, `test_model.py`, PNG ב-export, `map_coverage.png` ב-readme-shots, `project-map.md`.
+   - **D (`626a136`)** `docs/uvm/coverage.md`, nav (UVM + Results), קישורים צולבים (`components/coverage`, `big-picture`,
+     `lab10`), מעבר שמות על 30 דפים (רק בתוך fences של SV וב-spans של קוד; לוגים/נתיבים/סיגנלים לא), README (6 הכללים,
+     תמונת Coverage), `annotations.yaml`, `sim.js` (תוויות ה-playground), `getting-started`/`components/index` (איך הקוד כתוב).
+   - **E** רגרסיה מלאה מחדש (כל ה-benches), `sim-report` → `yapp_project/regression`, `make map`, offline site, HANDOFF.
+     מספרים: ראה "מה עובד היום".
+   - **מה לא נעשה בכוונה**: RTL/interfaces/מודולים (`state_e` של ה-FSM, `logic [7:0]` ב-RTL) — תמיר בחר "רק classes וחבילות";
+     מודל הרגיסטרים (Lab 11A) שומר את שמות הרגיסטרים (regmap.yaml, `test_model.py:164`); ההערות בקוד לא עברו rename (פרוזה).
+
 ### מה בתהליך ולא גמור
 - כלום פתוח בקוד. מה שתמיר דחה במפורש להמשך: reset באמצע טסט, receiver שעוצר באמצע פקטה (סעיף 8 פריט 5), ומהביקורת של
   סשן 8 סבב 3 — תוכן לימודי (סעיף 8 פריט 7) ו-history/trend של הרגרסיה.
@@ -730,6 +780,12 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 **`sv_style.py` (הסשן הזה)**
 - `else` אחרי `foreach` מקונן נדבק ל-foreach במקום ל-if החיצוני → רק כותרת `if` סופגת `else` (`IF_RX`). אם מוסיפים כלל חדש — לבדוק על `yapp_project/uvc/router/packet_compare.sv` ו-`channel_packet.sv` (foreach→if מקונן) ו-`yapp_coverage_seq.sv` (if רב-שורתי עם `with {…}`).
 - לא לעטוף בתוך `{}` (constraints, `randomize() with`): יש מעקב עומק סוגריים מסולסלים.
+- **(סבב 4) `m_` לעומת שמות ריצה**: המפה (`model.py`) סומכת על כך שמחרוזת ה-`create("x")` היא שם השדה בלי `m_`.
+  שדה `m_foo` שנוצר כ-`create("bar")` ייעלם מהמפה (ה-node מסונן) — תמיד `m_foo = …::create("foo", this)`.
+- **(סבב 4) `*_UNDEFINED` מזיז את הערכים המספריים**: אינדקס מערך לפי enum (`hits_reason_parity[t.m_reason]`) וקאסט
+  מ-`rnd::get_int` (`random_test::pick_profile`) חייבים לדלג על 0. `enum bit` של ביט אחד לא מכיל 3 ערכים → `bit[1:0]`.
+- **(סבב 4) שם שהוא גם class וגם שדה** (`hbus_read_seq`): rename גלובלי של שדות משנה גם את ה-class. לבדוק `grep '^class m_'`.
+- **(סבב 4) מתודות של מחלקה פרמטרית** (`rnd_array #(N)`) נשארות in-class: R3 פוטר אותן (`parameterized`).
 
 **מפת הפרויקט**
 - `python … build | head -2` הרג את ה-build לפני `json.dump` (SIGPIPE) → model.json ישן/שבור. **אל תעשה pipe ל-head על build.**
@@ -788,8 +844,10 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
 | **`yapp_project/tb/yapp_router_tracer.sv`** | **סשן 7:** observer שנקשר ל-DUT ב-`bind`: שורות `[DUT]` + `+trace_csv` (CSV לכל מחזור) | **חדש (סשן 7)** |
 | **`docs/appendix/sim-report.md`** | **סשן 7:** איך לקרוא לוג, מבנה הדוח, התמונות, פתיחת גלים | **חדש (סשן 7)** |
 | `scripts/project_map/extract.py` | pyslang → מבנה גולמי (classes, methods incl. extern prototypes, modules, ports, connects, vif) | — |
-| `scripts/project_map/model.py` | מיזוג + annotations → nodes/edges/paths/files; `wire_module` לחיווט מודולים | — |
-| `scripts/project_map/layout.py` | גיאומטריית הסצנות; `arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`; **סשן 5: `port_on_left()`, DUT `dut_tlm` עם `pins` ב-`TlmLayout.scene`** | כן (+סשן 5) |
+| `scripts/project_map/model.py` | מיזוג + annotations → nodes/edges/paths/files; `wire_module` לחיווט מודולים; **(סבב 4) `runtime_names()`**: מזהי המפה משמות הריצה (בלי `m_`), `decl` ל-UML | — |
+| `yapp_project/uvc/*/<uvc>_defines.sv`, `common/rand_util_defines.sv`, `labs/lab0[1-6]*/sv/yapp_defines.sv` | **(סבב 4)** typedefs ו-enums של כל חבילה, הערה לכל טיפוס, `include` ראשון בחבילה | כן |
+| `docs/uvm/coverage.md` | **(סבב 4)** functional coverage כללי ב-UVM: מושגים, subscriber על ה-monitor, הלולאה coverage-driven, קריאת המספרים | כן |
+| `scripts/project_map/layout.py` | גיאומטריית הסצנות; `arrange_columns`, `size_dut_spec` (פינים, anchors, בלוק רגיסטרים), pin anchors ב-`plan_edges`, de-dup של port bundles ב-`scene_edges`; **סשן 5: `port_on_left()`, DUT `dut_tlm` עם `pins` ב-`TlmLayout.scene`** ; **(סבב 4) `CoverageLayout`** (סצנה `cov:main`: publishers → כרטיסי collectors) | כן (+סשן 5) |
 | `scripts/project_map/annotations.yaml` | החצי הידני: summaries, labs, layout hints; **`hw_top.columns`, `hw_top.dut.style: dut_spec`, `pin_groups`** | כן |
 | **`scripts/project_map/regmap.yaml`** | מפת הרגיסטרים כנתונים (registers, memories, fields, `figure_rows`) | **חדש** |
 | `scripts/project_map/build.py` | בונה model.json, **regmap.js**, standalone HTML (inlines app.css/js + **sim.css/js + regmap.js**), `docs/test-plan.md` (**+ `render_matrix_html`**, סשן 6); `--check` (test_model + **`check_sim()` → test_sim.mjs**); `GENERATED` dict | כן (+סשן 5, 6) |
@@ -914,7 +972,8 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 **סשן 7 (2026-10-12/13):** לוגים ודוח רגרסיה, layout ל-Surfer, זיכרונות ב-waves, טסטים אקראיים עם מודל מלא — הכול
 נדחף; פירוט בסעיף 2, כרונולוגיה פריטים 1–13. **מצב בסוף סשן 6 (2026-10-09).** מה שתמיר ביקש בסשן 6 הושלם ונדחף: סימולציה ב-Verilator + CI, ספריית `rnd::` +
 begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצעות; על ה-10 — עקיפת מכשולים מלאה — תמיר ויתר).
-**אין משימה פתוחה שאפשר להתחיל בלי תמיר.** מה שנשאר, לפי סדר:
+**אין משימה פתוחה שאפשר להתחיל בלי תמיר.** (סבב 4 סגר את בקשות הסגנון ואת לשונית ה-Coverage; מה שתמיר לא בחר בסבב 3 —
+תוכן לימודי, history/trend, staleness של הדוח ב-CI, ארגון HANDOFF — עדיין פתוח, פריטים 3 ו-7.) מה שנשאר, לפי סדר:
 
 1. **מעבר על ניסוחי ה-Test plan מול ה-PDF** (`annotations.yaml` `plan:`/`tests:`) — ה-PDF רק אצל תמיר; לבקש ממנו
    להצביע על פריטים לא מדויקים או חסרים, לתקן, `make map` (מייצר גם `docs/test-plan.md` עם המטריצה), map-check.
