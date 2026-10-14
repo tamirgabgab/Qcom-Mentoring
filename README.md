@@ -447,6 +447,9 @@ The code is written to be read. Conventions, enforced by `make style-check`:
   An enum ends with `_e`, its values are upper case with the type name as prefix,
   and the first is `<NAME>_UNDEFINED`, never produced:
   `PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, PARITY_TYPE_BAD`.
+* **Pictures follow the code.** A diagram or snippet on the site that shows code uses
+  the code's names (`m_vif.send_to_dut(pkt.m_addr, ...)`, the `m_` fields in the UML);
+  hierarchy trees show the runtime names (`tb.yapp.agent`).
 * **`bit[7:0]`, no space** before a packed range (classes and packages; the RTL
   and the interfaces keep their own style).
 * **Locals at the top of a function**, never in a bare `begin … end` in the
@@ -470,6 +473,25 @@ make style-check     # what CI runs
 make style           # reformat every .sv to the conventions
 python3 scripts/sv_style.py --check --diff path/to/file.sv
 ```
+
+### Roadmap
+
+Not started; each item waits for a decision (details in `HANDOFF.md`, section 8):
+
+* **Assertions**: SVA on the YAPP, HBUS and channel interfaces (none today), with
+  `cover property` for the corner cases.
+* **Reset and suspend corners**: reset in the middle of a test, receiver suspend in
+  the middle of a packet.
+* **Register model**: an explicit `uvm_reg_predictor`, the built-in bit-bash and
+  memory-access sequences, RAL coverage.
+* **More coverage and proof it matters**: output channel × back-pressure, FIFO full,
+  overlapping error pulses; mutation runs that the regression must catch; test ranking.
+* **CI**: staleness check of the committed report and offline site, a regression
+  history with a trend chart, a pyslang-based style checker.
+* **Course content**: a Verilator-first path, a "See it run" section per lab with the
+  real log, glossary, FAQ and lab skeletons.
+* **Xcelium**: four-state, UVM 1.1d and IMC numbers
+  ([`docs/appendix/unverified.md`](docs/appendix/unverified.md)).
 
 ### Tooling and CI
 
@@ -594,7 +616,10 @@ the 57 bins of `yapp_pkt_cg`, `yapp_gap_cg` and `router_cfg_cg`, and the HBUS
 covergroups (address map, register bits, `yapp_mem` patterns, counter values)
 that `hbus_sweep_test` closes while the reference model checks every read. The
 project's 100 runs with waves form the regression report described
-in [`docs/appendix/sim-report.md`](docs/appendix/sim-report.md).
+in [`docs/appendix/sim-report.md`](docs/appendix/sim-report.md). The constraint
+bodies were laid out again after that report (lint, a Verilator build of every
+changed bench and the **sim** workflow pass); the line numbers in the committed
+gcov pages are from before and follow at the next report.
 
 Cadence Xcelium itself has still not run the code: four-state behaviour (the
 `z` on HBUS, `x` before reset), UVM 1.1d compatibility and the IMC coverage

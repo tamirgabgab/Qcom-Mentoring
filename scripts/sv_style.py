@@ -17,7 +17,7 @@ Rules (text based; `make lint` with slang is the safety net):
 3. Out-of-class method bodies are separated by a blank line and a //----- delimiter.
 4. `extern // comment` glued prototypes are repaired to `extern virtual ...`.
 
-Rules 5-10 concern the classes and packages (interfaces, modules and the RTL are not touched;
+Rules 5-11 concern the classes and packages (interfaces, modules and the RTL are not touched;
 the Lab 11A register model keeps the register names). Rule 5 is fixed in place, the others are
 reported as `path:line: R<n> message` and exit 1:
 
