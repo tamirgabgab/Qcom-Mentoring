@@ -151,9 +151,12 @@
   התמונות נבדקו ויזואלית (Playwright → PNG): פקטה נכנסת/יוצאת, suspend, error pulse, HBUS write/read.
 - `make lint` — כל 18 ה-`run.f` (17 מעבדות/test_install + `yapp_project/tb/run.f`) עוברים slang
   ב-0 שגיאות ו-0 אזהרות.
-- `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי).
-- `make map && make map-check` — 249 nodes, 284 edges, 41 scenes (5 תצוגות: Hierarchy, TLM, Classes,
-  Environment, Test plan). ממשק (סשן 6 סבבים 4–5): עמודת Source מתקפלת, שורת סטטוס עם מסלול, Fit width/all,
+- `make style-check` — `sv_style: OK` (ואידמפוטנטי: `--fix` פעמיים = אין שינוי). **(סבב 4)** כללים 5–10 מדווחים
+  `path:line: R<n> …`; `--check` על עץ נקי = OK, על קובץ מכוון-רע (scratchpad) = 9 הפרות ו-exit 1 (נבדק).
+- **(סבב 4, 2026-10-14) רגרסיה מלאה אחרי שינוי הסגנון: `make regress` = 162/162 PASS (81 דקות בקונטיינר), ואז
+  `make regress ONLY=yapp_project WAVES=1` (100 ריצות עם גלים) לדוח המחויב.**
+- `make map && make map-check` — 285 nodes, 332 edges, 42 scenes (6 תצוגות: Hierarchy, TLM, Classes,
+  Environment, Test plan, **Coverage**). ממשק (סשן 6 סבבים 4–5): עמודת Source מתקפלת, שורת סטטוס עם מסלול, Fit width/all,
   חיפוש מדורג, רשימת פריטים מקובצת עם סינון, לשוניות package, רמת פירוט לפי זום, חצים עמומים ב-Test plan,
   מיני-מפה; `docs/test-plan.md` עם מטריצת כיסוי. `test_model.py` עובר (pins/regmap ב-root scene, regmap.yaml ⇔ localparams
   ב-RTL ⇔ offsets ב-RAL, סצנות env/plan, עקביות ה-Test plan מול המחלקות) **+ `test_sim.mjs`
