@@ -45,7 +45,7 @@ task yapp_1_seq::body();
   `uvm_info(get_type_name(), "Executing yapp_1_seq sequence", UVM_LOW)
   req = yapp_packet::type_id::create("req");           // create through the factory
   start_item(req);                                     // wait for the sequencer's grant
-  if (!req.randomize() with { req.addr == 2'd1; })     // randomize, with constraints
+  if (!req.randomize() with { req.m_addr == 2'd1; })     // randomize, with constraints
     `uvm_error(get_type_name(), "req.randomize() failed")
   finish_item(req);                                    // to the driver; returns after item_done
 endtask : body
@@ -73,10 +73,10 @@ sequencer, with the parent as the second argument so the sequencer sees the
 relationship (`` `uvm_do(seq_1) `` in the course):
 
 ```systemverilog
-seq_1 = yapp_1_seq::type_id::create("seq_1");
-if (!seq_1.randomize())
+m_seq_1 = yapp_1_seq::type_id::create("seq_1");
+if (!m_seq_1.randomize())
   `uvm_error(get_type_name(), "seq_1.randomize() failed")
-seq_1.start(m_sequencer, this);       // blocks until seq_1.body() returns
+m_seq_1.start(m_sequencer, this);       // blocks until seq_1.body() returns
 ```
 
 ## The library
@@ -111,11 +111,11 @@ the [random tests](random-tests.md)) were written for the test plan.
 | Pattern | Where | Note |
 |---|---|---|
 | objection in `pre_body` / `post_body` | `yapp_base_seq` | only root sequences have a starting phase; sub-sequences see `null` |
-| inline constraint | `yapp_012_seq` | `req.randomize() with { req.addr == 2'd0; }` |
-| nested sequence | `yapp_111_seq` | `seq_1.start(m_sequencer, this)` three times |
+| inline constraint | `yapp_012_seq` | `req.randomize() with { req.m_addr == 2'd0; }` |
+| nested sequence | `yapp_111_seq` | `m_seq_1.start(m_sequencer, this)` three times |
 | random **sequence** property | `yapp_repeat_addr_seq` | `rand bit [1:0] seq_addr;` randomized when the sequence is — two items share it |
 | create / modify / send | `yapp_incr_payload_seq` | `randomize()`, edit, `set_parity()`, then `start_item` / `finish_item` |
-| constrained nesting | `six_yapp_seq` | `rnd_seq.randomize() with { rnd_seq.count == 6; }` before `rnd_seq.start(...)` |
+| constrained nesting | `six_yapp_seq` | `m_rnd_seq.randomize() with { m_rnd_seq.m_count == 6; }` before `rnd_seq.start(...)` |
 | switching a constraint off | `yapp_88_packets_seq`, `yapp_coverage_seq` | `req.c_addr_legal.constraint_mode(0)` to reach address 3 |
 | run everything | `yapp_exhaustive_seq` | the cheapest regression of a library |
 
@@ -134,7 +134,7 @@ the [random tests](random-tests.md)) were written for the test plan.
 
     ```systemverilog
     yapp_012_seq seq = yapp_012_seq::type_id::create("seq");
-    seq.start(tb.yapp.agent.sequencer);          // blocks until body() returns
+    seq.start(m_tb.m_yapp.m_agent.m_sequencer);          // blocks until body() returns
     ```
     Used by `reg_function_test` (Lab 11C). Remember to raise an objection in
     the test around it.
@@ -142,9 +142,9 @@ the [random tests](random-tests.md)) were written for the test plan.
 === "From a virtual sequence"
 
     ```systemverilog
-    yapp_012 = yapp_012_seq::type_id::create("yapp_012");
-    if (!yapp_012.randomize()) `uvm_error(get_type_name(), "yapp_012.randomize() failed")
-    yapp_012.start(p_sequencer.yapp_seqr, this);   // `uvm_do_on in the course
+    m_yapp_012 = yapp_012_seq::type_id::create("yapp_012");
+    if (!m_yapp_012.randomize()) `uvm_error(get_type_name(), "yapp_012.randomize() failed")
+    m_yapp_012.start(p_sequencer.m_yapp_seqr, this);   // `uvm_do_on in the course
     ```
     The target is a handle of the virtual sequencer, not `m_sequencer`.
     See the [virtual sequencer](virtual-sequencer.md) guide.

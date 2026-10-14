@@ -56,13 +56,13 @@ flowchart TB
 
 | Sequence | Technique |
 |---|---|
-| `yapp_1_seq` | one item: `start_item(req)` → `req.randomize() with { req.addr == 2'd1; }` → `finish_item(req)` |
+| `yapp_1_seq` | one item: `start_item(req)` → `req.randomize() with { req.m_addr == 2'd1; }` → `finish_item(req)` |
 | `yapp_012_seq` | the same three times with different inline constraints |
-| `yapp_111_seq` | nested: `seq_1 = yapp_1_seq::type_id::create("seq_1")` → `seq_1.start(m_sequencer, this)`, three times |
+| `yapp_111_seq` | nested: `seq_1 = yapp_1_seq::type_id::create("seq_1")` → `m_seq_1.start(m_sequencer, this)`, three times |
 | `yapp_repeat_addr_seq` | `rand bit [1:0] seq_addr` with `!= 3`; both items use it |
 | `yapp_incr_payload_seq` | `create` → `randomize()` → edit payload → `set_parity()` → `start_item` / `finish_item` |
 | `yapp_rnd_seq` | `rand int count` in 1..10, printed in the info message |
-| `six_yapp_seq` | `rnd_seq.randomize() with { rnd_seq.count == 6; }` before `rnd_seq.start(m_sequencer, this)` |
+| `six_yapp_seq` | `m_rnd_seq.randomize() with { m_rnd_seq.m_count == 6; }` before `m_rnd_seq.start(m_sequencer, this)` |
 | `yapp_exhaustive_seq` | runs all of the above, with named handles |
 
 ### 2. The tests
@@ -98,13 +98,13 @@ per sequence and 1 + 3 + 3 + 2 + 1 + *count* + 6 packets, no warnings.
 
 ## The planned failure
 
-With the Lab 4 version of `short_yapp_packet` (`addr != 2`) the run shows:
+With the Lab 4 version of `short_yapp_packet` (`m_addr != 2`) the run shows:
 
 ```
 UVM_ERROR ... [yapp_012_seq] req.randomize() failed
 ```
 
-for every `req.randomize() with { req.addr == 2'd2; }`: the inline constraint
+for every `req.randomize() with { req.m_addr == 2'd2; }`: the inline constraint
 wants address 2 and the class constraint forbids it, so `randomize()` returns 0
 and the `if (!req.randomize() …)` guard reports it (the simulator prints its own
 constraint-solver warning next to it; with the course's `` `uvm_do_with `` macro
@@ -114,17 +114,17 @@ previous values and `finish_item` still sends it.
 
 In the GUI (`-gui -access rwc`) the simulation stops at the failure and the
 *Constraints Manager* lists the two conflicting constraints —
-`short_yapp_packet::c_no_addr2` and the inline `req.addr == 2'b10`.
+`short_yapp_packet::c_no_addr2` and the inline `req.m_addr == 2'b10`.
 
-**Fix:** short packets must go to every address, so the `addr != 2`
+**Fix:** short packets must go to every address, so the `m_addr != 2`
 constraint is removed from `short_yapp_packet` (that is the version in this
 lab's `sv/yapp_packet.sv`). Do this before Lab 6.
 
 ## Checkpoint questions
 
 ??? question "Why do you get randomization violations?"
-    Two constraints on `addr` cannot both hold: `c_no_addr2` (`addr != 2`) from
-    `short_yapp_packet`, and `req.addr == 2` from `yapp_012_seq`.
+    Two constraints on `m_addr` cannot both hold: `c_no_addr2` (`m_addr != 2`) from
+    `short_yapp_packet`, and `req.m_addr == 2` from `yapp_012_seq`.
 
 ??? question "What happens to the packet when a constraint violation is found?"
     `randomize()` returns 0; the sequence reports it with `` `uvm_error ``; the

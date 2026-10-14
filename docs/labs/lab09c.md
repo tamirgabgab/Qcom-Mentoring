@@ -51,11 +51,11 @@ flowchart LR
 ### 2. `router_tb.connect_phase`
 
 ```systemverilog
-yapp.agent.monitor.item_collected_port.connect(router_module.yapp_export);
-hbus.monitor.item_collected_port.connect(router_module.hbus_export);
-chan0.rx_agent.monitor.item_collected_port.connect(router_module.chan0_export);
-chan1.rx_agent.monitor.item_collected_port.connect(router_module.chan1_export);
-chan2.rx_agent.monitor.item_collected_port.connect(router_module.chan2_export);
+m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_yapp_export);
+m_hbus.m_monitor.m_item_collected_port.connect(m_router_module.m_hbus_export);
+m_chan0.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan0_export);
+m_chan1.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan1_export);
+m_chan2.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_chan2_export);
 ```
 
 ## Run

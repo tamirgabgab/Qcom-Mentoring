@@ -86,7 +86,7 @@ sets the **default sequence** of the sequencer *before* building the testbench:
 ```systemverilog
 uvm_config_wrapper::set(this, "tb.yapp.agent.sequencer.run_phase",
                         "default_sequence", yapp_5_packets::get_type());
-tb = new("tb", this);
+m_tb = new("tb", this);
 ```
 
 The path `tb.yapp.agent.sequencer` is the one you read off the topology

@@ -2,7 +2,7 @@
 
 Two kinds of randomness live in a UVM testbench:
 
-* **Fields of an object** — a packet's `addr`, a sequence's `count`. They are
+* **Fields of an object** — a packet's `m_addr`, a sequence's `count`. They are
   `rand` members with constraints, drawn by `req.randomize() with { ... }`. That
   stays as it is: the constraints belong to the class, and a factory override
   can change them.
@@ -16,9 +16,9 @@ package and by `tb_top`, so a component, a sequence or a test just calls it:
 ```systemverilog
 int unsigned bad_bit;
 bad_bit = rnd::get_index(8, {get_full_name(), ".bad_parity_bit"});   // 0..7
-parity[bad_bit] = ~parity[bad_bit];
+m_parity[bad_bit] = ~m_parity[bad_bit];
 
-payload = rnd::get_bytes(length, {get_full_name(), ".payload"});     // bit [7:0] []
+m_payload = rnd::get_bytes(m_length, {get_full_name(), ".payload"});     // bit [7:0] []
 ```
 
 ## The functions
@@ -36,8 +36,8 @@ payload = rnd::get_bytes(length, {get_full_name(), ".payload"});     // bit [7:0
 | `rnd_array #(N)::get_bytes(name)` | `bit [7:0] [N]`: a fixed-size array |
 
 ```systemverilog
-bit [7:0] key[8];
-bit [7:0] hdr[$];
+bit[7:0] key[8];
+bit[7:0] hdr[$];
 key = rnd_array #(8)::get_bytes("key_test.key");
 hdr = rnd::get_byte_queue(4, "key_test.header");
 ```
@@ -76,7 +76,7 @@ be the place to optimise.
 * **Drawing twice for one decision.**
   `parity[rnd::get_index(8)] = ~parity[rnd::get_index(8)];` picks two different
   bits, exactly like the old `$urandom_range` bug. Draw once into a variable.
-* **Replacing an object's `randomize()`.** A packet's `length` must keep its
+* **Replacing an object's `randomize()`.** A packet's `m_length` must keep its
   constraint (`c_length`) and stay overridable (`short_yapp_packet`); it is not a
   loose value.
 * **`min > max`.** `rnd::get_int(hi, lo)` is a fatal error, not an empty range.

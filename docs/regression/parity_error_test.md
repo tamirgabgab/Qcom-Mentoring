@@ -21,7 +21,7 @@ Test plan: what a wrong parity byte does -- the counter counts it (when enabled)
 
 1. **error_pulse_checker** — a subscriber of the YAPP monitor that times every error pulse against the last bad packet
 2. **en_reg = 0x03** — router on, parity counter on
-3. **8 bad packets** — yapp_pkt_seq with pkt_parity == BAD_PARITY, random address and length
+3. **8 bad packets** — yapp_pkt_seq with m_pkt_parity == PARITY_TYPE_BAD, random address and length
 4. **count and pulses** — parity_err_cnt_reg == 8; 8 pulses, each 1..10 cycles after its packet; scoreboard matched 8
 5. **en_reg = 0x01** — parity counter off
 6. **4 bad packets** — same sequence
@@ -30,7 +30,7 @@ Test plan: what a wrong parity byte does -- the counter counts it (when enabled)
 Expected:
 
 - `error pulse K cycles after the bad packet` twelve times with K in 1..10; `parity_err_cnt_reg reads 8 as expected` twice.
-- The channel monitors print the packets with `parity_type CHANNEL_BAD_PARITY` -- the router forwards them; `UVM_ERROR : 0`.
+- The channel monitors print the packets with `parity_type CHANNEL_PARITY_TYPE_BAD` -- the router forwards them; `UVM_ERROR : 0`.
 
 ## Test plan items this test verifies
 

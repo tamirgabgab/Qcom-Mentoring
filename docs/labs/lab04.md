@@ -31,10 +31,10 @@ flowchart LR
 In `router_test_lib.sv`, `router_tb.sv`, `yapp_env.sv`, `yapp_tx_agent.sv`:
 
 ```systemverilog
-tb        = router_tb::type_id::create("tb", this);
-yapp      = yapp_env::type_id::create("yapp", this);
-agent     = yapp_tx_agent::type_id::create("agent", this);
-monitor   = yapp_tx_monitor::type_id::create("monitor", this);
+m_tb        = router_tb::type_id::create("tb", this);
+m_yapp      = yapp_env::type_id::create("yapp", this);
+m_agent     = yapp_tx_agent::type_id::create("agent", this);
+m_monitor   = yapp_tx_monitor::type_id::create("monitor", this);
 ```
 
 ### 2. `short_yapp_packet` — end of `sv/yapp_packet.sv`
@@ -42,8 +42,8 @@ monitor   = yapp_tx_monitor::type_id::create("monitor", this);
 ```systemverilog
 class short_yapp_packet extends yapp_packet;
   `uvm_object_utils(short_yapp_packet)
-  constraint c_short_length { length < 15; }
-  constraint c_no_addr2     { addr != 2'd2; }     // removed again in Lab 5!
+  constraint c_short_length { m_length < 15; }
+  constraint c_no_addr2     { m_addr != 2'd2; }     // removed again in Lab 5!
   function new(string name = "short_yapp_packet");
     super.new(name);
   endfunction

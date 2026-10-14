@@ -173,8 +173,8 @@ classes:
     summary: "The YAPP transaction: addr, length, payload, parity -- with constraints and parity helpers."
     description: |
       One packet on the YAPP input port: header `{length[5:0], addr[1:0]}`, `length`
-      payload bytes, then an even-parity byte. `parity_type` (GOOD 5 : BAD 1) decides
-      whether `set_parity()` corrupts the computed parity. `packet_delay` is the gap the
+      payload bytes, then an even-parity byte. `m_parity_type` (GOOD 5 : BAD 1) decides
+      whether `set_parity()` corrupts the computed parity. `m_packet_delay` is the gap the
       driver waits before sending. Built in Lab 1, used everywhere after.
   short_yapp_packet:
     summary: "yapp_packet with length constrained to 1..15 -- substituted through the factory."
@@ -194,7 +194,7 @@ classes:
     summary: "Samples yapp_if on the rising edge, rebuilds packets and publishes them; the coverage collectors subscribe."
     description: |
       `collect_packets` runs forever: one new `yapp_packet` per packet, published on
-      `item_collected_port` (Lab 9A). Its `packet_delay` carries the gap the monitor measured
+      `item_collected_port` (Lab 9A). Its `m_packet_delay` carries the gap the monitor measured
       (-1 for the first packet). Counts packets and bad-parity packets; `num_bad_parity` is
       read by the register tests. The covergroups are not here: `pkt_cov` (`yapp_pkt_cg`,
       Lab 10) and `gap_cov` (`yapp_gap_cg`) subscribe to `item_collected_port`.
@@ -210,7 +210,7 @@ classes:
     summary: "Coverage collector of the gap between input packets: yapp_gap_cg (0, 1, 2, longer)."
     description: |
       A `uvm_subscriber #(yapp_packet)` on the monitor's port: samples the gap the monitor
-      wrote into `packet_delay` (skips the first packet after reset). `back_to_back_test`
+      wrote into `m_packet_delay` (skips the first packet after reset). `back_to_back_test`
       requires 100 %.
   yapp_tx_agent:
     summary: "Monitor always; driver + sequencer only when is_active == UVM_ACTIVE."
@@ -231,10 +231,10 @@ classes:
   yapp_88_packets_seq: {summary: "88 packets -- enough to fill a 16-byte channel FIFO and exercise in_suspend."}
   yapp_pkt_seq:        {summary: "One packet whose address, length and parity the test chooses (soft constraints); the packet stays in req."}
   yapp_boundary_seq:   {summary: "Lengths maxpktsize-1, maxpktsize, maxpktsize+1 and 63 to every address incl. 3; counts what it sent."}
-  yapp_gap_seq:        {summary: "Short packets with gaps 0, 1, 2, 3 in turn (packet_delay = idle cycles); counts the gaps it asked for."}
+  yapp_gap_seq:        {summary: "Short packets with gaps 0, 1, 2, 3 in turn (m_packet_delay = idle cycles); counts the gaps it asked for."}
   yapp_random_burst_seq: {summary: "Random tests: per packet, address (3 included), length class (short, long, around maxpktsize), parity and gap drawn from knobs."}
   # ---------------------------------------------------------------- HBUS UVC
-  hbus_transaction: {summary: "One HBUS access: haddr, hdata, hwr_rd (HBUS_READ / HBUS_WRITE)."}
+  hbus_transaction: {summary: "One HBUS access: m_haddr, m_hdata, m_hwr_rd (HBUS_OP_READ / HBUS_OP_WRITE)."}
   hbus_master_driver:
     summary: "Drives HBUS writes (1 cycle) and reads (2 cycles); copies read data back into the item."
   hbus_master_sequencer: {summary: "uvm_sequencer #(hbus_transaction)."}
@@ -713,14 +713,14 @@ tests:
     stages:
       - {k: build,    t: "error_pulse_checker", d: "a subscriber of the YAPP monitor that times every error pulse against the last bad packet"}
       - {k: program,  t: "en_reg = 0x03",       d: "router on, parity counter on"}
-      - {k: stimulus, t: "8 bad packets",       d: "yapp_pkt_seq with pkt_parity == BAD_PARITY, random address and length"}
+      - {k: stimulus, t: "8 bad packets",       d: "yapp_pkt_seq with m_pkt_parity == PARITY_TYPE_BAD, random address and length"}
       - {k: check,    t: "count and pulses",    d: "parity_err_cnt_reg == 8; 8 pulses, each 1..10 cycles after its packet; scoreboard matched 8"}
       - {k: program,  t: "en_reg = 0x01",       d: "parity counter off"}
       - {k: stimulus, t: "4 bad packets",       d: "same sequence"}
       - {k: check,    t: "frozen count",        d: "counter still 8; 12 pulses in total, none outside the window"}
     expected:
       - "`error pulse K cycles after the bad packet` twelve times with K in 1..10; `parity_err_cnt_reg reads 8 as expected` twice."
-      - "The channel monitors print the packets with `parity_type CHANNEL_BAD_PARITY` -- the router forwards them; `UVM_ERROR : 0`."
+      - "The channel monitors print the packets with `parity_type CHANNEL_PARITY_TYPE_BAD` -- the router forwards them; `UVM_ERROR : 0`."
   counter_wrap_test:
     purpose: "Test plan: an 8-bit counter wraps from 255 to 0 -- the specification is silent, the Decisions of dut/spec.md fix the choice."
     stages:
@@ -736,7 +736,7 @@ tests:
   back_to_back_test:
     purpose: "Test plan: the input port with the shortest gap -- a header in the cycle right after the parity byte -- and gaps of 1, 2 and 3 cycles."
     stages:
-      - {k: stimulus, t: "yapp_gap_seq",        d: "24 short packets to random legal addresses, gaps 3, then 1, 2, 3, 0 in turn (packet_delay = idle cycles)"}
+      - {k: stimulus, t: "yapp_gap_seq",        d: "24 short packets to random legal addresses, gaps 3, then 1, 2, 3, 0 in turn (m_packet_delay = idle cycles)"}
       - {k: check,    t: "measured gaps",       d: "the YAPP monitor's idle-cycle count per class (0, 1, 2, 3+) equals what the sequence asked for"}
       - {k: check,    t: "gap coverage",        d: "yapp_gap_cg (gap_cp: back_to_back, one, two, longer) at 100 %"}
       - {k: check,    t: "scoreboard",          d: "24 matched, 0 unexpected"}
@@ -767,7 +767,7 @@ tests:
   random_backpressure_test:
     purpose: "Random tests: back-pressure on a random mix of channels -- slow and stalling receivers against long packets sent back to back."
     stages:
-      - {k: config,   t: "receivers",          d: "mostly RX_SLOW / RX_STALLY, one in four fast or normal"}
+      - {k: config,   t: "receivers",          d: "mostly CHANNEL_RX_PROFILE_SLOW / CHANNEL_RX_PROFILE_STALLY, one in four fast or normal"}
       - {k: config,   t: "knobs",              d: "router on, maxpktsize mostly mid-range, 60% of packets 40..63 bytes, 70% back to back"}
       - {k: check,    t: "as random_test",     d: "every byte out once and in order (scoreboard), nothing left at the end"}
     expected:
@@ -837,7 +837,7 @@ plan:
         status: covered
       - id: ROUTE-04
         title: "Packets back to back with the minimum gap"
-        stimulus: "yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; packet_delay is the number of idle cycles. Random traffic keeps 1..20."
+        stimulus: "yapp_gap_seq: gaps of 0 (the header in the cycle right after the parity byte -- the shortest the DUT accepts), 1, 2 and 3 cycles; m_packet_delay is the number of idle cycles. Random traffic keeps 1..20."
         check: "The YAPP monitor counts the idle cycles before every packet; the test compares them with the gaps the sequence asked for. Scoreboard: every packet delivered."
         coverage: "gap_cp (yapp_gap_cg): back_to_back, one, two, longer"
         tests: [back_to_back_test, coverage_test, scoreboard_drop_test]
@@ -871,13 +871,13 @@ plan:
       - id: PKT-04
         title: "Even bitwise parity over header and payload"
         stimulus: "Every good packet: parity = XOR of the header and all payload bytes (yapp_packet::calc_parity)."
-        check: "The channel monitor recomputes the parity and tags the packet CHANNEL_GOOD_PARITY; the DUT counts nothing in parity_err_cnt_reg; no error pulse."
+        check: "The channel monitor recomputes the parity and tags the packet CHANNEL_PARITY_TYPE_GOOD; the DUT counts nothing in parity_err_cnt_reg; no error pulse."
         coverage: "parity_cp"
         tests: [reg_function_test, coverage_test, router_filter_test]
         status: covered
       - id: PKT-05
         title: "A wrong parity byte is detected -- and the packet still delivered"
-        stimulus: "parity_type == BAD_PARITY flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq)."
+        stimulus: "m_parity_type == PARITY_TYPE_BAD flips one bit of the correct parity (yapp_pkt_seq, yapp_coverage_seq, 20 % in yapp_88_packets_seq)."
         check: "parity_err_cnt_reg equals the monitor's num_bad_parity; error pulses once per bad packet (error_pulse_checker); the scoreboard still matches the packet (the router forwards it -- see Decisions in dut/spec.md)."
         coverage: "parity_cp, len_x_addr_x_parity (REQ3)"
         tests: [reg_function_test, parity_error_test, test_uvc_integration, random_parity_test]
@@ -1197,7 +1197,7 @@ plan:
         status: covered
       - id: COV-03
         title: "REQ3: every length bucket to every legal address with a parity error"
-        stimulus: "yapp_coverage_seq: each length with BAD_PARITY to addresses 0..2."
+        stimulus: "yapp_coverage_seq: each length with PARITY_TYPE_BAD to addresses 0..2."
         check: "The cross len_x_addr_x_parity (good parity and address 3 ignored) reaches 15 of 15 bins."
         coverage: "len_x_addr_x_parity"
         tests: [coverage_test]

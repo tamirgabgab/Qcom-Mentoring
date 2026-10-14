@@ -71,7 +71,7 @@ uvm_config_wrapper::set(this, "tb.chan*.rx_agent.sequencer.run_phase",
 yapp_vif_config::set(null, "*.tb.yapp.*", "vif", hw_top.in0);
 
 // in the consumer
-if (!yapp_vif_config::get(this, "", "vif", vif))
+if (!yapp_vif_config::get(this, "", "vif", m_vif))
   `uvm_error("NOVIF", "vif not set")
 ```
 
@@ -86,7 +86,7 @@ function void yapp_tx_agent::build_phase(uvm_phase phase);
     if (uvm_config_int::get(this, "", "is_active", cfg_is_active))
       is_active = uvm_active_passive_enum'(cfg_is_active);
   end
-  monitor = yapp_tx_monitor::type_id::create("monitor", this);
+  m_monitor = yapp_tx_monitor::type_id::create("monitor", this);
   ...
 ```
 

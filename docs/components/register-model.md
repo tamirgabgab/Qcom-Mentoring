@@ -68,15 +68,15 @@ into the request item: the map reads it back from the same object after
 
 ```systemverilog
 // router_tb::build_phase
-yapp_rm = yapp_router_regs_t::type_id::create("yapp_rm");
-yapp_rm.build();                               // registers, fields, maps
-yapp_rm.lock_model();                          // freeze and compute addresses
-yapp_rm.set_hdl_path_root("hw_top.dut.u_regs"); // backdoor root: the register block of the router
-yapp_rm.default_map.set_auto_predict(1);       // mirror follows every access
-reg2hbus = hbus_reg_adapter::type_id::create("reg2hbus");
+m_yapp_rm = yapp_router_regs_t::type_id::create("yapp_rm");
+m_yapp_rm.build();                               // registers, fields, maps
+m_yapp_rm.lock_model();                          // freeze and compute addresses
+m_yapp_rm.set_hdl_path_root("hw_top.dut.u_regs"); // backdoor root: the register block of the router
+m_yapp_rm.default_map.set_auto_predict(1);       // mirror follows every access
+m_reg2hbus = hbus_reg_adapter::type_id::create("reg2hbus");
 
 // router_tb::connect_phase
-yapp_rm.default_map.set_sequencer(hbus.masters[0].sequencer, reg2hbus);
+m_yapp_rm.default_map.set_sequencer(m_hbus.m_masters[0].m_sequencer, m_reg2hbus);
 ```
 
 ## The access API (Lab 11C)
@@ -106,7 +106,7 @@ knows which sequencer to use.
 
 ```systemverilog
 uvm_reg q[$];
-tb.yapp_rm.get_registers(q);
+m_tb.m_yapp_rm.get_registers(q);
 rw_q = q.find(r) with (r.get_rights() == "RW");
 ```
 

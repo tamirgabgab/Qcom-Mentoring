@@ -18,7 +18,7 @@ flowchart LR
 | Phase | Direction | What the course puts there |
 |---|---|---|
 | `build_phase` | top-down (test first, leaves last) | `super.build_phase(phase)`, configuration *before* `type_id::create()` of the children |
-| `connect_phase` | bottom-up | `driver.seq_item_port.connect(sequencer.seq_item_export)`, analysis port → imp, `uvm_config_db::get` of virtual interfaces, hierarchical handles of the virtual sequencer |
+| `connect_phase` | bottom-up | `m_driver.seq_item_port.connect(m_sequencer.seq_item_export)`, analysis port → imp, `uvm_config_db::get` of virtual interfaces, hierarchical handles of the virtual sequencer |
 | `end_of_elaboration_phase` | bottom-up | `uvm_top.print_topology()` in the test |
 | `start_of_simulation_phase` | bottom-up | the optional "who runs first" experiment of Lab 3 |
 | `run_phase` | parallel for all components | driver loop, monitor loop, default sequences, drain time |
@@ -58,7 +58,7 @@ endtask
 ```
 
 `starting_phase` is only set for a sequence that the sequencer starts as its
-**default sequence**; for a sub-sequence (`seq_1.start(m_sequencer, this)`) it is `null`,
+**default sequence**; for a sub-sequence (`m_seq_1.start(m_sequencer, this)`) it is `null`,
 hence the test. The multichannel sequence (Lab 8) and the HBUS/Clock sequences
 use the same pattern. The channel response sequence deliberately does **not**
 raise one: a receiver must never keep the simulation running on its own.

@@ -21,9 +21,11 @@ stimulus.
   `sample()` is called by the testbench, here once per collected packet.
 * The monitor is the right source: it reports what the DUT really received,
   whatever the sequence intended. A `uvm_subscriber` with an `analysis_export`
-  hangs on the monitor's `item_collected_port` and samples in `write()`.
+  hangs on the monitor's `m_item_collected_port` and samples in `write()`.
 * **Holes** are bins no run hit; **closing** them means writing stimulus that
   reaches them (`yapp_coverage_seq`) — the regression merges every run.
+* The general picture (what coverage answers, the vocabulary, the
+  coverage-driven loop) is on [Functional coverage](../uvm/coverage.md).
 
 ```mermaid
 flowchart LR
@@ -47,14 +49,14 @@ flowchart LR
 The Cadence lab writes the covergroup **inside the monitor**. This repository
 puts it in its own file: `yapp_pkt_coverage`, a `uvm_subscriber
 #(yapp_packet)` that the agent connects to the monitor's
-`item_collected_port`. The bins are the same, so the percentage is the same;
+`m_item_collected_port`. The bins are the same, so the percentage is the same;
 the monitor only observes and publishes, and the coverage model can be
 replaced or left out without touching it (see
 [Functional coverage](../components/coverage.md#where-the-covergroups-live)).
 
 ```systemverilog
-covergroup yapp_pkt_cg with function sample(bit [5:0] length,
-                                            bit [1:0] addr,
+covergroup yapp_pkt_cg with function sample(bit[5:0] length,
+                                            bit[1:0] addr,
                                             parity_type_e parity_type);
   option.per_instance = 1;
   length_cp : coverpoint length {
@@ -69,11 +71,11 @@ covergroup yapp_pkt_cg with function sample(bit [5:0] length,
     bins illegal_addr = {3};
   }
   parity_cp : coverpoint parity_type {
-    bins good = {GOOD_PARITY};
-    bins bad  = {BAD_PARITY};
+    bins good = {PARITY_TYPE_GOOD};
+    bins bad  = {PARITY_TYPE_BAD};
   }
   len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
-    ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
+    ignore_bins good_parity  = binsof(parity_cp) intersect {PARITY_TYPE_GOOD};
     ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);
   }
 endgroup
@@ -84,11 +86,11 @@ function yapp_pkt_coverage::new(string name, uvm_component parent);
 endfunction
 
 function void yapp_pkt_coverage::write(yapp_packet t);   // every packet the monitor publishes
-  yapp_pkt_cg.sample(t.length, t.addr, t.parity_type);
+  yapp_pkt_cg.sample(t.m_length, t.m_addr, t.m_parity_type);
 endfunction
 
 // yapp_tx_agent::connect_phase
-monitor.item_collected_port.connect(pkt_cov.analysis_export);
+m_monitor.m_item_collected_port.connect(m_pkt_cov.analysis_export);
 ```
 
 ### 2. Stimulus that closes the model — `yapp_coverage_seq`
@@ -104,8 +106,8 @@ task yapp_coverage_seq::body();
       for (int bad = 0; bad < 2; bad++) begin
         req = yapp_packet::type_id::create("req");
         req.c_addr_legal.constraint_mode(0);        // before randomize(): allow addr 3
-        if (!req.randomize() with { req.addr == a; req.length == lengths[i];
-                                    req.parity_type == (bad ? BAD_PARITY : GOOD_PARITY); })
+        if (!req.randomize() with { req.m_addr == a; req.m_length == lengths[i];
+                                    req.m_parity_type == (bad ? PARITY_TYPE_BAD : PARITY_TYPE_GOOD); })
           `uvm_error(get_type_name(), "Randomization failed")
         start_item(req);
         finish_item(req);

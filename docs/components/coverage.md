@@ -7,7 +7,9 @@ Functional coverage answers "**did we exercise what we meant to?**" — not
 whether the DUT was right (that is the scoreboard's job). It samples what the
 **monitors** publish (the YAPP packets, the HBUS cycles) and what the reference
 model decided, because they see what *actually* happened on the bus, whatever
-the sequences intended.
+the sequences intended. The concepts (covergroups, bins, crosses, the
+coverage-driven loop) are on [Functional coverage](../uvm/coverage.md) in the
+UVM chapter; this page is about the collectors of this project.
 
 ## Where the covergroups live
 
@@ -29,7 +31,7 @@ flowchart LR
 | Collector (instance) | File | Covergroup | Samples |
 |---|---|---|---|
 | `tb.yapp.agent.pkt_cov` | `yapp_project/uvc/yapp/yapp_pkt_coverage.sv` | `yapp_pkt_cg` (Lab 10) | length, address, parity of every input packet |
-| `tb.yapp.agent.gap_cov` | `yapp_project/uvc/yapp/yapp_gap_coverage.sv` | `yapp_gap_cg` (ROUTE-04) | the gap before every packet, which the monitor writes into `packet_delay` |
+| `tb.yapp.agent.gap_cov` | `yapp_project/uvc/yapp/yapp_gap_coverage.sv` | `yapp_gap_cg` (ROUTE-04) | the gap before every packet, which the monitor writes into `m_packet_delay` |
 | `tb.router_module.coverage` | `yapp_project/uvc/router/router_coverage.sv` | `router_cfg_cg` (random tests) | maxpktsize, length vs maxpktsize, drop reason × parity, counter enables of every packet received while the router is on, from the reference's `router_decision` |
 | `tb.router_module.hbus_addr_cov` | `yapp_project/uvc/router/router_hbus_addr_coverage.sv` | `hbus_addr_cg` (COV-04) | the address of every HBUS access × read / write |
 | `tb.router_module.hbus_bits_cov` | `yapp_project/uvc/router/router_hbus_bits_coverage.sv` | `hbus_bits_cg` (COV-05) | every bit of every write to `ctrl_reg` / `en_reg` |
@@ -45,7 +47,7 @@ percentage is the same.
 
 ## HBUS coverage
 
-The four HBUS collectors subscribe to `router_module_env.hbus_export`, next
+The four HBUS collectors subscribe to `router_module_env.m_hbus_export`, next
 to the reference model. They live in the router module UVC, not in the HBUS
 UVC: the HBUS UVC is generic, the address map belongs to the router.
 
@@ -61,9 +63,9 @@ every address of the window, reads the whole register window back after each
 write to a register, a hole or a read-only byte (so a write that lands on the
 wrong register is caught), walks the bits of `ctrl_reg` / `en_reg`, fills
 `yapp_mem` with the four patterns and a random value, and sends 1020
-two-byte bad-parity packets (oversized at `maxpktsize = 1`, so dropped) to
+two-byte bad-parity packets (oversized at `m_maxpktsize = 1`, so dropped) to
 take every counter to 255. Every read is checked by the reference model
-(`check_reads = 1`), and the test fails unless the four covergroups reach
+(`m_check_reads = 1`), and the test fails unless the four covergroups reach
 100 %. Making the RTL write `ctrl_reg` on a write to the hole 0x1002 makes it
 fail with `HBUS read 0x1000 returned 0x00, the model expects 0xaa`.
 
@@ -73,13 +75,13 @@ fail with `HBUS read 0x1000 returned 0x00, the model expects 0xaa`.
 |---|---|---|
 | REQ1 | every packet length, bucketed | `length_cp`: `MIN=1`, `SMALL=[2:10]`, `MEDIUM=[11:40]`, `LARGE=[41:62]`, `MAX=63` |
 | REQ2 | every address, including the illegal one | `addr_cp`: `legal[] = {[0:2]}`, `illegal_addr = {3}` |
-| REQ3 | every length bucket to every legal address **with** a parity error | `len_x_addr_x_parity` cross, ignoring `GOOD_PARITY` and `illegal_addr` |
+| REQ3 | every length bucket to every legal address **with** a parity error | `len_x_addr_x_parity` cross, ignoring `PARITY_TYPE_GOOD` and `illegal_addr` |
 
 ## The covergroup
 
 ```systemverilog
-covergroup yapp_pkt_cg with function sample(bit [5:0] length,
-                                            bit [1:0] addr,
+covergroup yapp_pkt_cg with function sample(bit[5:0] length,
+                                            bit[1:0] addr,
                                             parity_type_e parity_type);
   option.per_instance = 1;
   length_cp : coverpoint length {
@@ -94,11 +96,11 @@ covergroup yapp_pkt_cg with function sample(bit [5:0] length,
     bins illegal_addr = {3};
   }
   parity_cp : coverpoint parity_type {
-    bins good = {GOOD_PARITY};
-    bins bad  = {BAD_PARITY};
+    bins good = {PARITY_TYPE_GOOD};
+    bins bad  = {PARITY_TYPE_BAD};
   }
   len_x_addr_x_parity : cross length_cp, addr_cp, parity_cp {
-    ignore_bins good_parity  = binsof(parity_cp) intersect {GOOD_PARITY};
+    ignore_bins good_parity  = binsof(parity_cp) intersect {PARITY_TYPE_GOOD};
     ignore_bins illegal_addr = binsof(addr_cp.illegal_addr);
   }
 endgroup
@@ -111,13 +113,13 @@ endgroup
 * `illegal_addr` is a normal bin, not `illegal_bins`: REQ2 wants to *count*
   packets to address 3, not flag them as errors.
 * The cross is **restricted** with `ignore_bins` so that only the combinations
-  REQ3 cares about count towards 100%: 5 lengths × 3 addresses × BAD_PARITY =
+  REQ3 cares about count towards 100%: 5 lengths × 3 addresses × PARITY_TYPE_BAD =
   15 bins.
 * `parity_cp` names its two bins. An enum coverpoint without bins gets one bin
   per value on Xcelium, but Verilator bins it by value range.
 * Verilator ignores `ignore_bins` written with `binsof() intersect`, so under
   `` `ifdef VERILATOR `` the collector builds the same 15-bin cross from two extra
-  coverpoints that hold only the legal addresses and only `BAD_PARITY` -- see
+  coverpoints that hold only the legal addresses and only `PARITY_TYPE_BAD` -- see
   [Simulating with Verilator](../appendix/verilator.md#what-differs-from-xcelium).
 
 ## Sampling
@@ -132,8 +134,8 @@ t.parity_type)` for every packet the [monitor](monitor.md) publishes:
 The agent builds the collectors and connects them (`yapp_tx_agent`):
 
 ```systemverilog
-monitor.item_collected_port.connect(pkt_cov.analysis_export);
-monitor.item_collected_port.connect(gap_cov.analysis_export);
+m_monitor.m_item_collected_port.connect(m_pkt_cov.analysis_export);
+m_monitor.m_item_collected_port.connect(m_gap_cov.analysis_export);
 ```
 
 ## Closing the holes

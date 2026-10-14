@@ -74,10 +74,10 @@ sets one sequence object per channel as that channel's `default_sequence`:
 
 | Profile | Delay before reading a packet |
 |---|---|
-| `RX_FAST` | 0 |
-| `RX_NORMAL` | 0..10 |
-| `RX_SLOW` | 20..40 |
-| `RX_STALLY` | usually 0..10, `stall_pct` (15 %) of the packets 50..150: the channel stops taking packets for a while |
+| `CHANNEL_RX_PROFILE_FAST` | 0 |
+| `CHANNEL_RX_PROFILE_NORMAL` | 0..10 |
+| `CHANNEL_RX_PROFILE_SLOW` | 20..40 |
+| `CHANNEL_RX_PROFILE_STALLY` | usually 0..10, `m_stall_pct` (15 %) of the packets 50..150: the channel stops taking packets for a while |
 
 The wait is always on the header, before a packet: a receiver never suspends in
 the middle of one.
@@ -92,7 +92,7 @@ above, `min_packets`, `max_bursts`, `extreme_pct`, `router_off_pct`,
 | Who | Checks | Where |
 |---|---|---|
 | Scoreboard | every forwarded packet comes out of its channel unchanged and in order; **nothing is left** in the queues at the end (`check_phase`) | `router_scoreboard` |
-| Reference model | its model of `ctrl_reg`, `en_reg`, the six counters (each with its own enable bit, wrapping at 255), `mem_size_reg`, `yapp_pkt_mem` (the header and the payload of the last packet received while enabled, dropped ones too; a shorter packet leaves the old tail) and `yapp_mem`; **every HBUS read** is compared with it | `router_reference`, `check_reads = 1` |
+| Reference model | its model of `ctrl_reg`, `en_reg`, the six counters (each with its own enable bit, wrapping at 255), `mem_size_reg`, `yapp_pkt_mem` (the header and the payload of the last packet received while enabled, dropped ones too; a shorter packet leaves the old tail) and `yapp_mem`; **every HBUS read** is compared with it | `router_reference`, `m_check_reads = 1` |
 | Error-pulse checker | one `error` pulse per bad-parity packet received while the router is on, 1..10 cycles after its parity byte, overlapping packets included | `error_pulse_checker` |
 
 The model follows the rules and the *Decisions* of the

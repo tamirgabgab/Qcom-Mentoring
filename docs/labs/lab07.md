@@ -102,7 +102,7 @@ make run TEST=test_uvc_integration # optional
 **Expected for `simple_test`:** `clk10_rst5_seq` starts the clock and holds
 reset 5 cycles; `yapp_012_seq` sends three short packets; each channel
 monitor prints exactly one `Channel N collected packet` whose fields equal the
-YAPP packet with `addr == N`; the channel reports say `1 packets collected`
+YAPP packet with `m_addr == N`; the channel reports say `1 packets collected`
 each.
 
 **Expected for `test_uvc_integration`:** HBUS `WRITE addr=0x1000 data=0x14`

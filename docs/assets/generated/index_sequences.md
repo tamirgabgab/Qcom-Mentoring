@@ -15,7 +15,7 @@
 | `yapp_88_packets_seq` | YAPP UVC | [7](../labs/lab07.md) | `yapp_packet` sequencer | 88 packets -- enough to fill a 16-byte channel FIFO and exercise in_suspend. |
 | `yapp_coverage_seq` | YAPP UVC | [10](../labs/lab10.md) | `yapp_packet` sequencer | 40 packets with the legal-address constraint switched off, to fill the covergroup. |
 | `yapp_boundary_seq` | YAPP UVC | test plan | `yapp_packet` sequencer | Lengths maxpktsize-1, maxpktsize, maxpktsize+1 and 63 to every address incl. 3; counts what it sent. |
-| `yapp_gap_seq` | YAPP UVC | test plan | `yapp_packet` sequencer | Short packets with gaps 0, 1, 2, 3 in turn (packet_delay = idle cycles); counts the gaps it asked for. |
+| `yapp_gap_seq` | YAPP UVC | test plan | `yapp_packet` sequencer | Short packets with gaps 0, 1, 2, 3 in turn (m_packet_delay = idle cycles); counts the gaps it asked for. |
 | `yapp_pkt_seq` | YAPP UVC | test plan | `yapp_packet` sequencer | One packet whose address, length and parity the test chooses (soft constraints); the packet stays in req. |
 | `yapp_random_burst_seq` | YAPP UVC | test plan | `yapp_packet` sequencer | Random tests: per packet, address (3 included), length class (short, long, around maxpktsize), parity and gap drawn from knobs. |
 | `hbus_base_seq` | HBUS UVC | [7](../labs/lab07.md) | `hbus_transaction` sequencer | Base of the HBUS sequences; objection handling. |

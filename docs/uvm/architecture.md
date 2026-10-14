@@ -85,13 +85,13 @@ references. They come straight from `uvm_top.print_topology()`.
 
 | Path | Type | Used for |
 |---|---|---|
-| `tb.yapp.agent.sequencer` | `yapp_tx_sequencer` | YAPP default sequence; `mcseqr.yapp_seqr` |
-| `tb.yapp.agent.monitor` | `yapp_tx_monitor` | `item_collected_port` (→ scoreboard, reference, `pkt_cov`, `gap_cov`), `num_bad_parity` |
+| `tb.yapp.agent.sequencer` | `yapp_tx_sequencer` | YAPP default sequence; `m_mcseqr.m_yapp_seqr` |
+| `tb.yapp.agent.monitor` | `yapp_tx_monitor` | `m_item_collected_port` (→ scoreboard, reference, `pkt_cov`, `gap_cov`), `m_num_bad_parity` |
 | `tb.yapp.agent.pkt_cov`, `gap_cov` | `yapp_pkt_coverage`, `yapp_gap_coverage` | the covergroups of the YAPP packets and the gaps between them |
 | `tb.router_module.coverage`, `hbus_*_cov` | `router_coverage`, `router_hbus_*_coverage` | the covergroups of the router configuration and of the HBUS traffic |
 | `tb.chan*.rx_agent.sequencer` | `channel_rx_sequencer` | `channel_rx_resp_seq` (one wildcard for all three) |
-| `tb.hbus.masters[0].sequencer` | `hbus_master_sequencer` | `mcseqr.hbus_seqr`; register map sequencer |
-| `tb.hbus.monitor` | `hbus_monitor` | `item_collected_port` → reference model |
+| `tb.hbus.masters[0].sequencer` | `hbus_master_sequencer` | `m_mcseqr.m_hbus_seqr`; register map sequencer |
+| `tb.hbus.monitor` | `hbus_monitor` | `m_item_collected_port` → reference model |
 | `tb.clk_rst.agent.sequencer` | `clock_and_reset_sequencer` | `clk10_rst5_seq` |
 | `tb.mcseqr` | `router_mcsequencer` | `router_simple_mcseq` |
 | `tb.router_module` | `router_module_env` | exports `yapp_export`, `hbus_export`, `chan0..2_export` |

@@ -154,7 +154,7 @@ the **Simulate** tab on the DUT, `u_regs`, `hbus0` or the register model.
 ### Try it: the packet playground
 
 Build a YAPP packet field by field (`addr`, `length`, `payload`), watch the byte
-stream and the parity the packet gets, flip **BAD_PARITY** to see the error
+stream and the parity the packet gets, flip **PARITY_TYPE_BAD** to see the error
 injection of the course, and read the checks: legal address, length vs.
 payload size, parity, `maxpktsize`. **Parse bytes** decodes a packet copied
 from a log. **Send to router** pushes the bytes through the same router model
@@ -185,6 +185,12 @@ three never disagree.
 
 ![The Test plan view: the feature groups with their status chips on top, the tests below, one feature open in the panel with every item](docs/assets/readme/map_testplan.png)
 
+The **Coverage** view puts the functional coverage of the committed regression on one page:
+who publishes what the collectors sample on the left, one card per collector on the right with
+a bar per covergroup and a chip per coverpoint, every bin and the tests that hit it in the panel.
+
+![The Coverage view: the publishers on the left, one card per coverage collector with its covergroup bars and coverpoint chips, one collector open in the panel](docs/assets/readme/map_coverage.png)
+
 Ten directed tests exist only for the plan, in `yapp_project/tb/tests/`, for the features
 the course's own tests never checked: `router_disable_test` (a disabled router drops and
 counts nothing), `router_filter_test` (lengths around `maxpktsize`, the illegal address,
@@ -203,7 +209,7 @@ every counter read at 0, in the middle and at 255 — the test that closes the f
 covergroups). The four random tests (below) add the random scenarios.
 Writing `backpressure_test` found a real bug in the YAPP driver's
 handshake, fixed in `yapp_if.sv`; writing `back_to_back_test` found that the driver
-could never send the minimum gap, so `packet_delay` now means the exact number of idle
+could never send the minimum gap, so `m_packet_delay` now means the exact number of idle
 cycles. The site page ends with a **coverage matrix**: every item against every test,
 a dot in the colour of the item's status where the test covers it.
 
@@ -427,6 +433,21 @@ The code is written to be read. Conventions, enforced by `make style-check`:
 * **`extern` prototypes in the class, bodies after `endclass`**
   (`function yapp_packet::set_parity();`), one `//-----` delimiter before every
   body. Read the class to learn what it does, scroll down to see how.
+  **Constraints the same way**: `extern constraint c_length;` in the class,
+  `constraint yapp_packet::c_length { ... }` after `endclass`, before the methods.
+  Order inside the class: properties, `utils` macro, covergroups, `extern constraint`
+  lines, `extern` methods.
+* **Every class property starts with `m_`** (`m_addr`, `m_monitor`, `m_vif`);
+  arguments and locals never do. The UVM runtime names stay plain
+  (`create("monitor", this)`, the `uvm_config_db` keys), so the logs still read
+  `uvm_test_top.tb.yapp.agent.monitor`.
+* **Types in one place.** The typedefs and enums of a package live in its
+  `<pkg>_defines.sv` (`yapp_defines.sv`, `hbus_defines.sv`, …), included first.
+  An enum ends with `_e`, its values are upper case with the type name as prefix,
+  and the first is `<NAME>_UNDEFINED`, never produced:
+  `PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, PARITY_TYPE_BAD`.
+* **`bit[7:0]`, no space** before a packed range (classes and packages; the RTL
+  and the interfaces keep their own style).
 * **Locals at the top of a function**, never in a bare `begin … end` in the
   middle; **`begin … end` around every control body**
   (`if / else / for / foreach / while / repeat`), also a single statement

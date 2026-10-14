@@ -19,7 +19,7 @@ Test plan: the input port with the shortest gap -- a header in the cycle right a
 
 ## The plan of the test
 
-1. **yapp_gap_seq** — 24 short packets to random legal addresses, gaps 3, then 1, 2, 3, 0 in turn (packet_delay = idle cycles)
+1. **yapp_gap_seq** — 24 short packets to random legal addresses, gaps 3, then 1, 2, 3, 0 in turn (m_packet_delay = idle cycles)
 2. **measured gaps** — the YAPP monitor's idle-cycle count per class (0, 1, 2, 3+) equals what the sequence asked for
 3. **gap coverage** — yapp_gap_cg (gap_cp: back_to_back, one, two, longer) at 100 %
 4. **scoreboard** — 24 matched, 0 unexpected

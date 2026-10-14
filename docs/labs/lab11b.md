@@ -69,7 +69,7 @@ class uvm_reset_test extends base_test;
     super.run_phase(phase);
     phase.raise_objection(this);
     reset_seq = uvm_reg_hw_reset_seq::type_id::create("reset_seq");
-    reset_seq.model = tb.yapp_rm;
+    reset_seq.model = m_tb.m_yapp_rm;
     reset_seq.start(null);          // the map knows the sequencer
     phase.drop_objection(this);
   endtask

@@ -37,8 +37,8 @@ flowchart LR
 `uvm_analysis_imp_decl(_chan0)
 
 class router_scoreboard extends uvm_scoreboard;
-  uvm_analysis_imp_yapp  #(yapp_packet,    router_scoreboard) yapp_in;
-  uvm_analysis_imp_chan0 #(channel_packet, router_scoreboard) chan0_in;
+  uvm_analysis_imp_yapp  #(yapp_packet,    router_scoreboard) m_yapp_in;
+  uvm_analysis_imp_chan0 #(channel_packet, router_scoreboard) m_chan0_in;
   function void write_yapp (yapp_packet p);    ... endfunction
   function void write_chan0(channel_packet p); ... endfunction
 ```
@@ -85,7 +85,7 @@ and blocking calls, which a function cannot do.
 | `uvm_analysis_port #(T)` | `uvm_analysis_export #(T)` | `port.connect(export)` and inside the env `export.connect(imp)` |
 | `uvm_analysis_port #(T)` | `uvm_tlm_analysis_fifo #(T)` | `port.connect(fifo.analysis_export)` |
 | `uvm_get_port #(T)` | `uvm_tlm_analysis_fifo #(T)` | `get_port.connect(fifo.get_peek_export)` |
-| `uvm_driver::seq_item_port` | `uvm_sequencer::seq_item_export` | `driver.seq_item_port.connect(sequencer.seq_item_export)` |
+| `uvm_driver::seq_item_port` | `uvm_sequencer::seq_item_export` | `m_driver.seq_item_port.connect(m_sequencer.seq_item_export)` |
 
 Always connect **from the port to the export/imp** (`port.connect(target)`),
 and always in a `connect_phase` — the components must exist first.

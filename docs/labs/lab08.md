@@ -15,7 +15,7 @@ it and sends more.
 ## Concepts
 
 virtual sequencer with sub-sequencer handles · `` `uvm_declare_p_sequencer `` ·
-`seq.start(p_sequencer.hbus_seqr, this)` (the course's `` `uvm_do_on `` /
+`seq.start(p_sequencer.m_hbus_seqr, this)` (the course's `` `uvm_do_on `` /
 `` `uvm_do_on_with ``) · objection on the starting phase · hierarchical
 references in `connect_phase`
 
@@ -52,12 +52,12 @@ sequenceDiagram
 ### 3. `router_tb`: build and connect
 
 ```systemverilog
-mcseqr = router_mcsequencer::type_id::create("mcseqr", this);
+m_mcseqr = router_mcsequencer::type_id::create("mcseqr", this);
 ...
 function void connect_phase(uvm_phase phase);
   // Hierarchical references, NOT configuration strings: no wildcards here
-  mcseqr.hbus_seqr = hbus.masters[0].sequencer;
-  mcseqr.yapp_seqr = yapp.agent.sequencer;
+  m_mcseqr.m_hbus_seqr = m_hbus.m_masters[0].m_sequencer;
+  m_mcseqr.m_yapp_seqr = m_yapp.m_agent.m_sequencer;
 endfunction
 ```
 
@@ -113,7 +113,7 @@ make run TEST=router_simple_mcseq_test
 
 ??? question "Why can the mcsequencer's handles not be set with `uvm_config_*`?"
     They are plain class handles assigned in SystemVerilog
-    (`mcseqr.hbus_seqr = hbus.masters[0].sequencer`), so the names are
+    (`m_mcseqr.m_hbus_seqr = m_hbus.m_masters[0].m_sequencer`), so the names are
     hierarchical references checked by the compiler; wildcards have no
     meaning there.
 

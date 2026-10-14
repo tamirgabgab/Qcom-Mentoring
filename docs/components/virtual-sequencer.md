@@ -27,8 +27,8 @@ The handles are assigned in `router_tb.connect_phase` with **hierarchical
 references** (no config strings, no wildcards):
 
 ```systemverilog
-mcseqr.hbus_seqr = hbus.masters[0].sequencer;
-mcseqr.yapp_seqr = yapp.agent.sequencer;
+m_mcseqr.m_hbus_seqr = m_hbus.m_masters[0].m_sequencer;
+m_mcseqr.m_yapp_seqr = m_yapp.m_agent.m_sequencer;
 ```
 
 ## The sequence
@@ -42,9 +42,9 @@ mcseqr.yapp_seqr = yapp.agent.sequencer;
 * `` `uvm_declare_p_sequencer(router_mcsequencer) `` adds a typed
   `p_sequencer` handle (and a cast check when the sequence starts).
 * Each sub-sequence is created through the factory, randomized (the one
-  constraint in this sequence is `yapp_rnd.count == 6`) and started with
-  `seq.start(p_sequencer.hbus_seqr, this)` or
-  `seq.start(p_sequencer.yapp_seqr, this)`: the first argument picks the
+  constraint in this sequence is `m_yapp_rnd.m_count == 6`) and started with
+  `seq.start(p_sequencer.m_hbus_seqr, this)` or
+  `seq.start(p_sequencer.m_yapp_seqr, this)`: the first argument picks the
   **real** sequencer, the second makes this sequence the parent. The course
   writes `` `uvm_do_on(seq, seqr) `` / `` `uvm_do_on_with `` for the same thing.
 * `start()` blocks until the sub-sequence's `body()` returns, which is what

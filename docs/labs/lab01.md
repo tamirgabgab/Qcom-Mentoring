@@ -44,12 +44,12 @@ classDiagram
 
 | Field | On the wire? | Constraint |
 |---|---|---|
-| `addr` | yes (header `[1:0]`) | `!= 3` |
-| `length` | yes (header `[7:2]`) | `1..63`, `payload.size() == length` |
+| `m_addr` | yes (header `[1:0]`) | `!= 3` |
+| `m_length` | yes (header `[7:2]`) | `1..63`, `m_payload.size() == m_length` |
 | `payload[]` | yes | — |
-| `parity` | yes | computed by `set_parity()` |
-| `parity_type` | no — knob | `GOOD_PARITY : BAD_PARITY = 5 : 1` |
-| `packet_delay` | no — knob | `1..20` |
+| `m_parity` | yes | computed by `set_parity()` |
+| `m_parity_type` | no — knob | `PARITY_TYPE_GOOD : PARITY_TYPE_BAD = 5 : 1` |
+| `m_packet_delay` | no — knob | `1..20` |
 
 ## Solution
 
@@ -62,16 +62,16 @@ classDiagram
 Points worth a second look:
 
 * **`parity_type_e` is declared outside the class** so that tests and sequences
-  can write `GOOD_PARITY` without a scope prefix.
-* **`parity` is not `rand`.** It is derived: `post_randomize()` calls
+  can write `PARITY_TYPE_GOOD` without a scope prefix.
+* **`m_parity` is not `rand`.** It is derived: `post_randomize()` calls
   `set_parity()`, which uses `calc_parity()` for a good packet and flips one
   bit for a bad one. The bit is drawn **once**, from the common random library
   (`rnd::get_index(8, ...)`, see [Random values](../components/random.md)), and
-  then flipped. Writing `parity[$urandom_range(7,0)] = ~parity[$urandom_range(7,0)]`
+  then flipped. Writing `m_parity[$urandom_range(7,0)] = ~m_parity[$urandom_range(7,0)]`
   draws twice, picks two different bits and leaves the parity correct about half
   of the time (a real bug, found by the first simulation of this code).
 * **Named constraints** can be disabled later (`c_addr_legal.constraint_mode(0)`).
-* `do_compare` does not look at `packet_delay` (the course's `UVM_NOCOMPARE`):
+* `do_compare` does not look at `m_packet_delay` (the course's `UVM_NOCOMPARE`):
   two identical packets sent with different gaps still compare equal.
 * The class body only *declares* the methods (`extern`); their bodies follow
   `endclass` as `function yapp_packet::set_parity();`. Read the class to learn
@@ -101,22 +101,22 @@ Points worth a second look:
 cd labs/lab01_data/tb && make run
 ```
 
-**Expected:** five packet tables. Every `addr` is 0, 1 or 2; `payload` has
-exactly `length` entries; about one packet in six shows `BAD_PARITY` with a
+**Expected:** five packet tables. Every `m_addr` is 0, 1 or 2; `m_payload` has
+exactly `m_length` entries; about one packet in six shows `PARITY_TYPE_BAD` with a
 parity byte that differs from the XOR of the other bytes. Then the optional
 section prints `copy compare -> 1`, `clone compare -> 1`, a miscompare
 message for the modified clone, and the same packet in table and tree layout.
 
 ## Checkpoint questions
 
-??? question "Why does `parity` not have the `rand` qualifier?"
+??? question "Why does `m_parity` not have the `rand` qualifier?"
     Because its value is a *function* of the other fields. If it were random it
     would be wrong most of the time, and if you then constrained it to be
     correct you could no longer inject parity errors. A derived value is
     computed in `post_randomize()`.
 
-??? question "What does `payload.size() == length` do during randomization?"
-    The solver sizes the dynamic array to match `length`; the elements are then
+??? question "What does `m_payload.size() == m_length` do during randomization?"
+    The solver sizes the dynamic array to match `m_length`; the elements are then
     randomized. Without it the array keeps whatever size it had (0 at first).
 
 ??? question "What is the difference between `copy()` and `clone()`?"

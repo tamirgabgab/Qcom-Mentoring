@@ -42,13 +42,13 @@ flowchart LR
 ### 2. `router_tb`: FIFO scoreboard instead of the module env
 
 ```systemverilog
-fifo_sb = router_fifo_scoreboard::type_id::create("fifo_sb", this);
+m_fifo_sb = router_fifo_scoreboard::type_id::create("fifo_sb", this);
 ...
-yapp.agent.monitor.item_collected_port.connect(fifo_sb.yapp_export);
-hbus.monitor.item_collected_port.connect(fifo_sb.hbus_export);
-chan0.rx_agent.monitor.item_collected_port.connect(fifo_sb.chan_export[0]);
-chan1.rx_agent.monitor.item_collected_port.connect(fifo_sb.chan_export[1]);
-chan2.rx_agent.monitor.item_collected_port.connect(fifo_sb.chan_export[2]);
+m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_fifo_sb.m_yapp_export);
+m_hbus.m_monitor.m_item_collected_port.connect(m_fifo_sb.m_hbus_export);
+m_chan0.m_rx_agent.m_monitor.m_item_collected_port.connect(m_fifo_sb.m_chan_export[0]);
+m_chan1.m_rx_agent.m_monitor.m_item_collected_port.connect(m_fifo_sb.m_chan_export[1]);
+m_chan2.m_rx_agent.m_monitor.m_item_collected_port.connect(m_fifo_sb.m_chan_export[2]);
 ```
 
 ## Run

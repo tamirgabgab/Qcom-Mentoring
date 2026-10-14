@@ -23,7 +23,7 @@ Random tests: back-pressure on a random mix of channels -- slow and stalling rec
 
 ## The plan of the test
 
-1. **receivers** — mostly RX_SLOW / RX_STALLY, one in four fast or normal
+1. **receivers** — mostly CHANNEL_RX_PROFILE_SLOW / CHANNEL_RX_PROFILE_STALLY, one in four fast or normal
 2. **knobs** — router on, maxpktsize mostly mid-range, 60% of packets 40..63 bytes, 70% back to back
 3. **as random_test** — every byte out once and in order (scoreboard), nothing left at the end
 

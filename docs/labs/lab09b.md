@@ -54,13 +54,13 @@ flowchart LR
 ### 4. `router_tb`: connect through the layer
 
 ```systemverilog
-router_module = router_module_env::type_id::create("router_module", this);
+m_router_module = router_module_env::type_id::create("router_module", this);
 ...
-yapp.agent.monitor.item_collected_port.connect(router_module.reference.yapp_in);
-hbus.monitor.item_collected_port.connect(router_module.reference.hbus_in);
-chan0.rx_agent.monitor.item_collected_port.connect(router_module.scoreboard.chan0_in);
-chan1.rx_agent.monitor.item_collected_port.connect(router_module.scoreboard.chan1_in);
-chan2.rx_agent.monitor.item_collected_port.connect(router_module.scoreboard.chan2_in);
+m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_reference.m_yapp_in);
+m_hbus.m_monitor.m_item_collected_port.connect(m_router_module.m_reference.m_hbus_in);
+m_chan0.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_scoreboard.m_chan0_in);
+m_chan1.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_scoreboard.m_chan1_in);
+m_chan2.m_rx_agent.m_monitor.m_item_collected_port.connect(m_router_module.m_scoreboard.m_chan2_in);
 ```
 
 `tb_top.sv` imports `router_module_pkg` instead of including the scoreboard;

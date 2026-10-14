@@ -60,7 +60,7 @@ received, 12 matched, 0 left.
 ## Common mistakes
 
 * Storing the handle instead of a clone.
-* Comparing `packet_delay` or other non-wire fields.
+* Comparing `m_packet_delay` or other non-wire fields.
 * Declaring the `` `uvm_analysis_imp_decl `` macros inside the class (they
   define classes; they belong at package scope, once per suffix).
 * Reporting only mismatches: a scoreboard that never saw a packet is "green"

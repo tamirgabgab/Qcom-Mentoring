@@ -20,9 +20,9 @@ flowchart LR
 
 | Job | Code | Lab |
 |---|---|---|
-| **collect** | `vif.collect_packets(pkt.addr, pkt.length, pkt.payload, pkt.parity, idle_cycles)` on the rising edge; a byte counts when `in_data_vld && !in_suspend`; `idle_cycles` is the gap before the header | 6 (gap: test plan) |
-| **publish** | `uvm_analysis_port #(yapp_packet) item_collected_port;` constructed in `new()`, `write(pkt)` after each packet | 9A |
-| **cover** | not in the monitor: `yapp_pkt_coverage` (`yapp_pkt_cg`) and `yapp_gap_coverage` (`yapp_gap_cg`) subscribe to `item_collected_port`; the monitor writes the gap it measured into the packet's `packet_delay` (-1 for the first packet) so the gap collector can sample it — see [Functional coverage](coverage.md) | 10 (gap: test plan) |
+| **collect** | `m_vif.collect_packets(pkt.m_addr, pkt.m_length, pkt.m_payload, pkt.m_parity, idle_cycles)` on the rising edge; a byte counts when `in_data_vld && !in_suspend`; `idle_cycles` is the gap before the header | 6 (gap: test plan) |
+| **publish** | `uvm_analysis_port #(yapp_packet) m_item_collected_port;` constructed in `new()`, `write(pkt)` after each packet | 9A |
+| **cover** | not in the monitor: `yapp_pkt_coverage` (`yapp_pkt_cg`) and `yapp_gap_coverage` (`yapp_gap_cg`) subscribe to `m_item_collected_port`; the monitor writes the gap it measured into the packet's `m_packet_delay` (-1 for the first packet) so the gap collector can sample it — see [Functional coverage](coverage.md) | 10 (gap: test plan) |
 
 ## The reference implementation
 
@@ -41,9 +41,9 @@ flowchart LR
   updates it with a non-blocking assignment), so `in_data_vld && !in_suspend`
   is exactly the DUT's own acceptance condition.
 * **parity_type is derived**: the monitor recomputes the parity and marks the
-  packet `GOOD_PARITY` / `BAD_PARITY`. The channel monitor does the same.
-* `num_pkt_col` and `num_bad_parity` are plain counters printed in
-  `report_phase`; `reg_function_test` uses `num_bad_parity` to know what the
+  packet `PARITY_TYPE_GOOD` / `PARITY_TYPE_BAD`. The channel monitor does the same.
+* `m_num_pkt_col` and `m_num_bad_parity` are plain counters printed in
+  `report_phase`; `reg_function_test` uses `m_num_bad_parity` to know what the
   DUT's parity counter should read.
 * The channel monitor additionally checks that a packet's address matches the
   `channel_id` of the channel it arrived on — a cheap built-in checker.

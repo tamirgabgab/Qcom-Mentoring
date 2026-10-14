@@ -59,7 +59,7 @@ The final version (Lab 11B) shows every responsibility of a top-level env:
 | configure children **before** creating them | `uvm_config_int::set(this, "chan0", "channel_id", 0)` … |
 | create everything through the factory | `type_id::create("name", this)` |
 | TLM connections | `connect_phase`: monitor ports → module UVC exports |
-| hierarchical handles for the virtual sequencer | `mcseqr.hbus_seqr = hbus.masters[0].sequencer` |
+| hierarchical handles for the virtual sequencer | `m_mcseqr.m_hbus_seqr = m_hbus.m_masters[0].m_sequencer` |
 | register model plumbing | `build()`, `lock_model()`, `set_hdl_path_root`, `set_auto_predict`, `set_sequencer` |
 
 ## How configuration flows down
@@ -84,5 +84,5 @@ same pattern gives `hbus_env` its `num_masters` / `num_slaves`.
 * `new("name", this)` instead of `type_id::create` → overrides do not apply.
 * Connecting in `build_phase` — the children do not exist yet when the parent's
   `build_phase` starts; use `connect_phase`.
-* Wildcards in hierarchical references: `mcseqr.yapp_seqr = yapp.agent.sequencer`
+* Wildcards in hierarchical references: `m_mcseqr.m_yapp_seqr = m_yapp.m_agent.m_sequencer`
   is SystemVerilog, not a config string.

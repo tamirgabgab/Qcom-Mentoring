@@ -95,6 +95,7 @@ nav:
       - Phases and objections: uvm/phases.md
       - Factory and configuration: uvm/factory-config.md
       - TLM connections: uvm/tlm.md
+      - Functional coverage: uvm/coverage.md
   - Component guides:
       - Overview: components/index.md
       - Packet (sequence item): components/packet.md
@@ -110,8 +111,9 @@ nav:
       - Random values: components/random.md
       - Random tests: components/random-tests.md
   - Test plan: test-plan.md
-  - Coverage results: coverage-results.md
-  - Regression results: regression/index.md
+  - Results:
+      - Coverage results: coverage-results.md
+      - Regression results: regression/index.md
   - Labs:
       - Overview: labs/index.md
       - "Lab 1 — Stimulus model": labs/lab01.md

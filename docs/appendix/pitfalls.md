@@ -28,7 +28,7 @@ this reference environment.
 
 ## Sequences and objections
 
-8. **Planned constraint conflict in Lab 5** (`short_yapp_packet` `addr != 2`
+8. **Planned constraint conflict in Lab 5** (`short_yapp_packet` `m_addr != 2`
    vs `yapp_012_seq`). Fix it before Lab 6.
 9. **Objections in sub-sequences.** `starting_phase` is `null` for a child
    sequence; always test for `null` before raising.

@@ -54,11 +54,11 @@ same edge `in_suspend` is already low again at the falling edge, so the driver
 would move on and the header would be lost. The `backpressure_test` of the
 [test plan](../test-plan.md) exercises exactly this path.
 
-**The gap between packets.** `packet_delay` is the number of idle cycles (rising
+**The gap between packets.** `m_packet_delay` is the number of idle cycles (rising
 edges without `in_data_vld`) before the header. When the driver gets the next
 packet in the same time step in which the previous one ended (`last_end`), it
 already stands on the falling edge where a byte may go out, so
-`packet_delay == 0` puts the header in the cycle right after the parity byte --
+`m_packet_delay == 0` puts the header in the cycle right after the parity byte --
 the shortest gap the DUT accepts. The random packets keep `c_delay` (1..20);
 `yapp_gap_seq` switches it off to send gaps of 0..3, and `back_to_back_test`
 checks them against the monitor's measurement (ROUTE-04).
@@ -73,9 +73,9 @@ checks them against the monitor's measurement (ROUTE-04).
 
 `reset_signals()` drives idle values on the first falling edge and then waits
 for `reset` to be low. With the Clock & Reset UVC reset is asserted at time 0
-by `clk10_rst5_seq`, so `wait (vif.reset === 1'b0)` holds the driver for the
+by `clk10_rst5_seq`, so `wait (m_vif.reset === 1'b0)` holds the driver for the
 first five cycles. The same pattern is used by every driver and monitor in the
-repository (`@(posedge vif.clock); wait (vif.reset === 1'b0);` in monitors).
+repository (`@(posedge m_vif.clock); wait (m_vif.reset === 1'b0);` in monitors).
 
 ## Transaction recording
 
@@ -88,8 +88,8 @@ driver / monitor instances to see packets as bars with their fields.
 
 | Driver | Transaction → pins |
 |---|---|
-| `hbus_master_driver` | `hbus_write(addr, data)` or `hbus_read(addr, data)`; the read value is written back into `req.hdata` so the sequence (and the register adapter) can use it |
-| `channel_rx_driver` | plays the **receiver**: `receive_packet(delay)` waits for `data_vld`, drops `suspend`, reads `length + 2` bytes |
+| `hbus_master_driver` | `hbus_write(addr, data)` or `hbus_read(addr, data)`; the read value is written back into `req.m_hdata` so the sequence (and the register adapter) can use it |
+| `channel_rx_driver` | plays the **receiver**: `receive_packet(m_delay)` waits for `data_vld`, drops `suspend`, reads `length + 2` bytes |
 | `clock_and_reset_driver` | `start_clock_and_reset(period, cycles)` |
 
 ## Common mistakes

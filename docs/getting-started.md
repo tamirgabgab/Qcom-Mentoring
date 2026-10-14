@@ -85,21 +85,34 @@ labs/lab05_seq/
 `router_test_lib.sv`, `router_mcseqs_lib.sv`, `yapp_router_reg_pkg.sv`) are kept as the files
 the packages include, but each of them only `include`s the class files of its sub-directory
 (`seqs/`, `tests/`, `mcseqs/`, `reg/`). `short_yapp_packet` has its own file next to
-`yapp_packet.sv`. Inside a file the class body is a table of contents: fields, the `utils`
-macro, constraints and `extern` prototypes. The method bodies follow `endclass` under a
-`// <class> -- method implementations` banner, as `function yapp_packet::set_parity();` or
+`yapp_packet.sv`. Inside a file the class body is a table of contents: the properties, the
+`utils` macro, the `extern constraint` lines and the `extern` method prototypes. After
+`endclass` come the constraint bodies under a `// <class> -- constraints` banner
+(`constraint yapp_packet::c_length { ... }`), then the method bodies under
+`// <class> -- method implementations`, as `function yapp_packet::set_parity();` or
 `task yapp_012_seq::body();`, each body preceded by a `//-----` delimiter line. Read the
-prototypes to learn what a class does, scroll down to see how. Two more conventions hold
+prototypes to learn what a class does, scroll down to see how.
+
+The names follow fixed rules. Every class property starts with `m_` (`m_addr`, `m_length`,
+`m_monitor`, `m_vif`); arguments and locals never do, so inside a method `length` is the
+argument and `m_length` the field. The UVM runtime names stay plain: `create("monitor", this)`,
+`new("item_collected_port", this)`, the `uvm_config_db` keys, so the hierarchy in the logs reads
+`uvm_test_top.tb.yapp.agent.monitor`. Packed widths are written without a space (`bit[7:0]`).
+The typedefs and enums of a package live in its `<pkg>_defines.sv` (`yapp_defines.sv`,
+`hbus_defines.sv`, …), included first by the package file; an enum type ends with `_e`, its
+values are upper case with the type name as prefix and the first one is always
+`<NAME>_UNDEFINED`, a value no constraint or assignment ever produces
+(`PARITY_TYPE_UNDEFINED, PARITY_TYPE_GOOD, PARITY_TYPE_BAD`). Three more conventions hold
 everywhere: a function declares its locals at its top (never in a bare `begin … end` in the middle
-of the body), and the body of an `if` / `else` / `for` / `foreach` / `while` / `repeat` is always
-wrapped in `begin … end`, even a single statement. Random values that are not fields of a
+of the body), the body of an `if` / `else` / `for` / `foreach` / `while` / `repeat` is always
+wrapped in `begin … end`, even a single statement, and random values that are not fields of a
 randomized object come from the common library `rnd::` ([Random values](components/random.md)),
-not from `$urandom`. `make style-check` (`scripts/sv_style.py`)
-enforces all of this in CI, and `make style` reformats a file you wrote.
+not from `$urandom`. `make style-check` (`scripts/sv_style.py`) enforces all of this in CI,
+reporting each violation as `file:line`, and `make style` reformats a file you wrote.
 
 The classes also do without the shortcut macros of the course material: no `uvm_do*`
 (a sequence writes `create` → `start_item` → `randomize` → `finish_item` itself, and starts a
-sub-sequence with `seq.start(sequencer, this)`), and no `uvm_field_*` automation (`do_print`,
+sub-sequence with `seq.start(m_sequencer, this)`), and no `uvm_field_*` automation (`do_print`,
 `do_copy`, `do_compare`, `do_pack`, `do_unpack` and `do_record` are written by hand, and a
 component reads its configuration with `uvm_config_int::get` in `build_phase`). What the
 macros would hide is on the page, where you can read it.

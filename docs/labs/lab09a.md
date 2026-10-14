@@ -33,14 +33,14 @@ flowchart LR
 ### 1. Analysis port in the YAPP monitor (`yapp_project/uvc/yapp/yapp_tx_monitor.sv`)
 
 ```systemverilog
-uvm_analysis_port #(yapp_packet) item_collected_port;
+uvm_analysis_port #(yapp_packet) m_item_collected_port;
 ...
 function new(string name, uvm_component parent);
   super.new(name, parent);
-  item_collected_port = new("item_collected_port", this);
+  m_item_collected_port = new("item_collected_port", this);
 endfunction
 ...
-item_collected_port.write(pkt);      // after each collected packet
+m_item_collected_port.write(pkt);      // after each collected packet
 ```
 
 The channel monitor already had one (`yapp_project/uvc/channel/channel_rx_monitor.sv`).
@@ -60,12 +60,12 @@ The channel monitor already had one (`yapp_project/uvc/channel/channel_rx_monito
 ### 4. `router_tb`: build and connect
 
 ```systemverilog
-scoreboard = router_scoreboard::type_id::create("scoreboard", this);
+m_scoreboard = router_scoreboard::type_id::create("scoreboard", this);
 ...
-yapp.agent.monitor.item_collected_port.connect(scoreboard.yapp_in);
-chan0.rx_agent.monitor.item_collected_port.connect(scoreboard.chan0_in);
-chan1.rx_agent.monitor.item_collected_port.connect(scoreboard.chan1_in);
-chan2.rx_agent.monitor.item_collected_port.connect(scoreboard.chan2_in);
+m_yapp.m_agent.m_monitor.m_item_collected_port.connect(m_scoreboard.m_yapp_in);
+m_chan0.m_rx_agent.m_monitor.m_item_collected_port.connect(m_scoreboard.m_chan0_in);
+m_chan1.m_rx_agent.m_monitor.m_item_collected_port.connect(m_scoreboard.m_chan1_in);
+m_chan2.m_rx_agent.m_monitor.m_item_collected_port.connect(m_scoreboard.m_chan2_in);
 ```
 
 `tb_top.sv` includes `router_scoreboard.sv` (before `router_tb.sv`), `run.f`

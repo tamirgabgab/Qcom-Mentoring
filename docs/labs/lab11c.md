@@ -43,15 +43,15 @@ flowchart LR
 
 | Test | What it does |
 |---|---|
-| `reg_access_test` | `check_rw_register(ctrl_reg)` and `check_ro_register(addr0_cnt_reg)` with every access logged at `UVM_NONE` |
-| `reg_function_test` | `en_reg = 0x01` → `yapp_012_seq` → counters still 0; `en_reg = 0xff` → `yapp_012_seq` ×2 → `addr0/1/2 == 2`, `addr3 == 0`, parity counter == bad-parity packets seen by the monitor, oversized == 0 |
+| `reg_access_test` | `check_rw_register(m_ctrl_reg)` and `check_ro_register(addr0_cnt_reg)` with every access logged at `UVM_NONE` |
+| `reg_function_test` | `m_en_reg = 0x01` → `yapp_012_seq` → counters still 0; `m_en_reg = 0xff` → `yapp_012_seq` ×2 → `addr0/1/2 == 2`, `addr3 == 0`, parity counter == bad-parity packets seen by the monitor, oversized == 0 |
 | `reg_function_check_test` *(opt.)* | same, with `set_check_on_read(1)`; `check_counter` calls `predict(expected)` before `read()` so the automatic check passes |
 | `reg_introspection_test` *(opt.)* | asks the model for all registers, splits them into RW / RO queues with `get_rights()`, runs the access checks over every register |
 
 The test gets its register handles in `connect_phase` with hierarchical
-references — `regs = tb.yapp_rm.router_yapp_regs` (path from the topology
-report of Lab 11B) and `yapp_seqr = tb.yapp.agent.sequencer` — and starts the
-YAPP sequence explicitly with `seq.start(yapp_seqr)` inside its own objection.
+references — `m_regs = m_tb.m_yapp_rm.router_yapp_regs` (path from the topology
+report of Lab 11B) and `m_yapp_seqr = m_tb.m_yapp.m_agent.m_sequencer` — and starts the
+YAPP sequence explicitly with `seq.start(m_yapp_seqr)` inside its own objection.
 
 ## Run
 
@@ -86,7 +86,7 @@ make run TEST=reg_introspection_test
     is unchanged.
 
 ??? question "Why do the parity-error expectations use `tb.yapp.agent.monitor.num_bad_parity`?"
-    `yapp_012_seq` randomizes `parity_type` (5:1 good:bad), so the number of
+    `yapp_012_seq` randomizes `m_parity_type` (5:1 good:bad), so the number of
     bad packets differs per seed. The monitor counts what was actually sent;
     the DUT's counter must agree.
 
