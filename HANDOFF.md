@@ -48,7 +48,7 @@
 > לטלפון); מסלול הסטודנטית (`labs/<lab>/start/` + `TASKS.md`, `make check LAB=… START=1`, Getting started מבוסס Verilator,
 > "See it run" ו-"Try this" בכל דף לאב, Glossary, FAQ); Bug hunt (10 mutants ב-RTL, `make bug-hunt`, workflow `bughunt`,
 > עמוד + מטריצה, test ranking ב-Coverage results, `history.csv` + גרף ב-Regression results); העברת הקורס (`docs/mentor/`
-> 8 מפגשים, `make student-kit`, `make docs-pdf` → `offline/QcomCourse.pdf`). רגרסיה: 162/162 ריצות עברו (64.8 דקות, Verilator 5.052, אחרי מחיקת ה-slave agent וה-`ifdef BUG_*`). Bug hunt: בריצה בסוף הסשן — התוצאות ב-commit הבא ובעמוד Bug hunt.
+> 8 מפגשים, `make student-kit`, `make docs-pdf` → `offline/QcomCourse.pdf`). רגרסיה: 162/162 ריצות עברו (64.8 דקות, Verilator 5.052, אחרי מחיקת ה-slave agent וה-`ifdef BUG_*`). Bug hunt: 9/10 mutants נתפסו (`BUG_FIFO_DEPTH_8` שרד — אין בדיקה של עומק ה-FIFO; `BUG_HBUS_READ_STALE` נתפס ע"י 17 טסטים, `BUG_COUNTER_SATURATES` רק ע"י `counter_wrap_test`), ~6 דקות למוטנט.
 > **נשארו**: סבבים ג (SVA, reset, RAL predictor, coverpoints), ה (המפה כמורה), ז (מותנה) — סעיף 8.
 
 ---
@@ -156,7 +156,7 @@
 - **סשן 9 (סבבים א/ב/ד/ו):** `make start` מייצר 15 ספריות `labs/<lab>/start/` (11A בלי), `make start-check` ו-`make lint`
   (33 `run.f`, כולל ה-start) ב-CI (`lint.yml`); `make check LAB=lab05_seq [START=1]` רץ ב-Verilator ומשווה ל-`scripts/lab_checks.yaml`
   (נבדק על lab05: הפתרון = הכול ok, ה-start = MISSING בשורות של הסיקוונסים); `make bug-hunt` = 10 mutants × 21 טסטים
-  (בריצה בסוף הסשן — התוצאות ב-commit הבא ובעמוד Bug hunt); `make docs-pdf` = 518 עמודים עם 44 דיאגרמות Mermaid מרונדרות (`offline/QcomCourse.pdf`, 6.4 MB, committed);
+  (9/10 mutants נתפסו (`BUG_FIFO_DEPTH_8` שרד — אין בדיקה של עומק ה-FIFO; `BUG_HBUS_READ_STALE` נתפס ע"י 17 טסטים, `BUG_COUNTER_SATURATES` רק ע"י `counter_wrap_test`), ~6 דקות למוטנט); `make docs-pdf` = 518 עמודים עם 44 דיאגרמות Mermaid מרונדרות (`offline/QcomCourse.pdf`, 6.4 MB, committed);
   `make student-kit` = `build/StudentKit.zip` (16 MB). רגרסיה אחרי מחיקת `hbus_slave_agent` והוספת ה-mutants (כבויים בלי define):
   162/162 ריצות עברו (64.8 דקות, Verilator 5.052, אחרי מחיקת ה-slave agent וה-`ifdef BUG_*`). workflow חדש `fresh` (offline/site + runs.json מול regress.yaml + bug_hunt.json מול mutants.yaml), `bughunt`
   (job לכל mutant, נכשל אם mutant שורד).
@@ -221,7 +221,9 @@ Test plan + 7 טסטים, שלושה סבבי UX; סשן 6 — Verilator + CI, `
 
 ### סטטוס git
 - **סשן 9 (2026-10-21), ענף `claude/hopeful-gates-acsuwt` (הענף של סשן 6, ממוזג עם `main` = `ef2747c`), `main` ff:**
-  commit של HANDOFF (סעיף 8 נכתב מחדש כסבבים). CI לא מושפע (אין שינוי בקוד).
+  `65b0638` (`--trace-max-array 256`), `ed73f83` (סעיף 8 כסבבים), ואז הסבבים: `13d1c16` (א), `296c93b` (ב), `8bd1fce` (ד),
+  `ae4c650` (ו), `ef7cc93` (README + offline), `0cd49ec` (HANDOFF) — `main` ff ל-`0cd49ec` באמצע הסשן, ואחריו commit
+  תוצאות ה-bug hunt (עמוד Bug hunt, offline, PDF) ו-ff נוסף. ה-workflows: lint, sim, docs, fresh (חדש), bughunt (חדש, 10 jobs).
 - **סשן 8 סבב 5 (2026-10-14), אותו ענף, `main` ff:** `4b15d5d` (פריסת constraints + R11 + bins), `6f18453` (שמות `m_`
   בתרשימי האתר, נתוני coverage, HANDOFF פריט 19), ואחריו commit ה-HANDOFF/README עם רשימת השדרוגים. CI על `6f18453`:
   lint, docs, sim — ירוקים.
@@ -456,7 +458,9 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 - **(סשן 9) ידוע ולא תוקן:** `start/` של Lab 10 מצליל את `yapp_pkt_coverage.sv` ו-`seqs/yapp_coverage_seq.sv` דרך `-incdir ../sv` ראשון —
   עובד ב-slang וב-Verilator, לא נבדק ב-xrun (אמור לעבוד: סדר `-incdir`). ה-stubs של מודולים/interfaces לא מרוקנים (בכוונה).
   `make check` מזהה רק את מה שב-`lab_checks.yaml`; טסט שעובר בלי לעשות את הלאב (`set_config_test` ב-start) יופיע ok —
-  זה מתועד ב-FAQ. ה-mutant `BUG_FIFO_DEPTH_8` עשוי לשרוד (ראה Bug hunt) — אם כן זה חור אמיתי ב-plan (אין בדיקת עומק FIFO).
+  זה מתועד ב-FAQ. ה-mutant `BUG_FIFO_DEPTH_8` **שרד** (0/21, ראה Bug hunt): FIFO של 8 במקום 16 רק מעלה `suspend_N` מוקדם יותר, ושום
+  checker לא מודד את זה. לסגור בסבב ג: `cover`/`assert property` על הערוץ (suspend עולה בדיוק כשה-FIFO מלא, 16 בייטים
+  נכנסים בלי suspend) או טסט `backpressure_test` שסופר כמה בייטים נכנסו לפני ה-suspend הראשון.
 - `restyle.py` לא בריפו — אם תמיר ירצה לשחזר את ההמרה על קוד חדש, אין כלי; `sv_style.py` מכסה רק את 4 הכללים שלו.
 - ~~בפאנל הצר של המפה (360px) טבלת הרגיסטרים ב-"compact"~~ — הפאנל ניתן להרחבה (סשן 5); הדיאגרמה בשורת-משנה.
 - תוויות של חצים (label) מונחות באמצע הקטע הארוך ביותר ויכולות לנחות על קופסה; בסצנות צפופות הן ממילא מוסתרות עד hover.

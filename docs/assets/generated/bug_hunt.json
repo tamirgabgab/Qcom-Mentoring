@@ -1,0 +1,392 @@
+{
+ "date": "2026-10-21",
+ "commit": "8bd1fce",
+ "tests": [
+  "base_test",
+  "uvm_reset_test",
+  "uvm_mem_walk_test",
+  "reg_access_test",
+  "reg_function_test",
+  "reg_function_check_test",
+  "reg_introspection_test",
+  "router_disable_test",
+  "router_filter_test",
+  "pkt_mem_test",
+  "reg_bit_walk_test",
+  "hbus_protocol_test",
+  "backpressure_test",
+  "parity_error_test",
+  "counter_wrap_test",
+  "back_to_back_test",
+  "hbus_sweep_test",
+  "random_test",
+  "random_config_test",
+  "random_backpressure_test",
+  "random_parity_test"
+ ],
+ "mutants": {
+  "BUG_PARITY_IGNORED": {
+   "compiled": true,
+   "caught_by": [
+    "reg_function_test",
+    "reg_function_check_test",
+    "parity_error_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "random_backpressure_test"
+   ],
+   "first_error": {
+    "reg_function_test": "UVM_ERROR uvm_test_top [REG_FUNC] parity_err_cnt_reg reads 0, expected 1",
+    "reg_function_check_test": "UVM_ERROR reporter [RegModel] Register \"yapp_rm.router_yapp_regs.parity_err_cnt_reg\" value read from DUT (0x0000000000000000) does not match mirrored value (0x0000000000000002) (valid bit mask = 0x00000000000000ff)",
+    "parity_error_test": "UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 515",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1004 returned 0x00, the model expects 0x64",
+    "random_test": "UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 6925",
+    "random_config_test": "UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 4785",
+    "random_parity_test": "UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 465"
+   },
+   "wall": 392.7281129360199
+  },
+  "BUG_ADDR3_TO_CH0": {
+   "compiled": true,
+   "caught_by": [
+    "router_filter_test",
+    "hbus_sweep_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test"
+   ],
+   "first_error": {
+    "router_filter_test": "UVM_ERROR uvm_test_top.tb.chan0.rx_agent.monitor [channel_rx_monitor] Packet with address 3 received on channel 0",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1006 returned 0x00, the model expects 0x64",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.chan0.rx_agent.monitor [channel_rx_monitor] Packet with address 3 received on channel 0"
+   },
+   "wall": 390.10099267959595
+  },
+  "BUG_OVERSIZED_OFF_BY_ONE": {
+   "compiled": true,
+   "caught_by": [
+    "router_filter_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "random_backpressure_test"
+   ],
+   "first_error": {
+    "router_filter_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:",
+    "random_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:",
+    "random_config_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 1 packet received but nothing was expected:",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:"
+   },
+   "wall": 385.916396856308
+  },
+  "BUG_ROUTER_EN_IGNORED": {
+   "compiled": true,
+   "caught_by": [
+    "router_disable_test",
+    "random_test",
+    "random_config_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "hbus_sweep_test",
+    "random_backpressure_test"
+   ],
+   "first_error": {
+    "router_disable_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:",
+    "random_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 1 packet received but nothing was expected:",
+    "random_config_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:"
+   },
+   "wall": 351.6374201774597
+  },
+  "BUG_COUNTER_SATURATES": {
+   "compiled": true,
+   "caught_by": [
+    "counter_wrap_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "back_to_back_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "first_error": {
+    "counter_wrap_test": "UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 255, expected 0"
+   },
+   "wall": 350.91899728775024
+  },
+  "BUG_MEM_SIZE_OFF_BY_ONE": {
+   "compiled": true,
+   "caught_by": [
+    "pkt_mem_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test"
+   ],
+   "first_error": {
+    "pkt_mem_test": "UVM_ERROR uvm_test_top [PKT_MEM] mem_size_reg reads 21, expected 20",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x15, the model expects 0x14",
+    "random_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x40, the model expects 0x3f",
+    "random_config_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x40, the model expects 0x3f",
+    "random_backpressure_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x2b, the model expects 0x2a",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x02, the model expects 0x01"
+   },
+   "wall": 353.4681010246277
+  },
+  "BUG_PKT_MEM_NO_HEADER": {
+   "compiled": true,
+   "caught_by": [
+    "pkt_mem_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test"
+   ],
+   "first_error": {
+    "pkt_mem_test": "UVM_ERROR uvm_test_top [PKT_MEM] yapp_pkt_mem[0] reads 0x00, expected header 0x51",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0x50",
+    "random_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xde",
+    "random_config_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xfa",
+    "random_backpressure_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xfe",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0x07"
+   },
+   "wall": 380.7492549419403
+  },
+  "BUG_CTRL_REG_RESET": {
+   "compiled": true,
+   "caught_by": [
+    "uvm_reset_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "router_disable_test",
+    "backpressure_test",
+    "parity_error_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_introspection_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "first_error": {
+    "uvm_reset_test": "UVM_ERROR reporter [RegModel] Register \"yapp_rm.router_yapp_regs.ctrl_reg\" value read from DUT (0x000000000000001f) does not match mirrored value (0x000000000000003f) (valid bit mask = 0x00000000000000ff)",
+    "reg_function_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [PKT_COMPARE] Length mismatch: YAPP 42, Channel 8",
+    "reg_function_check_test": "UVM_ERROR uvm_test_top.tb.router_module.scoreboard [PKT_COMPARE] Length mismatch: YAPP 42, Channel 8",
+    "router_disable_test": "UVM_ERROR uvm_test_top [ROUTER_DIS] expected 3 packets on the channels after re-enabling, got 2",
+    "backpressure_test": "UVM_ERROR uvm_test_top [BACKPRESSURE] in_suspend never rose: the FIFO was never full, nothing was tested",
+    "parity_error_test": "UVM_ERROR uvm_test_top [PARITY] a packet with bad parity was not delivered unchanged"
+   },
+   "wall": 357.28986835479736
+  },
+  "BUG_HBUS_READ_STALE": {
+   "compiled": true,
+   "caught_by": [
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "missed_by": [
+    "base_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "back_to_back_test"
+   ],
+   "first_error": {
+    "uvm_reset_test": "UVM_ERROR reporter [RegModel] Register \"yapp_rm.router_yapp_regs.ctrl_reg\" value read from DUT (0x0000000000000000) does not match mirrored value (0x000000000000003f) (valid bit mask = 0x00000000000000ff)",
+    "uvm_mem_walk_test": "UVM_ERROR reporter@@walk_seq.single_mem_walk_seq [uvm_mem_walk_seq] \"yapp_rm.router_yapp_regs.yapp_mem[0]\" read back as 'h00000000000000fe instead of 'h00000000000000ff.",
+    "reg_access_test": "UVM_ERROR uvm_test_top [REG_ACCESS] addr0_cnt_reg: read returned 0x1a, expected 0x5a",
+    "reg_function_test": "UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 1, expected 0",
+    "reg_function_check_test": "UVM_ERROR reporter [RegModel] Register \"yapp_rm.router_yapp_regs.addr0_cnt_reg\" value read from DUT (0x0000000000000001) does not match mirrored value (0x0000000000000000) (valid bit mask = 0x00000000000000ff)",
+    "reg_introspection_test": "UVM_ERROR uvm_test_top [REG_ACCESS] parity_err_cnt_reg: read returned 0x1a, expected 0x5a",
+    "router_disable_test": "UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 254, expected 0",
+    "router_filter_test": "UVM_ERROR uvm_test_top [REG_FUNC] oversized_pkt_cnt_reg reads 255, expected 8",
+    "pkt_mem_test": "UVM_ERROR uvm_test_top [PKT_MEM] mem_size_reg reads 0, expected 20",
+    "reg_bit_walk_test": "UVM_ERROR uvm_test_top [REG_ACCESS] parity_err_cnt_reg: read returned 0x55, expected 0x00",
+    "parity_error_test": "UVM_ERROR uvm_test_top [REG_FUNC] parity_err_cnt_reg reads 3, expected 8",
+    "counter_wrap_test": "UVM_ERROR uvm_test_top [REG_FUNC] addr1_cnt_reg reads 1, expected 0",
+    "hbus_sweep_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1001 returned 0x00, the model expects 0x01",
+    "random_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1009 returned 0x2d, the model expects 0x00",
+    "random_config_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100b returned 0x84, the model expects 0x00",
+    "random_backpressure_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x15, the model expects 0x00",
+    "random_parity_test": "UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x10a3 returned 0xff, the model expects 0x00"
+   },
+   "wall": 378.71595287323
+  },
+  "BUG_FIFO_DEPTH_8": {
+   "compiled": true,
+   "caught_by": [],
+   "missed_by": [
+    "base_test",
+    "uvm_reset_test",
+    "uvm_mem_walk_test",
+    "reg_access_test",
+    "reg_function_test",
+    "reg_function_check_test",
+    "reg_introspection_test",
+    "router_disable_test",
+    "router_filter_test",
+    "pkt_mem_test",
+    "reg_bit_walk_test",
+    "hbus_protocol_test",
+    "backpressure_test",
+    "parity_error_test",
+    "counter_wrap_test",
+    "back_to_back_test",
+    "hbus_sweep_test",
+    "random_test",
+    "random_config_test",
+    "random_backpressure_test",
+    "random_parity_test"
+   ],
+   "first_error": {},
+   "wall": 377.3650393486023
+  }
+ }
+}

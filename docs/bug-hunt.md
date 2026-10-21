@@ -7,4 +7,291 @@ A testbench is only as good as the bugs it catches. The RTL of the router carrie
 !!! tip "For the mentor"
     Give a student a build with one bug (`cd yapp_project/tb && make sim TEST=... DEFINES=BUG_...`) and the log and waves of a failing test: finding *where* the design is wrong from *what* the testbench reports is the exercise. The sections below are the answers.
 
-*No results yet: run `make bug-hunt` and `make map`.*
+**9 of 10 bugs caught** · 2026-10-21 · commit `8bd1fce` · every test of `yapp_project/tb`, seed 1. **Survivors: `BUG_FIFO_DEPTH_8`** -- a hole in the testbench.
+
+## Which test catches which bug
+
+A dot is a test that fails on that bug (its first error is in the bug's section below); the tests are ordered by how many bugs they catch.
+
+<div class="mx-wrap" markdown="0"><table class="mx"><thead><tr><th></th><th class="mx-t"><span>random_parity_test</span></th><th class="mx-t"><span>hbus_sweep_test</span></th><th class="mx-t"><span>random_config_test</span></th><th class="mx-t"><span>random_test</span></th><th class="mx-t"><span>parity_error_test</span></th><th class="mx-t"><span>pkt_mem_test</span></th><th class="mx-t"><span>random_backpressure_test</span></th><th class="mx-t"><span>reg_function_check_test</span></th><th class="mx-t"><span>reg_function_test</span></th><th class="mx-t"><span>router_disable_test</span></th><th class="mx-t"><span>router_filter_test</span></th><th class="mx-t"><span>counter_wrap_test</span></th><th class="mx-t"><span>uvm_reset_test</span></th><th class="mx-t"><span>backpressure_test</span></th><th class="mx-t"><span>reg_access_test</span></th><th class="mx-t"><span>reg_bit_walk_test</span></th><th class="mx-t"><span>reg_introspection_test</span></th><th class="mx-t"><span>uvm_mem_walk_test</span></th><th class="mx-t"><span>back_to_back_test</span></th><th class="mx-t"><span>base_test</span></th><th class="mx-t"><span>hbus_protocol_test</span></th><th class="mx-n">tests</th></tr></thead><tbody>
+<tr><th class="mx-item st-covered" title="The parity byte is never checked: pkt_parity_err is stuck at 0.">BUG_PARITY_IGNORED</th><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by hbus_sweep_test">●</td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by random_test">●</td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by parity_error_test">●</td><td class="mx-c " title="BUG_PARITY_IGNORED missed by pkt_mem_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by random_backpressure_test"></td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by reg_function_check_test">●</td><td class="mx-c st-covered" title="BUG_PARITY_IGNORED caught by reg_function_test">●</td><td class="mx-c " title="BUG_PARITY_IGNORED missed by router_disable_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by router_filter_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by counter_wrap_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by uvm_reset_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by backpressure_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by reg_access_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by reg_introspection_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by back_to_back_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by base_test"></td><td class="mx-c " title="BUG_PARITY_IGNORED missed by hbus_protocol_test"></td><td class="mx-n">7</td></tr>
+<tr><th class="mx-item st-covered" title="A packet addressed to 3 is not dropped: it is routed to channel 0.">BUG_ADDR3_TO_CH0</th><td class="mx-c st-covered" title="BUG_ADDR3_TO_CH0 caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_ADDR3_TO_CH0 caught by hbus_sweep_test">●</td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by random_config_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by random_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by parity_error_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by pkt_mem_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by random_backpressure_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by reg_function_check_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by reg_function_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by router_disable_test"></td><td class="mx-c st-covered" title="BUG_ADDR3_TO_CH0 caught by router_filter_test">●</td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by counter_wrap_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by uvm_reset_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by backpressure_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by reg_access_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by reg_introspection_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by back_to_back_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by base_test"></td><td class="mx-c " title="BUG_ADDR3_TO_CH0 missed by hbus_protocol_test"></td><td class="mx-n">3</td></tr>
+<tr><th class="mx-item st-covered" title="The length check is off by one: a packet exactly maxpktsize + 1 long is forwarded.">BUG_OVERSIZED_OFF_BY_ONE</th><td class="mx-c st-covered" title="BUG_OVERSIZED_OFF_BY_ONE caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_OVERSIZED_OFF_BY_ONE caught by hbus_sweep_test">●</td><td class="mx-c st-covered" title="BUG_OVERSIZED_OFF_BY_ONE caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_OVERSIZED_OFF_BY_ONE caught by random_test">●</td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by parity_error_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by pkt_mem_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by random_backpressure_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by reg_function_check_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by reg_function_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by router_disable_test"></td><td class="mx-c st-covered" title="BUG_OVERSIZED_OFF_BY_ONE caught by router_filter_test">●</td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by counter_wrap_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by uvm_reset_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by backpressure_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by reg_access_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by reg_introspection_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by back_to_back_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by base_test"></td><td class="mx-c " title="BUG_OVERSIZED_OFF_BY_ONE missed by hbus_protocol_test"></td><td class="mx-n">5</td></tr>
+<tr><th class="mx-item st-covered" title="en_reg[0] is ignored: the router forwards packets while it is disabled.">BUG_ROUTER_EN_IGNORED</th><td class="mx-c st-covered" title="BUG_ROUTER_EN_IGNORED caught by random_parity_test">●</td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by hbus_sweep_test"></td><td class="mx-c st-covered" title="BUG_ROUTER_EN_IGNORED caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_ROUTER_EN_IGNORED caught by random_test">●</td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by parity_error_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by pkt_mem_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by random_backpressure_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by reg_function_check_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by reg_function_test"></td><td class="mx-c st-covered" title="BUG_ROUTER_EN_IGNORED caught by router_disable_test">●</td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by router_filter_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by counter_wrap_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by uvm_reset_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by backpressure_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by reg_access_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by reg_introspection_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by back_to_back_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by base_test"></td><td class="mx-c " title="BUG_ROUTER_EN_IGNORED missed by hbus_protocol_test"></td><td class="mx-n">4</td></tr>
+<tr><th class="mx-item st-covered" title="addr0_cnt_reg stops at 255 instead of wrapping to 0.">BUG_COUNTER_SATURATES</th><td class="mx-c " title="BUG_COUNTER_SATURATES missed by random_parity_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by hbus_sweep_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by random_config_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by random_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by parity_error_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by pkt_mem_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by random_backpressure_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by reg_function_check_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by reg_function_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by router_disable_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by router_filter_test"></td><td class="mx-c st-covered" title="BUG_COUNTER_SATURATES caught by counter_wrap_test">●</td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by uvm_reset_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by backpressure_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by reg_access_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by reg_introspection_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by back_to_back_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by base_test"></td><td class="mx-c " title="BUG_COUNTER_SATURATES missed by hbus_protocol_test"></td><td class="mx-n">1</td></tr>
+<tr><th class="mx-item st-covered" title="mem_size_reg holds the payload length plus one.">BUG_MEM_SIZE_OFF_BY_ONE</th><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by hbus_sweep_test">●</td><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by random_test">●</td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by parity_error_test"></td><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by pkt_mem_test">●</td><td class="mx-c st-covered" title="BUG_MEM_SIZE_OFF_BY_ONE caught by random_backpressure_test">●</td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by reg_function_check_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by reg_function_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by router_disable_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by router_filter_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by counter_wrap_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by uvm_reset_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by backpressure_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by reg_access_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by reg_introspection_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by back_to_back_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by base_test"></td><td class="mx-c " title="BUG_MEM_SIZE_OFF_BY_ONE missed by hbus_protocol_test"></td><td class="mx-n">6</td></tr>
+<tr><th class="mx-item st-covered" title="The header byte is never written to yapp_pkt_mem[0].">BUG_PKT_MEM_NO_HEADER</th><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by hbus_sweep_test">●</td><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by random_test">●</td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by parity_error_test"></td><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by pkt_mem_test">●</td><td class="mx-c st-covered" title="BUG_PKT_MEM_NO_HEADER caught by random_backpressure_test">●</td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by reg_function_check_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by reg_function_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by router_disable_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by router_filter_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by counter_wrap_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by uvm_reset_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by backpressure_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by reg_access_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by reg_introspection_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by back_to_back_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by base_test"></td><td class="mx-c " title="BUG_PKT_MEM_NO_HEADER missed by hbus_protocol_test"></td><td class="mx-n">6</td></tr>
+<tr><th class="mx-item st-covered" title="ctrl_reg resets to 0x1f: maxpktsize is 31 after reset instead of 63.">BUG_CTRL_REG_RESET</th><td class="mx-c " title="BUG_CTRL_REG_RESET missed by random_parity_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by hbus_sweep_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by random_config_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by random_test"></td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by parity_error_test">●</td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by pkt_mem_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by random_backpressure_test"></td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by reg_function_check_test">●</td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by reg_function_test">●</td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by router_disable_test">●</td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by router_filter_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by counter_wrap_test"></td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by uvm_reset_test">●</td><td class="mx-c st-covered" title="BUG_CTRL_REG_RESET caught by backpressure_test">●</td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by reg_access_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by reg_introspection_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by back_to_back_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by base_test"></td><td class="mx-c " title="BUG_CTRL_REG_RESET missed by hbus_protocol_test"></td><td class="mx-n">6</td></tr>
+<tr><th class="mx-item st-covered" title="An HBUS read captures the read mux one cycle too early: it returns the data of the previous address.">BUG_HBUS_READ_STALE</th><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by random_parity_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by hbus_sweep_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by random_config_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by random_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by parity_error_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by pkt_mem_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by random_backpressure_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by reg_function_check_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by reg_function_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by router_disable_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by router_filter_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by counter_wrap_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by uvm_reset_test">●</td><td class="mx-c " title="BUG_HBUS_READ_STALE missed by backpressure_test"></td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by reg_access_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by reg_bit_walk_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by reg_introspection_test">●</td><td class="mx-c st-covered" title="BUG_HBUS_READ_STALE caught by uvm_mem_walk_test">●</td><td class="mx-c " title="BUG_HBUS_READ_STALE missed by back_to_back_test"></td><td class="mx-c " title="BUG_HBUS_READ_STALE missed by base_test"></td><td class="mx-c " title="BUG_HBUS_READ_STALE missed by hbus_protocol_test"></td><td class="mx-n">17</td></tr>
+<tr><th class="mx-item st-gap" title="The output FIFOs are 8 bytes deep instead of 16.">BUG_FIFO_DEPTH_8</th><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by random_parity_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by hbus_sweep_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by random_config_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by random_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by parity_error_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by pkt_mem_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by random_backpressure_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by reg_function_check_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by reg_function_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by router_disable_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by router_filter_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by counter_wrap_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by uvm_reset_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by backpressure_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by reg_access_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by reg_bit_walk_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by reg_introspection_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by uvm_mem_walk_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by back_to_back_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by base_test"></td><td class="mx-c " title="BUG_FIFO_DEPTH_8 missed by hbus_protocol_test"></td><td class="mx-n">0</td></tr>
+<tr class="mx-sum"><th>bugs per test</th><td class="mx-n">7</td><td class="mx-n">6</td><td class="mx-n">6</td><td class="mx-n">6</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">3</td><td class="mx-n">2</td><td class="mx-n">2</td><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">1</td><td class="mx-n">0</td><td class="mx-n">0</td><td class="mx-n">0</td><td></td></tr>
+</tbody></table></div>
+
+The tests that catch the most bugs: [random_parity_test](regression/random_parity_test.md) (7), [hbus_sweep_test](regression/hbus_sweep_test.md) (6), [random_config_test](regression/random_config_test.md) (6). Tests that catch none of them: `back_to_back_test`, `base_test`, `hbus_protocol_test` -- they check things no mutant breaks (reset, register access paths), or run too little traffic.
+
+## The bugs
+
+### `BUG_PARITY_IGNORED`
+
+**The parity byte is never checked: pkt_parity_err is stuck at 0.** -- in [`yapp_project/rtl/yapp_input_fsm.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_input_fsm.sv). What the testbench must notice: A packet with bad parity still comes out on its channel (that is correct), but parity_err_cnt_reg stays 0 and no `error` pulse follows it.
+
+```systemverilog
+`ifdef BUG_PARITY_IGNORED
+  assign pkt_parity_err = 1'b0;   // BUG_PARITY_IGNORED: a bad parity byte is never noticed
+`else
+  assign pkt_parity_err = (in_data != parity_acc);
+`endif
+```
+
+**Caught by 7 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [reg_function_test](regression/reg_function_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] parity_err_cnt_reg reads 0, expected 1` |
+| [reg_function_check_test](regression/reg_function_check_test.md) | `UVM_ERROR reporter [RegModel] Register "yapp_rm.router_yapp_regs.parity_err_cnt_reg" value read from DUT (0x0000000000000000) does not match mirrored value (0x0000000000000002) (valid bit mask = 0x00000000000000ff)` |
+| [parity_error_test](regression/parity_error_test.md) | `UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 515` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1004 returned 0x00, the model expects 0x64` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 6925` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 4785` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.err_chk [ERR_PULSE] no error pulse within 10 cycles of the bad packet accepted at 465` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_introspection_test`, `router_disable_test`, `router_filter_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `counter_wrap_test`, `back_to_back_test`, `random_backpressure_test`.
+
+### `BUG_ADDR3_TO_CH0`
+
+**A packet addressed to 3 is not dropped: it is routed to channel 0.** -- in [`yapp_project/rtl/yapp_input_fsm.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_input_fsm.sv). What the testbench must notice: An unexpected packet on channel 0, addr3_cnt_reg does not count, addr0_cnt_reg counts one too many.
+
+```systemverilog
+`ifdef BUG_ROUTER_EN_IGNORED
+  // BUG_ROUTER_EN_IGNORED: packets are forwarded while en_reg[0] is 0
+  wire       hdr_drop   = hdr_ovs || (hdr_addr == 2'd3);
+`elsif BUG_ADDR3_TO_CH0
+  // BUG_ADDR3_TO_CH0: address 3 is not dropped, its packets come out on channel 0
+  wire       hdr_drop   = !router_en || hdr_ovs;
+`else
+  wire       hdr_drop   = !router_en || hdr_ovs || (hdr_addr == 2'd3);
+`endif
+`ifdef BUG_ADDR3_TO_CH0
+  wire [1:0] route_addr = (hdr_addr == 2'd3) ? 2'd0 : hdr_addr;
+`else
+  wire [1:0] route_addr = hdr_addr;   // the channel the header selects
+`endif
+```
+
+**Caught by 3 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [router_filter_test](regression/router_filter_test.md) | `UVM_ERROR uvm_test_top.tb.chan0.rx_agent.monitor [channel_rx_monitor] Packet with address 3 received on channel 0` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1006 returned 0x00, the model expects 0x64` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.chan0.rx_agent.monitor [channel_rx_monitor] Packet with address 3 received on channel 0` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_disable_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `counter_wrap_test`, `back_to_back_test`, `random_test`, `random_config_test`, `random_backpressure_test`.
+
+### `BUG_OVERSIZED_OFF_BY_ONE`
+
+**The length check is off by one: a packet exactly maxpktsize + 1 long is forwarded.** -- in [`yapp_project/rtl/yapp_input_fsm.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_input_fsm.sv). What the testbench must notice: A packet the reference model drops as oversized arrives on its channel; oversized_pkt_cnt_reg is one short.
+
+```systemverilog
+`ifdef BUG_OVERSIZED_OFF_BY_ONE
+  // BUG_OVERSIZED_OFF_BY_ONE: a packet exactly one byte longer than maxpktsize is forwarded
+  wire       hdr_ovs    = ({1'b0, hdr_len} > {1'b0, maxpktsize} + 7'd1);
+`else
+  wire       hdr_ovs    = (hdr_len > maxpktsize);
+`endif
+```
+
+**Caught by 5 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [router_filter_test](regression/router_filter_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 1 packet received but nothing was expected:` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_disable_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `counter_wrap_test`, `back_to_back_test`, `random_backpressure_test`.
+
+### `BUG_ROUTER_EN_IGNORED`
+
+**en_reg[0] is ignored: the router forwards packets while it is disabled.** -- in [`yapp_project/rtl/yapp_input_fsm.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_input_fsm.sv). What the testbench must notice: Packets sent while router_en is 0 come out on their channels instead of being dropped.
+
+```systemverilog
+`ifdef BUG_ROUTER_EN_IGNORED
+  // BUG_ROUTER_EN_IGNORED: packets are forwarded while en_reg[0] is 0
+  wire       hdr_drop   = hdr_ovs || (hdr_addr == 2'd3);
+`elsif BUG_ADDR3_TO_CH0
+  // BUG_ADDR3_TO_CH0: address 3 is not dropped, its packets come out on channel 0
+  wire       hdr_drop   = !router_en || hdr_ovs;
+`else
+  wire       hdr_drop   = !router_en || hdr_ovs || (hdr_addr == 2'd3);
+`endif
+```
+
+**Caught by 4 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [router_disable_test](regression/router_disable_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 1 packet received but nothing was expected:` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 0 packet received but nothing was expected:` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [router_scoreboard] Channel 2 packet received but nothing was expected:` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_filter_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `counter_wrap_test`, `back_to_back_test`, `hbus_sweep_test`, `random_backpressure_test`.
+
+### `BUG_COUNTER_SATURATES`
+
+**addr0_cnt_reg stops at 255 instead of wrapping to 0.** -- in [`yapp_project/rtl/yapp_hbus_regs.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_hbus_regs.sv). What the testbench must notice: After 256 packets to address 0 the counter reads 255, not 0 (the specification decision: the counters wrap).
+
+```systemverilog
+`ifdef BUG_COUNTER_SATURATES
+          2'd0: if (addr0_cnt_en && addr0_cnt_reg != 8'hff) addr0_cnt_reg <= addr0_cnt_reg + 8'd1;   // BUG_COUNTER_SATURATES: stops at 255 instead of wrapping to 0
+`else
+          2'd0: if (addr0_cnt_en) addr0_cnt_reg <= addr0_cnt_reg + 8'd1;
+`endif
+```
+
+**Caught by 1 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [counter_wrap_test](regression/counter_wrap_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 255, expected 0` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_disable_test`, `router_filter_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `back_to_back_test`, `hbus_sweep_test`, `random_test`, `random_config_test`, `random_backpressure_test`, `random_parity_test`.
+
+### `BUG_MEM_SIZE_OFF_BY_ONE`
+
+**mem_size_reg holds the payload length plus one.** -- in [`yapp_project/rtl/yapp_hbus_regs.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_hbus_regs.sv). What the testbench must notice: The register read after a packet is one more than the packet's length field.
+
+```systemverilog
+`ifdef BUG_MEM_SIZE_OFF_BY_ONE
+        mem_size_reg <= {2'b00, pkt_len} + 8'd1;   // BUG_MEM_SIZE_OFF_BY_ONE: counts the parity byte too
+`else
+        mem_size_reg <= {2'b00, pkt_len};
+`endif
+```
+
+**Caught by 6 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [pkt_mem_test](regression/pkt_mem_test.md) | `UVM_ERROR uvm_test_top [PKT_MEM] mem_size_reg reads 21, expected 20` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x15, the model expects 0x14` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x40, the model expects 0x3f` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x40, the model expects 0x3f` |
+| [random_backpressure_test](regression/random_backpressure_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x2b, the model expects 0x2a` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x02, the model expects 0x01` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_disable_test`, `router_filter_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `counter_wrap_test`, `back_to_back_test`.
+
+### `BUG_PKT_MEM_NO_HEADER`
+
+**The header byte is never written to yapp_pkt_mem[0].** -- in [`yapp_project/rtl/yapp_input_fsm.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_input_fsm.sv). What the testbench must notice: yapp_pkt_mem[0] keeps the value of the previous packet (or 0 after reset) instead of the header.
+
+```systemverilog
+`ifdef BUG_PKT_MEM_NO_HEADER
+      IDLE:    ;   // BUG_PKT_MEM_NO_HEADER: the header byte is never written to yapp_pkt_mem[0]
+`else
+      IDLE:    if (in_data_vld && accept && router_en) begin
+                 pkt_mem_we   = 1'b1;
+                 pkt_mem_addr = 6'd0;
+               end
+`endif
+```
+
+**Caught by 6 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [pkt_mem_test](regression/pkt_mem_test.md) | `UVM_ERROR uvm_test_top [PKT_MEM] yapp_pkt_mem[0] reads 0x00, expected header 0x51` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0x50` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xde` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xfa` |
+| [random_backpressure_test](regression/random_backpressure_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0xfe` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1010 returned 0x00, the model expects 0x07` |
+
+Missed by: `base_test`, `uvm_reset_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_function_test`, `reg_function_check_test`, `reg_introspection_test`, `router_disable_test`, `router_filter_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `backpressure_test`, `parity_error_test`, `counter_wrap_test`, `back_to_back_test`.
+
+### `BUG_CTRL_REG_RESET`
+
+**ctrl_reg resets to 0x1f: maxpktsize is 31 after reset instead of 63.** -- in [`yapp_project/rtl/yapp_hbus_regs.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_hbus_regs.sv). What the testbench must notice: The reset value read through the register model differs from the one in the register map, and packets longer than 31 are dropped before anybody wrote ctrl_reg.
+
+```systemverilog
+`ifdef BUG_CTRL_REG_RESET
+      ctrl_reg  <= 8'h1f;   // BUG_CTRL_REG_RESET: the reset value of maxpktsize is 31, not 63
+`else
+      ctrl_reg  <= 8'h3f;
+`endif
+```
+
+**Caught by 6 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [uvm_reset_test](regression/uvm_reset_test.md) | `UVM_ERROR reporter [RegModel] Register "yapp_rm.router_yapp_regs.ctrl_reg" value read from DUT (0x000000000000001f) does not match mirrored value (0x000000000000003f) (valid bit mask = 0x00000000000000ff)` |
+| [reg_function_test](regression/reg_function_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [PKT_COMPARE] Length mismatch: YAPP 42, Channel 8` |
+| [reg_function_check_test](regression/reg_function_check_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.scoreboard [PKT_COMPARE] Length mismatch: YAPP 42, Channel 8` |
+| [router_disable_test](regression/router_disable_test.md) | `UVM_ERROR uvm_test_top [ROUTER_DIS] expected 3 packets on the channels after re-enabling, got 2` |
+| [backpressure_test](regression/backpressure_test.md) | `UVM_ERROR uvm_test_top [BACKPRESSURE] in_suspend never rose: the FIFO was never full, nothing was tested` |
+| [parity_error_test](regression/parity_error_test.md) | `UVM_ERROR uvm_test_top [PARITY] a packet with bad parity was not delivered unchanged` |
+
+Missed by: `base_test`, `uvm_mem_walk_test`, `reg_access_test`, `reg_introspection_test`, `router_filter_test`, `pkt_mem_test`, `reg_bit_walk_test`, `hbus_protocol_test`, `counter_wrap_test`, `back_to_back_test`, `hbus_sweep_test`, `random_test`, `random_config_test`, `random_backpressure_test`, `random_parity_test`.
+
+### `BUG_HBUS_READ_STALE`
+
+**An HBUS read captures the read mux one cycle too early: it returns the data of the previous address.** -- in [`yapp_project/rtl/yapp_hbus_regs.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_hbus_regs.sv). What the testbench must notice: Every read returns the value of the register read before it; the first read after reset returns 0.
+
+```systemverilog
+`ifdef BUG_HBUS_READ_STALE
+  logic [7:0] rd_mux_q;   // BUG_HBUS_READ_STALE: the read returns the mux of the cycle before
+`endif
+`ifdef BUG_HBUS_READ_STALE
+      rd_mux_q <= rd_mux;
+      if (hen && !hwr_rd && !hdata_oe) begin
+        hdata_out <= rd_mux_q;   // one cycle too early: the previous address's data
+      end
+`else
+      if (hen && !hwr_rd) begin
+        hdata_out <= rd_mux;
+      end
+`endif
+```
+
+**Caught by 17 of 21 tests.** The first error each one reports:
+
+| Test | First error |
+|---|---|
+| [uvm_reset_test](regression/uvm_reset_test.md) | `UVM_ERROR reporter [RegModel] Register "yapp_rm.router_yapp_regs.ctrl_reg" value read from DUT (0x0000000000000000) does not match mirrored value (0x000000000000003f) (valid bit mask = 0x00000000000000ff)` |
+| [uvm_mem_walk_test](regression/uvm_mem_walk_test.md) | `UVM_ERROR reporter@@walk_seq.single_mem_walk_seq [uvm_mem_walk_seq] "yapp_rm.router_yapp_regs.yapp_mem[0]" read back as 'h00000000000000fe instead of 'h00000000000000ff.` |
+| [reg_access_test](regression/reg_access_test.md) | `UVM_ERROR uvm_test_top [REG_ACCESS] addr0_cnt_reg: read returned 0x1a, expected 0x5a` |
+| [reg_function_test](regression/reg_function_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 1, expected 0` |
+| [reg_function_check_test](regression/reg_function_check_test.md) | `UVM_ERROR reporter [RegModel] Register "yapp_rm.router_yapp_regs.addr0_cnt_reg" value read from DUT (0x0000000000000001) does not match mirrored value (0x0000000000000000) (valid bit mask = 0x00000000000000ff)` |
+| [reg_introspection_test](regression/reg_introspection_test.md) | `UVM_ERROR uvm_test_top [REG_ACCESS] parity_err_cnt_reg: read returned 0x1a, expected 0x5a` |
+| [router_disable_test](regression/router_disable_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] addr0_cnt_reg reads 254, expected 0` |
+| [router_filter_test](regression/router_filter_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] oversized_pkt_cnt_reg reads 255, expected 8` |
+| [pkt_mem_test](regression/pkt_mem_test.md) | `UVM_ERROR uvm_test_top [PKT_MEM] mem_size_reg reads 0, expected 20` |
+| [reg_bit_walk_test](regression/reg_bit_walk_test.md) | `UVM_ERROR uvm_test_top [REG_ACCESS] parity_err_cnt_reg: read returned 0x55, expected 0x00` |
+| [parity_error_test](regression/parity_error_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] parity_err_cnt_reg reads 3, expected 8` |
+| [counter_wrap_test](regression/counter_wrap_test.md) | `UVM_ERROR uvm_test_top [REG_FUNC] addr1_cnt_reg reads 1, expected 0` |
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1001 returned 0x00, the model expects 0x01` |
+| [random_test](regression/random_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x1009 returned 0x2d, the model expects 0x00` |
+| [random_config_test](regression/random_config_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100b returned 0x84, the model expects 0x00` |
+| [random_backpressure_test](regression/random_backpressure_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x100d returned 0x15, the model expects 0x00` |
+| [random_parity_test](regression/random_parity_test.md) | `UVM_ERROR uvm_test_top.tb.router_module.reference [REF_READ] HBUS read 0x10a3 returned 0xff, the model expects 0x00` |
+
+Missed by: `base_test`, `hbus_protocol_test`, `backpressure_test`, `back_to_back_test`.
+
+### `BUG_FIFO_DEPTH_8`
+
+**The output FIFOs are 8 bytes deep instead of 16.** -- in [`yapp_project/rtl/yapp_output_channel.sv`](https://github.com/tamirgabgab/Qcom-Mentoring/blob/main/yapp_project/rtl/yapp_output_channel.sv). What the testbench must notice: in_suspend rises after 8 bytes instead of 16 when a channel is held with suspend; the packets themselves still arrive intact.
+
+```systemverilog
+`ifdef BUG_FIFO_DEPTH_8
+  yapp_fifo #(.DEPTH(8), .WIDTH(8)) u_fifo (    // BUG_FIFO_DEPTH_8: half the FIFO the specification asks for
+`else
+  yapp_fifo #(.DEPTH(16), .WIDTH(8)) u_fifo (
+`endif
+```
+
+**Survives every test** -- nothing in the regression notices this bug. That is a hole in the test plan; the next test to write is the one that catches it.
