@@ -1,0 +1,23 @@
+# The whole course site as one page, for the printable PDF (make docs-pdf -> offline/QcomCourse.pdf).
+# Inherits the offline build (vendored Mermaid, page.html links) and adds the print-site plugin,
+# which must be the last plugin. The project map page is left out: it is an interactive iframe.
+INHERIT: mkdocs-offline.yml
+
+plugins:
+  - search
+  - offline
+  - print-site:
+      add_to_navigation: false
+      print_page_title: "YAPP Router — the whole course"
+      add_print_site_banner: false
+      add_table_of_contents: true
+      toc_depth: 2
+      add_full_urls: false
+      add_cover_page: true
+      cover_page_template: "docs/assets/print/cover.tpl"
+      enumerate_headings: false
+      enumerate_figures: false
+      include_css: true
+      include_js: true
+      exclude:
+        - project-map.md

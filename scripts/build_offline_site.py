@@ -70,6 +70,8 @@ def zip_site(site):
 
 def main():
     fetch_vendor()
+    if "--vendor-only" in sys.argv:      # scripts/build_pdf.py only needs the cached Mermaid
+        return
     site = build_site()
     zip_site(site)
     print("open " + str((site / "index.html").relative_to(ROOT)))
