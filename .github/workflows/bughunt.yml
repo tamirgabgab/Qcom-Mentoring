@@ -1,0 +1,45 @@
+name: bughunt
+
+# The deliberate bugs of scripts/mutants.yaml: the design compiled with each one must make
+# at least one test of the project fail. One job per mutant (scripts/bug_hunt.py --check).
+on:
+  push:
+  pull_request:
+
+jobs:
+  mutants:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 -c "import json, yaml; print('list=' + json.dumps(list(yaml.safe_load(open('scripts/mutants.yaml'))['mutants'])))" >> "$GITHUB_OUTPUT"
+
+  hunt:
+    needs: mutants
+    runs-on: ubuntu-latest
+    container: verilator/verilator:v5.052
+    strategy:
+      fail-fast: false
+      matrix:
+        mutant: ${{ fromJSON(needs.mutants.outputs.list) }}
+    name: ${{ matrix.mutant }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the UVM pieces Verilator needs
+        run: bash scripts/setup_sim.sh
+
+      - name: Every test of the project on the mutant; fail when none catches it
+        run: python3 scripts/bug_hunt.py --mutant "${{ matrix.mutant }}" --check
+
+      - name: Keep the result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bug-hunt-${{ matrix.mutant }}
+          path: build/sim/bug_hunt_*.json
+          if-no-files-found: ignore

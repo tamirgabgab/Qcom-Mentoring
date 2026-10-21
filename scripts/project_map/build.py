@@ -42,6 +42,10 @@ TEST_PLAN_MD = os.path.join(ROOT, "docs", "test-plan.md")
 COVERAGE_MD = os.path.join(ROOT, "docs", "coverage-results.md")
 REGMAP_MD = os.path.join(ROOT, "docs", "dut", "register-map.md")
 REGRESSION_DIR = os.path.join(ROOT, "docs", "regression")
+BUG_HUNT_MD = os.path.join(ROOT, "docs", "bug-hunt.md")
+MUTANTS_YAML = os.path.join(ROOT, "scripts", "mutants.yaml")
+BUG_HUNT_JSON = os.path.join(ROOT, "docs", "assets", "generated", "bug_hunt.json")
+HISTORY_CSV = os.path.join(ROOT, "yapp_project", "regression", "history.csv")
 GEN_DIR = os.path.join(ROOT, "docs", "assets", "generated")      # snippets --8<-- included by hand-written pages
 INDEX_TESTS_MD = os.path.join(GEN_DIR, "index_tests.md")
 INDEX_SEQS_MD = os.path.join(GEN_DIR, "index_sequences.md")
@@ -185,6 +189,7 @@ def render_coverage_md(repo_url):
     except OSError:
         return "\n".join(out) + "\nNo coverage data yet: run the regression and the report.\n"
     blob = (repo_url.rstrip("/") + "/blob/main/") if repo_url else ""
+    out.append(render_test_ranking(benches))
     for data in benches:
         html = f"coverage/{data['bench']}/index.html"
         has_html = os.path.isfile(os.path.join(ROOT, "docs", html))
@@ -192,6 +197,203 @@ def render_coverage_md(repo_url):
         out.append(coverage_report.markdown(data, html if has_html else None, title=not single,
                                             depth=1 if single else 2, src_prefix=blob))
     return "\n".join(out)
+
+
+def render_test_ranking(benches):
+    """Which tests the coverage needs: bins per test, bins only one test hits, and a greedy minimal
+    set of tests that hits every covered bin (from the `tests` list of every bin in coverage.json)."""
+    bins = []
+    for data in benches:
+        for g in data["covergroups"]:
+            for pt in g["points"]:
+                for b in pt["bins"]:
+                    if b.get("tests"):
+                        bins.append((f"{g['name']}.{pt['name']}.{b['name']}", set(b["tests"])))
+    if not bins:
+        return ""
+    tests = sorted({t for _, ts in bins for t in ts})
+    hit = {t: sum(1 for _, ts in bins if t in ts) for t in tests}
+    only = {t: [n for n, ts in bins if ts == {t}] for t in tests}
+    # greedy set cover: the test that adds the most bins, until every bin is hit
+    left, chosen = set(range(len(bins))), []
+    while left:
+        best = max(tests, key=lambda t: (sum(1 for i in left if t in bins[i][1]), -hit[t], t))
+        gain = {i for i in left if best in bins[i][1]}
+        if not gain:
+            break
+        chosen.append((best, len(gain)))
+        left -= gain
+    L = ["## Which tests the coverage needs\n",
+         f"{len(bins)} bins were hit by at least one run. **Bins** is how many of them the test hits (over all its seeds); "
+         "**only this test** counts the bins no other test reaches -- drop that test and they become holes. "
+         "**Minimal set** is a greedy choice: the test that hits the most bins, then the one that adds the most to it, "
+         "until every hit bin is covered -- the regression you would run when there is time for only a few tests. "
+         "(Generated from `coverage.json` by `scripts/project_map/build.py`.)\n",
+         "| Test | Bins | Only this test | In the minimal set |", "|---|---|---|---|"]
+    order = {name: i + 1 for i, (name, _) in enumerate(chosen)}
+    for tname in sorted(tests, key=lambda x: (-hit[x], x)):
+        o = only[tname]
+        only_txt = (f"**{len(o)}**: " + ", ".join(f"`{x}`" for x in o[:3]) + (" …" if len(o) > 3 else "")) if o else "0"
+        rank = order.get(tname)
+        L.append(f"| [{tname}](regression/{tname}.md) | {hit[tname]} | {only_txt} | "
+                 + (f"#{rank} (+{dict(chosen)[tname]} bins)" if rank else "") + " |")
+    L.append("")
+    L.append(f"Minimal set, in order: " + " → ".join(f"`{n}`" for n, _ in chosen)
+             + f" ({len(chosen)} of {len(tests)} tests hit every bin the regression hit).\n")
+    return "\n".join(L)
+
+
+def render_history_svg():
+    """A small trend chart of yapp_project/regression/history.csv (pass rate, bins, wall time per
+    regression), inline SVG for the Regression results page; '' without history."""
+    import csv
+    if not os.path.isfile(HISTORY_CSV):
+        return ""
+    rows = [r for r in csv.DictReader(open(HISTORY_CSV, encoding="utf-8")) if r.get("date")]
+    if len(rows) < 1:
+        return ""
+    W, H, PL, PB = 640, 170, 44, 34
+    n = len(rows)
+    xs = [PL + (W - PL - 16) * (i / max(n - 1, 1)) for i in range(n)]
+    def series(key, lo, hi):
+        vals = [float(r[key] or 0) for r in rows]
+        return vals, [H - PB - (H - PB - 14) * ((v - lo) / (hi - lo) if hi > lo else 1) for v in vals]
+    pass_v, pass_y = series("pass_pct", 0, 100)
+    bins_v, bins_y = series("bins_pct", 0, 100)
+    wall_max = max(float(r["wall_min"] or 0) for r in rows) or 1
+    wall_v, wall_y = series("wall_min", 0, wall_max)
+    def poly(ys, color, width=2, dash=""):
+        pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in zip(xs, ys))
+        if n == 1:
+            return f'<circle cx="{xs[0]:.1f}" cy="{ys[0]:.1f}" r="4" fill="{color}"/>'
+        return (f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="{width}" {dash}/>'
+                + "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3" fill="{color}"/>' for x, y in zip(xs, ys)))
+    labels = "".join(f'<text x="{x:.1f}" y="{H - PB + 14}" font-size="10" text-anchor="middle">{r["date"][5:]}</text>'
+                     f'<text x="{x:.1f}" y="{H - PB + 26}" font-size="9" text-anchor="middle" fill="#888">{r["commit"]}</text>'
+                     for x, r in zip(xs, rows))
+    svg = (f'<svg class="trend" viewBox="0 0 {W} {H}" width="{W}" height="{H}" xmlns="http://www.w3.org/2000/svg" '
+           'font-family="sans-serif" style="max-width:100%;height:auto">'
+           f'<line x1="{PL}" y1="{H - PB}" x2="{W - 16}" y2="{H - PB}" stroke="#aaa"/>'
+           f'<line x1="{PL}" y1="14" x2="{PL}" y2="{H - PB}" stroke="#aaa"/>'
+           f'<text x="{PL - 4}" y="18" font-size="10" text-anchor="end">100%</text>'
+           f'<text x="{PL - 4}" y="{H - PB}" font-size="10" text-anchor="end">0</text>'
+           + poly(pass_y, "#10a37f") + poly(bins_y, "#3f51b5", 2, 'stroke-dasharray="5 3"') + poly(wall_y, "#f59e0b", 1.5, 'stroke-dasharray="2 3"')
+           + labels
+           + f'<text x="{W - 16}" y="12" font-size="10" text-anchor="end"><tspan fill="#10a37f">runs passed %</tspan> · '
+             f'<tspan fill="#3f51b5">bins hit %</tspan> · <tspan fill="#f59e0b">wall minutes (0–{wall_max:.0f})</tspan></text>'
+           "</svg>")
+    table = ["| Date | Commit | Runs passed | Bins hit | Wall |", "|---|---|---|---|---|"] + [
+        f"| {r['date']} | `{r['commit']}` | {r['passed']} / {r['total']} | {r['bins_hit']} / {r['bins_total']} | {float(r['wall_min'] or 0):.1f} min |"
+        for r in rows[::-1][:12]]
+    return ("## History\n\nEvery committed regression report, newest last (`yapp_project/regression/history.csv`, "
+            "appended by `make sim-report OUT=yapp_project/regression`): the share of runs that passed, the share of "
+            "coverage bins hit, and the simulation wall time.\n\n" + svg + "\n\n" + "\n".join(table) + "\n")
+
+
+def render_bug_hunt_md(m, repo_url):
+    """docs/bug-hunt.md from scripts/mutants.yaml and docs/assets/generated/bug_hunt.json (scripts/bug_hunt.py)."""
+    N = m["nodes"]
+    mutants = yaml.safe_load(open(MUTANTS_YAML, encoding="utf-8"))["mutants"]
+    try:
+        res = json.load(open(BUG_HUNT_JSON, encoding="utf-8"))
+    except OSError:
+        res = None
+    blob = (repo_url.rstrip("/") + "/blob/main/") if repo_url else ""
+    out = ["# Bug hunt\n",
+           "<!-- generated by scripts/project_map/build.py from scripts/mutants.yaml and "
+           "docs/assets/generated/bug_hunt.json (scripts/bug_hunt.py) -- do not edit this file -->\n",
+           "A testbench is only as good as the bugs it catches. The RTL of the router carries "
+           f"**{len(mutants)} deliberate bugs**, each behind a `` `define `` (`BUG_*` in `yapp_project/rtl`, listed in "
+           "`scripts/mutants.yaml`): compile the design with one of them and the regression must fail. "
+           "`make bug-hunt` (`scripts/bug_hunt.py`) compiles the design once per bug, runs every test of the "
+           "project on it and records which tests catch it; the `bughunt` workflow does the same in CI and goes "
+           "red when a bug survives. This page is that record.\n",
+           "!!! tip \"For the mentor\"\n    Give a student a build with one bug (`cd yapp_project/tb && make sim TEST=... DEFINES=BUG_...`) and the log and waves of a failing test: finding *where* the design is wrong from "
+           "*what* the testbench reports is the exercise. The sections below are the answers.\n"]
+    if not res:
+        out.append("*No results yet: run `make bug-hunt` and `make map`.*\n")
+        return "\n".join(out)
+    tests = res["tests"]
+    caught = {n: set(r["caught_by"]) for n, r in res["mutants"].items()}
+    survivors = [n for n in mutants if n in caught and not caught[n]]
+    out.append(f"**{sum(1 for n in mutants if caught.get(n))} of {len(mutants)} bugs caught** · {res['date']}"
+               + (f" · commit `{res['commit']}`" if res.get("commit") else "") + " · every test of `yapp_project/tb`, seed 1."
+               + (" **Survivors: " + ", ".join(f"`{s}`" for s in survivors) + "** -- a hole in the testbench." if survivors else "") + "\n")
+    # the matrix: bugs x tests
+    per_test = {t: sum(1 for n in mutants if t in caught.get(n, ())) for t in tests}
+    order = sorted(tests, key=lambda t: (-per_test[t], t))
+    out += ["## Which test catches which bug\n",
+            "A dot is a test that fails on that bug (its first error is in the bug's section below); the tests are "
+            "ordered by how many bugs they catch.\n",
+            '<div class="mx-wrap" markdown="0"><table class="mx"><thead><tr><th></th>'
+            + "".join(f'<th class="mx-t"><span>{html.escape(t)}</span></th>' for t in order)
+            + '<th class="mx-n">tests</th></tr></thead><tbody>']
+    for n in mutants:
+        c = caught.get(n, set())
+        cls = "st-covered" if c else "st-gap"
+        out.append(f'<tr><th class="mx-item {cls}" title="{html.escape(mutants[n]["bug"])}">{n}</th>'
+                   + "".join(f'<td class="mx-c {"st-covered" if t in c else ""}" title="{html.escape(n + " caught by " + t if t in c else n + " missed by " + t)}">{"●" if t in c else ""}</td>' for t in order)
+                   + f'<td class="mx-n">{len(c)}</td></tr>')
+    out.append('<tr class="mx-sum"><th>bugs per test</th>' + "".join(f'<td class="mx-n">{per_test[t]}</td>' for t in order) + "<td></td></tr>")
+    out.append("</tbody></table></div>\n")
+    strongest = [t for t in order if per_test[t]][:3]
+    useless = [t for t in order if not per_test[t]]
+    out.append(f"The tests that catch the most bugs: " + ", ".join(f"[{t}](regression/{t}.md) ({per_test[t]})" for t in strongest)
+               + (". Tests that catch none of them: " + ", ".join(f"`{t}`" for t in useless) + " -- they check things no mutant breaks (reset, register access paths), or run too little traffic." if useless else ".") + "\n")
+    # one section per bug
+    out.append("## The bugs\n")
+    for n, info in mutants.items():
+        r = res["mutants"].get(n)
+        out.append(f"### `{n}`\n")
+        out.append(f"**{info['bug']}** -- in [`{info['file']}`]({blob + info['file'] if blob else info['file']}). "
+                   f"What the testbench must notice: {info['notice']}\n")
+        out.append("```systemverilog\n" + mutant_source(info["file"], n) + "```\n")
+        if not r:
+            out.append("*Not run yet.*\n")
+            continue
+        if not r.get("compiled", True):
+            out.append("**Does not compile** with this define -- fix the mutant.\n")
+            continue
+        if r["caught_by"]:
+            out.append(f"**Caught by {len(r['caught_by'])} of {len(tests)} tests.** The first error each one reports:\n")
+            out.append("| Test | First error |\n|---|---|")
+            for t in r["caught_by"]:
+                out.append(f"| [{t}](regression/{t}.md) | `{md_cell(r['first_error'].get(t, ''))}` |")
+            out.append("")
+            if r["missed_by"]:
+                out.append("Missed by: " + ", ".join(f"`{t}`" for t in r["missed_by"]) + ".\n")
+        else:
+            out.append("**Survives every test** -- nothing in the regression notices this bug. That is a hole in the "
+                       "test plan; the next test to write is the one that catches it.\n")
+    return "\n".join(out)
+
+
+def mutant_source(path, name):
+    """The `ifdef block of one mutant in a file, with two lines of context, for the page."""
+    lines = open(os.path.join(ROOT, path), encoding="utf-8").read().split("\n")
+    out, i = [], 0
+    while i < len(lines):
+        if re.match(r"^`(ifdef|elsif) " + name + r"\b", lines[i]):
+            j = i
+            depth = 0
+            while j < len(lines):
+                if lines[j].startswith("`ifdef"):
+                    depth += 1
+                if lines[j].startswith("`endif"):
+                    depth -= 1
+                    if depth <= 0:
+                        break
+                j += 1
+            if lines[i].startswith("`elsif"):
+                k = i
+                while k > 0 and not lines[k].startswith("`ifdef"):
+                    k -= 1
+                i = k
+            out.append("\n".join(lines[i:j + 1]) + "\n")
+            i = j + 1
+            continue
+        i += 1
+    return "".join(out) or "// (no `ifdef block found)\n"
 
 
 def render_regression_md(m, repo_url):
@@ -257,6 +459,9 @@ def render_regression_md(m, repo_url):
         out += ["## Failures\n", "| Test | Seed | First error |", "|---|---|---|"]
         out += [f"| [{r['test']}]({r['test']}.md) | {r['seed']} | {md_cell(r['first_error'] or r['reason'] or 'see the log')} |"
                 for r in failed] + [""]
+    hist = render_history_svg()
+    if hist:
+        out.append(hist)
     out += ["## Tests\n", "| Test | Lab | Seeds passed | Sim time | Wall | In / fwd / drop (seed 1) | Bins hit | Page |",
             "|---|---|---|---|---|---|---|---|"]
     for t in tests:
@@ -470,7 +675,8 @@ def build(write=True):
     )
     GENERATED.clear()
     GENERATED.update({MODEL_JSON: model_json, REGMAP_JS: regmap_js, STANDALONE: html, TEST_PLAN_MD: render_test_plan_md(m),
-                      COVERAGE_MD: render_coverage_md(repo_url), REGMAP_MD: render_regmap_md(m["meta"]["regmap"])})
+                      COVERAGE_MD: render_coverage_md(repo_url), REGMAP_MD: render_regmap_md(m["meta"]["regmap"]),
+                      BUG_HUNT_MD: render_bug_hunt_md(m, repo_url)})
     GENERATED.update(render_regression_md(m, repo_url))
     GENERATED.update(render_index_tables(m))
     if write:

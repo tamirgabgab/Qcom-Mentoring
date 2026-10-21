@@ -113,7 +113,11 @@ module yapp_hbus_regs (
 
       // end of packet: parity byte accepted
       if (pkt_done) begin
+`ifdef BUG_MEM_SIZE_OFF_BY_ONE
+        mem_size_reg <= {2'b00, pkt_len} + 8'd1;   // BUG_MEM_SIZE_OFF_BY_ONE: counts the parity byte too
+`else
         mem_size_reg <= {2'b00, pkt_len};
+`endif
         // counters
         if (pkt_parity_err && parity_err_cnt_en) begin
           parity_err_cnt_reg <= parity_err_cnt_reg + 8'd1;
@@ -122,7 +126,11 @@ module yapp_hbus_regs (
           oversized_pkt_cnt_reg <= oversized_pkt_cnt_reg + 8'd1;
         end
         case (pkt_addr)
+`ifdef BUG_COUNTER_SATURATES
+          2'd0: if (addr0_cnt_en && addr0_cnt_reg != 8'hff) addr0_cnt_reg <= addr0_cnt_reg + 8'd1;   // BUG_COUNTER_SATURATES: stops at 255 instead of wrapping to 0
+`else
           2'd0: if (addr0_cnt_en) addr0_cnt_reg <= addr0_cnt_reg + 8'd1;
+`endif
           2'd1: if (addr1_cnt_en) addr1_cnt_reg <= addr1_cnt_reg + 8'd1;
           2'd2: if (addr2_cnt_en) addr2_cnt_reg <= addr2_cnt_reg + 8'd1;
           2'd3: if (addr3_cnt_en) addr3_cnt_reg <= addr3_cnt_reg + 8'd1;
@@ -141,6 +149,9 @@ module yapp_hbus_regs (
 
   // Read mux (combinational, registered into hdata_out on the first read edge)
   logic [7:0] rd_mux;
+`ifdef BUG_HBUS_READ_STALE
+  logic [7:0] rd_mux_q;   // BUG_HBUS_READ_STALE: the read returns the mux of the cycle before
+`endif
   always_comb begin
     rd_mux = 8'h00;
     if (haddr >= ADDR_MEM_BASE && haddr <= ADDR_MEM_BASE + 16'h00ff) begin
@@ -170,16 +181,27 @@ module yapp_hbus_regs (
 
   always_ff @(posedge clock or posedge reset) begin
     if (reset) begin
+`ifdef BUG_CTRL_REG_RESET
+      ctrl_reg  <= 8'h1f;   // BUG_CTRL_REG_RESET: the reset value of maxpktsize is 31, not 63
+`else
       ctrl_reg  <= 8'h3f;
+`endif
       en_reg    <= 8'h01;
       hdata_out <= 8'h00;
       hdata_oe  <= 1'b0;
     end else begin
       // Read: capture on the first cycle, drive during the second
       hdata_oe <= hen && !hwr_rd;
+`ifdef BUG_HBUS_READ_STALE
+      rd_mux_q <= rd_mux;
+      if (hen && !hwr_rd && !hdata_oe) begin
+        hdata_out <= rd_mux_q;   // one cycle too early: the previous address's data
+      end
+`else
       if (hen && !hwr_rd) begin
         hdata_out <= rd_mux;
       end
+`endif
 
       // Write: single cycle, RW locations only
       if (hen && hwr_rd) begin

@@ -9,6 +9,9 @@
 //   yapp_input_fsm      u_input_fsm   input port FSM, drop decision, FIFO push
 //   yapp_output_channel g_ch[x].u_ch  16-byte FIFO + channel handshake (x = 0..2)
 //   yapp_hbus_regs      u_regs        all registers/memories + HBUS host port
+//
+// `define BUG_<name> (scripts/mutants.yaml) plants one deliberate bug for the bug hunt
+// (scripts/bug_hunt.py): the regression must fail on every one of them.
 //   yapp_error_timer    u_error_timer `error` pulse 1..10 cycles after bad parity
 //
 // Function

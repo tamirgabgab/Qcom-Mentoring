@@ -8,6 +8,16 @@
 
 Every test of the project runs with several seeds (`scripts/regress.yaml`); the page of a test lists its seeds with the log, the timeline and the waves of each one, the stages of the test and the wave pictures of its first seed. The whole report (logs, timelines, waves) is committed in `yapp_project/regression/`; how to read a log: [Logs, timelines and waves](../appendix/sim-report.md).
 
+## History
+
+Every committed regression report, newest last (`yapp_project/regression/history.csv`, appended by `make sim-report OUT=yapp_project/regression`): the share of runs that passed, the share of coverage bins hit, and the simulation wall time.
+
+<svg class="trend" viewBox="0 0 640 170" width="640" height="170" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" style="max-width:100%;height:auto"><line x1="44" y1="136" x2="624" y2="136" stroke="#aaa"/><line x1="44" y1="14" x2="44" y2="136" stroke="#aaa"/><text x="40" y="18" font-size="10" text-anchor="end">100%</text><text x="40" y="136" font-size="10" text-anchor="end">0</text><circle cx="44.0" cy="14.0" r="4" fill="#10a37f"/><circle cx="44.0" cy="14.0" r="4" fill="#3f51b5"/><circle cx="44.0" cy="14.0" r="4" fill="#f59e0b"/><text x="44.0" y="150" font-size="10" text-anchor="middle">10-14</text><text x="44.0" y="162" font-size="9" text-anchor="middle" fill="#888">b63c755</text><text x="624" y="12" font-size="10" text-anchor="end"><tspan fill="#10a37f">runs passed %</tspan> · <tspan fill="#3f51b5">bins hit %</tspan> · <tspan fill="#f59e0b">wall minutes (0–18)</tspan></text></svg>
+
+| Date | Commit | Runs passed | Bins hit | Wall |
+|---|---|---|---|---|
+| 2026-10-14 | `b63c755` | 100 / 100 | 222 / 222 | 17.8 min |
+
 ## Tests
 
 | Test | Lab | Seeds passed | Sim time | Wall | In / fwd / drop (seed 1) | Bins hit | Page |

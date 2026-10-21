@@ -4,6 +4,35 @@
 
 The functional coverage of the project's regression, **merged over every test and seed**: which bins were hit, how often and by which tests, and which bins no run hit (the *holes*). Every run writes its covergroup bins to a coverage database; the report merges them. How the covergroups are built and where they live: [Functional coverage](components/coverage.md). The bins of each coverage collector are also in its panel on the [project map](project-map.md).
 
+## Which tests the coverage needs
+
+222 bins were hit by at least one run. **Bins** is how many of them the test hits (over all its seeds); **only this test** counts the bins no other test reaches -- drop that test and they become holes. **Minimal set** is a greedy choice: the test that hits the most bins, then the one that adds the most to it, until every hit bin is covered -- the regression you would run when there is time for only a few tests. (Generated from `coverage.json` by `scripts/project_map/build.py`.)
+
+| Test | Bins | Only this test | In the minimal set |
+|---|---|---|---|
+| [hbus_sweep_test](regression/hbus_sweep_test.md) | 197 | **4**: `hbus_addr_cg.addr_x_rw.gap_last_x_write`, `hbus_addr_cg.addr_x_rw.gap_mid_x_write`, `hbus_addr_cg.addr_x_rw.pkt_mem_last_x_write` … | #1 (+197 bins) |
+| [random_parity_test](regression/random_parity_test.md) | 184 | 0 |  |
+| [random_config_test](regression/random_config_test.md) | 182 | 0 |  |
+| [random_test](regression/random_test.md) | 182 | 0 | #2 (+25 bins) |
+| [random_backpressure_test](regression/random_backpressure_test.md) | 159 | 0 |  |
+| [router_filter_test](regression/router_filter_test.md) | 99 | 0 |  |
+| [reg_bit_walk_test](regression/reg_bit_walk_test.md) | 93 | 0 |  |
+| [reg_function_check_test](regression/reg_function_check_test.md) | 90 | 0 |  |
+| [reg_function_test](regression/reg_function_test.md) | 90 | 0 |  |
+| [router_disable_test](regression/router_disable_test.md) | 80 | 0 |  |
+| [reg_introspection_test](regression/reg_introspection_test.md) | 70 | 0 |  |
+| [counter_wrap_test](regression/counter_wrap_test.md) | 64 | 0 |  |
+| [parity_error_test](regression/parity_error_test.md) | 60 | 0 |  |
+| [hbus_protocol_test](regression/hbus_protocol_test.md) | 57 | 0 |  |
+| [pkt_mem_test](regression/pkt_mem_test.md) | 52 | 0 |  |
+| [uvm_reset_test](regression/uvm_reset_test.md) | 32 | 0 |  |
+| [reg_access_test](regression/reg_access_test.md) | 30 | 0 |  |
+| [uvm_mem_walk_test](regression/uvm_mem_walk_test.md) | 28 | 0 |  |
+| [back_to_back_test](regression/back_to_back_test.md) | 19 | 0 |  |
+| [backpressure_test](regression/backpressure_test.md) | 15 | 0 |  |
+
+Minimal set, in order: `hbus_sweep_test` → `random_test` (2 of 20 tests hit every bin the regression hit).
+
 Merged over **100 runs**: 222 of 222 bins hit. A percentage is covered bins / bins of the covergroup, as `get_inst_coverage()` gives it in the log of one run.
 
 Annotated sources (genhtml): [coverage/yapp_project_tb/index.html](coverage/yapp_project_tb/index.html)

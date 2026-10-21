@@ -1,0 +1,54 @@
+# mutants.yaml -- the deliberate bugs of the bug hunt (scripts/bug_hunt.py, docs/bug-hunt.md).
+#
+# Every mutant is a `define in yapp_project/rtl (grep BUG_ in the RTL): the design compiled with
+# +define+<name> has that one bug, and the project's regression must fail on it. `make bug-hunt`
+# compiles the design once per mutant, runs every test of yapp_project/tb on it and records which
+# tests catch the bug in docs/assets/generated/bug_hunt.json; the site page is built from that.
+# The `bughunt` workflow runs every mutant in CI and fails when one of them survives.
+#
+#   name:    the define
+#   file:    where it lives
+#   bug:     what the design does wrong
+#   notice:  what a correct testbench must notice
+
+mutants:
+  BUG_PARITY_IGNORED:
+    file: yapp_project/rtl/yapp_input_fsm.sv
+    bug: "The parity byte is never checked: pkt_parity_err is stuck at 0."
+    notice: "A packet with bad parity still comes out on its channel (that is correct), but parity_err_cnt_reg stays 0 and no `error` pulse follows it."
+  BUG_ADDR3_TO_CH0:
+    file: yapp_project/rtl/yapp_input_fsm.sv
+    bug: "A packet addressed to 3 is not dropped: it is routed to channel 0."
+    notice: "An unexpected packet on channel 0, addr3_cnt_reg does not count, addr0_cnt_reg counts one too many."
+  BUG_OVERSIZED_OFF_BY_ONE:
+    file: yapp_project/rtl/yapp_input_fsm.sv
+    bug: "The length check is off by one: a packet exactly maxpktsize + 1 long is forwarded."
+    notice: "A packet the reference model drops as oversized arrives on its channel; oversized_pkt_cnt_reg is one short."
+  BUG_ROUTER_EN_IGNORED:
+    file: yapp_project/rtl/yapp_input_fsm.sv
+    bug: "en_reg[0] is ignored: the router forwards packets while it is disabled."
+    notice: "Packets sent while router_en is 0 come out on their channels instead of being dropped."
+  BUG_COUNTER_SATURATES:
+    file: yapp_project/rtl/yapp_hbus_regs.sv
+    bug: "addr0_cnt_reg stops at 255 instead of wrapping to 0."
+    notice: "After 256 packets to address 0 the counter reads 255, not 0 (the specification decision: the counters wrap)."
+  BUG_MEM_SIZE_OFF_BY_ONE:
+    file: yapp_project/rtl/yapp_hbus_regs.sv
+    bug: "mem_size_reg holds the payload length plus one."
+    notice: "The register read after a packet is one more than the packet's length field."
+  BUG_PKT_MEM_NO_HEADER:
+    file: yapp_project/rtl/yapp_input_fsm.sv
+    bug: "The header byte is never written to yapp_pkt_mem[0]."
+    notice: "yapp_pkt_mem[0] keeps the value of the previous packet (or 0 after reset) instead of the header."
+  BUG_CTRL_REG_RESET:
+    file: yapp_project/rtl/yapp_hbus_regs.sv
+    bug: "ctrl_reg resets to 0x1f: maxpktsize is 31 after reset instead of 63."
+    notice: "The reset value read through the register model differs from the one in the register map, and packets longer than 31 are dropped before anybody wrote ctrl_reg."
+  BUG_HBUS_READ_STALE:
+    file: yapp_project/rtl/yapp_hbus_regs.sv
+    bug: "An HBUS read captures the read mux one cycle too early: it returns the data of the previous address."
+    notice: "Every read returns the value of the register read before it; the first read after reset returns 0."
+  BUG_FIFO_DEPTH_8:
+    file: yapp_project/rtl/yapp_output_channel.sv
+    bug: "The output FIFOs are 8 bytes deep instead of 16."
+    notice: "in_suspend rises after 8 bytes instead of 16 when a channel is held with suspend; the packets themselves still arrive intact."

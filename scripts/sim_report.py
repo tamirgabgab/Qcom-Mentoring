@@ -624,6 +624,8 @@ def build_report(only=None, out=None, make_zip=False):
     with open(os.path.join(out, "runs.json"), "w") as fh:
         json.dump({**meta, "committed": committed, "runs": records}, fh, indent=1)
         fh.write("\n")
+    if committed:
+        append_history(os.path.join(out, "history.csv"), meta, cov)
     if not committed:
         with open(os.path.join(out, "all_logs.log"), "w") as fh:
             fh.write("\n".join(all_logs))
@@ -638,6 +640,21 @@ def build_report(only=None, out=None, make_zip=False):
                     z.write(p, os.path.join("regression_report", os.path.relpath(p, out)))
         print(f"zip: {os.path.relpath(zpath, ROOT)}  ({os.path.getsize(zpath) / 1e6:.1f} MB)")
     return all(r["ok"] for r in runs)
+
+
+def append_history(path, meta, cov):
+    """One row per committed report in history.csv (the trend chart of the Regression results page);
+    a report of the same commit replaces its row."""
+    bt = sum(d["total"] for d in cov) if cov else 0
+    bh = sum(d["covered"] for d in cov) if cov else 0
+    header = "date,commit,total,passed,pass_pct,bins_hit,bins_total,bins_pct,wall_min\n"
+    row = (f"{meta['date']},{meta['commit']},{meta['total']},{meta['passed']},{100 * meta['passed'] / max(meta['total'], 1):.1f},"
+           f"{bh},{bt},{100 * bh / bt if bt else 0:.1f},{meta['wall'] / 60:.1f}\n")
+    rows = [ln for ln in open(path).read().splitlines(True)[1:] if ln.strip()] if os.path.isfile(path) else []
+    rows = [ln for ln in rows if ln.split(",")[1] != str(meta["commit"])] + [row]
+    with open(path, "w") as fh:
+        fh.write(header + "".join(rows))
+    print(f"    history: {len(rows)} regression(s) in {os.path.relpath(path, ROOT)}")
 
 
 def write_coverage(runs, out, committed):

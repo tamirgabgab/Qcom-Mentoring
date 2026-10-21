@@ -57,14 +57,32 @@ module yapp_input_fsm (
   // Header decode (valid while state == IDLE and in_data_vld == 1)
   wire [1:0] hdr_addr   = in_data[1:0];
   wire [5:0] hdr_len    = in_data[7:2];
+`ifdef BUG_OVERSIZED_OFF_BY_ONE
+  // BUG_OVERSIZED_OFF_BY_ONE: a packet exactly one byte longer than maxpktsize is forwarded
+  wire       hdr_ovs    = ({1'b0, hdr_len} > {1'b0, maxpktsize} + 7'd1);
+`else
   wire       hdr_ovs    = (hdr_len > maxpktsize);
+`endif
+`ifdef BUG_ROUTER_EN_IGNORED
+  // BUG_ROUTER_EN_IGNORED: packets are forwarded while en_reg[0] is 0
+  wire       hdr_drop   = hdr_ovs || (hdr_addr == 2'd3);
+`elsif BUG_ADDR3_TO_CH0
+  // BUG_ADDR3_TO_CH0: address 3 is not dropped, its packets come out on channel 0
+  wire       hdr_drop   = !router_en || hdr_ovs;
+`else
   wire       hdr_drop   = !router_en || hdr_ovs || (hdr_addr == 2'd3);
+`endif
+`ifdef BUG_ADDR3_TO_CH0
+  wire [1:0] route_addr = (hdr_addr == 2'd3) ? 2'd0 : hdr_addr;
+`else
+  wire [1:0] route_addr = hdr_addr;   // the channel the header selects
+`endif
 
   // Target FIFO is full -> ask the driver to hold the current byte.
   // Dropped packets are consumed without FIFO space, so never suspended.
   always_comb begin
     case (state)
-      IDLE:    in_suspend = in_data_vld && !hdr_drop && fifo_full[hdr_addr];
+      IDLE:    in_suspend = in_data_vld && !hdr_drop && fifo_full[route_addr];
       default: in_suspend = !cur_drop && fifo_full[cur_addr];
     endcase
   end
@@ -77,7 +95,7 @@ module yapp_input_fsm (
     fifo_push = 3'b000;
     fifo_din  = in_data;
     case (state)
-      IDLE:    if (in_data_vld && accept && !hdr_drop) fifo_push[hdr_addr] = 1'b1;
+      IDLE:    if (in_data_vld && accept && !hdr_drop) fifo_push[route_addr] = 1'b1;
       PAYLOAD: if (in_data_vld && accept && !cur_drop) fifo_push[cur_addr] = 1'b1;
       PARITY:  if (accept && !cur_drop)                fifo_push[cur_addr] = 1'b1;
       default: ;
@@ -92,10 +110,14 @@ module yapp_input_fsm (
     pkt_mem_addr  = 6'd0;
     pkt_mem_wdata = in_data;
     case (state)
+`ifdef BUG_PKT_MEM_NO_HEADER
+      IDLE:    ;   // BUG_PKT_MEM_NO_HEADER: the header byte is never written to yapp_pkt_mem[0]
+`else
       IDLE:    if (in_data_vld && accept && router_en) begin
                  pkt_mem_we   = 1'b1;
                  pkt_mem_addr = 6'd0;
                end
+`endif
       PAYLOAD: if (in_data_vld && accept && cur_enabled) begin
                  pkt_mem_we   = 1'b1;
                  pkt_mem_addr = byte_cnt + 6'd1;
@@ -109,7 +131,11 @@ module yapp_input_fsm (
   assign pkt_done       = (state == PARITY) && accept && cur_enabled;
   assign pkt_addr       = cur_addr;
   assign pkt_len        = cur_len;
+`ifdef BUG_PARITY_IGNORED
+  assign pkt_parity_err = 1'b0;   // BUG_PARITY_IGNORED: a bad parity byte is never noticed
+`else
   assign pkt_parity_err = (in_data != parity_acc);
+`endif
   assign pkt_oversized  = cur_oversized;
 
   // Main FSM
@@ -128,7 +154,7 @@ module yapp_input_fsm (
         //------------------------------------------------------------------
         IDLE: begin
           if (in_data_vld && accept) begin
-            cur_addr      <= hdr_addr;
+            cur_addr      <= route_addr;
             cur_len       <= hdr_len;
             byte_cnt      <= 6'd0;
             parity_acc    <= in_data;

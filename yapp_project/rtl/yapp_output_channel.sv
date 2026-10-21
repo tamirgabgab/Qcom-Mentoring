@@ -29,7 +29,11 @@ module yapp_output_channel (
   logic empty;
   logic pop;
 
+`ifdef BUG_FIFO_DEPTH_8
+  yapp_fifo #(.DEPTH(8), .WIDTH(8)) u_fifo (    // BUG_FIFO_DEPTH_8: half the FIFO the specification asks for
+`else
   yapp_fifo #(.DEPTH(16), .WIDTH(8)) u_fifo (
+`endif
     .clock (clock),
     .reset (reset),
     .push  (push),
