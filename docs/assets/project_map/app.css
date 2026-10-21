@@ -421,11 +421,24 @@ body.pm-standalone { margin: 0; background: var(--pm-bg); color: var(--pm-fg);
   .pm-codepane, .pm-resizer.r-code { display: none; }
   .pm:not(.code-collapsed) .pm-panel { width: 400px; flex-basis: 400px; }
 }
+.pm-more { display: none; }
+.pm-notice { padding: 6px 12px; font-size: 13px; background: var(--pm-accent); color: #fff; }
+.pm-notice a { color: #fff; font-weight: 600; text-decoration: underline; cursor: pointer; margin-left: 6px; }
 @media (max-width: 900px) {
   .pm-body { flex-direction: column; }
   .pm-panel { width: auto !important; flex: 0 0 42% !important; border-left: 0; border-top: 1px solid var(--pm-border); }
   .pm-resizer { display: none; }
-  .pm-search input { width: 150px; }
+  .pm-toolbar { gap: 6px; padding: 6px 8px; }
+  .pm-views { max-width: 100%; overflow-x: auto; flex: 0 0 auto; white-space: nowrap; }
+  .pm-views button { white-space: nowrap; }
+  .pm-crumbs { display: none; }
+  .pm-search { flex: 1 1 120px; }
+  .pm-search input { width: 100%; min-width: 90px; }
+  .pm-more { display: inline-block; }
+  .pm-tools { display: none; flex-basis: 100%; }
+  .pm.tools-open .pm-tools { display: flex; }
+  .pm-minimap { display: none !important; }
+  .pm-legend { display: none; }
   .pm-statusbar .pm-hint { display: none; }
   .pm-statusbar-path { max-width: 100%; }
 }

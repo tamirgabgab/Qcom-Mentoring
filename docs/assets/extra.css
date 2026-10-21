@@ -12,8 +12,9 @@
 /* Checkpoint question boxes */
 .md-typeset details.question > summary { font-weight: 600; }
 
-/* Compact tables */
+/* Compact tables; a test or file name in a cell stays on one line */
 .md-typeset table:not([class]) { font-size: 0.8rem; }
+.md-typeset table:not([class]) code { white-space: nowrap; }
 
 /* Project map page: the interactive map fills the viewport */
 .pm-embed { position: relative; width: 100%; height: calc(100vh - 7.5rem); min-height: 560px; margin: 0.5rem 0 1rem;

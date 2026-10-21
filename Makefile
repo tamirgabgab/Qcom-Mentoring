@@ -18,6 +18,8 @@
 #   make coverage             print the merged functional coverage of the last regression and its holes
 #                             (scripts/coverage_report.py) [ONLY=yapp_project]
 #   make docs                 build the teaching site into site/
+#   make docs-pdf             the site as one PDF (offline/QcomCourse.pdf)
+#   make student-kit          build/StudentKit.zip: labs/*/start, the offline site, the map, the PDF
 #   make docs-offline         build the teaching site as a folder that opens from disk (no server, no internet):
 #                             offline/site/index.html (committed) and build/QcomCourseSite.zip (needs npm once)
 #   make serve                serve the teaching site locally
@@ -25,6 +27,12 @@
 #   make map-check            verify the committed project map is up to date (CI)
 #   make map-export           export every map view to SVG/PNG/PDF (node + playwright)
 #   make readme-shots         retake the README screenshots (site build + node + playwright)
+#   make start                regenerate labs/<lab>/start/ (the student's start point of every lab); make start-check compares
+#   make check LAB=lab05_seq [START=1] [TEST=t]   run the tests of a lab in Verilator and check what the logs show
+#   make bug-hunt [MUTANT=BUG_X]   compile the design with each deliberate bug and see which tests catch it
+#   make see-it-run           regenerate the log excerpts of the lab pages from the last regression
+#   make check-fresh          the committed regression report (and bug hunt) match regress.yaml / mutants.yaml
+#   make hooks                install the pre-commit hook (.githooks: style check of staged .sv + reminders)
 #   make clean                remove simulator output in every lab
 # ---------------------------------------------------------------------------
 PYTHON    ?= python3
@@ -37,7 +45,7 @@ SEEDS     ?=
 ONLY      ?=
 SIM       := $(PYTHON) scripts/sim.py
 
-.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report coverage docs docs-offline serve map map-check map-export readme-shots clean
+.PHONY: help lint style style-check uvm-src run run-project setup-sim sim sim-project regress sim-report coverage docs docs-offline serve map map-check map-export readme-shots check-fresh hooks start start-check check see-it-run bug-hunt docs-pdf student-kit clean
 
 help:
 	@awk 'NR > 1 && /^# ---/ { exit } NR > 1' $(MAKEFILE_LIST)
@@ -95,6 +103,14 @@ docs:
 docs-offline:
 	$(PYTHON) scripts/build_offline_site.py
 
+# the whole site as one printable PDF: offline/QcomCourse.pdf (mkdocs-print-site-plugin + Playwright)
+docs-pdf:
+	$(PYTHON) scripts/build_pdf.py
+
+# what a student gets on day one: build/StudentKit.zip (the start/ of every lab, the offline site, the map, the PDF)
+student-kit:
+	$(PYTHON) scripts/student_kit.py
+
 map: uvm-src
 	$(PYTHON) -m scripts.project_map.build
 
@@ -106,6 +122,37 @@ map-export:
 
 readme-shots: docs
 	node scripts/readme_shots.mjs
+
+# the start point of every lab for a student: labs/<lab>/start/ (committed; `lint` elaborates them too)
+start:
+	$(PYTHON) scripts/make_start.py
+
+start-check:
+	$(PYTHON) scripts/make_start.py --check
+
+# every test of a lab (or of the project) in Verilator, each checked against what its log must show
+check: uvm-src
+ifeq ($(LAB),)
+	$(error usage: make check LAB=lab05_seq [START=1]   or   make check LAB=yapp_project)
+endif
+	$(SIM) check $(LAB) $(if $(START),--start) $(if $(TEST),-t $(TEST))
+
+# the bug hunt: every mutant of scripts/mutants.yaml against every project test (~1 h; writes docs/assets/generated/bug_hunt.json)
+bug-hunt: uvm-src
+	$(PYTHON) scripts/bug_hunt.py $(foreach m,$(MUTANT),--mutant $(m))
+
+# the "See it run" excerpts of the lab pages, from the logs of the last `make regress` (committed)
+see-it-run:
+	$(PYTHON) scripts/see_it_run.py
+
+# the committed artifacts (regression report, bug hunt) still match their sources; the `fresh` workflow also rebuilds offline/site
+check-fresh:
+	$(PYTHON) scripts/check_fresh.py
+
+# git runs .githooks/pre-commit on every commit: style check of the staged .sv files + reminders
+hooks:
+	git config core.hooksPath .githooks
+	@echo "pre-commit hook installed (.githooks/pre-commit)"
 
 serve:
 	mkdocs serve

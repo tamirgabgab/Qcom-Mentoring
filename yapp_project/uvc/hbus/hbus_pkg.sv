@@ -18,7 +18,6 @@ package hbus_pkg;
   `include "hbus_master_seqs.sv"
   `include "hbus_master_driver.sv"
   `include "hbus_master_agent.sv"
-  `include "hbus_slave_agent.sv"
   `include "hbus_env.sv"
   `include "hbus_reg_adapter.sv"
 

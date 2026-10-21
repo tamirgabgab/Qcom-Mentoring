@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# pre-commit -- the fast checks on what is being committed (install once: make hooks).
+#   * scripts/sv_style.py --check on every staged .sv file
+#   * a reminder when a source of a generated artifact changed and the artifact did not
+set -e
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+sv="$(printf '%s\n' "$staged" | grep -E '\.sv$' || true)"
+if [ -n "$sv" ]; then
+  # shellcheck disable=SC2086
+  python3 scripts/sv_style.py --check $sv
+fi
+needs_map="$(printf '%s\n' "$staged" | grep -E '\.sv$|^docs/assets/project_map/(app|sim|regmap)\.(js|css)$|^scripts/project_map/(annotations|regmap)\.yaml$' || true)"
+map_in="$(printf '%s\n' "$staged" | grep -E '^docs/downloads/yapp_project_map\.html$|^docs/assets/project_map/model\.json$' || true)"
+if [ -n "$needs_map" ] && [ -z "$map_in" ]; then
+  echo "pre-commit: a source of the project map is staged but the map is not -- run 'make map' and add docs/downloads/yapp_project_map.html (CI runs build --check)" >&2
+fi
+docs_in="$(printf '%s\n' "$staged" | grep -E '^docs/|^mkdocs' || true)"
+offline_in="$(printf '%s\n' "$staged" | grep -E '^offline/site/' || true)"
+if [ -n "$docs_in" ] && [ -z "$offline_in" ]; then
+  echo "pre-commit: docs changed but offline/site is not staged -- run 'make docs-offline' before the push (the 'fresh' workflow checks it)" >&2
+fi

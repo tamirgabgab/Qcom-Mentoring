@@ -48,6 +48,9 @@ markdown_extensions:
       permalink: true
       toc_depth: 3
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -111,9 +114,12 @@ nav:
       - Random values: components/random.md
       - Random tests: components/random-tests.md
   - Test plan: test-plan.md
+  - Glossary: glossary.md
+  - FAQ and troubleshooting: faq.md
   - Results:
       - Coverage results: coverage-results.md
       - Regression results: regression/index.md
+      - Bug hunt: bug-hunt.md
   - Labs:
       - Overview: labs/index.md
       - "Lab 1 — Stimulus model": labs/lab01.md
@@ -132,6 +138,16 @@ nav:
       - "Lab 11A — Register model generation": labs/lab11a.md
       - "Lab 11B — Register model integration": labs/lab11b.md
       - "Lab 11C — Register tests": labs/lab11c.md
+  - Mentor's guide:
+      - Overview: mentor/index.md
+      - "Session 1 — Data items, components, phases": mentor/session-1.md
+      - "Session 2 — A UVC, the factory, configuration": mentor/session-2.md
+      - "Session 3 — Sequences": mentor/session-3.md
+      - "Session 4 — Interfaces and the DUT": mentor/session-4.md
+      - "Session 5 — Integrating UVCs, the virtual sequencer": mentor/session-5.md
+      - "Session 6 — TLM, scoreboard, reference model": mentor/session-6.md
+      - "Session 7 — Functional coverage": mentor/session-7.md
+      - "Session 8 — The register model": mentor/session-8.md
   - Appendix:
       - Files, classes, tests, sequences: appendix/index-tables.md
       - UVM concept → lab map: appendix/concept-map.md

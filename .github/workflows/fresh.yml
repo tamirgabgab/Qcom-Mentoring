@@ -1,0 +1,32 @@
+name: fresh
+
+# The generated artifacts that are committed (the offline site, the regression report) must
+# match their sources. The map has its own check in `lint` (build --check).
+on:
+  push:
+  pull_request:
+
+jobs:
+  committed-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs Material and PyYAML
+        run: pip install mkdocs-material pyyaml
+
+      - name: The regression report names the tests of regress.yaml
+        run: python3 scripts/check_fresh.py
+
+      - name: Rebuild the offline site and compare it with the committed one
+        run: |
+          python3 scripts/build_offline_site.py
+          if ! git diff --quiet -- offline/site; then
+            echo "::error::offline/site is stale: run 'make docs-offline' and commit offline/site"
+            git diff --stat -- offline/site | tail -20
+            exit 1
+          fi

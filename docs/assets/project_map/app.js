@@ -302,7 +302,16 @@
       if (this.opts.standaloneUrl) {
         this.tools.append(el("a", { href: this.opts.standaloneUrl, download: "", title: "Save this map as one HTML file that works offline" }, [el("button", {}, ["Download offline copy"])]));
       }
-      r.append(el("header", { class: "pm-toolbar" }, [this.views, this.crumbs, el("div", { class: "pm-search" }, [this.search, this.searchList]), this.tools]));
+      // narrow screens (phone, split window): the tools fold behind one button
+      this.btnMore = el("button", { class: "pm-more", title: "Tools", onclick: () => r.classList.toggle("tools-open") }, ["☰"]);
+      r.append(el("header", { class: "pm-toolbar" }, [this.views, this.crumbs, el("div", { class: "pm-search" }, [this.search, this.searchList]), this.btnMore, this.tools]));
+      if (window.innerWidth <= 900 && !load("pm-narrow-seen", false)) {
+        const note = el("div", { class: "pm-notice" }, [
+          "This map is made for a desktop screen: here the tools are behind ☰ and the Source column is hidden. ",
+          el("a", { onclick: () => { note.remove(); save("pm-narrow-seen", true); } }, ["OK"]),
+        ]);
+        r.append(note);
+      }
       r.append(this.subbar);
       // body
       this.svg = svg("svg", { xmlns: SVG_NS });

@@ -39,8 +39,8 @@ flowchart TB
 
 ## Env: a group of agents
 
-The UVC's env holds its agents (one here; `hbus_env` has `masters[]` and
-`slaves[]`). The testbench env holds the UVC envs plus the analysis components.
+The UVC's env holds its agents (one here; `hbus_env` has a `masters[]` array and
+no slave agent, because the router is the only slave on the bus). The testbench env holds the UVC envs plus the analysis components.
 
 ```systemverilog
 --8<-- "yapp_project/uvc/yapp/yapp_env.sv"
@@ -76,7 +76,7 @@ flowchart TB
 
 Each level reads the value in its own `build_phase` and re-publishes it for its
 children. That keeps every component independent of the names above it. The
-same pattern gives `hbus_env` its `num_masters` / `num_slaves`.
+same pattern gives `hbus_env` its `num_masters`.
 
 ## Common mistakes
 

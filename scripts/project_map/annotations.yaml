@@ -101,7 +101,6 @@ lab_overrides:
   router_decision: "TP"
   router_reason_e: "TP"
   # provided UVCs appear with the integration lab
-  hbus_slave_agent: "7"
   # DUT and interfaces
   hw_top: "6"
   hw_top.dut: "6"
@@ -122,12 +121,11 @@ lab_overrides:
 
 array_sizes:
   tb.hbus.masters: 1      # uvm_config_int::set(this, "hbus", "num_masters", 1) in router_tb
-  tb.hbus.slaves: 0       # ... "num_slaves", 0 -- the router is the only slave
 
 notes:
   tb.yapp.agent.driver:    "Built only when is_active == UVM_ACTIVE (set_config_test makes the agent passive)."
   tb.yapp.agent.sequencer: "Built only when is_active == UVM_ACTIVE."
-  tb.hbus.masters[0]:      "num_masters = 1: one master agent. The DUT is the only slave (num_slaves = 0)."
+  tb.hbus.masters[0]:      "num_masters = 1: one master agent. The DUT is the only slave, so the UVC has no slave agent."
   tb.chan0:                "channel_id = 0: the monitor checks that every packet carries address 0."
   tb.chan1:                "channel_id = 1."
   tb.chan2:                "channel_id = 2."
@@ -239,11 +237,10 @@ classes:
     summary: "Drives HBUS writes (1 cycle) and reads (2 cycles); copies read data back into the item."
   hbus_master_sequencer: {summary: "uvm_sequencer #(hbus_transaction)."}
   hbus_master_agent: {summary: "HBUS master: driver + sequencer (the monitor is shared at env level)."}
-  hbus_slave_agent:  {summary: "Placeholder slave agent -- the router is the only slave, so none is built."}
   hbus_monitor:
     summary: "Watches the shared bus and publishes every access on item_collected_port (feeds the reference model)."
   hbus_env:
-    summary: "num_masters master agents, num_slaves slave agents and one shared monitor."
+    summary: "num_masters master agents and one shared monitor; the router is the only slave, so there is no slave agent."
   hbus_base_seq: {summary: "Base of the HBUS sequences; objection handling."}
   hbus_write_seq: {summary: "One write to `haddr` with `hdata`."}
   hbus_read_seq:  {summary: "One read from `haddr`; the result lands in the item."}

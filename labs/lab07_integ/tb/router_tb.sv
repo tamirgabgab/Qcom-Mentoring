@@ -40,7 +40,6 @@ function void router_tb::build_phase(uvm_phase phase);
   uvm_config_int::set(this, "chan1", "channel_id", 1);
   uvm_config_int::set(this, "chan2", "channel_id", 2);
   uvm_config_int::set(this, "hbus",  "num_masters", 1);
-  uvm_config_int::set(this, "hbus",  "num_slaves",  0);
 
   m_yapp    = yapp_env::type_id::create("yapp", this);
   m_chan0   = channel_env::type_id::create("chan0", this);

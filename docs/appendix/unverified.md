@@ -42,7 +42,7 @@ now owes one pulse per packet ([random tests](../components/random-tests.md)).
 
 * Cadence `reg_verifier` generation (Lab 11A) — replaced by a hand-written model.
 * Verisium Debug steps (Lab 5) — tool specific.
-* `hbus_slave_agent` — a placeholder; the router is the only slave.
+* A slave agent in the HBUS UVC — the router is the only slave, so `hbus_env` has master agents and a monitor only.
 
 ## How to report
 
