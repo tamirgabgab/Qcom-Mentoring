@@ -3,6 +3,8 @@
 [![lint](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/lint.yml/badge.svg)](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/lint.yml)
 [![sim](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/sim.yml/badge.svg)](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/sim.yml)
 [![docs](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/docs.yml/badge.svg)](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/docs.yml)
+[![fresh](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/fresh.yml/badge.svg)](https://github.com/tamirgabgab/Qcom-Mentoring/actions/workflows/fresh.yml)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-open-24292f?logo=github)](https://codespaces.new/tamirgabgab/Qcom-Mentoring?quickstart=1)
 [![site](https://img.shields.io/badge/course%20site-tamirgabgab.github.io-3f51b5)](https://tamirgabgab.github.io/Qcom-Mentoring/)
 [![project map](https://img.shields.io/badge/project%20map-interactive-26a69a)](https://tamirgabgab.github.io/Qcom-Mentoring/project-map/)
 
@@ -34,6 +36,11 @@ from disk after `git clone` / `git pull` (no server, no internet).
 | **Waves** of a run in Surfer | the *Surfer* column of the regression report | `<run>/<run>.fst` + layout [`yapp_project/tb/yapp_router.sucl`](yapp_project/tb/yapp_router.sucl) |
 | **How to read logs, timelines, waves** | [/appendix/sim-report/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/sim-report/) | [`offline/site/appendix/sim-report.html`](offline/site/appendix/sim-report.html) |
 | **Verification status** (Verilator vs Xcelium) | [/appendix/unverified/](https://tamirgabgab.github.io/Qcom-Mentoring/appendix/unverified/) | [`offline/site/appendix/unverified.html`](offline/site/appendix/unverified.html) |
+| **Bug hunt** (deliberate RTL bugs × the tests that catch them) | [/bug-hunt/](https://tamirgabgab.github.io/Qcom-Mentoring/bug-hunt/) | [`docs/bug-hunt.md`](docs/bug-hunt.md), `scripts/mutants.yaml` |
+| **Mentor's guide** (one page per session) | [/mentor/](https://tamirgabgab.github.io/Qcom-Mentoring/mentor/) | [`docs/mentor/`](docs/mentor/) |
+| **Glossary** and **FAQ** | [/glossary/](https://tamirgabgab.github.io/Qcom-Mentoring/glossary/), [/faq/](https://tamirgabgab.github.io/Qcom-Mentoring/faq/) | [`docs/glossary.md`](docs/glossary.md), [`docs/faq.md`](docs/faq.md) |
+| **The course as one PDF** | — | [`offline/QcomCourse.pdf`](offline/QcomCourse.pdf) (`make docs-pdf`) |
+| **Student kit** (every lab's `start/`, the offline site, the map, the PDF) | — | `make student-kit` → `build/StudentKit.zip` |
 | **CI** (lint, simulation, site) | [GitHub Actions](https://github.com/tamirgabgab/Qcom-Mentoring/actions) | `make lint`, `make regress`, `make docs` |
 
 **Opening the files on your computer.** The `.html` files: double-click, they open in the
@@ -232,13 +239,26 @@ Lab 7 on, the labs compile the finished UVCs and the DUT from
 [`yapp_project/`](yapp_project/). The complete project — the state the course
 reaches at the end of Lab 11C — is `yapp_project/` itself.
 
+**Where to work: `labs/<lab>/start/`.** Every lab (11A excepted) also has a `start/` directory: the
+lab before it, plus the files this lab adds or changes with the bodies of their methods and
+constraints emptied to `// TODO (Lab N)`. The prototypes, `new()` and the `super.<phase>()` calls
+stay, so it compiles from the first minute; `start/TASKS.md` lists the steps and the files.
+`make check LAB=lab05_seq START=1` then runs every test of the lab in Verilator and reports, line by
+line, whether the log shows what the lab page promises (`scripts/lab_checks.yaml`). Nothing to
+install: [open the repository in a Codespace](https://codespaces.new/tamirgabgab/Qcom-Mentoring?quickstart=1).
+
 ---
 
 ## Quick start
 
 ```bash
-# install check (Cadence Xcelium)
-cd test_install && xrun -f run.f
+# install check: Verilator (free; bash scripts/setup_sim.sh once, or a GitHub Codespace) / Cadence Xcelium
+(cd test_install && make sim)
+(cd test_install && make run)
+
+# a lab, as a student: work in start/, run a test, check every test of the lab against the lab page
+(cd labs/lab05_seq/start/tb && make sim TEST=incr_payload_test)
+make check LAB=lab05_seq START=1
 
 # run the complete project (any test of yapp_project/tb/tests); every command below runs from the root
 make run-project TEST=reg_function_test
@@ -406,11 +426,13 @@ test_install/                     the UVM installation check
   lint.yml                          style check, slang lint of every run.f, project-map staleness check
   sim.yml                           Verilator regression: one job per simulation directory
   docs.yml                          builds the site and deploys it to GitHub Pages
+  fresh.yml                         the committed artifacts (offline site, regression report) match their sources
 mkdocs.yml                        the site (GitHub Pages)
 mkdocs-offline.yml                the same site for offline/site/: page.html links, the offline plugin, no CDN
 .devcontainer/                    GitHub Codespaces: Verilator, UVM, a waveform viewer in the browser
 Makefile                          lint · style · run · run-project · sim · sim-project · regress · setup-sim · docs · docs-offline · serve · map · …
 HANDOFF.md                        working notes for continuing the development (state, decisions, next steps)
+HISTORY.md                        what every session did, in order (moved out of HANDOFF.md)
 CLAUDE.md                         the conventions an AI assistant follows in this repository (points to HANDOFF.md)
 ```
 
@@ -421,6 +443,15 @@ CI does not check yet: rebuild it with `make docs-offline` after changing the do
 ---
 
 ## For mentors and contributors
+
+**Teaching it.** The [mentor's guide](https://tamirgabgab.github.io/Qcom-Mentoring/mentor/) has one page per
+session (eight sessions, labs 1 to 11C): what to have open, how to spend the time, what to show live,
+where students get stuck, what to ask. Students work in `labs/<lab>/start/` and check themselves with
+`make check LAB=<lab> START=1`; `make student-kit` packs every `start/`, the offline site, the map and
+the PDF into `build/StudentKit.zip` for day one. The [bug hunt](https://tamirgabgab.github.io/Qcom-Mentoring/bug-hunt/)
+is the exercise for the end of the course: ten deliberate bugs in the RTL (`scripts/mutants.yaml`,
+`+define+BUG_*`), the page says which test catches which; a student gets a build with one bug and
+finds it from the log and the waves. `make docs-pdf` prints the whole site to `offline/QcomCourse.pdf`.
 
 ### Coding style
 
@@ -476,30 +507,53 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Roadmap
 
-Planned as rounds, in the recommended order; nothing is started, each round opens with a
-decision (the details, the effort and the open questions are in `HANDOFF.md`, section 8):
+Planned as rounds; each round opens with a decision (the details, the effort and the open
+questions are in `HANDOFF.md`, section 8). Rounds A, B, D and F are done (session 9):
 
-* **A — housekeeping**: the card icons on the home page, the Regression table, a staleness
-  check in CI for the committed report and offline site, a pre-commit hook, a split of
-  `HANDOFF.md`, a phone-sized toolbar for the map.
-* **B — the student's path**: a starting point for every lab (the previous solution plus
-  stubbed files and a task list), `make check LAB=...` that compares the log with the expected
-  lines, a Verilator-first Getting started, a "See it run" section per lab with the real log,
-  glossary, FAQ, small "try this" exercises.
+* **A — housekeeping** (done): the card icons on the home page, the Regression table, the
+  `fresh` staleness check in CI for the committed report and offline site, a pre-commit hook
+  (`make hooks`), `HISTORY.md` split out of `HANDOFF.md`, a phone-sized toolbar for the map,
+  the unused `hbus_slave_agent` removed.
+* **B — the student's path** (done): `labs/*/start/` (the previous solution with the changed
+  methods emptied and a `TASKS.md`), `make check LAB=...` that compares the log with the
+  expected lines, a Verilator-first Getting started, a "See it run" section per lab with the
+  real log, glossary, FAQ, "Try this" exercises.
 * **C — verification depth**: SVA on the YAPP, HBUS and channel interfaces (none today) with
   `cover property`, reset in the middle of a test, an explicit `uvm_reg_predictor` with the
   built-in bit-bash and memory-access sequences and RAL coverage, more coverpoints.
-* **D — proof that the testbench catches bugs**: a set of RTL mutants behind defines that the
-  regression must fail on, a "Bug hunt" page (bug × the test that catches it), test ranking
-  from the coverage data, a regression history with a trend chart.
+* **D — proof that the testbench catches bugs** (done): ten RTL mutants behind `BUG_*`
+  defines, `make bug-hunt` and the `bughunt` workflow, the [Bug hunt](docs/bug-hunt.md) page
+  (bug × the test that catches it), test ranking from the coverage data, a regression history
+  with a trend chart.
 * **E — the map as a teacher**: a lab slider that shows the testbench growing lab by lab, the
   coverage and bug-hunt matrices inside the map, a replay of a regression run on the TLM
   view, wave pictures on the boxes, a tablet layout.
-* **F — delivering the course**: a mentor's guide per session, a student kit
-  (`make student-kit`), slides or a printable PDF of the site.
+* **F — delivering the course** (done): a mentor's guide per session (`docs/mentor/`), a
+  student kit (`make student-kit`), a printable PDF of the site (`make docs-pdf` →
+  `offline/QcomCourse.pdf`).
 * **G — when the access exists**: Xcelium (four-state, UVM 1.1d, IMC —
   [`docs/appendix/unverified.md`](docs/appendix/unverified.md)), the test-plan wording against
   the course PDF, a pyslang-based style checker.
+
+Proposed next (session 9, not started): interactive pages where the reader changes the
+packet, the registers or the DUT itself and watches the result.
+
+* **H — the DUT live in the browser**: a cycle-level model (the real RTL through
+  Verilator → WebAssembly, or a JavaScript model checked against the regression waves), a
+  "Packet lab" widget with editable payload bytes, `router_en` / `maxpktsize` / per-channel
+  suspend knobs, a live waveform strip and the FSM state, HBUS read/write drawn cycle by
+  cycle, scenarios linked from the lab pages.
+* **I — what-if parameters**: `yapp_router #(FIFO_DEPTH, CNT_W, ...)`, `make sweep` over
+  Verilator, a "What if" page whose selectors show the pre-computed results (pass/fail,
+  suspend cycles, counters, the wave excerpt).
+* **J — constraint, sequence and RAL playgrounds**: a form that becomes `yapp_packet`
+  constraints plus histograms and the covergroup bins it would hit; a sequence composer that
+  emits the virtual sequence; a desired / mirrored / actual register table driven by the
+  `uvm_reg` calls.
+* **K — waves in the site**: an in-browser waveform viewer on trimmed regression waves, a
+  "See it in waves" section per lab with the cursor on the interesting moment.
+* **L — interactive exercises**: "predict the log" checked by the model, a bug-hunt game,
+  graded checkpoint questions with progress kept in the browser.
 
 ### Tooling and CI
 
@@ -592,8 +646,11 @@ decision (the details, the effort and the open questions are in `HANDOFF.md`, se
 * **CI.** `sim.yml` runs the Verilator regression on every push, one job per
   simulation directory, in the official `verilator/verilator` container.
   `lint.yml` runs on every push: style check → slang lint → map
-  staleness check (incl. `test_model.py` and `test_sim.mjs`). `docs.yml` builds the site with `mkdocs build --strict`
-  and deploys it to GitHub Pages from `main`.
+  staleness check (incl. `test_model.py` and `test_sim.mjs`). `fresh.yml` rebuilds `offline/site` and compares it
+  with the committed copy, and `scripts/check_fresh.py` checks that the committed regression report names the tests
+  of `regress.yaml` (`make check-fresh`). `docs.yml` builds the site with `mkdocs build --strict`
+  and deploys it to GitHub Pages from `main`. `make hooks` installs a pre-commit hook that runs the style check on the
+  staged `.sv` files and reminds you to rebuild the map or the offline site.
 * **The test plan** is data too: `annotations.yaml` holds every feature item and every
   test's plan, `model.py` turns them into feature nodes with *covers* edges to the tests,
   `test_model.py` checks that every test named exists and every test is named by at least
