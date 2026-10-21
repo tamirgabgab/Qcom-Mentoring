@@ -82,6 +82,19 @@ uvm_test_top   base_test   -     @...
 With `UVM_LOW` the two "Executing the build phase" lines disappear; the
 topology stays (it is printed at `UVM_NONE`).
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab02_test START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab02.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Run the test with `+UVM_VERBOSITY=UVM_HIGH` and then with `UVM_LOW`. Which lines disappear, and where does the build-phase message of `router_tb` come from?"
+    `UVM_HIGH` shows the `Executing the build phase` lines of the test and the testbench (they are `uvm_info` at `UVM_HIGH`); at `UVM_LOW` only the topology and the report summary remain. The testbench line is printed in `router_tb::build_phase`, which runs because `base_test::build_phase` created `tb`.
+
 ## Checkpoint questions
 
 ??? question "Does the printed topology match the hierarchy you expected?"

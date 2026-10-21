@@ -1,0 +1,16 @@
+// Lab 5 -- xrun command file
+-uvmhome CDNS-1.1d
+-timescale 1ns/1ns
+
+-incdir ../../../../common
+../../../../common/rand_util_pkg.sv   // rnd:: random values, used by every UVC and test
+-incdir ../sv
+../sv/yapp_pkg.sv
+top.sv
+
+// Tests: base_test | short_packet_test | set_config_test |
+//        incr_payload_test | exhaustive_seq_test
++UVM_TESTNAME=exhaustive_seq_test
++UVM_VERBOSITY=UVM_MEDIUM    // one line per packet; UVM_HIGH adds the full packet tables
++SVSEED=random
+// Debug a randomization failure in SimVision:  xrun -f run.f -gui -access rwc

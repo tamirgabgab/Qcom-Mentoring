@@ -62,6 +62,19 @@ make run TEST=scoreboard_drop_test
 (first test) or N matched + the dropped counts (second), every FIFO empty in
 `check_phase`, `UVM_ERROR : 0`.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab09_sbd START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab09d.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Send one packet to address 3. Which analysis FIFO stays empty, and does the test end on its own?"
+    The router drops address 3, the reference model predicts the drop, so no FIFO receives anything for it -- all three expected FIFOs stay as they were. The test ends: the FIFO scoreboard's `get()` blocks only inside its own `run_phase` thread, it holds no objection.
+
 ## Checkpoint questions
 
 ??? question "Why must every monitor create a new object per transaction here?"

@@ -96,6 +96,19 @@ than 20; `UVM_ERROR … [PKT_COMPARE] Length mismatch` / `… MISMATCH` when the
 next packet on that channel is compared against the dropped one; at the end
 `packets received == matched + mismatched + left in queues`.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab09_sba START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab09a.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Send one packet with `PARITY_TYPE_BAD` to address 0 (constrain it in a sequence). What does the scoreboard say, and why is it wrong?"
+    The router drops the packet, nothing arrives on channel 0, and the scoreboard -- which expects every sent packet on its channel -- reports it as missing or as a mismatch against the next packet. Without a reference model the scoreboard cannot know that a drop was correct; that is what Lab 9B fixes.
+
 ## Checkpoint questions
 
 ??? question "Why clone in `write_yapp()`?"

@@ -122,6 +122,22 @@ bytes appear a few cycles later on `hw_top.dut.data_0`, then `data_1`, then
 `data_2`. The transaction streams `Driver_YAPP_Packet` and
 `Monitor_YAPP_Packet` show one bar per packet.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab06_vif START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab06.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Set the drain time to 0 in `base_test` (`set_drain_time(this, 0)`). Which packet is lost, and in which report do you see it?"
+    The last one: the driver drops its objection as soon as the DUT accepted the packet, the run phase ends at once, and the monitor, which samples the packet while it is on the interface, never finishes it. `YAPP driver report: 5 packets sent` against `YAPP monitor report: 4 packets collected`.
+
+??? question "Open the waves (`make sim TEST=yapp_012_test WAVES=1`) and find the first packet on `in0`. How many clock cycles does a packet of length 4 take on `in_data`, and what marks its end?"
+    Header, four payload bytes and the parity byte: six cycles with `in_data_vld` high. The parity byte is the last one, `in_data_vld` drops after it; `hw_top.dut.u_tracer.in_phase` labels header / payload / parity in the waves.
+
 ## Checkpoint questions
 
 ??? question "Why `set(null, "*.tb.yapp.*", …)` from `tb_top`?"

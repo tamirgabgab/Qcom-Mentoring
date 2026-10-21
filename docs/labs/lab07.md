@@ -25,7 +25,7 @@ flowchart TB
         c0["chan0 : channel_env<br/>channel_id = 0"]
         c1["chan1 : channel_env<br/>channel_id = 1"]
         c2["chan2 : channel_env<br/>channel_id = 2"]
-        hb["hbus : hbus_env<br/>num_masters = 1, num_slaves = 0"]
+        hb["hbus : hbus_env<br/>num_masters = 1"]
         ck["clk_rst : clock_and_reset_env"]
     end
     subgraph hw["hw_top"]
@@ -110,6 +110,19 @@ and `0x1001 data=0x01`; 88 packets; `ROUTER DROPS PACKET … length > maxpktsize
 for lengths 21 and 22, `… illegal address` for every address-3 packet; `error`
 pulses in the waveform after bad-parity packets; the channel monitors together
 collect 3 × 20 = 60 packets.
+
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab07_integ START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab07.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Build the HBUS env with `num_masters = 2`. What does the topology show, and why does the second master never do anything?"
+    `tb.hbus.masters[0]` and `masters[1]`, each with a driver and a sequencer, both on the same `hbus0` interface. Only `masters[0].sequencer` has a default sequence; the second master waits for an item that never comes. Two drivers on one bus would also fight over `hdata_oe`.
 
 ## Checkpoint questions
 

@@ -160,6 +160,7 @@ def main():
     if ns.all:
         targets += sorted(glob.glob(os.path.join(ROOT, "test_install", "run.f")))
         targets += sorted(glob.glob(os.path.join(ROOT, "labs", "*", "tb", "run.f")))
+        targets += sorted(glob.glob(os.path.join(ROOT, "labs", "*", "start", "tb", "run.f")))   # the students' start points
         targets += sorted(glob.glob(os.path.join(ROOT, "labs", "*", "run.f")))   # lab11a (no tb/)
         targets += sorted(glob.glob(os.path.join(ROOT, "yapp_project", "tb", "run.f")))
     if not targets:

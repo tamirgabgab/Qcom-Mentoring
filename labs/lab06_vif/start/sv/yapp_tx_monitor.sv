@@ -1,0 +1,66 @@
+// START POINT of Lab 6: the bodies of the methods and constraints below are yours to write.
+// The finished file is labs/lab06_vif/sv/yapp_tx_monitor.sv; the lab page explains every step.
+//------------------------------------------------------------------------------
+// yapp_tx_monitor.sv -- observes packets on the YAPP input port (Lab 6)
+//
+// The monitor reaches the DUT pins through a VIRTUAL INTERFACE handle that
+// tb_top stores in the configuration database and connect_phase() fetches.
+//------------------------------------------------------------------------------
+class yapp_tx_monitor extends uvm_monitor;
+
+  // Virtual interface, set by tb_top through yapp_vif_config
+  virtual interface yapp_if m_vif;
+
+  // Statistics
+  int m_num_pkt_col;
+
+  `uvm_component_utils(yapp_tx_monitor)
+
+  // The fields are printed by do_print() below:
+  // no uvm_field_* automation.
+  extern virtual function void do_print(uvm_printer printer);
+  extern function new(string name, uvm_component parent);
+
+  extern function void connect_phase(uvm_phase phase);
+  extern task run_phase(uvm_phase phase);
+
+  extern task collect_packets();
+  extern function void report_phase(uvm_phase phase);
+
+endclass : yapp_tx_monitor
+
+//------------------------------------------------------------------------------
+// yapp_tx_monitor -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_tx_monitor::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+//------------------------------------------------------------------------------
+function void yapp_tx_monitor::connect_phase(uvm_phase phase);
+  // get() returns 1 on success: always check it, a missing vif is fatal later
+  // TODO (Lab 6): write yapp_tx_monitor::connect_phase
+endfunction : connect_phase
+
+//------------------------------------------------------------------------------
+task yapp_tx_monitor::run_phase(uvm_phase phase);
+  // TODO (Lab 6): write yapp_tx_monitor::run_phase
+endtask : run_phase
+
+//------------------------------------------------------------------------------
+task yapp_tx_monitor::collect_packets();
+  // Nothing to observe while reset is active
+  // TODO (Lab 6): write yapp_tx_monitor::collect_packets
+endtask : collect_packets
+
+//------------------------------------------------------------------------------
+function void yapp_tx_monitor::report_phase(uvm_phase phase);
+  // TODO (Lab 6): write yapp_tx_monitor::report_phase
+endfunction : report_phase
+
+//------------------------------------------------------------------------------
+function void yapp_tx_monitor::do_print(uvm_printer printer);
+  super.do_print(printer);
+  // TODO (Lab 6): write yapp_tx_monitor::do_print
+endfunction : do_print

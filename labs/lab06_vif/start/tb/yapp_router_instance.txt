@@ -1,0 +1,30 @@
+// yapp_router instance with named port mapping -- paste into hw_top.sv.
+// Lab 6 connects only clock, reset and the YAPP input port; the channel
+// suspend inputs are tied low so packets flow out, everything else is left
+// unconnected (HBUS tied inactive). Lab 7 connects the remaining ports.
+
+  yapp_router dut (
+    .clock       (clock),
+    .reset       (reset),
+    // YAPP input port
+    .in_data     (in0.in_data),
+    .in_data_vld (in0.in_data_vld),
+    .in_suspend  (in0.in_suspend),       // the DUT drives this now
+    // Output channels (not monitored yet)
+    .data_0      (),
+    .data_vld_0  (),
+    .suspend_0   (1'b0),                 // never suspend: let the data out
+    .data_1      (),
+    .data_vld_1  (),
+    .suspend_1   (1'b0),
+    .data_2      (),
+    .data_vld_2  (),
+    .suspend_2   (1'b0),
+    // HBUS host port (not used yet)
+    .hdata       (),
+    .haddr       (16'h0000),
+    .hen         (1'b0),
+    .hwr_rd      (1'b0),
+    // Status
+    .error       ()
+  );

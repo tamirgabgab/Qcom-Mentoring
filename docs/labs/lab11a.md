@@ -93,6 +93,13 @@ cd labs/lab11a_rm_gen && make run_test
 and reset value; then the map with `ctrl_reg @0x1000`, `en_reg @0x1001`, …,
 `mem_size_reg @0x100d`, `yapp_pkt_mem @0x1010`, `yapp_mem @0x1100`.
 
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Add a one-bit field `dbg_en` at bit 3 of `en_reg` in the XML and regenerate. What changes in the package, and what does the DUT do with a write to that bit?"
+    `en_reg_c` gets a fourth `uvm_reg_field` (`dbg_en`, size 1, lsb 3, `RW`, reset 0) and `build()` configures it. The DUT ignores the bit (nothing reads `en_reg[3]`), so the model and the hardware agree only because the bit is readable and writable in the RTL register.
+
 ## Checkpoint questions
 
 ??? question "Access policy of `ctrl_reg`? Of `addr0_cnt_reg`?"

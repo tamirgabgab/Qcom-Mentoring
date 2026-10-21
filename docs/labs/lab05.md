@@ -120,6 +120,22 @@ In the GUI (`-gui -access rwc`) the simulation stops at the failure and the
 constraint is removed from `short_yapp_packet` (that is the version in this
 lab's `sv/yapp_packet.sv`). Do this before Lab 6.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab05_seq START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab05.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Make `yapp_012_seq` send the addresses in the order 2, 1, 0. Does the driver print them in that order? Why?"
+    Yes: `body()` runs the three `start_item` / `finish_item` pairs one after the other, and the sequencer hands them to the driver in that order. The order in the log is the order of the code, not of the addresses.
+
+??? question "Start `yapp_1_seq` twice from a new sequence, the second time with `req.m_addr == 2'd2` in the `randomize() with`. What happens before the Lab 5 fix of `short_yapp_packet`?"
+    With the Lab 4 `short_yapp_packet` (`m_addr != 2`) the second `randomize()` fails: the inline constraint and the class constraint contradict each other, `randomize()` returns 0, the guard reports `UVM_ERROR` and the packet keeps its previous values. That is the planned failure of this lab.
+
 ## Checkpoint questions
 
 ??? question "Why do you get randomization violations?"

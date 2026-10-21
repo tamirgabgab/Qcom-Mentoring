@@ -1,0 +1,55 @@
+// START POINT of Lab 4: the bodies of the methods and constraints below are yours to write.
+// The finished file is labs/lab04_factory/sv/yapp_tx_agent.sv; the lab page explains every step.
+//------------------------------------------------------------------------------
+// yapp_tx_agent.sv -- the YAPP transmit agent (Lab 3, factory in Lab 4)
+//
+//   is_active == UVM_ACTIVE  : monitor + driver + sequencer (generates traffic)
+//   is_active == UVM_PASSIVE : monitor only (just watches the bus)
+//------------------------------------------------------------------------------
+class yapp_tx_agent extends uvm_agent;
+
+  yapp_tx_monitor   m_monitor;
+  yapp_tx_driver    m_driver;
+  yapp_tx_sequencer m_sequencer;
+
+  // is_active is inherited from uvm_agent (default UVM_ACTIVE); build_phase
+  // picks up an override set with uvm_config_int::set(..., "is_active", ...)
+  `uvm_component_utils(yapp_tx_agent)
+
+  // The fields are printed by do_print() below and read from uvm_config_db in build_phase():
+  // no uvm_field_* automation.
+  extern virtual function void do_print(uvm_printer printer);
+  extern function new(string name, uvm_component parent);
+
+  extern function void build_phase(uvm_phase phase);
+  extern function void connect_phase(uvm_phase phase);
+
+endclass : yapp_tx_agent
+
+//------------------------------------------------------------------------------
+// yapp_tx_agent -- method implementations
+//------------------------------------------------------------------------------
+
+function yapp_tx_agent::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+//------------------------------------------------------------------------------
+function void yapp_tx_agent::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  // overrides set with uvm_config_int::set(...)
+  // TODO (Lab 4): write yapp_tx_agent::build_phase
+endfunction : build_phase
+
+//------------------------------------------------------------------------------
+function void yapp_tx_agent::connect_phase(uvm_phase phase);
+  if (is_active == UVM_ACTIVE) begin
+    m_driver.seq_item_port.connect(m_sequencer.seq_item_export);
+  end
+endfunction : connect_phase
+
+//------------------------------------------------------------------------------
+function void yapp_tx_agent::do_print(uvm_printer printer);
+  super.do_print(printer);
+  printer.print_generic("is_active", "uvm_active_passive_enum", $bits(is_active), is_active.name());
+endfunction : do_print

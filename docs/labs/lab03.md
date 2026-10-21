@@ -106,6 +106,19 @@ monitor's "Inside the monitor run_phase", and five `TX pkt #n: addr=… len=…`
 lines from the driver, 10 ns apart (at `+UVM_VERBOSITY=UVM_HIGH` each one is
 followed by the full `Packet is` table).
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab03_uvc START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab03.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Create the agent passive from the test (`uvm_config_int::set(this, "tb.yapp.agent", "is_active", UVM_PASSIVE)` before `super.build_phase`). Which components vanish from the topology, and what does the monitor print?"
+    The driver and the sequencer are not built (the agent creates them only when active); the monitor is still there and prints `Inside the monitor run_phase`. No packet is printed because nothing drives.
+
 ## Checkpoint questions
 
 ??? question "Full hierarchical path from the test to the sequencer?"

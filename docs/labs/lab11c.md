@@ -77,6 +77,19 @@ make run TEST=reg_introspection_test
   en_reg @ 0x1001`, seven `RO register:` lines, then the access checks for all
   nine registers, 0 errors.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab11c_rm_sim START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab11c.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "After one packet with bad parity, read `parity_err_cnt_reg` with `read()` and then with `mirror()`. What does `mirror()` check that `read()` does not?"
+    `read()` returns the value and updates the mirror. `mirror()` reads too, then compares the value with the mirror's *predicted* value (`UVM_CHECK`) and reports `UVM_ERROR` on a difference. For a counter the model cannot predict (it is `volatile`), the test predicts it itself with `predict()` before `mirror()`.
+
 ## Checkpoint questions
 
 ??? question "What happens when you write to an RO register?"

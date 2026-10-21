@@ -23,6 +23,9 @@ jobs:
       - name: Check the SystemVerilog code style
         run: python3 scripts/sv_style.py --check
 
+      - name: The start points of the labs match the solutions
+        run: python3 scripts/make_start.py --check
+
       - name: Elaborate every lab with slang
         run: python3 scripts/lint.py --all --quiet
 

@@ -105,6 +105,19 @@ counts it as passed only when the walk reports the error.
 * with `INJECT_ERROR`: `UVM_ERROR … [uvm_mem_walk_seq] Memory … read back as
   … instead of …` at address `0x112a`.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab11b_rm_integ START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab11b.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Write `ctrl_reg` through the backdoor (`poke`) and then read it through the front door. What is the value in the register model's mirror after each step?"
+    `poke` writes the HDL variable directly and, with auto-predict on, updates the mirror; the front-door `read` goes through the HBUS, the monitor sees it, and the mirror is updated again with the value read -- the same value, so nothing changes. `UVM_ERROR` only appears if the two disagree.
+
 ## Checkpoint questions
 
 ??? question "Why does the register sequence start with `start(null)`?"

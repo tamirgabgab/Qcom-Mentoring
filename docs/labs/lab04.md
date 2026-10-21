@@ -91,6 +91,19 @@ The fix here: `base_test` puts its sequence configuration into a **virtual
 function** `configure_sequences()`; `set_config_test` overrides it with an
 empty body. Every test from now on uses the same hook to choose its sequences.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab04_factory START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab04.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Write `long_yapp_packet` (a `yapp_packet` whose `m_length` is at least 32) and override the packet type with it in a new test. Which of the existing tests does the override change, and which one does it not?"
+    `set_type_override_by_type(yapp_packet::get_type(), long_yapp_packet::get_type())` before `super.build_phase`. Every test that creates packets through the factory gets long ones; `set_config_test` does not change: its agent is passive and creates no packet at all.
+
 ## Checkpoint questions
 
 ??? question "Why did `check_config_usage()` report an unused setting in `set_config_test`?"

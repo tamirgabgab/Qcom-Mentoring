@@ -367,6 +367,55 @@ def open_waves(d, test, defines=()):
 
 
 # ------------------------------------------------------------------ main
+# ------------------------------------------------------------------ check
+def check(lab, start=False, only_test=None):
+    """`make check LAB=<lab> [START=1]`: run every test of the lab (scripts/regress.yaml) once and
+    grep its log for the lines scripts/lab_checks.yaml says it must show -- the student's own
+    "did I get it right". --start runs labs/<lab>/start/tb (the work directory) instead of tb/."""
+    import yaml
+    cfg = load_regress()
+    bench = "yapp_project/tb" if lab == "yapp_project" else f"labs/{lab}/tb"
+    if bench not in cfg["benches"]:
+        die(f"no bench {bench} in scripts/regress.yaml (labs: " + ", ".join(
+            k.split("/")[1] for k in cfg["benches"] if k.startswith("labs/")) + ")")
+    d = os.path.join(ROOT, f"labs/{lab}/start/tb" if start else bench)
+    if not os.path.isdir(d):
+        die(f"{os.path.relpath(d, ROOT)} does not exist" + (" (run `make start`)" if start else ""))
+    checks = yaml.safe_load(open(os.path.join(ROOT, "scripts", "lab_checks.yaml")))
+    entries = cfg["benches"][bench]
+    entries = entries["tests"] if isinstance(entries, dict) else entries
+    if not compile_dir(d):
+        return False
+    all_ok = True
+    print(f"\n{os.path.relpath(d, ROOT)}:")
+    for entry in entries:
+        test, expect = (entry["test"], entry.get("expect")) if isinstance(entry, dict) else (entry, None)
+        if only_test and test != only_test:
+            continue
+        r = run_one(d, None if test == "default" else test, 1, echo=False)
+        text = open(os.path.join(ROOT, r["log"]), errors="replace").read()
+        rows = []
+        if expect == "errors":
+            rows.append((bool(r["errors"]) and r["sim_time"] != "?", "the checker must report UVM_ERROR (a planned failure)"))
+        else:
+            rows.append((r["ok"], "ends with 0 UVM_ERROR / 0 UVM_FATAL" + (f" ({r['reason']})" if r["reason"] else "")))
+        lab_checks = checks.get(lab, {})
+        for c in lab_checks.get("_every_test", []) + lab_checks.get(test, []):
+            pat, label = (c["re"], c.get("label", c["re"])) if isinstance(c, dict) else (c, c)
+            n = c.get("count") if isinstance(c, dict) else None
+            found = len(re.findall(pat, text, re.M))
+            rows.append(((found >= 1) if n is None else (found == n), label + (f" (x{n})" if n else "")))
+        ok = all(x for x, _ in rows)
+        all_ok &= ok
+        print(f"  {'PASS' if ok else 'FAIL'}  {test:<26} sim {r['sim_time']:>8}  {r['wall']:5.1f}s")
+        for good, label in rows:
+            print(f"        {'ok  ' if good else 'MISSING'}  {label}")
+        if not ok:
+            print(f"        log: {r['log']}")
+    print("\ncheck: " + ("every test is as the lab page expects" if all_ok else "something is missing -- compare with the lab page and the finished solution"))
+    return all_ok
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -386,6 +435,10 @@ def main():
     w.add_argument("-D", "--define", action="append", default=[], help="the build made with these defines")
     g = sub.add_parser("regress", help="every bench and test of scripts/regress.yaml")
     g.add_argument("--only", action="append", help="benches whose path contains this (repeatable)")
+    k = sub.add_parser("check", help="every test of a lab in Verilator, each against what its log must show (scripts/lab_checks.yaml)")
+    k.add_argument("lab", help="lab directory name (lab05_seq) or yapp_project")
+    k.add_argument("--start", action="store_true", help="run labs/<lab>/start/tb, the student's work directory")
+    k.add_argument("-t", "--test", help="only this test")
     g.add_argument("--seeds", type=int, help="runs per test, for every test (default: the seeds: of regress.yaml)")
     g.add_argument("--report", help="markdown report (default build/sim/regress.md)")
     g.add_argument("--waves", action="store_true", help="record waves/<test>_s<seed>.fst and trace/<test>_s<seed>.csv for every run")
@@ -409,6 +462,8 @@ def main():
         return
     if ns.cmd == "regress":
         sys.exit(0 if regress(ns.only, ns.seeds, ns.report, ns.waves) else 1)
+    if ns.cmd == "check":
+        sys.exit(0 if check(ns.lab, ns.start, ns.test) else 1)
 
 
 if __name__ == "__main__":

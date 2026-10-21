@@ -1,0 +1,45 @@
+// START POINT of Lab 9B: the bodies of the methods and constraints below are yours to write.
+// The finished file is labs/lab09_sbb/sv/router_module_env.sv; the lab page explains every step.
+//------------------------------------------------------------------------------
+// router_module_env.sv -- the router MODULE UVC (Lab 9B)
+//
+// A module UVC has no interface: it is a bundle of analysis components
+// (reference model, scoreboard, later coverage) that work on the transactions
+// the interface UVCs collect.
+//
+//   yapp ──►(yapp_in) reference ──yapp_valid_out──►(yapp_in) scoreboard ◄──(chanN_in) chanN
+//   hbus ──►(hbus_in)
+//------------------------------------------------------------------------------
+class router_module_env extends uvm_env;
+
+  router_reference  m_reference;
+  router_scoreboard m_scoreboard;
+
+  `uvm_component_utils(router_module_env)
+
+  extern function new(string name, uvm_component parent);
+  extern function void build_phase(uvm_phase phase);
+
+  extern function void connect_phase(uvm_phase phase);
+
+endclass : router_module_env
+
+//------------------------------------------------------------------------------
+// router_module_env -- method implementations
+//------------------------------------------------------------------------------
+
+function router_module_env::new(string name, uvm_component parent);
+  super.new(name, parent);
+endfunction : new
+
+//------------------------------------------------------------------------------
+function void router_module_env::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  // TODO (Lab 9B): write router_module_env::build_phase
+endfunction : build_phase
+
+//------------------------------------------------------------------------------
+function void router_module_env::connect_phase(uvm_phase phase);
+  // Only packets the router will route reach the scoreboard
+  // TODO (Lab 9B): write router_module_env::connect_phase
+endfunction : connect_phase

@@ -107,6 +107,22 @@ parity byte that differs from the XOR of the other bytes. Then the optional
 section prints `copy compare -> 1`, `clone compare -> 1`, a miscompare
 message for the modified clone, and the same packet in table and tree layout.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab01_data START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab01.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Make bad parity rarer: change the `dist` in `c_parity_type` so that only one packet in twenty has `PARITY_TYPE_BAD`. Run again -- how many of the five packets are bad now, and why can the answer still be two?"
+    `m_parity_type dist { PARITY_TYPE_GOOD := 19, PARITY_TYPE_BAD := 1 }`. The distribution is a probability, not a quota: with five packets you usually see none, but two bad ones are possible. Run with another seed (`SEED=7`) to see it change.
+
+??? question "Add a constraint that forbids `m_length == 1`. Which packets change, and what does `print()` show for `m_payload` now?"
+    `constraint c_no_one { m_length != 1; }` -- every packet still prints `m_length` entries of `m_payload`, there are simply no one-byte packets. `post_randomize()` keeps the parity right because it runs after the constraints.
+
 ## Checkpoint questions
 
 ??? question "Why does `m_parity` not have the `rand` qualifier?"

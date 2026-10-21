@@ -1,0 +1,167 @@
+# lab_checks.yaml -- what the log of every test must show (`make check LAB=<lab> [START=1]`,
+# scripts/sim.py check). One entry per lab directory, one list per test; each check is a
+# regular expression searched in the log (re.M), with the label the student sees. `count: N`
+# asks for exactly N matching lines. On top of these, every test must end with 0 UVM_ERROR /
+# 0 UVM_FATAL (or, for a test listed with `expect: errors` in regress.yaml, report UVM_ERROR).
+# The patterns are taken from the real logs of the finished labs; keep them to what the lab
+# page promises, not to every line.
+
+lab01_data:
+  default:
+    - {re: "copy  compare -> 1", label: "copy() then compare() -> 1"}
+    - {re: "clone compare -> 1", label: "clone() then compare() -> 1"}
+    - {re: "Miscompare for pkt\\.payload", label: "the modified clone reports a miscompare on the payload"}
+    - {re: "PARITY_TYPE_BAD", label: "at least one packet with PARITY_TYPE_BAD (about one in six)"}
+
+lab02_test:
+  base_test:
+    - {re: "\\[base_test\\] Executing the build phase of the test", label: "base_test prints its build phase"}
+    - {re: "\\[router_tb\\] Executing the build phase of the testbench", label: "router_tb prints its build phase"}
+    - {re: "^\\s+tb\\s+router_tb", label: "the topology shows tb : router_tb under uvm_test_top"}
+
+lab03_uvc:
+  base_test:
+    - {re: "\\[yapp_5_packets\\] Executing yapp_5_packets sequence", label: "the default sequence yapp_5_packets runs"}
+    - {re: "\\[yapp_tx_driver\\] Packet is", label: "the driver prints every packet it gets", count: 5}
+    - {re: "\\[yapp_tx_monitor\\] Inside the monitor run_phase", label: "the monitor is running"}
+    - {re: "^\\s+agent\\s+yapp_tx_agent", label: "the topology shows agent : yapp_tx_agent"}
+
+lab04_factory:
+  base_test:
+    - {re: "\\[yapp_tx_driver\\] Packet is", label: "5 packets through the driver", count: 5}
+  short_packet_test:
+    - {re: "^req\\s+short_yapp_packet", label: "the factory override: every packet is a short_yapp_packet", count: 5}
+  set_config_test:
+    - {re: "is_active\\s+uvm_active_passive_enum\\s+1\\s+UVM_PASSIVE", label: "the agent is UVM_PASSIVE in the topology"}
+    - {re: "^\\s+driver\\s+yapp_tx_driver", label: "no driver is built", count: 0}
+
+lab05_seq:
+  base_test:
+    - {re: "\\[yapp_tx_driver\\] Packet is", label: "5 packets through the driver", count: 5}
+  short_packet_test:
+    - {re: "^req\\s+short_yapp_packet", label: "every packet is a short_yapp_packet", count: 5}
+  set_config_test:
+    - {re: "is_active\\s+uvm_active_passive_enum\\s+1\\s+UVM_PASSIVE", label: "the agent is UVM_PASSIVE"}
+  incr_payload_test:
+    - {re: "\\[yapp_incr_payload_seq\\] Executing yapp_incr_payload_seq sequence", label: "yapp_incr_payload_seq runs as the default sequence"}
+    - {re: "^\\s+\\[1\\]\\s+integral\\s+8\\s+'h1\\s*$", label: "the payload counts up: payload[1] = 1"}
+  exhaustive_seq_test:
+    - {re: "\\[yapp_exhaustive_seq\\] Executing yapp_exhaustive_seq sequence", label: "yapp_exhaustive_seq runs"}
+    - {re: "\\[yapp_1_seq\\] Executing yapp_1_seq sequence", label: "yapp_1_seq: once alone and three times inside yapp_111_seq", count: 4}
+    - {re: "\\[yapp_012_seq\\] Executing", label: "yapp_012_seq runs"}
+    - {re: "\\[yapp_repeat_addr_seq\\] Executing", label: "yapp_repeat_addr_seq runs"}
+    - {re: "\\[yapp_incr_payload_seq\\] Executing", label: "yapp_incr_payload_seq runs"}
+    - {re: "\\[yapp_rnd_seq\\] Executing", label: "yapp_rnd_seq: once alone and once inside six_yapp_seq", count: 2}
+    - {re: "\\[six_yapp_seq\\] Executing", label: "six_yapp_seq runs"}
+    - {re: "UVM_WARNING :\\s+0", label: "no warnings (no randomization failure on address 2)"}
+
+lab06_vif:
+  base_test:
+    - {re: "\\[yapp_tx_monitor\\] Packet collected:", label: "the monitor collects every packet from the interface", count: 5}
+    - {re: "YAPP driver report: 5 packets sent", label: "driver report: 5 packets sent"}
+    - {re: "YAPP monitor report: 5 packets collected", label: "monitor report: 5 packets collected"}
+  short_packet_test:
+    - {re: "YAPP monitor report: 5 packets collected", label: "5 short packets collected on the interface"}
+  set_config_test:
+    - {re: "YAPP monitor report: 0 packets collected", label: "passive agent: nothing drives, the monitor collects 0"}
+  incr_payload_test:
+    - {re: "YAPP monitor report: 1 packets collected", label: "one packet collected"}
+  exhaustive_seq_test:
+    - {re: "\\[yapp_tx_monitor\\] Packet collected:", label: "the monitor sees the packets of every sequence (at least 16)"}
+  yapp_012_test:
+    - {re: "\\[yapp_012_seq\\] Executing yapp_012_seq sequence", label: "yapp_012_seq runs"}
+    - {re: "YAPP monitor report: 3 packets collected", label: "3 packets collected: addresses 0, 1, 2"}
+
+lab07_integ:
+  base_test:
+    - {re: "HBUS report: 0 writes, 0 reads", label: "the HBUS monitor reports (no traffic in base_test)"}
+    - {re: "Channel 2 report: 0 packets collected", label: "the three channel monitors report"}
+  simple_test:
+    - {re: "\\[clk10_rst5_seq\\] Executing clk10_rst5_seq", label: "the clock and reset sequence runs"}
+    - {re: "\\[channel_rx_resp_seq\\] Executing channel_rx_resp_seq", label: "a response sequence on every channel", count: 3}
+    - {re: "Channel 0 collected packet:", label: "channel 0 receives the packet for address 0"}
+    - {re: "Channel 1 collected packet:", label: "channel 1 receives the packet for address 1"}
+    - {re: "Channel 2 collected packet:", label: "channel 2 receives the packet for address 2"}
+  test_uvc_integration:
+    - {re: "\\[hbus_small_packet_seq\\] Executing hbus_small_packet_seq", label: "hbus_small_packet_seq programs the router"}
+    - {re: "Collected WRITE addr=0x1000 data=0x14", label: "HBUS write: maxpktsize = 20"}
+    - {re: "Collected WRITE addr=0x1001 data=0x01", label: "HBUS write: router enabled"}
+    - {re: "\\[yapp_88_packets_seq\\] Executing", label: "88 packets from yapp_88_packets_seq"}
+    - {re: "YAPP driver report: 88 packets sent", label: "driver report: 88 packets sent"}
+
+lab08_mcseq:
+  router_simple_mcseq_test:
+    - {re: "\\[router_simple_mcseq\\] Executing router_simple_mcseq sequence", label: "the multichannel sequence runs on tb.mcseqr"}
+    - {re: "MAXPKTSIZE register reads 20", label: "the HBUS read sequence reads maxpktsize = 20 back"}
+    - {re: "Collected READ  addr=0x1000 data=0x14", label: "the HBUS monitor sees the read"}
+    - {re: "\\[yapp_012_seq\\] Executing", label: "yapp_012_seq runs from the virtual sequence"}
+  simple_test:
+    - {re: "Channel 2 collected packet:", label: "the three channels receive their packets"}
+  test_uvc_integration:
+    - {re: "YAPP driver report: 88 packets sent", label: "88 packets sent"}
+
+lab09_sba:
+  router_simple_mcseq_test:
+    - {re: "--- Scoreboard report ---", label: "the scoreboard prints its report"}
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+  scoreboard_drop_test:
+    - {re: "\\[router_scoreboard\\] Channel \\d packet MISMATCH", label: "without a reference model the dropped packets mismatch (the planned failure)"}
+    - {re: "packets mismatched: [1-9]", label: "the report counts the mismatches"}
+  simple_test:
+    - {re: "packets matched   : 3", label: "3 packets matched"}
+
+lab09_sbb:
+  router_simple_mcseq_test:
+    - {re: "--- Reference model report ---", label: "the reference model reports"}
+    - {re: "maxpktsize is now 20", label: "the reference model follows the HBUS write of maxpktsize"}
+    - {re: "router_en is now 1", label: "the reference model follows the HBUS write of en_reg"}
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+  scoreboard_drop_test:
+    - {re: "packets mismatched: 0", label: "the dropped packets are predicted: no mismatch"}
+    - {re: "packets matched   : [1-9]", label: "the forwarded packets match"}
+
+lab09_sbc:
+  router_simple_mcseq_test:
+    - {re: "packets mismatched: 0", label: "no mismatch through the exports"}
+  scoreboard_drop_test:
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+
+lab09_sbd:
+  router_simple_mcseq_test:
+    - {re: "--- FIFO scoreboard report ---", label: "the FIFO scoreboard reports"}
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+  scoreboard_drop_test:
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+
+lab10_cov:
+  coverage_test:
+    - {re: "\\[yapp_coverage_seq\\]", label: "yapp_coverage_seq runs"}
+    - {re: "YAPP monitor report: \\d+ packets collected, coverage 100\\.0%", label: "the packet covergroup reaches 100%"}
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+  router_simple_mcseq_test:
+    - {re: "coverage \\d+\\.\\d%", label: "the monitor reports the coverage of yapp_pkt_cg"}
+
+lab11b_rm_integ:
+  uvm_reset_test:
+    - {re: "\\[uvm_reg_hw_reset_seq\\]", label: "uvm_reg_hw_reset_seq runs on the model"}
+    - {re: "HBUS report: 0 writes, 9 reads", label: "every register is read once through the front door"}
+  uvm_mem_walk_test:
+    - {re: "\\[uvm_mem_walk_seq\\]", label: "uvm_mem_walk_seq runs"}
+    - {re: "HBUS report: 511 writes, 256 reads", label: "the walk writes and reads every byte of yapp_mem"}
+  router_simple_mcseq_test:
+    - {re: "packets mismatched: 0", label: "no mismatch"}
+
+lab11c_rm_sim:
+  reg_access_test:
+    - {re: "HBUS report: 2 writes, 2 reads", label: "front door write / read of two registers"}
+  reg_function_test:
+    - {re: "HBUS report: 2 writes, 11 reads", label: "the counters are read back through the model"}
+    - {re: "packets matched   : 9", label: "9 packets matched"}
+  reg_function_check_test:
+    - {re: "packets matched   : 9", label: "9 packets matched"}
+  reg_introspection_test:
+    - {re: "HBUS report: 9 writes, 9 reads", label: "every register written and read through introspection"}
+
+yapp_project:
+  _every_test:
+    - {re: "\\[TEST\\] === \\w+  seed \\d+: PASSED", label: "the [TEST] verdict line says PASSED"}

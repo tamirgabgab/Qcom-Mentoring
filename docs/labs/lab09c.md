@@ -68,6 +68,19 @@ make run TEST=scoreboard_drop_test
 **Expected:** identical results to Lab 9B — this lab changes the wiring, not
 the behaviour.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab09_sbc START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab09c.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Connect only `chan0`'s analysis port to the module UVC's export and leave `chan1` / `chan2` unconnected. Does it compile, and what do the counts look like?"
+    It compiles and runs: an export with nothing connected to it is legal. Packets for addresses 1 and 2 are predicted but never seen by the scoreboard, so they stay in the expected queue -- the report shows fewer matches than packets sent, and a check that the queues are empty at the end would fail.
+
 ## Checkpoint questions
 
 ??? question "What does an export add that a port or an imp does not?"

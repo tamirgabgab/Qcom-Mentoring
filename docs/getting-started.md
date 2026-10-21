@@ -2,19 +2,24 @@
 
 ## What you need
 
-| Tool | Why | Notes |
+Two ways to run the labs; pick one.
+
+| | Verilator (free) | Cadence Xcelium |
 |---|---|---|
-| **Cadence Xcelium** (`xrun`) | runs the labs | any release that ships a UVM library (17.04 or later) |
-| UVM library | `-uvmhome CDNS-1.1d` in every `run.f` | the course recommends 1.1d because of transaction-recording quirks in 1.2; `CDNS-1.2` works too — the code compiles on both (see [compat shim](#uvm-versions)) |
-| SimVision / Verisium | GUI debug (Labs 5, 6, 10) | optional |
-| **or Verilator 5.052** | runs the same labs without a licence (`make sim`) | free; `bash scripts/setup_sim.sh`, or open the repository in GitHub Codespaces -- see [Simulating with Verilator](appendix/verilator.md) |
-| Python 3 + `pip install pyslang mkdocs-material` | lint without a simulator, build this site | optional |
+| **Get it** | nothing to install: open the repository in a [GitHub Codespace](https://codespaces.new/tamirgabgab/Qcom-Mentoring?quickstart=1) — or `bash scripts/setup_sim.sh` on Ubuntu / WSL2 (builds Verilator 5.052, ~15 min once) | a licence; any release that ships a UVM library (17.04 or later), `-uvmhome CDNS-1.1d` in every `run.f` (`CDNS-1.2` works too, see [UVM versions](#uvm-versions)) |
+| **Run a test** | `make sim TEST=<test>` in the lab's `tb/` | `make run TEST=<test>` in the lab's `tb/` |
+| **Waves** | `make sim ... WAVES=1`, then VaporView in Codespaces / Surfer / GTKWave | SimVision (`make gui`) |
+| **Details** | [Simulating with Verilator](appendix/verilator.md): the same labs, the same tests, the few differences | [xrun options](appendix/xrun.md) |
+
+Either way, `pip install pyslang mkdocs-material` adds the lint without a simulator (`make lint`) and
+lets you build this site; both are optional.
 
 ## Check the installation
 
 ```bash
 cd test_install
-xrun -f run.f
+make sim                 # Verilator
+make run                 # Xcelium:  xrun -f run.f
 ```
 
 The log must show the UVM version banner and
@@ -22,6 +27,8 @@ The log must show the UVM version banner and
 ```
 UVM_INFO ... [INSTALL] UVM TEST INSTALL PASSED!
 ```
+
+(`make sim` prints `PASS: default seed 1` under it.)
 
 ## The complete project: `yapp_project/`
 
@@ -75,11 +82,55 @@ Every lab directory has the same shape:
 labs/lab05_seq/
 ├── sv/        the UVC source files of that lab (Labs 1-6: the YAPP UVC; 9A-9D: the router module UVC)
 │   └── seqs/      one file per sequence class, included by yapp_tx_seqs.sv
-└── tb/        testbench, tests, top modules
-    ├── tests/     one file per test class, included by router_test_lib.sv
-    ├── run.f      xrun command file: what to compile + default plusargs
-    └── Makefile   make run / gui / lint / clean (Xcelium); compile / sim / waves (Verilator)
+├── tb/        testbench, tests, top modules
+│   ├── tests/     one file per test class, included by router_test_lib.sv
+│   ├── run.f      xrun command file: what to compile + default plusargs
+│   └── Makefile   make run / gui / lint / clean (Xcelium); compile / sim / waves (Verilator)
+└── start/     your copy to work in: the same sv/ and tb/, with the bodies of the lab's methods emptied
+    └── TASKS.md   the steps of the lab, which files to write, how to run and check
 ```
+
+## Working on a lab: `start/` and `make check`
+
+`sv/` and `tb/` are the finished lab. **`start/` is where you work**: it holds the finished state of
+the lab before this one, plus the files this lab adds or changes with the bodies of their methods and
+constraints emptied to a `// TODO (Lab N)` comment. Every class keeps its prototypes (the table of
+contents of the class in this repository's style), `new()` and the `super.<phase>()` calls stay so
+that everything compiles from the first minute, and the comments of the finished bodies are left in
+place as hints. `start/TASKS.md` lists the steps of the lab page, the files to write and the files
+that are given. Modules, interfaces, packages and `run.f` are given even when the lab changes them:
+the work of a lab is in its classes.
+
+```bash
+cd labs/lab05_seq/start/tb
+make sim TEST=incr_payload_test      # compiles the start point as it is: the test runs, does little
+# ... write the bodies in start/sv and start/tb, following start/TASKS.md and the lab page ...
+make sim TEST=incr_payload_test      # again, until the log shows what the lab page promises
+```
+
+**`make check`** is the lab page's "Expected" paragraph as a program. From the repository root it runs
+every test of the lab in Verilator and looks in each log for the lines the finished lab prints
+(`scripts/lab_checks.yaml`): the sequences that must run, the packets that must be collected, the
+reports that must say `0 mismatched`, and of course `0 UVM_ERROR`. One line per check, `ok` or
+`MISSING`, and the path of the log when something is missing:
+
+```bash
+make check LAB=lab05_seq START=1     # your work in labs/lab05_seq/start/
+make check LAB=lab05_seq             # the finished lab (every line ok)
+make check LAB=lab05_seq START=1 TEST=incr_payload_test
+```
+
+```
+labs/lab05_seq/start/tb:
+  FAIL  incr_payload_test          sim      0s    0.3s
+        ok       ends with 0 UVM_ERROR / 0 UVM_FATAL
+        MISSING  yapp_incr_payload_seq runs as the default sequence
+        MISSING  the payload counts up: payload[1] = 1
+        log: build/sim/labs_lab05_seq_start_tb/logs/incr_payload_test_s1.log
+```
+
+A fresh `start/` is one command away when you want to begin a lab again: `make start` regenerates
+all of them from the finished labs (`git checkout labs/lab05_seq/start` restores just one).
 
 **One class per file, bodies outside the class.** The course's library files (`yapp_tx_seqs.sv`,
 `router_test_lib.sv`, `router_mcseqs_lib.sv`, `yapp_router_reg_pkg.sv`) are kept as the files

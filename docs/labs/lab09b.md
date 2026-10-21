@@ -93,6 +93,19 @@ the router, but now the reference model drops them too —
 
 `UVM_ERROR : 0`. The test is self-checking even with illegal traffic.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab09_sbb START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab09b.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Write `0x00` to `en_reg` through `hbus_write_seq` before the packets. What does the reference model predict, and what does the scoreboard report?"
+    `router_en is now 0`; the reference model predicts that every packet is dropped, so it sends nothing to the scoreboard, the channels receive nothing and the report says `0 matched, 0 mismatched`. The prediction and the DUT agree.
+
 ## Checkpoint questions
 
 ??? question "What is the difference between an interface UVC and a module UVC?"

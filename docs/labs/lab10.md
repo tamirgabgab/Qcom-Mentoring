@@ -154,6 +154,19 @@ collector's report line (`YAPP packet coverage: ... coverage N%`) shows the
 percentage. With `coverage_test` all 5 length bins, all
 4 address bins, both parity values and all 15 cross bins are hit: 100%.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab10_cov START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab10.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "Add a bin for the maximum length (`bins max = {63};`) to the length coverpoint. What does `coverage_test` report now, and which sequence would close the hole?"
+    Below 100%: `yapp_coverage_seq` sends lengths across the buckets but not 63 with every address. A sequence that constrains `m_length == 63` (one packet per address) closes it -- after `hbus_large_packet_seq` sets `maxpktsize` to 63, or the packets are dropped.
+
 ## Checkpoint questions
 
 ??? question "Why is the covergroup fed by the monitor and not by the sequence or the driver?"

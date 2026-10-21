@@ -109,6 +109,19 @@ make run TEST=router_simple_mcseq_test
 
 12 YAPP packets in total, 12 channel packets, `UVM_ERROR : 0`.
 
+## See it run
+
+The lines that matter from the real log of every test of this lab (Verilator, seed 1, from the last `make regress`; the paths and the packet tables are left out). Your own log must show the same lines -- `make check LAB=lab08_mcseq START=1` looks for them.
+
+--8<-- "docs/assets/generated/see_it_run/lab08.md"
+
+## Try this
+
+Small changes to make in `start/` once the lab works, each with a question; the answer unfolds.
+
+??? question "In `router_simple_mcseq`, start `hbus_read_max_pkt_seq` before `hbus_small_packet_seq`. What does the read return?"
+    `0x3f`, the reset value of `ctrl_reg` (`maxpktsize` = 63): the write that sets 20 has not happened yet. The log line `MAXPKTSIZE register reads 63` shows it; the reference model (Lab 9B) would follow the same order.
+
 ## Checkpoint questions
 
 ??? question "Why can the mcsequencer's handles not be set with `uvm_config_*`?"

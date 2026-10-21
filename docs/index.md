@@ -62,18 +62,20 @@ one idea per class, comments that say *why*.
 
 === "Students"
 
-    1. Read [Getting started](getting-started.md) once and run `test_install` (Xcelium) — or,
-       without a licence, open the repository in a GitHub Codespace and run `make sim`
-       ([Verilator](appendix/verilator.md): the same labs, the same tests, free).
+    1. Open the repository in a [GitHub Codespace](https://codespaces.new/tamirgabgab/Qcom-Mentoring?quickstart=1)
+       (nothing to install; [Verilator](appendix/verilator.md) runs every lab for free) and run
+       `make sim` in `test_install` — or use Xcelium if you have it. [Getting started](getting-started.md)
+       has both.
     2. Read the [DUT specification](dut/spec.md): every lab assumes you know
        the packet format and the three port protocols.
-    3. Work through the [labs](labs/index.md) in order. Each lab page tells you
-       what to build, why, and what the simulation must show when you are done.
-       Try to write the code yourself first; the solution is there when you get
-       stuck or want to compare.
+    3. Work through the [labs](labs/index.md) in order, **in the lab's `start/` directory**: it is
+       the lab with the bodies of its methods emptied, `start/TASKS.md` lists the steps. Each lab
+       page tells you what to build, why, and what the simulation must show when you are done;
+       `make check LAB=<lab> START=1` tells you whether your log shows it. The finished solution is
+       next to it (`sv/`, `tb/`) when you get stuck or want to compare.
     4. Use the [component guides](components/index.md) when a piece of UVM
-       does not click: they explain the same code from the "what is a driver"
-       angle instead of the "lab step 4" angle.
+       does not click, the [glossary](glossary.md) for a word, and the [FAQ](faq.md) when the
+       simulator says something you did not expect.
 
 === "Mentors"
 
