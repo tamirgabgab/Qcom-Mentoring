@@ -476,22 +476,30 @@ python3 scripts/sv_style.py --check --diff path/to/file.sv
 
 ### Roadmap
 
-Not started; each item waits for a decision (details in `HANDOFF.md`, section 8):
+Planned as rounds, in the recommended order; nothing is started, each round opens with a
+decision (the details, the effort and the open questions are in `HANDOFF.md`, section 8):
 
-* **Assertions**: SVA on the YAPP, HBUS and channel interfaces (none today), with
-  `cover property` for the corner cases.
-* **Reset and suspend corners**: reset in the middle of a test, receiver suspend in
-  the middle of a packet.
-* **Register model**: an explicit `uvm_reg_predictor`, the built-in bit-bash and
-  memory-access sequences, RAL coverage.
-* **More coverage and proof it matters**: output channel × back-pressure, FIFO full,
-  overlapping error pulses; mutation runs that the regression must catch; test ranking.
-* **CI**: staleness check of the committed report and offline site, a regression
-  history with a trend chart, a pyslang-based style checker.
-* **Course content**: a Verilator-first path, a "See it run" section per lab with the
-  real log, glossary, FAQ and lab skeletons.
-* **Xcelium**: four-state, UVM 1.1d and IMC numbers
-  ([`docs/appendix/unverified.md`](docs/appendix/unverified.md)).
+* **A — housekeeping**: the card icons on the home page, the Regression table, a staleness
+  check in CI for the committed report and offline site, a pre-commit hook, a split of
+  `HANDOFF.md`, a phone-sized toolbar for the map.
+* **B — the student's path**: a starting point for every lab (the previous solution plus
+  stubbed files and a task list), `make check LAB=...` that compares the log with the expected
+  lines, a Verilator-first Getting started, a "See it run" section per lab with the real log,
+  glossary, FAQ, small "try this" exercises.
+* **C — verification depth**: SVA on the YAPP, HBUS and channel interfaces (none today) with
+  `cover property`, reset in the middle of a test, an explicit `uvm_reg_predictor` with the
+  built-in bit-bash and memory-access sequences and RAL coverage, more coverpoints.
+* **D — proof that the testbench catches bugs**: a set of RTL mutants behind defines that the
+  regression must fail on, a "Bug hunt" page (bug × the test that catches it), test ranking
+  from the coverage data, a regression history with a trend chart.
+* **E — the map as a teacher**: a lab slider that shows the testbench growing lab by lab, the
+  coverage and bug-hunt matrices inside the map, a replay of a regression run on the TLM
+  view, wave pictures on the boxes, a tablet layout.
+* **F — delivering the course**: a mentor's guide per session, a student kit
+  (`make student-kit`), slides or a printable PDF of the site.
+* **G — when the access exists**: Xcelium (four-state, UVM 1.1d, IMC —
+  [`docs/appendix/unverified.md`](docs/appendix/unverified.md)), the test-plan wording against
+  the course PDF, a pyslang-based style checker.
 
 ### Tooling and CI
 

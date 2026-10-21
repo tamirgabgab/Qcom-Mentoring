@@ -41,6 +41,8 @@
 > **סשן 8 סבב 5 (2026-10-14, תיקונים קטנים):** גופי ה-constraints פרוסים כמו מתודות (delimiter, משפט בשורה; כלל R11),
 > תוויות קוד בתרשימי האתר ב-`m_` כמו בקוד (עצי היררכיה נשארים בשמות הריצה), 4 שמות bins שה-rename של סבב 4 קלקל הוחזרו.
 > בלי רגרסיה מקומית (קומפילציה + lint בלבד); ה-workflow `sim` על `6f18453` עבר. רשימת השדרוגים הבאים: סעיף 8.
+> **סשן 9 (2026-10-21, סקירה ותוכנית):** `--trace-max-array` כבר ב-main (c78971d). סקירת הממשק כולו (אתר, מפה, README,
+> CI, קוד) ותוכנית שדרוגים ב-7 סבבים (א–ז) עם סדר מומלץ, הערכות והחלטות שתמיר צריך לקבל — **סעיף 8**. ללא שינוי בקוד.
 
 ---
 
@@ -723,6 +725,8 @@ highlighter SV), `docs/project-map.md` (iframe + סנכרון hash/theme), `expo
   סשן 8 סבב 3 — תוכן לימודי (סעיף 8 פריט 7) ו-history/trend של הרגרסיה.
 
 ### סטטוס git
+- **סשן 9 (2026-10-21), ענף `claude/hopeful-gates-acsuwt` (הענף של סשן 6, ממוזג עם `main` = `ef2747c`), `main` ff:**
+  commit של HANDOFF (סעיף 8 נכתב מחדש כסבבים). CI לא מושפע (אין שינוי בקוד).
 - **סשן 8 סבב 5 (2026-10-14), אותו ענף, `main` ff:** `4b15d5d` (פריסת constraints + R11 + bins), `6f18453` (שמות `m_`
   בתרשימי האתר, נתוני coverage, HANDOFF פריט 19), ואחריו commit ה-HANDOFF/README עם רשימת השדרוגים. CI על `6f18453`:
   lint, docs, sim — ירוקים.
@@ -1001,43 +1005,124 @@ flow של vlog/vsim בריפו), Verilator בקונטיינר (תמיכת UVM ח
 
 ## 8. הצעד הבא
 
-**סשן 7 (2026-10-12/13):** לוגים ודוח רגרסיה, layout ל-Surfer, זיכרונות ב-waves, טסטים אקראיים עם מודל מלא — הכול
-נדחף; פירוט בסעיף 2, כרונולוגיה פריטים 1–13. **מצב בסוף סשן 6 (2026-10-09).** מה שתמיר ביקש בסשן 6 הושלם ונדחף: סימולציה ב-Verilator + CI, ספריית `rnd::` +
-begin/end, השלמת ה-Test plan, שני סבבי UX במפה (9 מ-10 ההצעות; על ה-10 — עקיפת מכשולים מלאה — תמיר ויתר).
-**אין משימה פתוחה שאפשר להתחיל בלי תמיר.** סבבים 4–5 של סשן 8 סגרו את בקשות הסגנון, לשונית ה-Coverage ושמות התרשימים.
-רשימת השדרוגים האפשריים (סשן 8 סבב 5, נכתבה לבקשת תמיר — **לא לממש בלי שאלות מנחות ובחירה שלו**):
+**סשן 9 (2026-10-21): סקירת הממשק כולו ותוכנית שדרוגים בסבבים.** נכתב לבקשת תמיר ("איך לשדרג את הפרויקט ולקדם אותו
+כמה צעדים קדימה — תציע בסבבים"). הסקירה כיסתה את האתר (צילומי Playwright של הבית, לאב 5, לאב 9A, Test plan, Regression,
+Coverage, Driver, Getting started, Spec — במחשב 1440px ובטלפון 390px), את שש תצוגות המפה, את ה-README, ה-CI, הסקריפטים
+והקוד. הרשימה השטוחה מסשן 8 סבב 5 (19 פריטים) נבלעה בסבבים שלמטה. **אין משימה פתוחה שאפשר להתחיל בלי תמיר** —
+כל סבב מתחיל בשאלות מנחות ובבחירה שלו, ומסתיים ב-commit + push + ff של `main` + zip + מפה.
 
-**אימות**
-1. **רגרסיה + דוח מחדש** — כדי שמספרי השורות ב-gcov ובלוגים יתאימו לפריסת ה-constraints של סבב 5
-   (`make regress`, `make regress ONLY=yapp_project WAVES=1`, `make sim-report ONLY=yapp_project OUT=yapp_project/regression`, `make map`, `make docs-offline`).
-2. **Xcelium** — אם תמיר ישיג גישה: four-state (`z` ב-HBUS, `x` לפני reset), UVM 1.1d, מספרי IMC; לעדכן `unverified.md`
-   ואת `expected` ב-`annotations.yaml` (`tests:`).
-3. **SVA** — אין היום אף `assert property`/`cover property` בריפו: assertions ב-interfaces על פרוטוקול YAPP
-   (`in_data_vld`/`in_suspend`), ה-handshake של HBUS ויציאות הערוצים, ו-`cover property` לתרחישים (suspend באמצע, back-to-back).
-4. **reset באמצע טסט** — driver/monitor/reference/scoreboard מודעי reset (נדחה בסשן 7).
-5. **suspend באמצע פקטה ב-receiver** — מחוץ ל-spec, ה-RTL תומך (נדחה בסשן 7).
-6. **RAL** — `uvm_reg_predictor` מפורש מה-monitor של HBUS במקום auto-predict (`router_tb.sv`), רצפי `uvm_reg_bit_bash_seq` /
-   `uvm_mem_access_seq`, ו-RAL coverage במקום `UVM_NO_COVERAGE`.
-7. **coverpoints חדשים** ("קודם לראות, אחר כך להוסיף"; המודל ב-100%): ערוץ יציאה × back-pressure, `in_suspend`/FIFO מלא,
+### מה הסקירה מצאה
+
+**חזק היום.** פתרון מלא ומאומת לכל 16 הלאבים (162/162 ברגרסיה, 222/222 bins), DUT מפוצל ומתועד, אתר של ~60 דפים עם
+דיאגרמות ושאלות checkpoint, מפה בשש תצוגות שמיוצרת מהקוד, שני סימולטורים בדפדפן, דוח רגרסיה עם לוגים/צירי זמן/גלים
+לכל ריצה, coverage ממוזג על המקור, סגנון קוד אחיד שנאכף ב-CI, הכול עובד גם offline. הבסיס ההנדסי כמעט סגור.
+
+**מה חסר או נראה בעין (מה שהסבבים מתקנים).**
+- **לסטודנטית שעוד לא פתרה אין כלום**: כל לאב הוא פתרון גמור; אין נקודת התחלה (skeleton), אין "בדוק את עצמך", אין
+  glossary / FAQ, ומסלול ההתחלה באתר עדיין Xcelium-first ("run `test_install`"). זה הפער הגדול ביותר מול מטרת הפרויקט (mentoring).
+- **אין אף assertion** (`assert property` / `cover property`) בכל הריפו — כל הבדיקות חיות ב-scoreboard וב-reference model.
+  לקורס אימות זה חור לימודי וגם הנדסי.
+- **אין הוכחה שהטסטבנץ' תופס באגים**: רק `INJECT_ERROR` אחד (lab11b). סט mutants ב-RTL שהרגרסיה חייבת להפיל הוא הדרך
+  הזולה ביותר להראות לסטודנטית למה כל checker קיים.
+- עמוד הבית: אייקוני הכרטיסים מופיעים כטקסט (`:material-chip:{ .lg .middle }`, `:octicons-arrow-right-24:`) — חסר
+  `pymdownx.emoji` ב-`mkdocs.yml` (ידוע מסשן 8, עדיין לא תוקן).
+- עמוד Regression results: עמודת Test נשברת לשלוש שורות (`base_t / est`) כי הטבלה צרה ולשם הקוד אין `nowrap`.
+- בטלפון (390px): סרגל המפה תופס שליש מסך (ארבע שורות), המיני-מפה מכסה את הציור, הפאנל נדחף למטה. המפה בנויה ל-1280px ומעלה.
+- בתצוגת Classes "All classes" (129 מחלקות) חצי הירושה ל-`base_test` חוצים את כל התרשים — קריא רק דרך לשוניות ה-package.
+- `yapp_project/regression` (33 MB) ו-`offline/site` (31 MB) הם committed ולא נבדקים ב-CI — מתיישנים בשקט אחרי כל שינוי
+  (ה-pack של הריפו כבר 46 MB). גם צילומי ה-README ו-`export/` (9.7 MB) ידניים.
+- `HANDOFF.md` הוא ~1,180 שורות; הכרונולוגיה (סעיף 2) היא רוב הקובץ ומקשה למצוא את המצב הנוכחי.
+- `hbus_slave_agent` נשאר placeholder (45 שורות, אף פעם לא פעיל).
+
+### הסבבים המוצעים
+
+**סדר מומלץ: א → ב → ד → ג → ה → ו; ז כשיש גישה ל-Xcelium.** א זול ונראה מיד; ב הוא לב המטרה (mentoring); ד נותן כלי
+הוראה חזק בסשן אחד ומוכיח את הטסטבנץ'; ג מעמיק את האימות; ה הכי מרשים אבל הכי יקר; ו אחרי שהתוכן מתייצב.
+ההערכות הן בסשנים של עבודה (סשן ≈ כמה שעות של עבודה שלי, כולל רגרסיה ובדיקות).
+
+**סבב א — ניקיון ומהירות (חצי סשן, סיכון נמוך, הכול נראה מיד).**
+‏1. **אייקונים** בעמוד הבית: `pymdownx.emoji` ב-`mkdocs.yml` (ולבדוק שהאתר ה-offline נושא את ה-SVG בעצמו).
+‏2. **טבלת Regression results**: `white-space: nowrap` לעמודת Test, רוחב הדף כמו בעמוד המפה; אותו תיקון לטבלאות ה-Appendix.
+‏3. **HANDOFF מפוצל**: הכרונולוגיה (סעיף 2, "מה נעשה") יוצאת ל-`HISTORY.md`; כאן נשארים מצב, כללים, בעיות פתוחות, הסבבים.
+‏4. **staleness ב-CI**: job שבונה מחדש את `offline/site` ומשווה (`git diff --exit-code`), ובודק ש-`runs.json` של הדוח המחויב
+   מתאים ל-`regress.yaml` (אותם טסטים ואותם seeds). כשלון = הודעה ברורה "run make docs-offline / make sim-report".
+‏5. **pre-commit**: `make hooks` מתקין hook שמריץ `sv_style.py --check` ו-`build --check` על הקבצים שהשתנו (בלי תלות חיצונית).
+‏6. **`hbus_slave_agent`**: החלטה — למחוק (ה-DUT הוא ה-slave היחיד, `num_slaves = 0`) או לממש responder אמיתי לשימוש
+   בלאבים. ההמלצה: למחוק ולתעד במדריך ה-agent למה.
+‏7. **טלפון/טאבלט במפה** (מינימום): מתחת ל-900px הסרגל מתקפל לתפריט ☰, המיני-מפה מוסתרת, הודעה "best on a desktop" פעם אחת.
+   (הפריסה המלאה — סבב ה.)
+
+**סבב ב — מסלול הסטודנטית (1–2 סשנים; הערך הלימודי הגדול ביותר).**
+‏1. **נקודת התחלה לכל לאב** (`labs/<lab>/start/`): הפתרון של הלאב הקודם + הקבצים שהלאב משנה עם גופי מתודות מרוקנים
+   ל-`// TODO (step N)` ו-stub שמתקמפל (`uvm_warning("TODO", ...)`), ו-`TASKS.md` עם הצעדים מהדף באתר. מיוצר על ידי
+   `scripts/make_start.py` מתוך רשימת ה-"Changed" של כל דף לאב — הסגנון של extern prototypes מתאים לזה בדיוק (הפרוטוטיפים
+   נשארים כתוכן עניינים, הסטודנטית ממלאת גופים). CI מוודא שכל `start/` מתקמפל ב-slang.
+‏2. **`make check LAB=lab05`**: מריץ את טסטי הלאב ב-Verilator ומשווה את הלוג ל-`expected` של `annotations.yaml` (`tests:`),
+   שורה ירוקה/אדומה לכל שלב — "בדוק את עצמך" בלי מנחה. ב-Codespaces זה הכפתור היחיד שהסטודנטית צריכה.
+‏3. **Verilator-first**: Getting started ו-`index.md` מתחילים ב-Codespaces / `make sim`; Xcelium הופך לחלופה. כפתור
+   "Open in Codespaces" ב-README ובאתר.
+‏4. **"See it run" בכל דף לאב**: ציטוט של השורות האמיתיות מהלוג ב-`yapp_project/regression` (snippet מיוצר ב-`build.py`,
+   כך שלא מתיישן) + קישור לדף הטסט ב-Regression results ולכרטיס במפה.
+‏5. **Glossary** (`docs/glossary.md`, כל מונח מקשר לדף הרכיב) ו-**FAQ / troubleshooting** מתוך `pitfalls.md` ושגיאות
+   Verilator/slang אמיתיות שנתקלנו בהן (ה-HANDOFF סעיף 4 מלא בהן).
+‏6. **תרגילי "נסי את זה"** בסוף כל לאב: וריאציה קטנה ("שני את ה-constraint כך ש… — איזה טסט נופל ולמה?") עם תשובה
+   מוסתרת, ליד שאלות ה-checkpoint הקיימות.
+
+**סבב ג — עומק האימות (1–2 סשנים).**
+‏1. **SVA**: `assert property` + `cover property` בשלושת ה-interfaces — `yapp_if` (data_vld רציף לאורך פקטה, suspend עוצר
+   את השולח), `channel_if` (handshake של suspend/data_vld), `hbus_if` (write מחזור אחד, read שני מחזורים, `hdata` ב-Z
+   כשאף אחד לא מניע). לבדוק קודם מה Verilator 5.052 תומך (`--assert`; `##`, `|->`, `$rose` כן, sequences מורכבות חלקית)
+   ולתעד ב-`verilator.md`. באתר: דף "Assertions" בפרק UVM, פריטי TB חדשים ב-Test plan.
+‏2. **reset באמצע טסט**: driver/monitor/reference/scoreboard מודעי reset, סיקוונס ב-clock_and_reset, טסט `reset_mid_test`
+   (נדחה בסשן 7).
+‏3. **RAL**: `uvm_reg_predictor` מפורש מה-monitor של HBUS במקום auto-predict, טסטים עם `uvm_reg_bit_bash_seq` /
+   `uvm_mem_access_seq`, RAL coverage במקום `UVM_NO_COVERAGE`.
+‏4. **coverpoints חדשים** ("קודם לראות, אחר כך להוסיף"; המודל ב-100%): ערוץ יציאה × back-pressure, `in_suspend`/FIFO מלא,
    פולסי error חופפים, wrap של מונים, gap × parity, מעברי קונפיגורציה בין bursts. collector חדש = `*_coverage.sv` + חיבור + `make map`.
-8. **mutation testing** — סט באגים ב-RTL מאחורי defines (כמו `INJECT_ERROR` של lab11b) שהרגרסיה חייבת לתפוס, כ-job ב-CI.
-9. **test ranking** — אילו טסטים תורמים bins ייחודיים, הסט המינימלי לסגירת כיסוי (מתוך `coverage.json`).
+‏5. **suspend באמצע פקטה ב-receiver** — מחוץ ל-spec, ה-RTL תומך (אופציונלי, נדחה בסשן 7).
 
-**תשתית ו-CI**
-10. **staleness ב-CI** לדוח המחויב (`yapp_project/regression`) ול-`offline/site`, או לבנות אותם כ-artifact/release במקום commit.
-11. **`history.csv` + מגמה** — pass/coverage לכל ריצת רגרסיה, גרף באתר.
-12. **`sv_style.py` על pyslang** במקום regex (מונע תקלות כמו שמות ה-bins של סבב 4) + pre-commit hook.
+**סבב ד — "הוכחה שהטסטבנץ' תופס באגים" (סשן אחד).**
+‏1. **סט mutants ב-RTL** מאחורי defines (`BUG_PARITY_IGNORED`, `BUG_ADDR3_NOT_DROPPED`, `BUG_OVERSIZED_PASSES`,
+   `BUG_COUNTER_SATURATES`, `BUG_FIFO_DEPTH_15`, `BUG_HBUS_READ_ONE_CYCLE`, `BUG_ERROR_PULSE_SHORT`, …), כניסות
+   `"yapp_project/tb +define+BUG_X"` עם `expect: errors` ב-`regress.yaml`, job ב-CI. באתר: דף **Bug hunt** — מטריצה
+   באג × הטסט שתופס אותו (כמו מטריצת הכיסוי), ובמפה תג על כרטיס הטסט. להוראה: נותנים לסטודנטית build עם mutant ומבקשים
+   למצוא אותו עם הלוג והגלים.
+‏2. **test ranking** מתוך `coverage.json`: bins ייחודיים לכל טסט, הסט המינימלי שסוגר כיסוי — טבלה ב-Coverage results.
+‏3. **`history.csv` + מגמה**: pass/bins/זמן לכל רגרסיה (commit, תאריך), גרף קטן בעמוד Regression results.
 
-**תוכן לימודי**
-13. **מסלול Verilator-first** לסטודנטיות ב-`index.md`/getting-started (היום "run test_install" + הערה).
-14. **"See it run" בכל דף לאב** — ציטוט מהלוג האמיתי ב-`yapp_project/regression` דרך snippet + קישור לסצנה ולכרטיס הטסט במפה.
-15. **glossary, FAQ/troubleshooting, ו-skeleton לכל לאב** (הפתרון בנפרד).
-16. **מעבר על ניסוחי ה-Test plan מול ה-PDF** (`annotations.yaml` `plan:`/`tests:`) — ה-PDF רק אצל תמיר.
+**סבב ה — המפה כמורה (1–2 סשנים).**
+‏1. **Lab slider**: בתצוגות Hierarchy ו-Environment כפתור "Lab" שמראה את הטסטבנץ' כפי שהיה בלאב N (הלאבים הם snapshots;
+   `extract.py` קורא גם `labs/<lab>/tb` + `sv`). הרכיבים מופיעים לאב אחרי לאב, הפאנל אומר מה לאב N הוסיף. הנתון היקר:
+   16 חילוצים נוספים ו-`model.json` גדל — אפשר להתחיל מתצוגת Environment בלבד.
+‏2. **מטריצות בתוך המפה**: מטריצת הכיסוי (היום באתר + קישור) ומטריצת ה-Bug hunt בפאנל של Test plan.
+‏3. **Run replay**: בוחרים ריצה מהרגרסיה וגוררים על ציר הזמן שלה בתצוגת TLM — הרכיב שהאירוע שלו עכשיו נדלק, הפקטה זזה
+   על החצים. הנתון: `timeline.md` committed; `timeline.csv` רק מקומי → להוסיף JSON קומפקטי לכל ריצה בדוח.
+‏4. **תמונות גלים על הקופסאות**: ה-`wave_*.svg` של ריצה מקושרים מצמתי ה-interfaces וה-DUT.
+‏5. **פריסה לטאבלט/טלפון**: סרגל מתקפל, הפאנל כ-bottom sheet, עמודת Source מוסתרת כברירת מחדל (מינימום — סבב א, 7).
+‏6. **כיוונים קטנים**: `FIT_MIN_K` (0.5) ו-`LOD_FAR_K` (0.45) ב-`app.js`; ב-Classes "All" להסתיר את חצי הירושה ל-`base_test`
+   כברירת מחדל (רק חצי package) או לסדר את הטסטים ברשת מתחתיו.
 
-**מפה ואתר**
-17. **מטריצת הכיסוי בתוך המפה** (היום באתר + קישור מהפאנל); כיוון `FIT_MIN_K` (0.5) ו-`LOD_FAR_K` (0.45) ב-`app.js`.
-18. **תיקוני אתר קטנים** — `pymdownx.emoji` (אייקוני הכרטיסים בעמוד הבית), לכבות repo facts (`api.github.com`) באופליין.
-19. **פיצול HANDOFF** — להוציא את הכרונולוגיה (סעיף 2) לקובץ היסטוריה, להשאיר כאן מצב + כללים + צעדים.
+**סבב ו — העברת הקורס (סשן אחד).**
+‏1. **מדריך למנחה לכל מפגש** (`docs/mentor/session-N.md`, שמונה מפגשים לפי טבלת ה-labs index): תזמון, איזו סצנה במפה
+   להראות, איזה טסט להריץ בשידור חי, איזה גל לפתוח, שאלות checkpoint לשאול, טעויות נפוצות.
+‏2. **ערכת סטודנטית** (`make student-kit`): zip עם `start/` של כל הלאבים, האתר ה-offline והמפה — מה שמחלקים ביום הראשון.
+‏3. **שקפים / PDF**: deck לכל מפגש מתוך דפי האתר (marp או reveal, עם ה-exports של המפה), או PDF מודפס של האתר
+   (`mkdocs-print-site-plugin`) — תלוי איך תמיר מלמד.
+
+**סבב ז — מותנה בתמיר.**
+‏1. **Xcelium** — אם תמיר ישיג גישה: four-state (`z` ב-HBUS, `x` לפני reset), UVM 1.1d, מספרי IMC; לעדכן `unverified.md`
+   ואת `expected` ב-`annotations.yaml`.
+‏2. **ניסוחי ה-Test plan מול ה-PDF** (`annotations.yaml` `plan:`/`tests:`) — ה-PDF רק אצל תמיר.
+‏3. **לאבים 1–6 מצביעים ל-`yapp_project/uvc/yapp`** במקום עותקים (החלטה פתוחה מסשן 5).
+‏4. **כלי `restyle`** ל-`uvm_do*`/`uvm_field_*` (אם סטודנטית כותבת עם מאקרו); **`sv_style.py` על pyslang** במקום regex.
+
+**מה תמיר צריך להחליט לפני כל סבב** (השאלות המנחות): א — למחוק את `hbus_slave_agent`? ב — `start/` committed או מיוצר
+(zip) בלבד, ומה עומק ה-stub (קובץ שלם או מתודות)? ד — כמה mutants ואילו (7–10 מספיקים), האם הם נראים לסטודנטיות באתר
+או רק למנחה? ג — SVA רק ב-interfaces או גם בתוך ה-RTL? ה — להתחיל מ-Lab slider או מ-Run replay? ו — שקפים או PDF?
+
+**הרשימה הישנה (סשן 8 סבב 5)** כוסתה כך: 1 (רגרסיה מחדש) → חלק מכל סבב שמשנה קוד; 2 → ז1; 3 → ג1; 4 → ג2; 5 → ג5; 6 → ג3;
+7 → ג4; 8 → ד1; 9 → ד2; 10 → א4; 11 → ד3; 12 → ז4 + א5; 13 → ב3; 14 → ב4; 15 → ב5 + ב1; 16 → ז2; 17 → ה2 + ה6; 18 → א1;
+19 → א3.
 
 הטקסט ההיסטורי של העדיפויות מסשן 5 נשמר למטה. לפני כל פריט — לשאול שאלות מנחות.
 
